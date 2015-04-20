@@ -1,0 +1,33 @@
+\usepackage{fontspec}
+\usepackage{pgfplots}
+\usepackage{commath}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage[separate-uncertainty=true, per-mode=symbol]{siunitx}
+\usepackage[noabbrev, capitalize]{cleveref}
+\usepackage{listings}
+\usepackage[american inductor, european resistor]{circuitikz}
+\usepackage{ifxetex}
+
+\ifxetex{} % Fonts laden in het geval dat je met Xetex compiled
+    \usepackage{fontspec}
+    \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
+    \setromanfont{Palatino Linotype} % Tover ergens in Font mapje in root.
+    \setmonofont{Source Code Pro} % Idem
+    \setsansfont{Avenir Next} % Hoorde dat Wessel mooi font had :)
+\else % Terug val in standaard pdflatex tool chain. Geen ondersteuning voor OTT fonts
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+\fi
+
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\uvec}[1]{\boldsymbol{\hat{\vec{#1}}}}
+\newcommand{\fasor}[1]{\boldsymbol{\tilde{\vec{#1}}}}
+\newcommand{\cmplx}[0]{\mathrm{j}}
+\renewcommand{\Re}[0]{\operatorname{Re}}
+
+\DeclareSIUnit{\voltampere}{VA} %apparent power
+\DeclareSIUnit{\pii}{\ensuremath{\pi}}
