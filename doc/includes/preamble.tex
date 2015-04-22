@@ -46,3 +46,12 @@
     linkcolor=black,
     urlcolor=black
 }
+
+% Example boxes
+\usepackage{fancybox}
+\usepackage{framed}
+\usepackage{adjustbox}
+\newenvironment{simpages}%
+{\AtBeginEnvironment{itemize}{\parskip=0pt\parsep=0pt\partopsep=0pt}
+\def\FrameCommand{\fboxsep=.5\FrameSep\shadowbox}\MakeFramed {\FrameRestore}}%
+{\endMakeFramed}
