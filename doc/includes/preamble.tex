@@ -1,8 +1,7 @@
-\usepackage{fontspec}
+\usepackage[no-math]{fontspec}
 \usepackage{pgfplots}
 \usepackage{commath}
-\usepackage{amssymb}
-\usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{booktabs}
 \usepackage{mathtools}
 \usepackage{xcolor}
@@ -11,13 +10,19 @@
 \usepackage{listings}
 \usepackage[american inductor, european resistor]{circuitikz}
 \usepackage{ifxetex}
+\usepackage[dutch,english]{babel}
+\usepackage[backend=bibtexu,texencoding=utf8,bibencoding=utf8,style=ieee,sortlocale=en_GB,language=auto]{biblatex}
+\usepackage[strict,autostyle]{csquotes}
+\usepackage{parskip}
+\usepackage{import}
+\usepackage{hyperref}
 
 \ifxetex{} % Fonts laden in het geval dat je met Xetex compiled
     \usepackage{fontspec}
     \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
     \setromanfont{Palatino Linotype} % Tover ergens in Font mapje in root.
-    \setmonofont{Source Code Pro} % Idem
-    \setsansfont{Avenir Next} % Hoorde dat Wessel mooi font had :)
+    \setmonofont{Source Code Pro}
+    \setsansfont{Source Sans Pro}
 \else % Terug val in standaard pdflatex tool chain. Geen ondersteuning voor OTT fonts
     \usepackage[T1]{fontenc}
     \usepackage[utf8]{inputenc}
@@ -31,3 +36,11 @@
 
 \DeclareSIUnit{\voltampere}{VA} %apparent power
 \DeclareSIUnit{\pii}{\ensuremath{\pi}}
+
+\hypersetup{ %setup hyperlinks
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
