@@ -129,3 +129,4 @@ Temporary Items
 *.fls
 *-blx.bib
 !**/resource/**/*.pdf
+*.sublime-workspace
