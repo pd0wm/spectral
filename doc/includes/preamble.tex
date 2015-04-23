@@ -1,5 +1,6 @@
 \usepackage[no-math]{fontspec}
 \usepackage{pgfplots}
+\pgfplotsset{compat=newest}
 \usepackage{commath}
 \usepackage{mathtools}
 \usepackage{booktabs}
@@ -15,13 +16,15 @@
 \usepackage[strict,autostyle]{csquotes}
 \usepackage{parskip}
 \usepackage{import}
+\usepackage{standalone}
 \usepackage{hyperref}
+%\usepackage[toc,title,titletoc]{appendix}
 
 \ifxetex{} % Fonts laden in het geval dat je met Xetex compiled
     \usepackage{fontspec}
     \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
     \setromanfont{Palatino Linotype} % Tover ergens in Font mapje in root.
-    \setmonofont{Source Code Pro for Powerline}
+    \setmonofont{Source Code Pro}
 \else % Terug val in standaard pdflatex tool chain. Geen ondersteuning voor OTT fonts
     \usepackage[T1]{fontenc}
     \usepackage[utf8]{inputenc}

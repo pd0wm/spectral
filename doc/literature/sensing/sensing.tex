@@ -1,0 +1,31 @@
+%!TEX program = xelatex
+
+\documentclass[report]{memoir}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\title{Literature study}
+\author{H.J.C Kroep \and R.P. Hes \and W.M. Melching \and W.P. Bruinsma \and T.A. aan de Wiel \and T.C. Leliveld}
+
+\begin{document}
+
+\chapter{Wideband Spectrum Sensing}
+\references{\cite{axell2012spectrum}}{}
+There are a number of techniques available to map a part of the spectrum. A number of these will be discussed in this chapter.
+
+\section{Multiband Sensing}
+\references{\cite{hossain2011wideband}\cite{quan2009optimal}}
+Divide the to be scanned wideband channel into subchannels. Scan each of these subchannels seperately. Problems arise due to the fact that in practice the subchannels are not independant. Primary users occupancy and noise parameters can be correlated. The detection problem becomes a composite hypothesis problem\footnote{Multiple bands have to be evaluated to determine which hypotheses hold up. This greatly increases complexity.}
+
+An extension to this is joint multiband sensing. Multiple cooperating sensors are used to improve the detection performance. Possibly leads to nonconvex and potentially NP-hard problems.
+
+\section{Compressive Sensing}
+\references{\cite{candes2008introduction}}
+Compressive spectrum sensing is to exploit the fact that the original observed analog signal $y(t)$ with Nyquist rate $1/T$ can often be sampled below the Nyquist rate within an interval $t\in \left[0,N_{b}t \right)$. This results in $\vec{z}$ with dimensions $M_b \times 1$. This can be seen as 
+\begin{equation}
+    \label{eq:nonuniformsampling}
+    \vec{z} = \mat{\Phi}\vec{y}.
+\end{equation}
+where $\mat{\Phi}$ is the measurement matrix.
+\references{\cite{candes2008introduction}}
+\end{document}

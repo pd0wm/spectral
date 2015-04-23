@@ -141,3 +141,4 @@ Session.vim
 .netrwhist
 *~
 
+*.sublime-workspace
