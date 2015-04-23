@@ -2,6 +2,7 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+from l1 import l1
 
 samp_freq = 100e3                 #hz
 duration = 0.05                 #s
