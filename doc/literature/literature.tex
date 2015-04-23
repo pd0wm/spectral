@@ -1,10 +1,20 @@
 %!TEX program = xelatex
 
-\documentclass{memoir}
+\documentclass[report]{memoir}
+\title{Literature study}
+\author{H.J.C Kroep \and R.P. Hes \and W.M. Melching \and W.P. Bruinsma \and T.A. aan de Wiel \and T.C. Leliveld}
+
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
 \begin{document}
-
+\maketitle
+\thispagestyle{empty}
+\frontmatter
+\tableofcontents
+\mainmatter
+\include{detector}
+\include{sensing}
 \printbibliography
+\appendix
 \end{document}
