@@ -1,6 +1,6 @@
 %!TEX program = xelatex
 
-\documentclass[report]{memoir}
+\documentclass[report, a4paper, openany, oneside]{memoir}
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
@@ -15,6 +15,7 @@
 \tableofcontents
 
 \mainmatter
+\subimport{articles/}{papers}
 \subimport{detector/}{detector}
 
 \subimport{sensing/}{sensing}

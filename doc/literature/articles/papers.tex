@@ -1,0 +1,111 @@
+
+\documentclass[report, oneside, a4paper, openany]{memoir}
+\input{../../../git/doc/includes/preamble.tex}
+\addbibresource{../../../git/doc/includes/bibliography.bib}
+
+\title{Literature study}
+\author{H.J.C Kroep \and R.P. Hes \and W.M. Melching \and W.P. Bruinsma \and T.A. aan de Wiel \and T.C. Leliveld}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% DIT DOCUMENT WORDT AUTOMATISCH GEGENEREERD. %%%%
+%%%%       NIET MET DE HAND AANPASSEN            %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\chapter{Papers}
+\section{Cooperative spectrum sensing in cognitive radio networks: A survey \cite{akyildiz2011cooperative}}
+%Kees Kroep
+%
+A short introduction of the need for cognitive radio, and the tasks to make it happen.
+The paper gives an overview of cooperative congitive radiotechniques, and tries to answer the questions:
+
+\begin{itemize}
+\item How can cognitive radios cooperate 
+\item How much can be gained from cooperation 
+\item What is the overhead associated with cooperation
+\end{itemize}
+
+%Note: Geert Leus does not use cooperation but tries to achgieve silimar results with one device, and therefore without cooperation delay effects.
+
+\section{Multi-coset sampling for power spectrum blind sensing \cite{ariananda2011multicoset}}
+%% Dibs by Dorus
+
+\section{Compressive wideband power spectrum estimation \cite{ariananda2012compressive}}
+% Kees Kroep
+%
+A cognitive radio only needs to sense the Power Spectral Density (PSD). Therefore a nyquist rate sampler is much too powerhungry/expensize. This paper proposes a new type of multicoset sampling based on the minimal sparse ruler problem. The main focus is to design effective periodic sub-Nyquist sampling procedures for efficient power sectrum reconstruction. Other Papers provie ways to interpret the power spectral density with limited information about error variance and channel gain.
+
+\section{Sparsity and incoherence in compressive sampling \cite{candes2007sparsity}}
+% Claim: Tom
+%
+Given a sampled vector $\vec{x}$, containing $n$ entries. How can we obtain this vector $\vec{x}$ using a measurement vector $\vec{y}$ which contains $m$ entries ($ m \leq n$)? 
+By taking an orthogonal matrix $\mathbf{U}$ with $\mathbf{U}^{\ast}\mathbf{U} = n\mathbf{I}$ we can take $\vec{y}$ to be related to 
+
+\section{An introduction to compressive sampling \cite{candes2008introduction}}
+This paper is an introduction to compressive sensing (CS). One of the key concepts of CS is sparsity: a signal vector may contain a lot of zero entries (be it represented using a special base matrix $\Psi$).
+
+That is, we can represent a signal $\vec{f}$ using a sparse vector $\vec{x}$ as
+
+\begin{align*}
+  \vec{f} = \Psi \vec{x}
+\end{align*}
+
+Recording of a signal is commonly achieved by using an impulse train. Generalizing the concept of recording of a signal $f$, we can write a recording $y$ as
+
+\begin{align*}
+  \vec{y} &= \Phi \vec{f}
+\end{align*}
+
+In Compressive sensing our recording $\vec{y}$ has a lower dimensionality than
+the signal $\vec{f}$. Our recording $\vec{y}$ can be represented as:
+
+\begin{align*}\label{eq:recording_system}
+  \vec{y} = \Phi \Psi \vec{x}
+\end{align*}
+
+The system of equations in \ref{eq:recording_system} is underdetermined. That is
+infinitely many solutions for $\vec{x}$ exist. To approximate $\vec{x}$, one assumes that the solution which is most sparse, is the correct one.
+
+That is, one has the following optimization problem:
+
+\begin{align*}
+  \min_{x \in \mathbb{R}^n} ||x||_{l_1}
+\end{align*}
+
+\section{Comparative study of spectrum sensing techniques in cognitive radio networks \cite{khan2013comparative}}
+%Kees Kroep
+%
+A Comparative Study of Spectrum Sensing Techniques in Cognitive Radio is provided. The paper is state of the art (2013) and focusses on Cooperative Spectrum Sensing. A Comnparisson is made between the performace of Fuzzy collaboration, Asynchronous Coorporation, Relay based Cooperation, Distributed Cooperation, and Non cooperative Sensing.
+
+\section{Theory and implementation of an analog-to-information converter using random demodulation \cite{laska2007theory}}
+% Kees en Willem
+By using the theory of compressive sensing we can build an analog-to-information converter using sample frequencies below the nyquist fruency.
+
+The CS theory says that signal that is compressible in one basis (eg.if you convert the signal to the frequency domain it becomes sparse) it can be recovered from fewer samples. The signal is multiplied by a chipping sequence $p_c(t)$ consisting of pseudo random $\pm1$'s. It must alternate faster than the nyquist frequency of the input signal.
+
+The recovery is an ill-posed problem, but because we make the assumption that the signal is compressible we can solve the problem by minimizing the $\ell_1$ norm using optimization techniques.
+
+A theory is provided to predict the SNR performance of real-world implementations. The theory is supported with a simulation of a proof of concept real world implementation. This implementation transistor-level. Basic Pursuit with Denoising (BPDN) is used for optimalization.
+
+\section{Multi-coset sampling and recovery of sparse multiband signals \cite{lexa2011multi}}
+Provides an introduction in multi-coset sampling and states the requirements and procedures for signal reconstruction. Multi-coset sampling is a periodic nonuniform sub-Nyquist sampling technique for acquiring continuous-time spectrally-sparse signals. Multi-coset sampling uses multiple ADCs to sample delayed versions of the input signal. Theoretically, the full spectrum may be obtained using this method.
+
+\section{Compressive wide-band spectrum sensing \cite{polo2009compressive}}
+% Read by: Kees Kroep
+%
+This paper presents a compressive wide-band spectrum sensing scheme for cognitive radios. An analog to information converter is used. This paper focusses on using the autocorrelation of the compressed signal to estimate the power spectral density.
+
+\section{Wideband spectrum sensing from compressed measurements using spectral prior information \cite{romero2013wideband}}
+The paper proposes a number of algorithms (SLIKES, SIIA, WLS, CWLS and SSPICE) to perform compressive sensing. All of them consider a modified version of the \emph{sample covariance matrix} (SCM), which is closely related to the standard estimates of the autocorrelation for ergodic processes. A performance review is presented for each of the algorithms using Monte Carlo simulations.
+
+\section{Artificial neural network based spectrum sensing method for cognitive radio \cite{tang2010artificial}}
+%Claim: Willem
+%
+To improve detection we can use multiple detection methods and train an artificial neural network (ANN). This ANN is trained with an AM signal and noise with different signal to noise ratio's. Then each of the trained networks is tested with another AM signal with noise. Often the network detects signals a bit weaker (10dB) than the training signal.
+
+\section{Spectrum sensing exploiting guard bands and weak channels \cite{vazquez2011spectrum}}
+% Kees Kroep
+This paper adresses the problem of Primary user detection with a correct PSD (sampled at Nyquist rate). Properties of Primary user signals, and noise are used to improve Spectrum Sensing. This theory assumes no knowledge about noise variation and channel gains (which conventional methods do assume). This theory is also tested with performance comparissons. Geert Leus refers to this in his 2013 paper as a solution for situations in which parameters are unknown. 
+
+\end{document}
