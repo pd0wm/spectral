@@ -7,7 +7,7 @@ import cvxopt
 samp_freq = 50e3               #hz
 duration = 0.01                 #s
 input_signal = np.array([])
-frequencies = [10e3, 20e3, 10e3]
+frequencies = [10e3, 15e3, 10e3]
 
 # Generate input signal
 for f in frequencies:
@@ -48,18 +48,18 @@ print A.shape
 print b.shape
 print c.shape
 
-A_matrix = cvxopt.matrix(A.T)
-c_matrix = cvxopt.matrix(c.T)
-b_matrix = cvxopt.matrix(b)
-print A_matrix.size
+#A_matrix = cvxopt.matrix(A.T)
+#c_matrix = cvxopt.matrix(c.T)
+#b_matrix = cvxopt.matrix(b)
+#print A_matrix.size
 # *(map(cvxopt.matrix, [c, A, b]))
 
-sol = cvxopt.solvers.lp(c_matrix, A_matrix, b_matrix)
+#sol = cvxopt.solvers.lp(c_matrix, A_matrix, b_matrix)
 
-# rec_signal = np.matrix(np.linalg.pinv(sample_matrix)) * np.matrix(meas_signal)
+rec_signal = np.matrix(np.linalg.pinv(sample_matrix)) * np.matrix(meas_signal)
 
-# plt.subplot(2, 1, 1)
-# plt.plot(np.abs(np.fft.fftshift(np.fft.fft(input_signal.T)).T))
-# plt.subplot(2, 1, 2)
-# plt.plot(np.abs(np.fft.fftshift(np.fft.fft(rec_signal.T)).T))
-# plt.show()
+plt.subplot(2, 1, 1)
+plt.plot(np.abs(np.fft.fftshift(np.fft.fft(input_signal.T)).T))
+plt.subplot(2, 1, 2)
+plt.plot(np.abs(np.fft.fftshift(np.fft.fft(rec_signal.T)).T))
+plt.show()
