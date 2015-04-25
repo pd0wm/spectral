@@ -1,0 +1,253 @@
+%!TEX program = xelatex
+
+\documentclass{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+
+\begin{document}
+
+% Correlatie
+% PSD
+% Wiener-Kichine
+% Wide sense stationary
+% Sampling
+% Aliasing
+% DFT
+% Compression Ratio
+% SnR
+% Matched Filter
+% Complex envelopes
+% Periodogram estimate
+% Ergodisch
+% Semidefinite programming
+% Hermitisch etc
+% Subspaces, affine spaces
+
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Var}{\operatorname{Var}}
+
+
+\pagestyle{empty}
+\begingroup
+    \vspace*{0.12\textheight}
+    {\hfill \HUGE Review of Basic Concepts}
+    \vfill
+    {\hfill \Large Wessel Bruinsma}
+\endgroup
+
+\chapter{Preliminaries}
+\section{Convex functions}
+\begin{definition}[Convex function]
+    Let $f:S\to \mathbb{R}$ where $S$ is a convex subset of $\mathbb{R}$. Then $f$ is convex if for all $x_1,x_2 \in S$ and $\lambda \in [0,1]$
+    \begin{align*}
+        \lambda f(x_1) + (1- \lambda)f(x_2) \ge f( \lambda x_1 + (1- \lambda) x_2).
+    \end{align*}
+\end{definition}
+
+\begin{theorem}
+    Let $f:S \to \mathbb{R}$ be a convex function and let $\lambda_1,\ldots,\lambda_n \in \mathbb{R}$ be such that
+    \begin{align*}
+        \lambda_1 + \lambda_2 + \ldots + \lambda_n = 1.
+    \end{align*}
+    Then for all $x_1,\ldots,x_n \in S$
+    \begin{align*}
+        \lambda_1 f(x_1) + \lambda_2 f(x_2) + \ldots + \lambda_n f(x_n) \ge f(\lambda_1 x_1 + \lambda_2 x_2 + \ldots + \lambda_n x_n).
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We will proof by induction. Since $f$ is convex, the base case holds. Suppose that the statement is true for a certain $n$. Then, since $f$ is convex
+    \begin{align*}
+        &\lambda_1 f(x_1) + \lambda_2 f(x_2) + \ldots + \lambda_{n+1} f(x_{n+1}) \\
+        &= (\lambda_1+\lambda_2)\left[\frac{\lambda_1}{\lambda_1 + \lambda_2} f(x_1) + \frac{\lambda_2}{\lambda_1+\lambda_2}f(x_2)\right] + \ldots + \lambda_{n+1} f(x_{n+1})  \\
+        &\ge (\lambda_1 + \lambda_2)f\left( \frac{\lambda_1}{\lambda_1 + \lambda_2} x_1 + \frac{\lambda_2}{\lambda_1+\lambda_2}x_2\right) + \ldots + \lambda_{n+1} f(x_{n+1}) \\
+        &\ge f\left[(\lambda_1 + \lambda_2) \frac{\lambda_1}{\lambda_1 + \lambda_2} x_1 + (\lambda_1 + \lambda_2)\frac{\lambda_2}{\lambda_1+\lambda_2}x_2\ldots + \lambda_{n+1}\right] \\
+        &= f(\lambda_1 x_1 + \lambda_2 x_2 + \ldots + \lambda_{n+1} x_{n+1}).
+    \end{align*}
+\end{proof}
+
+\chapter{Stochastic Processes}
+\section{Basic Definitions}
+\begin{definition}
+    A \textbf{random variable} consists of an experiment with a probability measure $P[.]$ defined on a sample space $S$ and a function that assigns a real number to each outcome in the sample space of the experiment.
+\end{definition}
+
+\begin{definition}
+    Subsets of the sample space are called \textbf{events}.
+\end{definition}
+
+\begin{definition}
+    The \textbf{probability mass function} (PMF) of the discrete random variable $X$ is
+    \begin{align*}
+        P_X(x) = P[X=x].
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    The \textbf{cumulative distribution function} (CDF) of a random variable $X$ is
+    \begin{align*}
+        F_X(x) = P[X \le x].
+    \end{align*}
+\end{definition}
+The CDF of a derived random variable $Y=g(X)$ is
+\begin{align*}
+    F_{Y}(x) = P[Y \le x] = P[g(X) \le x] = P[X \le g^{-1}(x)].
+\end{align*}
+
+\begin{definition}
+    The \textbf{expected value} of a random variable $X$ is
+    \begin{align*}
+        E[X]=\mu_X = \sum_{x \in S_X} x P_X(x).
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    The \textbf{variance} of a random variable $X$ is
+    \begin{align*}
+        \Var[X] = E[(X-\mu_X)^2].
+    \end{align*}
+\end{definition}
+The variance of a random variable $X$ simplifies to
+\begin{align*}
+    \Var[X] = E[X^2] - E^2[X].
+\end{align*}
+
+\section{Basic theorems}
+
+\begin{theorem}[Jensen's Inequality]
+    Let $f$ be a convex function and $X$ a random variable. Then
+    \begin{align*}
+        E[f(X)] \ge f(E[X]).
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Note that
+    \begin{align*}
+        \sum_{x \in S_X} P_X(x) = 1.
+    \end{align*}
+    Then, by the definition of the expected value and the convexity of $f$
+    \begin{align*}
+        E[f(X)] &= \sum_{x \in S_X} f(x) P_X(x) \\
+        &\ge f\left[\sum_{x \in S_X} x P_X(x) \right] \\
+        &=f(E[X]).
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[Cauchy-Schwarz Inequality]
+    Let $X$ and $Y$ be random variables. Then
+    \begin{align*}
+        (E[XY])^2 \le E[X^2]E[Y^2].
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Let $a \in \mathbb{R}$, then
+    \begin{align*}
+        E[(a X + Y)^2] = E[X^2]a^2  + 2E[XY]a + E[Y^2].
+    \end{align*}
+    Consider this as a function of $a$. Note that  $E[(aX+Y)^2]\ge0$. So the obtained polynomial will have no zero-crossings. Therefore
+    \begin{align*}
+        (2 E[XY])^2-4 E[X^2] E[Y^2] \le 0.
+    \end{align*}
+\end{proof}
+
+\section{Dependence}
+
+\begin{definition}
+    The \textbf{conditional probability} of an event $A$ given event $B$ is
+    \begin{align*}
+        P[A|B] = \frac{P[A \cap B]}{P[B]}.
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    Events $A$ and $B$ are \textbf{independent} if
+    \begin{align*}
+        P[A \cap B]=P[A] P[B].
+    \end{align*}
+\end{definition}
+
+\begin{theorem}
+    $A$ and $B$ are two independent events if and only if
+    \begin{align*}
+        P[A | B] = P[A].
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By the definitions
+    \begin{align*}
+        P[A | B] = \frac{P[A \cap B]}{P[B]} = \frac{P[A]P[B]}{P[B]} = P[A].
+    \end{align*}
+\end{proof}
+
+\begin{definition}
+    The \textbf{covariance} of two random variables $X$ and $Y$ is
+    \begin{align*}
+        \Cov[X,Y]=E[(X- \mu_X)(Y- \mu_Y)].
+    \end{align*}
+\end{definition}
+
+\begin{definition}
+    The \textbf{correlation} of two random variables $X$ and $Y$ is
+    \begin{align*}
+        r_{X,Y} = E[XY].
+    \end{align*}
+\end{definition}
+The covariance of two random variables $X$ and $Y$ simplifies to
+\begin{align*}
+    \Cov[X,Y] = r_{X,Y} - \mu_X \mu_Y.
+\end{align*}
+The variance of the addition of two random variables $X$ and $Y$ simplifies to
+\begin{align*}
+    \Var[X+Y] = \Var[X] + \Var[Y] + 2 \Cov[X,Y].
+\end{align*}
+Consider two random variables $X$ and $Y$. If $\Cov[X,Y]=0$, then $X$ and $Y$ are \textbf{uncorrelated}. Correlation is a measure of dependence. If $\Cov[X,Y]>0$, then $X>\mu_X$ implies that we expect $Y>\mu_Y$.
+
+If $r_{X,Y}=0$, then $X$ and $Y$ are \textbf{orthogonal}. In the case of zero-mean variables, orthogonal variables are uncorrelated.
+
+\begin{definition}
+    The \textbf{correlation coefficient} of two random variables $X$ and $Y$ is
+    \begin{align*}
+        \rho_{X,Y} = \frac{\Cov[X,Y]}{\sqrt{\Var[X]\Var[Y]}}.
+    \end{align*}
+\end{definition}
+
+\begin{theorem}
+    $|\rho_{X,Y}|\le1$ holds.
+\end{theorem}
+\begin{proof}
+    We will proof that $\rho_{X,Y}^2 \le 1$. To this end, by the Cauchy-Schwarz Inquality
+    \begin{align*}
+        \Cov[X,Y]^2 &= E[(X- \mu_X)(Y- \mu_Y)]^2 \\
+        &\le E[(X-\mu_X)^2] E[(Y- \mu_Y)^2] \\
+        &= \Var[X] \Var[Y]
+    \end{align*}
+    Therefore
+    \begin{align*}
+        \rho_{X,Y}^2 = \frac{\Cov[X,Y]^2}{\Var[X]\Var[Y]} \le 1.
+    \end{align*}
+\end{proof}
+
+\section{Stochastic Processes}
+
+\begin{definition}
+    A \textbf{stochastic process} $X(t)$ consists of an experiment with a probability measure $P[.]$ defined on a sample space $S$ and a function that assigns a time function $x(t,s)$ to each outcome $s$ in the sample space of the experiment.
+\end{definition}
+
+Suppose that we observe a random process $X(t)$ at a particular time $t_1$. Then each observation yields a $x(t_1,s)$. Therefore $x(t_1,s)$ is the sample value of a random variable. We denote this random variable by $X(t_1)$.
+
+\begin{definition}
+    A stochastic process $X(t)$ is \textbf{independently identically distributed} if
+    \begin{enumerate}
+        \item $X(t_k)$ for all $k$ are independent random variables,
+        \item $X(t_k)$ for all $k$ have identical probability distribution functions.
+    \end{enumerate}
+\end{definition}
+
+\section{Stationary Process}
+
+
+
+
+
+
+
+\end{document}
