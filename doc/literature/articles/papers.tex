@@ -100,3 +100,54 @@ Provides an introduction in multi-coset sampling and states the requirements and
 % Read by: Kees Kroep
 %
 This paper presents a compressive wide-band spectrum sensing scheme for cognitive radios. An analog to information converter is used. This paper focusses on using the autocorrelation of the compressed signal to estimate the power spectral density.
+\section{Sparsity and incoherence in compressive sampling \cite{candes2007sparsity}}
+% Claim: Tom
+%
+Given a sampled vector $\vec{x}$, containing $n$ entries. How can we obtain this vector $\vec{x}$ using a measurement vector $\vec{y}$ which contains $m$ entries ($ m \leq n$)? 
+By taking an orthogonal matrix $\mathbf{U}$ with $\mathbf{U}^{\ast}\mathbf{U} = n\mathbf{I}$ we can take $\vec{y}$ to be related to 
+\section{Robust uncertainty principles: Exact signal reconstruction from highly incomplete frequency information \cite{candes2006robust}}
+This paper considers the problem of reconstructing an object from incomplete frequency samples. It concludes that a signal consisting of $|T|$ delta spikes, may be recovered by convex programming using a set of frequencies of size $\mathcal{O}(|T|\cdot \log N)$ with a probability $1-\mathcal{O}(N^{-M})$. It states that any method succeeding with a probability $1-\mathcal{O}(N^{-M})$ requires at least $|T|\cdot \log N$ samples and that therefore recovery by convex of programming requires the same order of frequency samples.
+\section{Comparative study of spectrum sensing techniques in cognitive radio networks \cite{khan2013comparative}}
+%Kees Kroep
+%
+A Comparative Study of Spectrum Sensing Techniques in Cognitive Radio is provided. The paper is state of the art (2013) and focusses on Cooperative Spectrum Sensing. A Comnparisson is made between the performace of Fuzzy collaboration, Asynchronous Coorporation, Relay based Cooperation, Distributed Cooperation, and Non cooperative Sensing.
+\section{From theory to practice: Sub-Nyquist sampling of sparse wideband analog signals \cite{mishali2010theory}}
+% Claim: Willem
+%
+This papers describes the complete process of sub-nyquist sampling using a specific sampling method. A new sampling scheme, the modulated wideband converter (MWC) is introduced, to substitute the hard to implement multi coset sampling. The mathematical background of the MWC is presented including a method to blindly recover the original spectrum (ie. without prior knowledge of the spectrum). A digital architecture to process the signals is provided. From the simulations we can conclude that (even after optimization by collapsing channels) the number of channels  still needs to be very large ($\pm20$). 
+\section{Artificial neural network based spectrum sensing method for cognitive radio \cite{tang2010artificial}}
+%Claim: Willem
+%
+To improve detection we can use multiple detection methods and train an artificial neural network (ANN). This ANN is trained with an AM signal and noise with different signal to noise ratio's. Then each of the trained networks is tested with another AM signal with noise. Often the network detects signals a bit weaker (10dB) than the training signal.
+\section{On theory of compressive sensing via l1-minimization: Simple derivations and extensions \cite{zhang2008theory}}
+This paper introduces an alternative to RIP (Restricted Isomery Property) analysis for CS via $\ell_1$ optimization. 
+
+%It starts by observing that given $\vec{x}, \vec{y} \in \mathbb{R}^n$
+%and $\alpha =  \supp
+
+%\begin{align*}
+	
+%\end{align*}
+
+A reasonable decoding model in CS is to look for the sparsest signal
+in the solution space that produces the measured signal $b$:
+
+\begin{align*}
+	\min \{ ||x||_0 : A\vec{x} = \vec{b} \}
+\end{align*} 
+
+\noindent with the zero norm equal to the amount of non zero elements in $\vec{x}$. Solving this zero norm does not appear to be tractable. An alternative is to use the 1-norm. The paper derives what the intersection of those two solution sets are. It continues to analyze recoverability and stability without using RIP.
+\section{Greedy Orthogonal Matching Pursuit algorithm for sparse signal recovery in compressive sensing \cite{li2014gomp}}
+This paper analyzes two algorithms that are used in sparse signal recovery:
+
+\begin{enumerate}
+	\item Orthogonal Matching Pursuit (OMP)
+	\item Greedy OMP (GOMP)
+\end{enumerate}
+
+The GOMP algorithm may provide better results in signal recovery.
+\section{Compressive wideband power spectrum estimation \cite{ariananda2012compressive}}
+% Kees Kroep
+%
+A cognitive radio only needs to sense the Power Spectral Density (PSD). Therefore a nyquist rate sampler is much too powerhungry/expensize. This paper proposes a new type of multicoset sampling based on the minimal sparse ruler problem. The main focus is to design effective periodic sub-Nyquist sampling procedures for efficient power sectrum reconstruction. Other Papers provie ways to interpret the power spectral density with limited information about error variance and channel gain.
+\end{document}
