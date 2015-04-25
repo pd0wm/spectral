@@ -54,6 +54,8 @@ In this paper the current state of cognitive radio is discussed. A variety of te
 %% Dorus diabs
 
 In this paper a new greedy algorithm is imposed that can provide an exact sparse solution. The algorithm is called Kernel Reconstruction.
+\section{Robust uncertainty principles: Exact signal reconstruction from highly incomplete frequency information \cite{candes2006robust}}
+This paper considers the problem of reconstructing an object form incomplete frequency samples. It concludes that a signal consisting of $|T|$ delta spikes, may be recovered by convex programming using a set of frequencies of size $\mathcal{O}(|T|\cdot \log N)$ with a probability $1-\mathcal{O}(N^{-M}$. It states that any method succeeding with a probability $1-\mathcal{O}(N^{-M}$ requires at least $|T|\cdot \log N$ samples and that therefore recovery by convex of programming requires the same order of frequency samples.
 \section{Sparsity and incoherence in compressive sampling \cite{candes2007sparsity}}
 % Claim: Tom
 %
@@ -116,9 +118,27 @@ The paper proposes a number of algorithms (SLIKES, SIIA, WLS, CWLS and SSPICE) t
 %Claim: Willem
 %
 To improve detection we can use multiple detection methods and train an artificial neural network (ANN). This ANN is trained with an AM signal and noise with different signal to noise ratio's. Then each of the trained networks is tested with another AM signal with noise. Often the network detects signals a bit weaker (10dB) than the training signal.
+\section{Sparse sensing with coprime arrays \cite{vaidyanathan2010sparse}}
+% Claim: ?
 \section{Spectrum sensing exploiting guard bands and weak channels \cite{vazquez2011spectrum}}
 % Kees Kroep
 This paper adresses the problem of Primary user detection with a correct PSD (sampled at Nyquist rate). Properties of Primary user signals, and noise are used to improve Spectrum Sensing. This theory assumes no knowledge about noise variation and channel gains (which conventional methods do assume). This theory is also tested with performance comparissons. Geert Leus refers to this in his 2013 paper as a solution for situations in which parameters are unknown. 
 \section{On theory of compressive sensing via l1-minimization: Simple derivations and extensions \cite{zhang2008theory}}
 This paper introduces an alternative to RIP (Restricted Isomery Property) analysis for CS via $\ell_1$ optimization. 
+
+%It starts by observing that given $\vec{x}, \vec{y} \in \mathbb{R}^n$
+%and $\alpha =  \supp
+
+%\begin{align*}
+	
+%\end{align*}
+
+A reasonable decoding model in CS is to look for the sparsest signal
+in the solution space that produces the measured signal $b$:
+
+\begin{align*}
+	\min \{ ||x||_0 : A\vec{x} = \vec{b} \}
+\end{align*} 
+
+\noindent with the zero norm equal to the amount of non zero elements in $\vec{x}$. Solving this zero norm does not appear to be tractable. An alternative is to use the 1-norm. The paper derives what the intersection of those two solution sets are. It continues to analyze recoverability and stability without using RIP.
 \end{document}
