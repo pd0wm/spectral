@@ -67,7 +67,8 @@ target/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -125,5 +126,20 @@ Temporary Items
 *.xdy
 *.tdo
 *.pdf
+*.fls
 *-blx.bib
 !**/resource/**/*.pdf
+
+
+# Created by https://www.gitignore.io
+
+### Vim ###
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+*.sublime-workspace
+*.sublime-project

@@ -1,10 +1,28 @@
 %!TEX program = xelatex
-
-\documentclass{memoir}
+ 
+\documentclass[report, a4paper, openany, oneside]{memoir}
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
+\title{Literature study}
+\author{H.J.C Kroep \and R.P. Hes \and W.M. Melching \and W.P. Bruinsma \and T.A. aan de Wiel \and T.C. Leliveld}
+
 \begin{document}
+\maketitle
+\clearpage
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+\subimport{articles/}{papers}
+\subimport{detector/}{detector}
+
+\subimport{sensing/}{sensing}
+
+\subimport{books/}{books}
 
 \printbibliography
+
+\appendix
 \end{document}
