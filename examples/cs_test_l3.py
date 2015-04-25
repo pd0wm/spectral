@@ -5,9 +5,9 @@ import random
 import cvxopt
 
 samp_freq = 50e3               #hz
-duration = 0.01                 #s
+duration = 0.02                 #s
 input_signal = np.array([])
-frequencies = [10e3, 15e3, 25e3]
+frequencies = [1e3, 5e3]
 
 # Generate input signal
 for f in frequencies:
@@ -20,13 +20,16 @@ for f in frequencies:
 
 input_length = len(input_signal)
 print input_length
-meas_length = input_length / 10;
-sample_matrix = np.zeros((meas_length, input_length))
+# meas_length = input_length / 10;
 
 rand_values = [0]
 
-while len(rand_values) < meas_length:
-    rand_values.append(rand_values[-1] + random.randrange(3, 6))
+while rand_values[-1] + 20 < input_length:
+    rand_values.append(rand_values[-1] + random.randrange(5, 7))
+
+meas_length = len(rand_values)
+sample_matrix = np.zeros((meas_length, input_length))
+
 
 # rand_values = sorted(random.sample(range(0, input_length), meas_length))
 
