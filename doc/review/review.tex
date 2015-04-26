@@ -6,10 +6,10 @@
 
 \begin{document}
 
-% Correlatie
-% PSD
-% Wiener-Kichine
-% Wide sense stationary
+%- Correlatie
+%- PSD
+%- Wiener-Kichine
+%- Wide sense stationary
 % Sampling
 % Aliasing
 % DFT
@@ -18,7 +18,7 @@
 % Matched Filter
 % Complex envelopes
 % Periodogram estimate
-% Ergodisch
+%- Ergodisch
 % Semidefinite programming
 % Hermitisch etc
 % Subspaces, affine spaces
@@ -226,6 +226,80 @@ If $r_{X,Y}=0$, then $X$ and $Y$ are \textbf{orthogonal}. In the case of zero-me
     \end{align*}
 \end{proof}
 
+\section{Normal Distribution}
+\subsection{Gauss' Derivation of the Univariate Normal Distribution}
+In deriving the normal distribution, Gauss assumed the following:
+\begin{enumerate}
+    \item Small error are more likely than large errors.
+    \item The likelihood of errors of magnitudes $\varepsilon$ and $-\varepsilon$ are equal.
+    \item When a quantity is measured several times, the most likely value is given by the average of the measurements.
+\end{enumerate}
+Let $p$ be the true value of the measured quantity. Let $n$ independent observations yield measurements $M_1,\ldots,M_n$ and let the probability density function of the error by given by $\phi(x)$. Then the assumptions translate to the following:
+\begin{enumerate}
+    \item $\phi(x)$ has a maximum at $x=0$.
+    \item $\phi(x)=\phi(-x)$.
+    \item The maximum likelihood estimate of $p$ is given by
+    \begin{align*}
+        \hat{p} = \frac{M_1 + \ldots + M_n}{n} = \mu.
+    \end{align*}
+\end{enumerate}
+Based on our conclusions, the joint probability density function is given by
+\begin{align*}
+    f(x) = \phi(M_1 - x)\cdots\phi(M_n-x).
+\end{align*}
+Therefore the maximum likelihood estimate yields
+\begin{align*}
+    \left.\frac{\partial f}{\partial p}\right|_{p=\hat{p}}=
+    -\left[\frac{\phi'(M_1-\hat{p})}{\phi(M_1-\hat{p})} + \ldots + \frac{\phi'(M_n-\hat{p})}{\phi(M_n-\hat{p})}\right]f(\hat{p})=0.
+\end{align*}
+Remember that the measurements are arbitrary. In further exploring the structure of $\phi(x)$, assume that
+\begin{align*}
+    M_1 = M, \qquad M_2=\ldots=M_n=M-nN
+\end{align*}
+for a real $N$. Then
+\begin{align*}
+    \hat{p}=\frac{nM - (n-1)nN}{n} =M-(n-1)N.
+\end{align*}
+Now our maximum likelihood estimate yields
+\begin{align*}
+    \frac{\phi'[(n-1)N]}{\phi[(n-1)N]} + (n-1)\frac{\phi'(-N)}{\phi(-N)} = \frac{\phi'[(n-1)N]}{\phi[(n-1)N]} - (n-1)\frac{\phi'(N)}{\phi(N)}=0.
+\end{align*}
+Using the fact that this holds for any $N$ and $\phi(x)$ obtains a maximum at $x=0$, it can be shown that
+\begin{align*}
+    \frac{\phi'(x)}{\phi(x)} = -\frac{x}{ \sigma^2}
+\end{align*}
+for any real $\sigma$. Finally, solving this differential equation and normalising the solution yields that
+\begin{align*}
+    \phi(x)=\frac{1}{\sigma \sqrt{2 \pi}}\exp\left[-\frac{x^2}{2 \sigma^2}\right].
+\end{align*}
+If $\phi(x)$ is the error probability density function of a random variable $X$, then we denote $X \sim N(\mu,\sigma^2)$.
+
+\subsection{The Multivariate Normal Distribution}
+Suppose that $\vec{Z}$ is a $n$ vector of independent random variables each $N(0,1)$ distributed. Then the joint probability density function is given by
+\begin{align*}
+    f_Z(\vec{Z}) = \prod_i \frac{1}{\sqrt{2 \pi}} \exp\left[-\frac{z_i^2}{2}\right] = \frac{1}{(2 \pi)^{n/2}} \exp\left[-\frac{1}{2}\vec{Z}^T \vec{Z}\right].
+\end{align*}
+Let $\mat{\Sigma}$ be a $n \times n$ symmetric positive-definite matrix. $\mat{\Sigma}$ is called the \textbf{covariance matrix}. Since $\mat{\Sigma}$ is symmetric positive-definite, we can write
+\begin{align*}
+    \mat{\Sigma} = \mat{Q}^T \mat{\Lambda} \mat{Q} = (\mat{Q}^T \mat{\Lambda}^{1/2} \mat{Q}) (\mat{Q}^T \mat{\Lambda}^{1/2} \mat{Q}) = \mat{\Sigma}^{1/2} \mat{\Sigma}^{1/2}.
+\end{align*}
+Note that $(\mat{\Sigma}^{1/2})^T = \mat{\Sigma}^{1/2}$
+Let $\vec{X}$ be a $n$ vector such that
+\begin{align*}
+    \vec{X} = \mat{\Sigma}^{1/2} \vec{Z} + \vec{\mu}.
+\end{align*}
+Thus $\mat{\Sigma}$ defines a dependency between the variables of $\vec{X}$. We require $\mat{\Sigma}$ to be positive definite analogous to the requirement that $\sigma^2$ is positive. We require $\mat{\Sigma}$ to be symmetric since we assume the dependencies between the variables of $\vec{X}$ to be commutative. The inverse transformation is given by
+\begin{align*}
+    \vec{Z} = T(\vec{X}) = \mat{\Sigma}^{-1/2}(\vec{X}-\vec{\mu}).
+\end{align*}
+with Jacobian $J_T = \mat{\Sigma}^{-1/2}$. We can now use the change-of-variables theorem to write down the joint probability density function of $\vec{X}$
+\begin{align*}
+    f_X(\vec{X}) &= f_Z(T(\vec{X})) |J_T| \\
+    &= \frac{1}{(2 \pi)^{n/2}} \exp\left\{-\frac{1}{2}[\mat{\Sigma}^{-1/2}(\vec{X}-\vec{\mu})]^T [\mat{\Sigma}^{-1/2}(\vec{X}-\vec{\mu})]\right\} |\mat{\Sigma}^{-1/2}| \\
+    &= \frac{1}{(2 \pi)^{n/2} |\mat{\Sigma}|^{1/2}} \exp\left[-\frac{1}{2}(\vec{X}-\vec{\mu})^T \mat{\Sigma}^{-1} (\vec{X}-\vec{\mu})\right].
+\end{align*}
+This probability density function is known as the multivariate normal distribution.
+
 \section{Stochastic Processes}
 
 \begin{definition}
@@ -240,12 +314,78 @@ Suppose that we observe a random process $X(t)$ at a particular time $t_1$. Then
         \item $X(t_k)$ for all $k$ are independent random variables,
         \item $X(t_k)$ for all $k$ have identical probability distribution functions.
     \end{enumerate}
+\end{definition}    
+
+\begin{definition}
+    The \textbf{expected value} of a stochastic process $X(t)$ is the function
+    \begin{align*}
+        \mu_X(t) = E[X(t)].
+    \end{align*}
 \end{definition}
 
-\section{Stationary Process}
+\begin{definition}
+    The \textbf{autocovariance} function of a stochastic process $X(t)$ is
+    \begin{align*}
+        C_X(t,\tau)=\Cov[X(t),X(t+\tau)].
+    \end{align*}
+\end{definition}
 
+\begin{definition}
+    The \textbf{autocorrelation} function of a stochastic process $X(t)$ is
+    \begin{align*}
+        R_X(t,\tau)=E[X(t),X(t + \tau)].
+    \end{align*}
+\end{definition}
+The autocovariance of a stochastic process simplifies to
+\begin{align*}
+    C_X(t,\tau) = R_X(t,\tau) - \mu_X(t) \mu_X(t + \tau).
+\end{align*}
 
+\begin{definition}
+    A stochastic process $X(t)$ is \textbf{wide sense stationary} if for all $t$
+    \begin{enumerate}
+        \item $\mu_X(t) = \mu_X$,
+        \item $R_X(t,\tau)  =R_X(\tau)$.
+    \end{enumerate}
+\end{definition}
 
+\begin{theorem}
+    For a wide sense stationary process $X(t)$, the following hold:
+    \begin{enumerate}
+        \item $R_X(0) \ge 0$,
+        \item $R_X(\tau) = R_X(-\tau)$,
+        \item $R_X(0) \ge |R_X(\tau)|$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    The first property follows from the definition. To prove the second property, let us evaluate the autocorrelation function at $\tilde{t} = t + \tau$. Then
+    \begin{align*}
+        R_X(\tau) &= R_X(t,\tau)\\
+        &= E[X(t)X(t+\tau)]\\
+        &= E[X(\tilde{t} - \tau) X(\tilde{t})]\\
+        &= E[X(\tilde{t}) X(\tilde{t} - \tau)]\\
+        &= R_X(\tilde{t}, - \tau)\\
+        &= R_X(-\tau).
+    \end{align*}
+    To prove the third property, we make use of the correlation coefficient. Note that
+    \begin{align*}
+        \Var[X(t)] = E[X^2(t)] -E^2[X(t)] = R_X(0) - \mu_X^2.
+    \end{align*}
+    So $\Var[X(t)]$ is constant for all $t$. Therefore
+    \begin{align*}
+        C_X(t,\tau) &= \rho_{X(t),X(t+\tau)} \sqrt{\Var[X(t)]\Var[X(t+\tau)]}\\
+        &\le \sqrt{\Var[X(t)]\Var[X(t+\tau)]}\\
+        &= C_X(0).
+    \end{align*}
+    Then
+    \begin{align*}
+        |R_X(\tau)| = [ C_X(t,\tau) + \mu_X^2]^2 \le [C_X(0) + \mu_X^2]^2 = R_X(0).
+    \end{align*}
+\end{proof}
+
+\begin{definition}
+    The \textbf{average power} of a wide sense stationary process $X(t)$ is $R_X(0)$.
+\end{definition}
 
 
 
