@@ -4,49 +4,29 @@
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
-\begin{document}
-
-% Stoch processes:
-% Correlatie
-% PSD
-% Wiener-Kichine
-% Wide sense stationary
-% Ergodisch
-
-% Linear Algebra:
-% Orthogonality
-% Kwadratische vorm
-% Hermitisch etc
-
-% Signal processing:
-% FT
-% DTFT
-% Sampling
-% Aliasing
-% DFT
-% Windowing
-% SnR
-% Matched Filter
-% Complex envelopes
-
-
-
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Var}{\operatorname{Var}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\Perp}{\operatorname{perp}}
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\rect}{\operatorname{rect}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\IT}{\operatorname{IT}}
+\newcommand{\F}{\mathcal{F}}
 
+\begin{document}
 
 \pagestyle{empty}
 \begingroup
-    \vspace*{0.12\textheight}
     {\hfill \HUGE Review of Basic Concepts}
-    \vfill
-    {\Large\noindent H.J.C Kroep \\ R.P. Hes \\ W.M. Melching \\ W.P. Bruinsma \\ T.A. aan de Wiel \\ T.C. Leliveld}
 \endgroup
+
+\tableofcontents
 
 \chapter{Preliminaries}
 \section{Convex functions}
-\begin{definition}[Convex function]
-    Let $f:S\to \mathbb{R}$ where $S$ is a convex subset of $\mathbb{R}$. Then $f$ is convex if for all $x_1,x_2 \in S$ and $\lambda \in [0,1]$
+\begin{definition}
+    Let $f:S\to \mathbb{R}$ where $S$ is a convex subset of $\mathbb{R}$. Then $f$ is a \textbf{convex function} if for all $x_1,x_2 \in S$ and $\lambda \in [0,1]$
     \begin{align*}
         \lambda f(x_1) + (1- \lambda)f(x_2) \ge f( \lambda x_1 + (1- \lambda) x_2).
     \end{align*}
@@ -119,7 +99,7 @@ The variance of a random variable $X$ simplifies to
     \Var[X] = E[X^2] - E^2[X].
 \end{align*}
 
-\section{Basic theorems}
+\section{Basic Theorems}
 
 \begin{theorem}[Jensen's Inequality]
     Let $f$ be a convex function and $X$ a random variable. Then
@@ -358,7 +338,7 @@ The autocovariance of a stochastic process simplifies to
 \end{definition}
 
 \begin{theorem}
-    For a wide sense stationary process $X(t)$, the following hold:
+    For a wide sense stationary process $X(t)$ the following hold:
     \begin{enumerate}
         \item $R_X(0) \ge 0$,
         \item $R_X(\tau) = R_X(-\tau)$,
@@ -428,7 +408,7 @@ Consider a realisation $x(t)$ of a stochastic process $X(t)$. Its average power 
     P &= \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} x(t) dt \\
     &= \lim_{T \to \infty} \frac{1}{T} \int_{-\infty}^{\infty} x_T(t) dt
 \end{align*}
-We now define $X_T(f) = \mathcal{F}[x_T(t)]$. Then by Parseval's theorem
+We now define $X_T(f) = \F[x_T(t)]$. Then by Parseval's theorem
 \begin{align*}
     P &= \lim_{T \to \infty} \frac{1}{T} \int_{-\infty}^{\infty} |X_T(f)|^2 df \\
     &= \int_{-\infty}^{\infty} \lim_{T \to \infty} \frac{|X_T(f)|^2}{T} df.
@@ -444,16 +424,340 @@ This motivates the following definition.
 \begin{theorem}[Wiener-Khinchin]
     The power spectral density of a wide sense stationary stochastic process $X(t)$ is calculated by
     \begin{align*}
-        \mathcal{P}(f) = \mathcal{F}[R_X(\tau)] = \int_{-\infty}^{\infty} R_X(\tau) \exp(-j2\pi f \tau) d \tau.
+        \mathcal{P}(f) = \F[R_X(\tau)] = \int_{-\infty}^{\infty} R_X(\tau) \exp(-j2\pi f \tau) d \tau.
     \end{align*}
 \end{theorem}
 
 \chapter{Linear Algebra}
 \section{Orthogonality}
+\begin{definition}
+    An $n \times n$ matrix $\mat{Q}$ whose columns form an orthonormal set is called an \textbf{orthogonal} matrix.
+\end{definition}
 
+\begin{theorem}
+    The columns of and $m \times n$ matrix $\mat{Q}$ form an orthonormal set if and only if $\mat{Q}^T \mat{Q}=I_n$.
+\end{theorem}
+\begin{proof}
+    Let $\vec{q}_i$ denote the $i$'th column of $\mat{Q}$. Then
+    \begin{align*}
+        (\mat{Q}^T \mat{Q})_{ij} = \vec{q}_i \cdot \vec{q}_j.
+    \end{align*}
+    The equivalence follows.
+\end{proof}
+
+\begin{definition}
+    A square matrix $\mat{A}$ is orthogonally diagonalizable if there exists an orthonogal matrix $\mat{Q}$ and a diagonal matrix $\mat{D}$ such that
+    \begin{align*}
+        \mat{Q}^T \mat{A} \mat{Q} = \mat{D}.
+    \end{align*}
+\end{definition}
+
+\begin{theorem}[Spectral Theorem]
+    Let $\mat{A}$ be an $n \times n$ real matrix. Then $\mat{A}$ is symmetric if and only if it is orthogonally diagonalizable.
+\end{theorem}
+\begin{proof}
+    Assume that $\mat{A}$ is orthogonally diagonalizable. Then we can write
+    \begin{align*}
+        \mat{A} = \mat{Q} \mat{D} \mat{Q}^T.
+    \end{align*}
+    Therefore
+    \begin{align*}
+        \mat{A}^T = (\mat{Q} \mat{D} \mat{Q}^T)^T = \mat{Q} \mat{D}^T \mat{Q}^T = \mat{Q} \mat{D} \mat{Q}^T = \mat{A}.
+    \end{align*}
+    So $\mat{A}$ is symmetric. The other part of the proof is omitted.
+\end{proof}
+
+\begin{theorem}
+    Let $\mat{A}$ be an real symmetrix matrix. Then its eigenvalues are real.
+\end{theorem}
+\begin{proof}
+    Suppose $\lambda$ is an eigenvalue of $\mat{A}$ with corresponding eigenvector $\vec{v}$. Then $\mat{A} \vec{v} = \lambda \vec{v}$ and $\mat{A} \bar{\vec{v}} = \bar{\lambda} \bar{\vec{v}}$. Therefore
+    \begin{align*}
+        \lambda (\bar{\vec{v}}^T \vec{v}) = \bar{\vec{v}}^T (\lambda \vec{v}) = \bar{\vec{v}}^T (\mat{A} \vec{v}) = (\bar{\vec{v}}^T \mat{A}) \vec{v} = (\mat{A} \bar{\vec{v}})^T \vec{v} = \bar{\lambda} (\bar{\vec{v}}^T \vec{v}).
+    \end{align*}
+    So
+    \begin{align*}
+        (\lambda - \bar{\lambda})(\bar{\vec{v}}^T \vec{v}) = (\lambda - \bar{\lambda}) |\vec{v}|^2 = 0.
+    \end{align*}
+    This implies that $\lambda = \bar{\lambda}$ and $\lambda$ must therefore be real.
+\end{proof}
+
+\section{Quadratic Form}
+\begin{definition}
+    A \textbf{quadratic form} in $n$ variables is a function $f: \mathbb{R}^n \to \mathbb{R}$ of the form
+    \begin{align*}
+        f(\vec{x}) = \vec{x}^T \mat{A} \vec{x}
+    \end{align*}
+    where $\mat{A}$ is a symmetric $n \times n$ matrix.
+\end{definition}
+
+\begin{theorem}[Principal Axes Theorem]
+    Let $f(\vec{x})=\vec{x}^T \mat{A} \vec{x}$ be a quadratic form. Then there exists a change of variables $\vec{x} = T(\vec{y})$ such that
+    \begin{align*}
+        f(\vec{x}) = \lambda_1 y_1^2 + \ldots + \lambda_n y_n^2
+    \end{align*}
+    where $\lambda_1, \ldots, \lambda_n$ denote the eigenvalues of $\mat{A}$.
+\end{theorem}
+\begin{proof}
+    Since $\mat{A}$ is symmetric, we can write
+    \begin{align*}
+        \mat{A} = \mat{Q} \mat{D} \mat{Q}^T.
+    \end{align*}
+    Now let $\vec{y} = \mat{Q}^T \vec{x}$. Then $\vec{x} = \mat{Q} \vec{y}$. Therefore
+    \begin{align*}
+        f(\vec{x}) &= f(\mat{Q} \vec{y}) \\
+        &= (\mat{Q} \vec{y})^T (\mat{Q} \mat{D} \mat{Q}^T) (\mat{Q} \vec{y}) \\
+        &= \vec{y}^T (\mat{Q}^T \mat{Q}) \mat{D} (\mat{Q}^T \mat{Q}) \vec{y} \\
+        &= \vec{y}^T \mat{D} \vec{y} \\
+        &= \lambda_1 y_1^2 + \ldots + \lambda_n y_n^2.
+    \end{align*}
+\end{proof}
+
+\begin{definition}
+    A quadratic form $f(\vec{x}) = \vec{x}^T \mat{A} \vec{x}$ is \textbf{positive definite} if for all $\vec{x} \neq 0$ holds that $f(\vec{x}) > 0$. A symmetric matrix $\mat{A}$ is \textbf{positive definite} if the associated quatric form is so.
+\end{definition}
+
+\begin{theorem}
+    The quadratic form $f(\vec{x})=\vec{x}^T \mat{A} \vec{x}$ is positive definite if and only if all of the eigenvalues of $\mat{A}$ are positive.
+\end{theorem}
+\begin{proof}
+    The equivalence follows directly from the principal axes theorem.
+\end{proof}
+
+\section{Complex Vectors and Matrices}
+\begin{definition}
+    If $\mat{A}$ is a complex matrix, then the \textbf{conjugate transpose} of $\mat{A}$ is given by
+    \begin{align*}
+        \mat{A}^* = \bar{\mat{A}}^T.
+    \end{align*}
+\end{definition}
+The following definition is the complex analogue of a symmetric matrix.
+\begin{definition}
+    If a square matrix $\mat{A}$ is such that $\mat{A}^* = \mat{A}$, then $\mat{A}$ is called \textbf{Hermitian}.
+\end{definition}
+The following definition is the complex analogue of an orthogonal matrix.
+\begin{definition}
+    If a square matrix $\mat{A}$ is such that $\mat{A}^{-1} = \mat{A}^*$, then $\mat{A}$ is called \textbf{unitary}.
+\end{definition}
+\begin{definition}
+    If a square matrix $\mat{A}$ is such that $\mat{A}^* \mat{A} = \mat{A} \mat{A}^*$, then $\mat{A}$ is called \textbf{normal}.
+\end{definition}
+\begin{theorem}
+    If a square matrix $\mat{A}$ is \textbf{Hermitian}, then $\mat{A}$ is normal.
+\end{theorem}
+\begin{proof}
+    This follows from
+    \begin{align*}
+        \mat{A}\mat{A}^* = \mat{A} \mat{A} = \mat{A}^* \mat{A}.
+    \end{align*}
+\end{proof}
+\begin{definition}
+    A square complex matrix $\mat{A}$ is called \textbf{unitarily diagonalizable} if there exists a unitary matrix $\mat{U}$ and a diagonal matrix $\mat{D}$ such that
+    \begin{align*}
+        \mat{U}^* \mat{A} \mat{U} = \mat{D}.
+    \end{align*}
+\end{definition}
+\begin{theorem}
+    A square complex matrix $\mat{A}$ is unitarily diagonalizable if and only if it is normal.
+\end{theorem}
+\begin{proof}
+    Suppose that $\mat{A}$ is unitarily diagonalizable. Then we can write
+    \begin{align*}
+        \mat{A} = \mat{U} \mat{D} \mat{U}^*.
+    \end{align*}
+    Now follows that
+    \begin{align*}
+        \mat{A}^* \mat{A} &= (\mat{U} \mat{D} \mat{U}^*)^* (\mat{U} \mat{D} \mat{U}^*) \\
+        &= (\mat{U} \mat{D}^* \mat{U}^*) (\mat{U} \mat{D} \mat{U}^*) \\
+        &= \mat{U} \mat{D}^* \mat{D} \mat{U}^* \\
+        &= \mat{U} \mat{D} \mat{D}^* \mat{U}^* \\
+        &= (\mat{U} \mat{D} \mat{U}^*) (\mat{U} \mat{D}^* \mat{U}^*) \\
+        &= (\mat{U} \mat{D} \mat{U}^*) (\mat{U} \mat{D} \mat{U}^*)^* \\
+        &= \mat{A} \mat{A}^*.
+    \end{align*}
+    So $\mat{A}$ is normal. The other part of the proof is emitted.
+\end{proof}
+
+\section{Least Squares}
+\begin{definition}
+    If $W$ is a subspace of a normed linear space $V$ and if $\vec{v}$ is vector in $V$, then the \textbf{best approximation to $\vec{v}$ in $W$} is the vector $\vec{\hat{v}}$ in $W$ such that
+    \begin{align*}
+        ||\vec{v} - \vec{\hat{v}}|| \le ||\vec{v} - \vec{w}||
+    \end{align*}
+    for every $\vec{w}$ in $W$.
+\end{definition}
+
+\begin{theorem}
+    If $W$ is a finite-dimensional subspace of an inner product space $V$ and if $\vec{v}$ is a vector in $V$ then $\proj_W(\vec{v})$ is the best approximation to $\vec{v}$ in $W$.
+\end{theorem}
+\begin{proof}
+    Let $\vec{w}$ be a vector in $W$ different from $\proj_W(\vec{v})$. Then it follows that
+    \begin{align*}
+        &||\vec{v} - \vec{w}||^2 \\
+        &= ||\Perp_W(\vec{v}) + \proj_W(\vec{v}) - \vec{w}||^2 \\
+        &= ||\Perp_W(\vec{v})||^2 + 2\langle \Perp_W(\vec{v}), [\proj_W(\vec{v}) - \vec{w}]\rangle + ||\proj_W(\vec{v}) - \vec{w}||^2 \\
+        &=||\Perp_W(\vec{v})||^2 + ||\proj_W(\vec{v}) - \vec{w}||^2 \\
+        &\ge ||\Perp_W(\vec{v})||^2 \\ 
+        &= ||\vec{v} - \proj_W(\vec{v})||^2.
+    \end{align*}
+\end{proof}
+
+\begin{definition}
+    If $\mat{A}$ is an $m \times n$ matrix and $\vec{b}$ is in $\mathbb{R}^m$, a \textbf{least squares solution} of $\mat{A} \vec{x} = \vec{b}$ is a vector $\vec{\hat{x}}$ in $\mathbb{R}^n$ such that
+    \begin{align*}
+        ||\vec{b} - \mat{A} \vec{\hat{x}}|| \le ||\vec{b} - \mat{A} \vec{x}||
+    \end{align*}
+    for all $\vec{x}$ in $\mathbb{R}^n$.
+\end{definition}
+
+\begin{theorem}
+    Let $\mat{A}$ be an $m \times n$ matrix and let $\vec{b}$ be in $\mathbb{R}^m$. Then $\mat{A} \vec{x} = \vec{b}$ always has at least one least squares solution $\vec{\hat{x}}$. Furthermore, $\vec{\hat{x}}$ is a least squares solutions if and only if
+    \begin{align*}
+        \mat{A}^T \mat{A} \vec{\hat{x}} = \mat{A}^T \vec{b}.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Let $\vec{\hat{y}}=\mat{A}\vec{\hat{x}}$. Then $\vec{\hat{y}}$ satisfies
+    \begin{align*}
+        ||\vec{b} - \vec{\hat{y}}|| \le ||\vec{b} - \vec{y}||
+    \end{align*}
+    for all $\vec{y}$ in $\col(\mat{A})$. We recognise that $\vec{\hat{y}}$ is the best approximation to $\vec{b}$ in $\col(\mat{A})$. Therefore
+    \begin{align*}
+        \vec{\hat{y}} = \proj_{\col(\mat{A})}(\vec{b}) = \mat{A}\vec{\hat{x}} = \vec{b} - \Perp_{\col(\mat{A})}(\vec{b}).
+    \end{align*}
+    So $\mat{A}\vec{\hat{x}} - \vec{b}$ is orthogonal to every vector in $\col(\mat{A})$. Therefore, if $\vec{a}_i$ is the $i$'th column of $\mat{A}$, then
+    \begin{align*}
+        \vec{a}_i \cdot (\vec{b} - \mat{A} \vec{\hat{x}}) = 0.
+    \end{align*}
+    This yields
+    \begin{align*}
+        \mat{A}^T \vec{b} - \mat{A}^T \mat{A} \mat{\hat{x}}=0.
+    \end{align*}
+\end{proof}
 
 \chapter{Signal Processing}
+% Signal processing:
+% SnR
+% Matched Filter
+% Complex envelope
+\section{Sampling and Aliasing}
+\begin{definition}
+    The \textbf{Fourier transform} of a function $x(t)$ is
+    \begin{align*}
+        \F[x(t)] = \int_{-\infty}^{\infty} x(t) \exp(-j \omega t)dt.
+    \end{align*}
+\end{definition}
+\begin{definition}
+    The \textbf{delta impulse train} is given by
+    \begin{align*}
+        \IT(t)=\sum_{n=-\infty}^{\infty} \delta(t- n).
+    \end{align*}
+\end{definition}
+\begin{theorem}
+    The Fourier transform of the delta impulse train is given by
+    \begin{align*}
+        \F[\IT(t)]=\IT\left(\frac{\omega}{2 \pi}\right).
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Applying the definition of the Fourier transform yields
+    \begin{align*}
+        \F[\IT(t)] &= \int_{-\infty}^{\infty} \sum_{n=-\infty}^{\infty} \delta(t- n) \exp(-j \omega t)dt \\
+        &= \sum_{n=-\infty}^{\infty}\int_{-\infty}^{\infty}\delta(t- n) \exp(-j \omega t)dt \\
+        &= \sum_{n=-\infty}^{\infty} \exp(-j \omega n).
+    \end{align*}
+    This function is $2 \pi /n$ periodic. Now consider the Fourier transform
+    \begin{align*}
+        \F[\IT(t) \ast \rect(t)] &= \F[\IT(t)] \F[\rect(t)] = \F[\IT(t)] \sinc\left(\frac{\omega}{2}\right).
+    \end{align*}
+    Also, note that
+    \begin{align*}
+        \F[\IT(t) \ast \rect(t)] =\F[1] = 2 \pi \delta(\omega)= \F[\IT(t)] \sinc\left(\frac{\omega}{2}\right).
+    \end{align*}
+    This tells us something about $\F[\IT(t)]$ where $\sinc(\omega/2 pi)$ is non-zero. More specifically,
+    \begin{align*}
+        \F[\IT(t)] = 2 \pi \delta(t)
+    \end{align*}
+    for $-\pi < \omega \le \pi$ since $\sinc(0)=1$. Here we made use of the uniqueness of the Fourier transform. We now make use of the periodicity of $\F[\IT(t)]$ to determine that
+    \begin{align*}
+        \F[\IT(t)] = \sum_{n=-\infty}^{\infty} 2 \pi \delta(\omega - 2 \pi n)= \sum_{n=-\infty}^{\infty} \delta\left(\frac{\omega}{2\pi} - n\right) = \IT\left(\frac{\omega}{2\pi}\right).
+    \end{align*}
+\end{proof}
 
+\begin{definition}
+    The signal $x(t)$ \textbf{ideally sampled} is given by
+    \begin{align*}
+        \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right).
+    \end{align*}
+\end{definition}
+Note that
+\begin{align*}
+    \frac{1}{T}\IT\left(\frac{t}{T}\right) = \frac{1}{T} \sum_{n=-\infty}^{\infty}\delta\left(\frac{\omega}{T} - 2 \pi n\right) = \sum_{n=-\infty}^{\infty} \delta(\omega - 2 \pi n T).
+\end{align*}
+Also, we can calculate that
+\begin{align*}
+    \F[\tilde{x}(t)] = \frac{1}{2 \pi} \F[x(t)] \ast \F\left[\frac{1}{T}\IT\left(\frac{t}{T}\right)\right] = \frac{1}{2 \pi} \F[x(t)] \ast \IT\left(\frac{\omega T}{2 \pi}\right).
+\end{align*}
+\begin{definition}
+    The frequency $w_s = 2 \pi / T$ is called the \textbf{sampling frequency}.
+\end{definition}
+Further simplification of $\F[\tilde{x}(t)]$ yields that
+\begin{align*}
+    \F[\tilde{x}(t)] &= \frac{1}{2 \pi} \F[x(t)] \ast \sum_{n=-\infty}^{\infty} \delta\left(\frac{\omega T}{2\pi} - n\right) \\
+    &= \frac{1}{T} \F[x(t)] \ast \sum_{n=-\infty}^{\infty} \delta( \omega - n \omega_s) \\
+    &= \frac{1}{T} \sum_{n=-\infty}^{\infty} \left.\F[x(t)]\right|_{w=n \omega_s}.
+\end{align*}
+Thus sampling replicates $\F[x(t)]$'s spectrum at distances $w_s$. This yields the following theorem.
+\begin{definition}
+    If $x(t)$ is ideally sampled such that the replicas of the spectrum interfere, then \textbf{aliasing} occurs.
+\end{definition}
+\begin{theorem}
+    Let $x(t)$ be such that $\F[x(t)] = 0$ for $|\omega| \ge \omega_a$. Consider $x(t)$ ideally sampled. Then the following hold.
+    \begin{enumerate}
+        \item If $w_s \ge 2 w_a$, then no aliasing occurs and $x(t)$ can be reconstructed from $\hat{x}(t)$.
+        \item If $w_s \le 2 w_a$, then aliasing may occur.
+    \end{enumerate}
+\end{theorem}
 
+\section{Fourier Transform of Discrete Signals}
+We can write $x(t)$ ideally sampled as
+\begin{align*}
+    \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right) = \sum_{n=-\infty}^{\infty} x(nT) \delta(t - nT) = \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT)
+\end{align*}
+where $t = nT$. Then
+\begin{align*}
+    \F[\tilde{x}(t)] &= \int_{-\infty}^{\infty} \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT) \exp(-j \omega t) dt \\
+    &= \sum_{n=-\infty}^{\infty} x[n] \int_{-\infty}^{\infty}  \delta(t - nT) \exp(-j \omega t) dt \\
+    &= \sum_{n=-\infty}^{\infty} x[n] \exp(-j n \Omega)
+\end{align*}
+where $\Omega = \omega T$.
+\begin{definition}
+    The \textbf{discrete-time Fourier transform} (DTFT) of a discrete signal $x[n]$ is given by
+    \begin{align*}
+        \F_*\{x[n]\} = \sum_{n=-\infty}^{\infty} x[n] \exp(-j n \Omega).
+    \end{align*}
+\end{definition}
+Now suppose we have obtained the first $M$ samples of a discrete signal $x[n]$. This can be modelled by
+\begin{align*}
+    w[n] = x[n]\rect\left(\frac{n}{M} - \frac{1}{2}\right).
+\end{align*}
+Then
+\begin{align*}
+    \F_*\{w[n]\} = \frac{1}{2 \pi} \F_*\{w[n]\} \ast \F_*\left\{\rect\left(\frac{n}{M} - \frac{1}{2}\right)\right\}.
+\end{align*}
+Thus $\F_*\{x[n]\}$ is spread out by convolution with
+\begin{align*}
+    \F_*\left\{\rect\left(\frac{n}{M} - \frac{1}{2}\right)\right\} = \frac{\sin[\Omega(M+1)/2]}{\sin(\Omega/2)}\exp\left(-\frac{j \Omega M}{2}\right).
+\end{align*}
+The \textbf{resolution} of the discrete-time Fourier transform by using finitely many samples $M$ is then given by the first zero of the obtained function. Thus
+\begin{align*}
+    \Delta \Omega \approx \Omega_0 = \frac{2 \pi}{M+1} \approx \frac{2 \pi}{M}.
+\end{align*}
+
+\section{Signal-to-Noise Ratio}
+
+\section{Matched Filter}
+
+\section{Complex Envelope}
 
 \end{document}
