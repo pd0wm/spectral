@@ -14,14 +14,17 @@
 % Ergodisch
 
 % Linear Algebra:
+% Orthogonality
+% Kwadratische vorm
 % Hermitisch etc
-% Subspaces, affine spaces
 
 % Signal processing:
+% FT
+% DTFT
 % Sampling
 % Aliasing
 % DFT
-% Compression Ratio
+% Windowing
 % SnR
 % Matched Filter
 % Complex envelopes
@@ -37,7 +40,7 @@
     \vspace*{0.12\textheight}
     {\hfill \HUGE Review of Basic Concepts}
     \vfill
-    {\hfill \Large Wessel Bruinsma}
+    % {\hfill \Large Wessel Bruinsma}
 \endgroup
 
 \chapter{Preliminaries}
@@ -406,16 +409,16 @@ The autocovariance of a stochastic process simplifies to
 \begin{proof}
     First we note that
     \begin{align*}
-        E[\mu_X] = \frac{1}{T} E\left[\int_0^T X(t) dt\right] = \frac{1}{T} \int_0^T E[X(t)] dt= \mu_X.
+        E[\hat{\mu}_X] = \frac{1}{T} E\left[\int_0^T X(t) dt\right] = \frac{1}{T} \int_0^T E[X(t)] dt= \mu_X.
     \end{align*}
     So $\mu_X$ is unbiased. Next, since $C_X(\tau)$ is absolutely integrable, we calculate
     \begin{align*}
-        \Var[\mu_X] &= E\left[\left(\frac{1}{T}\int_0^T (X(t) - \mu_X)^2 dt\right)^2\right] \\
+        \Var[\hat{\mu}_X] &= E\left[\left(\frac{1}{T}\int_0^T (X(t) - \mu_X)^2 dt\right)^2\right] \\
         &= \frac{1}{T^2} \int_0^T \int_0^T E[(X(t)-\mu_X)(X(t')-\mu_X)]dt' dt \\
         &= \frac{1}{T^2} \int_0^T \int_0^T C_X(t' - t)dt' dt \\
-        &< \frac{K}{T}.
+        &\le \frac{K}{T}.
     \end{align*}
-    for some real $K$. Therefore $\Var[\mu_X] \to 0$ if $T \to \infty$.
+    for some real $K$. Therefore $\Var[\hat{\mu}_X] \to 0$ if $T \to \infty$.
 \end{proof}
 
 
@@ -446,6 +449,8 @@ This motivates the following definition.
 \end{theorem}
 
 \chapter{Linear Algebra}
+\section{Orthogonality}
+
 
 \chapter{Signal Processing}
 
