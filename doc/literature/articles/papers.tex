@@ -89,8 +89,8 @@ Recording of a signal is commonly achieved by using an impulse train. Generalizi
 In Compressive sensing our recording $\vec{y}$ has a lower dimensionality than
 the signal $\vec{f}$. Our recording $\vec{y}$ can be represented as:
 
-\begin{align}
-  \vec{y} &= \Phi \Psi \vec{x}   \label{eq:recording-system}
+\begin{align} \label{eq:recording-system}
+  \vec{y} &= \Phi \Psi \vec{x}
 \end{align}
 
 The system of equations in \ref{eq:recording-system} is underdetermined. That is
@@ -191,7 +191,7 @@ for signal recovery problems.
 As the statistics of channel usage by primary users in cognitive radio networks is not known a priori, a channel status predictor using the neural network model, multilayer perceptron (MLP), is designed. Analysis of the MLP predictor performance has been presented using various simulations.
 \section{Sparse sensing with coprime arrays \cite{vaidyanathan2010sparse}}
 % Kees Kroep
-The idea of Coprime arrays is taking two arrays with different sampling times. One can combine the measurement results to get one measurement outcome. The time-difference between two samples can become very small from time to tyuime. This is a convenient method to allow for accurate PSD reconstruction. This paper provides a full overview of the math behind coprime sensing.
+The idea of Coprime arrays is taking two arrays with different sampling times. One can combine these measurements with an algoritm. This is a convenient method to allow for accurate PSD reconstruction. This paper provides a full overview of the math behind coprime sensing.
 \section{Spectrum sensing exploiting guard bands and weak channels \cite{vazquez2011spectrum}}
 % Kees Kroep
 This paper adresses the problem of Primary user detection with a correct PSD (sampled at Nyquist rate). Properties of Primary user signals, and noise are used to improve Spectrum Sensing. This theory assumes no knowledge about noise variation and channel gains (which conventional methods do assume). This theory is also tested with performance comparissons. Geert Leus refers to this in his 2013 paper as a solution for situations in which parameters are unknown. 
