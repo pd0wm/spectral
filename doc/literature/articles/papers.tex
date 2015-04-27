@@ -4,8 +4,7 @@
 \addbibresource{../../includes/bibliography.bib}
 
 \title{Literature study}
-\author{H.J.C Kroep \and R.P. Hes \and W.M. Melching \and W.P. Bruinsma \and T.A. aan de Wiel \and T.C. Leliveld}
-
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% DIT DOCUMENT WORDT AUTOMATISCH GEGENEREERD. %%%%
@@ -14,6 +13,19 @@
 
 \begin{document}
 \chapter{Papers}
+\section{Cooperative spectrum sensing in cognitive radio networks: A survey \cite{akyildiz2011cooperative}}
+%Kees Kroep
+%
+A short introduction of the need for cognitive radio, and the tasks to make it happen.
+The paper gives an overview of cooperative congitive radiotechniques, and tries to answer the questions:
+
+\begin{itemize}
+\item How can cognitive radios cooperate 
+\item How much can be gained from cooperation 
+\item What is the overhead associated with cooperation
+\end{itemize}
+
+%Note: Geert Leus does not use cooperation but tries to achgieve silimar results with one device, and therefore without cooperation delay effects.
 \section{Multi-coset sampling for power spectrum blind sensing \cite{ariananda2011multicoset}}
 %% Dibs by Dorus
 
@@ -29,44 +41,36 @@ From this it turns out that the minimal sparse ruler offers advantages over copr
     \item increased flexibility
     \item extended range of estimated auto-correlation lags.
 \end{itemize}
-\section{Wideband spectrum sensing from compressed measurements using spectral prior information \cite{romero2013wideband}}
-The paper proposes a number of algorithms (SLIKES, SIIA, WLS, CWLS and SSPICE) to perform compressive sensing. All of them consider a modified version of the \emph{sample covariance matrix} (SCM), which is closely related to the standard estimates of the autocorrelation for ergodic processes. A performance review is presented for each of the algorithms using Monte Carlo simulations.
-\section{Coprime sampling and the MUSIC algorithm \cite{pal2011coprime}}
-This paper describes the use of two uniform samples with sample
-spacings $MT$ and $NT$ with  $M$ and $N$ coprime. Considering the difference set of this pair of sample spacings, one can generatate $\mathcal{O}(MN)$ consecutive samples using only $\mathcal{O}(M+N)$ samples. A novel algorithm based on spatial smoothing is proposed to efficiently use these $\mathcal{O}(MN)$ samples for super resolution spectral estimation.
-\section{Spectrum sensing exploiting guard bands and weak channels \cite{vazquez2011spectrum}}
+\section{Compressive wideband power spectrum estimation \cite{ariananda2012compressive}}
 % Kees Kroep
-This paper adresses the problem of Primary user detection with a correct PSD (sampled at Nyquist rate). Properties of Primary user signals, and noise are used to improve Spectrum Sensing. This theory assumes no knowledge about noise variation and channel gains (which conventional methods do assume). This theory is also tested with performance comparissons. Geert Leus refers to this in his 2013 paper as a solution for situations in which parameters are unknown. 
-\section{Blind multiband signal reconstruction: Compressed sensing for analog signals \cite{mishali2009blind}}
-This paper describes a recovery method for sub-nyquist sampling, assuming an existing multicoset sampling. Starting point is that only the number of bands and their widths are known. Also, a theoretical lower bound on the average sampling rate required for blind sampling is developed.
+%
+A cognitive radio only needs to sense the Power Spectral Density (PSD). Therefore a nyquist rate sampler is much too powerhungry/expensive. This paper proposes a new type of multicoset sampling based on the minimal sparse ruler problem. The main focus is to design effective periodic sub-Nyquist sampling procedures for efficient power sectrum reconstruction. Other Papers provide ways to interpret the power spectral density with limited information about error variance and channel gain.
 \section{Spectrum sensing for cognitive radio: State-of-the-art and recent advances \cite{axell2012spectrum}}
 %% Dorus dibs
 
 In this paper the current state of cognitive radio is discussed. A variety of technologies are discussed namely detectors and compressive sensing methods. Both multiuser and single user detectors and standard compressive sensing and multicoset sensing are discussed. For implementation details (and details in general) this paper refers to a large number of other papers.
-\section{Theory and implementation of an analog-to-information converter using random demodulation \cite{laska2007theory}}
-% Kees en Willem
-By using the theory of compressive sensing we can build an analog-to-information converter using sample frequencies below the nyquist fruency.
+\section{Kernel Reconstruction: an Exact Greedy Algorithm for Compressive Sensing \cite{bayarkernel}}
+%% Dorus diabs
 
-The CS theory says that signal that is compressible in one basis (eg.if you convert the signal to the frequency domain it becomes sparse) it can be recovered from fewer samples. The signal is multiplied by a chipping sequence $p_c(t)$ consisting of pseudo random $\pm1$'s. It must alternate faster than the nyquist frequency of the input signal.
-
-The recovery is an ill-posed problem, but because we make the assumption that the signal is compressible we can solve the problem by minimizing the $\ell_1$ norm using optimization techniques.
-
-A theory is provided to predict the SNR performance of real-world implementations. The theory is supported with a simulation of a proof of concept real world implementation. This implementation transistor-level. Basic Pursuit with Denoising (BPDN) is used for optimalization.
-\section{Secure enhanced compressed wideband spectrum sensing \cite{gang2012secure}}
-Paper discussing an algorithm to defent against Spectrum Sensing Data Falsification (SSDF). The algorithm uses compressed sensing and average consensus. This algorithm is implemented in a simulation
-\section{Cooperative spectrum sensing in cognitive radio networks: A survey \cite{akyildiz2011cooperative}}
-%Kees Kroep
+In this paper a new greedy algorithm is imposed that can provide an exact sparse solution. The algorithm is called Kernel Reconstruction.
+\section{Robust uncertainty principles: Exact signal reconstruction from highly incomplete frequency information \cite{candes2006robust}}
+This paper considers the problem of reconstructing an object from incomplete frequency samples. It concludes that a signal consisting of $|T|$ delta spikes, may be recovered by convex programming using a set of frequencies of size $\mathcal{O}(|T|\cdot \log N)$ with a probability $1-\mathcal{O}(N^{-M})$. It states that any method succeeding with a probability $1-\mathcal{O}(N^{-M})$ requires at least $|T|\cdot \log N$ samples and that therefore recovery by convex of programming requires the same order of frequency samples.
+\section{Sparsity and incoherence in compressive sampling \cite{candes2007sparsity}}
+% Claim: Tom
 %
-A short introduction of the need for cognitive radio, and the tasks to make it happen.
-The paper gives an overview of cooperative congitive radiotechniques, and tries to answer the questions:
+Given a sampled vector $\vec{x}$, containing $n$ entries. How can we obtain this vector $\vec{x}$ using a measurement vector $\vec{y}$ which contains $m$ entries ($ m \leq n$)?
 
-\begin{itemize}
-\item How can cognitive radios cooperate 
-\item How much can be gained from cooperation 
-\item What is the overhead associated with cooperation
-\end{itemize}
+This paper derives that by using $\ell_1$ minimization, we can recover $\vec{x}$ exactly, when $\vec{y} = U\vec{x}$ with $U$ an orthonormal matrix when
 
-%Note: Geert Leus does not use cooperation but tries to achgieve silimar results with one device, and therefore without cooperation delay effects.
+\begin{equation}
+	m \geq \text{Const}\cdot \mu^2(U) \cdot S \cdot \log n
+\end{equation}
+
+With $S$ the support of $\vec{x}$ and $\mu$ the largest entry in $U$ normalized as
+
+\begin{align*}
+	\mu(U) = \sqrt{n} \cdot \max_{k,j} |U_{k,j}|
+\end{align*}
 \section{An introduction to compressive sampling \cite{candes2008introduction}}
 This paper is an introduction to compressive sensing (CS). One of the key concepts of CS is sparsity: a signal vector may contain a lot of zero entries (be it represented using a special base matrix $\Psi$).
 
@@ -97,52 +101,67 @@ That is, one has the following optimization problem:
 \begin{align*}
   \min_{x \in \mathbb{R}^n} ||x||_{l_1}
 \end{align*}
+\section{Writing on dirty paper (corresp.) \cite{costa1983writing}}
+%% Door Dorus
+
+Paper introducing the Dirty Paper coding technique. It allows the channel to cancel out some interference by using knowledge about the channel. The optimal transmitter adapts its signal to the state of the channel, rather than attempting to cancel it.
+\section{Secure enhanced compressed wideband spectrum sensing \cite{gang2012secure}}
+Paper discussing an algorithm to defent against Spectrum Sensing Data Falsification (SSDF). The algorithm uses compressed sensing and average consensus. This algorithm is implemented in a simulation
+\section{Wideband spectrum sensing for cognitive radios with correlated subband occupancy \cite{hossain2011wideband}}
+This paper introduces a MAP (maximum a posteriori) estimator of the channel occupancy based on measurements from multiple frequency subbands.
+As the MAP estimators complexity grows exponentially with the amount of subbands, an alternative structure based based om combining subband energy measurements linearly according to a MMSE criterion, is proposed to provide a sufficient statitistic for binary detection in each subband.
+\section{Comparative study of spectrum sensing techniques in cognitive radio networks \cite{khan2013comparative}}
+%Kees Kroep
+%
+A Comparative Study of Spectrum Sensing Techniques in Cognitive Radio is provided. The paper is state of the art (2013) and focusses on Cooperative Spectrum Sensing. A Comnparisson is made between the performace of Fuzzy collaboration, Asynchronous Coorporation, Relay based Cooperation, Distributed Cooperation, and Non cooperative Sensing.
+\section{Analog-to-information conversion via random demodulation \cite{kirolos2006analog}}
+%% Dorus paper samenvatting
+
+Compressive sensing theory implementation in the form of an analog-to-information convertor (sub-Nyquist rates). Paper introduces algorithms, prototype implementation based on random demodulation. Simulation at transistor-level proves proof of concept under circuit nonidealities.
+\section{Theory and implementation of an analog-to-information converter using random demodulation \cite{laska2007theory}}
+% Kees en Willem
+By using the theory of compressive sensing we can build an analog-to-information converter using sample frequencies below the nyquist fruency.
+
+The CS theory says that signal that is compressible in one basis (eg.if you convert the signal to the frequency domain it becomes sparse) it can be recovered from fewer samples. The signal is multiplied by a chipping sequence $p_c(t)$ consisting of pseudo random $\pm1$'s. It must alternate faster than the nyquist frequency of the input signal.
+
+The recovery is an ill-posed problem, but because we make the assumption that the signal is compressible we can solve the problem by minimizing the $\ell_1$ norm using optimization techniques.
+
+A theory is provided to predict the SNR performance of real-world implementations. The theory is supported with a simulation of a proof of concept real world implementation. This implementation transistor-level. Basic Pursuit with Denoising (BPDN) is used for optimalization.
 \section{Optimal spectrum sensing framework for cognitive radio networks \cite{lee2008optimal}}
 This paper describes a theoretical framework to optimize the sensing parameters
 such that the sensing efficiency is maximized with respect to interference
 avoidance contraints. Furthermore spectrum selection and scheduling methods are
 proposed to exploit multiple spectrum bands.
-\section{Kernel Reconstruction: an Exact Greedy Algorithm for Compressive Sensing \cite{bayarkernel}}
-%% Dorus diabs
-
-In this paper a new greedy algorithm is imposed that can provide an exact sparse solution. The algorithm is called Kernel Reconstruction.
 \section{Multi-coset sampling and recovery of sparse multiband signals \cite{lexa2011multi}}
 Provides an introduction in multi-coset sampling and states the requirements and procedures for signal reconstruction. Multi-coset sampling is a periodic nonuniform sub-Nyquist sampling technique for acquiring continuous-time spectrally-sparse signals. Multi-coset sampling uses multiple ADCs to sample delayed versions of the input signal. Theoretically, the full spectrum may be obtained using this method.
+\section{Greedy Orthogonal Matching Pursuit algorithm for sparse signal recovery in compressive sensing \cite{li2014gomp}}
+This paper analyzes two algorithms that are used in sparse signal recovery:
+
+\begin{enumerate}
+	\item Orthogonal Matching Pursuit (OMP)
+	\item Greedy OMP (GOMP)
+\end{enumerate}
+
+The GOMP algorithm may provide better results in signal recovery.
+\section{Blind multiband signal reconstruction: Compressed sensing for analog signals \cite{mishali2009blind}}
+This paper describes a recovery method for sub-nyquist sampling, assuming an existing multicoset sampling. Starting point is that only the number of bands and their widths are known. Also, a theoretical lower bound on the average sampling rate required for blind sampling is developed.
+\section{From theory to practice: Sub-Nyquist sampling of sparse wideband analog signals \cite{mishali2010theory}}
+% Claim: Willem
+%
+This papers describes the complete process of sub-nyquist sampling using a specific sampling method. A new sampling scheme, the modulated wideband converter (MWC) is introduced, to substitute the hard to implement multi coset sampling. The mathematical background of the MWC is presented including a method to blindly recover the original spectrum (ie. without prior knowledge of the spectrum). A digital architecture to process the signals is provided. From the simulations we can conclude that (even after optimization by collapsing channels) the number of channels  still needs to be very large ($\pm20$). 
+\section{Coprime sampling and the MUSIC algorithm \cite{pal2011coprime}}
+This paper describes the use of two uniform samples with sample
+spacings $MT$ and $NT$ with  $M$ and $N$ coprime. Considering the difference set of this pair of sample spacings, one can generatate $\mathcal{O}(MN)$ consecutive samples using only $\mathcal{O}(M+N)$ samples. A novel algorithm based on spatial smoothing is proposed to efficiently use these $\mathcal{O}(MN)$ samples for super resolution spectral estimation.
 \section{Compressive wide-band spectrum sensing \cite{polo2009compressive}}
 % Read by: Kees Kroep
 %
 This paper presents a compressive wide-band spectrum sensing scheme for cognitive radios. An analog to information converter is used. This paper focusses on using the autocorrelation of the compressed signal to estimate the power spectral density.
-\section{Sparsity and incoherence in compressive sampling \cite{candes2007sparsity}}
-% Claim: Tom
-%
-Given a sampled vector $\vec{x}$, containing $n$ entries. How can we obtain this vector $\vec{x}$ using a measurement vector $\vec{y}$ which contains $m$ entries ($ m \leq n$)?
-
-This paper derives that by using $\ell_1$ minimization, we can recover $\vec{x}$ exactly, when $\vec{y} = U\vec{x}$ with $U$ an orthonormal matrix when
-
-\begin{equation}
-	m \geq \text{Const}\cdot \mu^2(U) \cdot S \cdot \log n
-\end{equation}
-
-With $S$ the support of $\vec{x}$ and $\mu$ the largest entry in $U$ normalized as
-
-\begin{align*}
-	\mu(U) = \sqrt{n} \cdot \max_{k,j} |U_{k,j}|
-\end{align*}
-\section{Robust uncertainty principles: Exact signal reconstruction from highly incomplete frequency information \cite{candes2006robust}}
-This paper considers the problem of reconstructing an object from incomplete frequency samples. It concludes that a signal consisting of $|T|$ delta spikes, may be recovered by convex programming using a set of frequencies of size $\mathcal{O}(|T|\cdot \log N)$ with a probability $1-\mathcal{O}(N^{-M})$. It states that any method succeeding with a probability $1-\mathcal{O}(N^{-M})$ requires at least $|T|\cdot \log N$ samples and that therefore recovery by convex of programming requires the same order of frequency samples.
-\section{Sparse sensing with coprime arrays \cite{vaidyanathan2010sparse}}
-% Kees Kroep
-This paper is being read :P
-\section{Comparative study of spectrum sensing techniques in cognitive radio networks \cite{khan2013comparative}}
-%Kees Kroep
-%
-A Comparative Study of Spectrum Sensing Techniques in Cognitive Radio is provided. The paper is state of the art (2013) and focusses on Cooperative Spectrum Sensing. A Comnparisson is made between the performace of Fuzzy collaboration, Asynchronous Coorporation, Relay based Cooperation, Distributed Cooperation, and Non cooperative Sensing.
-\section{Perfect reconstruction formulas and bounds on aliasing error in sub-Nyquist nonuniform sampling of multiband signals \cite{venkataramani2000perfect}}
-Provides a method for sampling of multiband signals at sub-Nyquist rates. An explicit reconstruction formula is derived.
-Bounds on the peak value are computed and error due to aliasing is analysed.
-Performance of the reconstruction with a noisy input system is examined.
-\section{A neural network based spectrum prediction scheme for cognitive radio \cite{tumuluru2010neural}}
-As the statistics of channel usage by primary users in cognitive radio networks is not known a priori, a channel status predictor using the neural network model, multilayer perceptron (MLP), is designed. Analysis of the MLP predictor performance has been presented using various simulations.
+\section{Combination of spectrum sensing and allocation in cognitive radio networks based on compressive sampling \cite{qiao2011combination}}
+Both the spectrum sensing and the spectrum allocation are managed in a combined scheme, with the wide band detection and the multi-user problem both solved.
+A cooperative distributed algorithm is proposed for its implementation.
+The performance of the combined design is measured in the detect accuracy of the compressive spectrum sensing and the utilization efficiency of the spectrum allocation, which is demonstrated in the simulation.
+\section{Wideband spectrum sensing from compressed measurements using spectral prior information \cite{romero2013wideband}}
+The paper proposes a number of algorithms (SLIKES, SIIA, WLS, CWLS and SSPICE) to perform compressive sensing. All of them consider a modified version of the \emph{sample covariance matrix} (SCM), which is closely related to the standard estimates of the autocorrelation for ergodic processes. A performance review is presented for each of the algorithms using Monte Carlo simulations.
 \section{Spectrum sensing review in cognitive radio \cite{seshukumar2013spectrum}}
 Provides an overview of various spectrum usage detection algorithms, including:
 \begin{itemize}
@@ -156,18 +175,30 @@ Provides an overview of various spectrum usage detection algorithms, including:
 	\item Matched Filtering and Coherent Detection
 \end{itemize}
 Apparently, Covariance Based Spectral Detection provides the best results.
-\section{Writing on dirty paper (corresp.) \cite{costa1983writing}}
-%% Door Dorus
-
-Paper introducing the Dirty Paper coding technique. It allows the channel to cancel out some interference by using knowledge about the channel. The optimal transmitter adapts its signal to the state of the channel, rather than attempting to cancel it.
-\section{From theory to practice: Sub-Nyquist sampling of sparse wideband analog signals \cite{mishali2010theory}}
-% Claim: Willem
-%
-This papers describes the complete process of sub-nyquist sampling using a specific sampling method. A new sampling scheme, the modulated wideband converter (MWC) is introduced, to substitute the hard to implement multi coset sampling. The mathematical background of the MWC is presented including a method to blindly recover the original spectrum (ie. without prior knowledge of the spectrum). A digital architecture to process the signals is provided. From the simulations we can conclude that (even after optimization by collapsing channels) the number of channels  still needs to be very large ($\pm20$). 
 \section{Artificial neural network based spectrum sensing method for cognitive radio \cite{tang2010artificial}}
 %Claim: Willem
 %
 To improve detection we can use multiple detection methods and train an artificial neural network (ANN). This ANN is trained with an AM signal and noise with different signal to noise ratio's. Then each of the trained networks is tested with another AM signal with noise. Often the network detects signals a bit weaker (10dB) than the training signal.
+\section{Signal recovery from partial information via orthogonal matching pursuit \cite{tropp2005signal}}
+This article demonstrates theoretically and empirically that a greedy algorithm called
+Orthogonal Matching Pursuit (OMP) can reliably recover a signal with m nonzero entries in dimension
+d given O(mln d) random linear measurements of that signal. This is a massive improvement
+over previous results for OMP, which require O(m2) measurements. The new results for OMP are
+comparable with recent results for another algorithm called Basis Pursuit (BP). The OMP algorithm
+is much faster and much easier to implement, which makes it an attractive alternative to BP
+for signal recovery problems.
+\section{A neural network based spectrum prediction scheme for cognitive radio \cite{tumuluru2010neural}}
+As the statistics of channel usage by primary users in cognitive radio networks is not known a priori, a channel status predictor using the neural network model, multilayer perceptron (MLP), is designed. Analysis of the MLP predictor performance has been presented using various simulations.
+\section{Sparse sensing with coprime arrays \cite{vaidyanathan2010sparse}}
+% Kees Kroep
+The idea of Coprime arrays is taking two arrays with different sampling times. One can combine the measurement results to get one measurement outcome. The time-difference between two samples can become very small from time to tyuime. This is a convenient method to allow for accurate PSD reconstruction. This paper provides a full overview of the math behind coprime sensing.
+\section{Spectrum sensing exploiting guard bands and weak channels \cite{vazquez2011spectrum}}
+% Kees Kroep
+This paper adresses the problem of Primary user detection with a correct PSD (sampled at Nyquist rate). Properties of Primary user signals, and noise are used to improve Spectrum Sensing. This theory assumes no knowledge about noise variation and channel gains (which conventional methods do assume). This theory is also tested with performance comparissons. Geert Leus refers to this in his 2013 paper as a solution for situations in which parameters are unknown. 
+\section{Perfect reconstruction formulas and bounds on aliasing error in sub-Nyquist nonuniform sampling of multiband signals \cite{venkataramani2000perfect}}
+Provides a method for sampling of multiband signals at sub-Nyquist rates. An explicit reconstruction formula is derived.
+Bounds on the peak value are computed and error due to aliasing is analysed.
+Performance of the reconstruction with a noisy input system is examined.
 \section{On theory of compressive sensing via l1-minimization: Simple derivations and extensions \cite{zhang2008theory}}
 This paper introduces an alternative to RIP (Restricted Isomery Property) analysis for CS via $\ell_1$ optimization. 
 
@@ -186,36 +217,4 @@ in the solution space that produces the measured signal $b$:
 \end{align*} 
 
 \noindent with the zero norm equal to the amount of non zero elements in $\vec{x}$. Solving this zero norm does not appear to be tractable. An alternative is to use the 1-norm. The paper derives what the intersection of those two solution sets are. It continues to analyze recoverability and stability without using RIP.
-\section{Combination of spectrum sensing and allocation in cognitive radio networks based on compressive sampling \cite{qiao2011combination}}
-Both the spectrum sensing and the spectrum allocation are managed in a combined scheme, with the wide band detection and the multi-user problem both solved.
-A cooperative distributed algorithm is proposed for its implementation.
-The performance of the combined design is measured in the detect accuracy of the compressive spectrum sensing and the utilization efficiency of the spectrum allocation, which is demonstrated in the simulation.
-\section{Signal recovery from partial information via orthogonal matching pursuit \cite{tropp2005signal}}
-This article demonstrates theoretically and empirically that a greedy algorithm called
-Orthogonal Matching Pursuit (OMP) can reliably recover a signal with m nonzero entries in dimension
-d given O(mln d) random linear measurements of that signal. This is a massive improvement
-over previous results for OMP, which require O(m2) measurements. The new results for OMP are
-comparable with recent results for another algorithm called Basis Pursuit (BP). The OMP algorithm
-is much faster and much easier to implement, which makes it an attractive alternative to BP
-for signal recovery problems.
-\section{Wideband spectrum sensing for cognitive radios with correlated subband occupancy \cite{hossain2011wideband}}
-This paper introduces a MAP (maximum a posteriori) estimator of the channel occupancy based on measurements from multiple frequency subbands.
-As the MAP estimators complexity grows exponentially with the amount of subbands, an alternative structure based based om combining subband energy measurements linearly according to a MMSE criterion, is proposed to provide a sufficient statitistic for binary detection in each subband.
-\section{Greedy Orthogonal Matching Pursuit algorithm for sparse signal recovery in compressive sensing \cite{li2014gomp}}
-This paper analyzes two algorithms that are used in sparse signal recovery:
-
-\begin{enumerate}
-	\item Orthogonal Matching Pursuit (OMP)
-	\item Greedy OMP (GOMP)
-\end{enumerate}
-
-The GOMP algorithm may provide better results in signal recovery.
-\section{Analog-to-information conversion via random demodulation \cite{kirolos2006analog}}
-%% Dorus paper samenvatting
-
-Compressive sensing theory implementation in the form of an analog-to-information convertor (sub-Nyquist rates). Paper introduces algorithms, prototype implementation based on random demodulation. Simulation at transistor-level proves proof of concept under circuit nonidealities.
-\section{Compressive wideband power spectrum estimation \cite{ariananda2012compressive}}
-% Kees Kroep
-%
-A cognitive radio only needs to sense the Power Spectral Density (PSD). Therefore a nyquist rate sampler is much too powerhungry/expensive. This paper proposes a new type of multicoset sampling based on the minimal sparse ruler problem. The main focus is to design effective periodic sub-Nyquist sampling procedures for efficient power sectrum reconstruction. Other Papers provide ways to interpret the power spectral density with limited information about error variance and channel gain.
 \end{document}
