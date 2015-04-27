@@ -635,53 +635,53 @@ The following definition is the complex analogue of an orthogonal matrix.
 \begin{definition}
     The \textbf{delta impulse train} is given by
     \begin{align*}
-        \IT(t)=\sum_{n=-\infty}^{\infty} \delta(t- n).
+        \Sha(t)=\sum_{n=-\infty}^{\infty} \delta(t- n).
     \end{align*}
 \end{definition}
 \begin{theorem}
     The Fourier transform of the delta impulse train is given by
     \begin{align*}
-        \F[\IT(t)]=\IT\left(\frac{\omega}{2 \pi}\right).
+        \F[\Sha(t)]=\Sha\left(\frac{\omega}{2 \pi}\right).
     \end{align*}
 \end{theorem}
 \begin{proof}
     Applying the definition of the Fourier transform yields
     \begin{align*}
-        \F[\IT(t)] &= \int_{-\infty}^{\infty} \sum_{n=-\infty}^{\infty} \delta(t- n) \exp(-j \omega t)dt \\
+        \F[\Sha(t)] &= \int_{-\infty}^{\infty} \sum_{n=-\infty}^{\infty} \delta(t- n) \exp(-j \omega t)dt \\
         &= \sum_{n=-\infty}^{\infty}\int_{-\infty}^{\infty}\delta(t- n) \exp(-j \omega t)dt \\
         &= \sum_{n=-\infty}^{\infty} \exp(-j \omega n).
     \end{align*}
     This function is $2 \pi /n$ periodic. Now consider the Fourier transform
     \begin{align*}
-        \F[\IT(t) \ast \rect(t)] &= \F[\IT(t)] \F[\rect(t)] = \F[\IT(t)] \sinc\left(\frac{\omega}{2}\right).
+        \F[\Sha(t) \ast \rect(t)] &= \F[\Sha(t)] \F[\rect(t)] = \F[\Sha(t)] \sinc\left(\frac{\omega}{2}\right).
     \end{align*}
     Also, note that
     \begin{align*}
-        \F[\IT(t) \ast \rect(t)] =\F[1] = 2 \pi \delta(\omega)= \F[\IT(t)] \sinc\left(\frac{\omega}{2}\right).
+        \F[\Sha(t) \ast \rect(t)] =\F[1] = 2 \pi \delta(\omega)= \F[\Sha(t)] \sinc\left(\frac{\omega}{2}\right).
     \end{align*}
-    This tells us something about $\F[\IT(t)]$ where $\sinc(\omega/2 pi)$ is non-zero. More specifically,
+    This tells us something about $\F[\Sha(t)]$ where $\sinc(\omega/2 pi)$ is non-zero. More specifically,
     \begin{align*}
-        \F[\IT(t)] = 2 \pi \delta(t)
+        \F[\Sha(t)] = 2 \pi \delta(t)
     \end{align*}
-    for $-\pi < \omega \le \pi$ since $\sinc(0)=1$. Here we made use of the uniqueness of the Fourier transform. We now make use of the periodicity of $\F[\IT(t)]$ to determine that
+    for $-\pi < \omega \le \pi$ since $\sinc(0)=1$. Here we made use of the uniqueness of the Fourier transform. We now make use of the periodicity of $\F[\Sha(t)]$ to determine that
     \begin{align*}
-        \F[\IT(t)] = \sum_{n=-\infty}^{\infty} 2 \pi \delta(\omega - 2 \pi n)= \sum_{n=-\infty}^{\infty} \delta\left(\frac{\omega}{2\pi} - n\right) = \IT\left(\frac{\omega}{2\pi}\right).
+        \F[\Sha(t)] = \sum_{n=-\infty}^{\infty} 2 \pi \delta(\omega - 2 \pi n)= \sum_{n=-\infty}^{\infty} \delta\left(\frac{\omega}{2\pi} - n\right) = \Sha\left(\frac{\omega}{2\pi}\right).
     \end{align*}
 \end{proof}
 
 \begin{definition}
     The signal $x(t)$ \textbf{ideally sampled} is given by
     \begin{align*}
-        \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right).
+        \tilde{x}(t) = x(t) \cdot \frac{1}{T}\Sha\left(\frac{t}{T}\right).
     \end{align*}
 \end{definition}
 Note that
 \begin{align*}
-    \frac{1}{T}\IT\left(\frac{t}{T}\right) = \frac{1}{T} \sum_{n=-\infty}^{\infty}\delta\left(\frac{\omega}{T} - 2 \pi n\right) = \sum_{n=-\infty}^{\infty} \delta(\omega - 2 \pi n T).
+    \frac{1}{T}\Sha\left(\frac{t}{T}\right) = \frac{1}{T} \sum_{n=-\infty}^{\infty}\delta\left(\frac{\omega}{T} - 2 \pi n\right) = \sum_{n=-\infty}^{\infty} \delta(\omega - 2 \pi n T).
 \end{align*}
 Also, we can calculate that
 \begin{align*}
-    \F[\tilde{x}(t)] = \frac{1}{2 \pi} \F[x(t)] \ast \F\left[\frac{1}{T}\IT\left(\frac{t}{T}\right)\right] = \frac{1}{2 \pi} \F[x(t)] \ast \IT\left(\frac{\omega T}{2 \pi}\right).
+    \F[\tilde{x}(t)] = \frac{1}{2 \pi} \F[x(t)] \ast \F\left[\frac{1}{T}\Sha\left(\frac{t}{T}\right)\right] = \frac{1}{2 \pi} \F[x(t)] \ast \Sha\left(\frac{\omega T}{2 \pi}\right).
 \end{align*}
 \begin{definition}
     The frequency $w_s = 2 \pi / T$ is called the \textbf{sampling frequency}.
@@ -707,7 +707,7 @@ Thus sampling replicates $\F[x(t)]$'s spectrum at distances $w_s$. This yields t
 \subsection{Fourier Transform of Discrete Signals}
 We can write $x(t)$ ideally sampled as
 \begin{align*}
-    \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right) = \sum_{n=-\infty}^{\infty} x(nT) \delta(t - nT) = \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT).
+    \tilde{x}(t) = x(t) \cdot \frac{1}{T}\Sha\left(\frac{t}{T}\right) = \sum_{n=-\infty}^{\infty} x(nT) \delta(t - nT) = \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT).
 \end{align*}
 Then
 \begin{align*}
