@@ -1,6 +1,6 @@
 %!TEX program = xelatex
  
-\documentclass[report, a4paper, openany, oneside]{memoir}
+\documentclass[a4paper, openany, twoside]{memoir}
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
@@ -9,10 +9,15 @@
 \author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
 
 \begin{document}
-\maketitle
+\frontmatter
+
+\begin{titlingpage}
+  \pagestyle{empty}
+  \maketitle
+\end{titlingpage}
+
 \clearpage
 
-\frontmatter
 \tableofcontents
 
 \mainmatter
