@@ -24,7 +24,7 @@
 \tableofcontents
 
 \chapter{Preliminaries}
-\section{Convex functions}
+\section{Convex Functions}
 \begin{definition}
     Let $f:S\to \mathbb{R}$ where $S$ is a convex subset of $\mathbb{R}$. Then $f$ is a \textbf{convex function} if for all $x_1,x_2 \in S$ and $\lambda \in [0,1]$
     \begin{align*}
@@ -428,6 +428,8 @@ This motivates the following definition.
     \end{align*}
 \end{theorem}
 
+More to come.
+
 \chapter{Linear Algebra}
 \section{Orthogonality}
 \begin{definition}
@@ -636,10 +638,6 @@ The following definition is the complex analogue of an orthogonal matrix.
 \end{proof}
 
 \chapter{Signal Processing}
-% Signal processing:
-% SnR
-% Matched Filter
-% Complex envelope
 \section{Sampling and Aliasing}
 \begin{definition}
     The \textbf{Fourier transform} of a function $x(t)$ is
@@ -722,9 +720,9 @@ Thus sampling replicates $\F[x(t)]$'s spectrum at distances $w_s$. This yields t
 \section{Fourier Transform of Discrete Signals}
 We can write $x(t)$ ideally sampled as
 \begin{align*}
-    \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right) = \sum_{n=-\infty}^{\infty} x(nT) \delta(t - nT) = \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT)
+    \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right) = \sum_{n=-\infty}^{\infty} x(nT) \delta(t - nT) = \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT).
 \end{align*}
-where $t = nT$. Then
+Then
 \begin{align*}
     \F[\tilde{x}(t)] &= \int_{-\infty}^{\infty} \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT) \exp(-j \omega t) dt \\
     &= \sum_{n=-\infty}^{\infty} x[n] \int_{-\infty}^{\infty}  \delta(t - nT) \exp(-j \omega t) dt \\
@@ -743,21 +741,76 @@ Now suppose we have obtained the first $M$ samples of a discrete signal $x[n]$. 
 \end{align*}
 Then
 \begin{align*}
-    \F_*\{w[n]\} = \frac{1}{2 \pi} \F_*\{w[n]\} \ast \F_*\left\{\rect\left(\frac{n}{M} - \frac{1}{2}\right)\right\}.
+    \F_*\{w[n]\} = \frac{1}{2 \pi} \F_*\{x[n]\} \ast \F_*\left\{\rect\left(\frac{n}{M} - \frac{1}{2}\right)\right\}.
 \end{align*}
 Thus $\F_*\{x[n]\}$ is spread out by convolution with
 \begin{align*}
     \F_*\left\{\rect\left(\frac{n}{M} - \frac{1}{2}\right)\right\} = \frac{\sin[\Omega(M+1)/2]}{\sin(\Omega/2)}\exp\left(-\frac{j \Omega M}{2}\right).
 \end{align*}
-The \textbf{resolution} of the discrete-time Fourier transform by using finitely many samples $M$ is then given by the first zero of the obtained function. Thus
+Using finitely many samples to approximate the discrete-time Fourier transform yields the \textbf{discrete Fourier transform}. The \textbf{resolution} of the discrete Fourier transform determines smallest variation in frequency we can detect in the obtained spectrum. This is given by the first zero of the just obtained function. Thus
 \begin{align*}
     \Delta \Omega \approx \Omega_0 = \frac{2 \pi}{M+1} \approx \frac{2 \pi}{M}.
 \end{align*}
 
-\section{Signal-to-Noise Ratio}
-
-\section{Matched Filter}
+\section{Dimensionality Theorem}
+The results of the theory of sampling may be stated in a more general way.
+\begin{theorem}[Dimensionality]
+   A real waveform may be completely specified by $N=2 B T_0$ independent pieces of information that will describe the waveform over a interval of length $T_0$. $N$ is the dimensionality of the waveform and $B$ the absolute bandwidth.
+\end{theorem}
 
 \section{Complex Envelope}
+\begin{theorem}[Complex Envelope]
+    Any physical bandpass waveform can be represented by
+    \begin{align*}
+        x(t) = \Re[g(t) \exp(j \omega_c t)].
+    \end{align*}
+    $g(t)$ is called the complex envelope of $x(t)$.
+\end{theorem}
+\begin{theorem}
+    The spectrum of $x(t)$ is given by
+    \begin{align*}
+        \F[x(t)] = \frac{1}{2}[G(f-f_c)+\bar{G}(-f-f_x)]
+    \end{align*}
+    where $G(f) = \F[g(t)]$.
+\end{theorem}
+\begin{proof}
+    We can write
+    \begin{align*}
+        x(t) = \Re[g(t) \exp(j \omega_c t)]
+        = \frac{1}{2}[g(t) \exp(j \omega_c t) + \bar{g}(t) \exp(-j \omega_c t)].
+    \end{align*}
+    Therefore
+    \begin{align*}
+        \F[x(t)] &= \frac{1}{2}\{\F[g(t) \exp(j \omega_c t)] + \F[\bar{g}(t) \exp(-j \omega_c t)]\} \\
+        &= \frac{1}{2}[G(f-f_c)+\bar{G}(-f-f_c)].
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    The power spectral density of $x(t)$ is given by
+    \begin{align*}
+        \mathcal{P}_x(f) = \frac{1}{4}[\mathcal{P}_g(f-f_c) + \bar{\mathcal{P}}_g(-f-f_c)]
+    \end{align*}
+    where $\mathcal{P}_g(f)$ is the power spectral density of $g(t)$.
+\end{theorem}
+\begin{proof}
+    Proof to come.
+\end{proof}
+
+\begin{theorem}
+    Average power.
+\end{theorem}
+
+\section{Signal-to-Noise Ratio}
+% Definition
+% Shannon
+% Quantization Noise
+% Bit error
+
+\section{Matched Filter}
+% Derivation
+% Bit energy
+% Bit probability
+
 
 \end{document}
