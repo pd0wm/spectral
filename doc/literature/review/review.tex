@@ -7,7 +7,7 @@
 \begin{document}
 \chapter{Review of Basic Concepts}
 \section{Preliminaries}
-\subsection{Convex functions}
+\subsection{Convex Functions}
 \begin{definition}
     Let $f:S\to \mathbb{R}$ where $S$ is a convex subset of $\mathbb{R}$. Then $f$ is a \textbf{convex function} if for all $x_1,x_2 \in S$ and $\lambda \in [0,1]$
     \begin{align*}
@@ -386,32 +386,52 @@ The autocovariance of a stochastic process simplifies to
 
 
 \subsection{Power Spectral Density}
-Consider a realisation $x(t)$ of a stochastic process $X(t)$. Its average power is calculated by
+Consider a realization $w(t)$ of a wide sense stationary stochastic process $X(t)$. Its average power is calculated by
 \begin{align*}
-    P &= \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} x(t) dt \\
-    &= \lim_{T \to \infty} \frac{1}{T} \int_{-\infty}^{\infty} x_T(t) dt
+    P &= \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} w^2(t) dt \\
+    &= \lim_{T \to \infty} \frac{1}{T} \int_{-\infty}^{\infty} w_T^2(t) dt.
 \end{align*}
-We now define $X_T(f) = \F[x_T(t)]$. Then by Parseval's theorem
+We now define $W_T(f) = \F[w_T(t)]$. Then by Parseval's theorem
 \begin{align*}
-    P &= \lim_{T \to \infty} \frac{1}{T} \int_{-\infty}^{\infty} |X_T(f)|^2 df \\
-    &= \int_{-\infty}^{\infty} \lim_{T \to \infty} \frac{|X_T(f)|^2}{T} df.
+    P &= \lim_{T \to \infty} \frac{1}{T} \int_{-\infty}^{\infty} |W_T(f)|^2 df \\
+    &= \int_{-\infty}^{\infty} \lim_{T \to \infty} \frac{|W_T(f)|^2}{T} df.
 \end{align*}
 This motivates the following definition.
 \begin{definition}
-    The \textbf{power spectral density} (PSD) of a deterministic waveform $x(t)$ is
+    The \textbf{power spectral density} (PSD) of a wide sense stationary stochastic process $X(t)$ is
     \begin{align*}
-        \mathcal{P}(f) = \lim_{T \to \infty} \frac{|X_T(f)|^2}{T}.
+        \mathcal{P}(f) = \lim_{T \to \infty} E\left[ \frac{|X_T(f)|^2}{T} \right].
     \end{align*}
 \end{definition}
+The definition of power spectral density is not tractible. We can rewrite it as follows.
+\begin{align*}
+    \mathcal{P}(f) &= \lim_{T \to \infty} E\left[\frac{X_T(f) \bar{X_T}(f)}{T}\right] \\
+    &= \lim_{T \to \infty}E\left[\frac{1}{T}\int_{-\infty}^{\infty}x_T(t)\exp(-j \omega t)dt\int_{-\infty}^{\infty}x_T(t)\exp(j \omega t)dt\right] \\
+    &= \lim_{T \to \infty}E\left[\frac{1}{T}\int_{-T/2}^{T/2}\int_{-T/2}^{T/2}x(t)x(t')\exp[-j \omega (t-t')]dt'dt\right] \\
+    &= \lim_{T \to \infty}\frac{1}{T}\int_{-T/2}^{T/2}\int_{-T/2}^{T/2}E[x(t)x(t')]\exp[-j \omega (t-t')]dt'dt \\
+    &= \lim_{T \to \infty}\frac{1}{T}\int_{-T/2}^{T/2}\int_{-T/2}^{T/2}R_X(t-t')\exp[-j \omega (t-t')]dt'dt.
+\end{align*}
+To further evaluate this integral we introduce a change of variables. Let
+\begin{align*}
+    \tau = t - t', \qquad \tau' = t + t'.
+\end{align*}
+Let the Jacobian of this transformation be given by $J_ \tau$. A simple calculation shows $|J_ \tau|=2$. Then evaluation of the region of integration yields
+\begin{align*}
+    \mathcal{P}(f) &=\lim_{T \to \infty}\frac{1}{T}\int_{-T}^{T}\int_{-T+|\tau|}^{T-|\tau|}R_X(\tau)\exp(-j \omega \tau)\frac{d \tau' d \tau}{|J_ \tau|} \\
+     &=\lim_{T \to \infty}\frac{1}{T}\int_{-T}^{T}(T - | \tau|)R_X(\tau)\exp(-j \omega \tau)d \tau \\
+     &=\lim_{T \to \infty}\int_{-\infty}^{\infty}\left(1 - \frac{| \tau|}{T}\right)R_X(\tau)\exp(-j \omega \tau)d \tau \\
+     &=\int_{-\infty}^{\infty}\lim_{T \to \infty}\left(1 - \frac{| \tau|}{T}\right)R_X(\tau)\exp(-j \omega \tau)d \tau \\
+    &=\int_{-\infty}^{\infty}R_X(\tau)\exp(-j \omega \tau)d \tau \\
+    &= \F[R_X(\tau)].
+\end{align*}
+Note that we must be very careful when interchanging the limit and integral. The following theorem makes this precise.
 
-\begin{theorem}[Wiener-Khinchin]
+\begin{theorem}[Wiener-Khintchin]
     The power spectral density of a wide sense stationary stochastic process $X(t)$ is calculated by
     \begin{align*}
         \mathcal{P}(f) = \F[R_X(\tau)] = \int_{-\infty}^{\infty} R_X(\tau) \exp(-j2\pi f \tau) d \tau.
     \end{align*}
 \end{theorem}
-
-More to come.
 
 \section{Linear Algebra}
 \subsection{Orthogonality}
@@ -776,27 +796,25 @@ The results of the theory of sampling may be stated in a more general way.
 \begin{theorem}
     The power spectral density of $x(t)$ is given by
     \begin{align*}
-        \mathcal{P}_x(f) = \frac{1}{4}[\mathcal{P}_g(f-f_c) + \bar{\mathcal{P}}_g(-f-f_c)]
+        \mathcal{P}_x(f) = \frac{1}{4}[\mathcal{P}_g(f-f_c) + \mathcal{P}_g(-f-f_c)]
     \end{align*}
     where $\mathcal{P}_g(f)$ is the power spectral density of $g(t)$.
 \end{theorem}
-\begin{proof}
-    Proof to come.
-\end{proof}
 
 \begin{theorem}
-    Average power.
+    The average normalised power of $x(t)$ is given by
+    \begin{align*}
+        \langle x^2(t)\rangle = \frac{1}{2} \langle g^2(t) \rangle.
+    \end{align*}
 \end{theorem}
-
-\subsection{Signal-to-Noise Ratio}
-% Definition
-% Shannon
-% Quantization Noise
-% Bit error
-
-\subsection{Matched Filter}
-% Derivation
-% Bit energy
-% Bit probability
+\begin{proof}
+    We calculate that
+    \begin{align*}
+        \langle x(t) \rangle &= \int_{-\infty}^{\infty} \mathcal{P}_x(f) df \\
+        &= \frac{1}{4} \int_{-\infty}^{\infty} \mathcal{P}_g(f-f_c) df + \frac{1}{4} \int_{-\infty}^{\infty} \mathcal{P}_g(-f-f_c) df \\
+        &= \frac{1}{2} \int_{-\infty}^{\infty} \mathcal{P}_g(f) df \\
+        &= \frac{1}{2} \langle g^2(t) \rangle.
+    \end{align*}
+\end{proof}
 
 \end{document}
