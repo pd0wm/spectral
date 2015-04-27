@@ -21,15 +21,16 @@ An extension to this is joint multiband sensing. Multiple cooperating sensors ar
 
 \section{Compressive Sensing}
 \references{\cite{candes2008introduction,gang2012secure,qiao2011combination,kirolos2006analog,candes2007sparsity,mishali2010theory,laska2007theory,ariananda2012compressive,romero2013wideband,vaidyanathan2010sparse,pal2011coprime}}
-Compressive spectrum sensing is to exploit the fact that the original observed analog signal $y(t)$ with Nyquist rate $1/T$ can often be sampled below the Nyquist rate within an interval $t\in \left[0,N_{b}t \right)$. This results in $\vec{z}$ with dimensions $M_b \times 1$. This can be seen as 
+Compressive spectrum sensing is to exploit the fact that the original observed analog signal $y(t)$ with Nyquist rate $1/T$ can often be sampled below the Nyquist rate within an interval $t\in \left[0,N_{b}t \right)$. This results in $\vec{z}$ with dimensions $M_b \times 1$. This can be seen as
 \begin{equation}
     \label{eq:nonuniformsampling}
     \vec{z} = \mat{\Phi}\vec{y}.
 \end{equation}
 where $\mat{\Phi}$ is the measurement matrix.
-\references{\cite{candes2008introduction}}
 
-\section{Coperative Sensing}
+\section{Cooperative Sensing}
 \references{\cite{akyildiz2011cooperative}}
+Cooperative sensing is a technique in which spectrum sensing accuracy is improved by using multiple receivers and combining their individual results. Cooperative sensing is a way to exploit spatial diversity.
+Although the use of multiple receivers may yield better results, it gives rise to some issues over single receiver sensing as well.
 
 \end{document}

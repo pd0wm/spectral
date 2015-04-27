@@ -1,30 +1,13 @@
 %!TEX program = xelatex
 
 \documentclass{memoir}
-\input{../includes/preamble.tex}
-\addbibresource{../includes/bibliography.bib}
-
-\newcommand{\Cov}{\operatorname{Cov}}
-\newcommand{\Var}{\operatorname{Var}}
-\newcommand{\proj}{\operatorname{proj}}
-\newcommand{\Perp}{\operatorname{perp}}
-\newcommand{\col}{\operatorname{col}}
-\newcommand{\rect}{\operatorname{rect}}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\IT}{\operatorname{IT}}
-\newcommand{\F}{\mathcal{F}}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
 
 \begin{document}
-
-\pagestyle{empty}
-\begingroup
-    {\hfill \HUGE Review of Basic Concepts}
-\endgroup
-
-\tableofcontents
-
-\chapter{Preliminaries}
-\section{Convex Functions}
+\chapter{Review of basic concepts}
+\section{Preliminaries}
+\subsection{Convex functions}
 \begin{definition}
     Let $f:S\to \mathbb{R}$ where $S$ is a convex subset of $\mathbb{R}$. Then $f$ is a \textbf{convex function} if for all $x_1,x_2 \in S$ and $\lambda \in [0,1]$
     \begin{align*}
@@ -53,8 +36,8 @@
     \end{align*}
 \end{proof}
 
-\chapter{Stochastic Processes}
-\section{Basic Definitions}
+\section{Stochastic Processes}
+\subsection{Basic Definitions}
 \begin{definition}
     A \textbf{random variable} consists of an experiment with a probability measure $P[.]$ defined on a sample space $S$ and a function that assigns a real number to each outcome in the sample space of the experiment.
 \end{definition}
@@ -99,7 +82,7 @@ The variance of a random variable $X$ simplifies to
     \Var[X] = E[X^2] - E^2[X].
 \end{align*}
 
-\section{Basic Theorems}
+\subsection{Basic Theorems}
 
 \begin{theorem}[Jensen's Inequality]
     Let $f$ be a convex function and $X$ a random variable. Then
@@ -137,7 +120,7 @@ The variance of a random variable $X$ simplifies to
     \end{align*}
 \end{proof}
 
-\section{Dependence}
+\subsection{Dependence}
 
 \begin{definition}
     The \textbf{conditional probability} of an event $A$ given event $B$ is
@@ -214,8 +197,8 @@ If $r_{X,Y}=0$, then $X$ and $Y$ are \textbf{orthogonal}. In the case of zero-me
     \end{align*}
 \end{proof}
 
-\section{Normal Distribution}
-\subsection{Gauss' Derivation of the Univariate Normal Distribution}
+\subsection{Normal Distribution}
+\subsubsection{Gauss' Derivation of the Univariate Normal Distribution}
 In deriving the normal distribution, Gauss assumed the following:
 \begin{enumerate}
     \item Small error are more likely than large errors.
@@ -262,7 +245,7 @@ for any real $\sigma$. Finally, solving this differential equation and normalisi
 \end{align*}
 If $\phi(x)$ is the error probability density function of a random variable $X$, then we denote $X \sim N(\mu,\sigma^2)$.
 
-\subsection{The Multivariate Normal Distribution}
+\subsubsection{The Multivariate Normal Distribution}
 Suppose that $\vec{Z}$ is a $n$ vector of independent random variables each $N(0,1)$ distributed. Then the joint probability density function is given by
 \begin{align*}
     f_Z(\vec{Z}) = \prod_i \frac{1}{\sqrt{2 \pi}} \exp\left[-\frac{z_i^2}{2}\right] = \frac{1}{(2 \pi)^{n/2}} \exp\left[-\frac{1}{2}\vec{Z}^T \vec{Z}\right].
@@ -288,7 +271,7 @@ with Jacobian $J_T = \mat{\Sigma}^{-1/2}$. We can now use the change-of-variable
 \end{align*}
 This probability density function is known as the multivariate normal distribution.
 
-\section{Stochastic Processes}
+\subsection{Stochastic Processes}
 
 \begin{definition}
     A \textbf{stochastic process} $X(t)$ consists of an experiment with a probability measure $P[.]$ defined on a sample space $S$ and a function that assigns a time function $x(t,s)$ to each outcome $s$ in the sample space of the experiment.
@@ -302,7 +285,7 @@ Suppose that we observe a random process $X(t)$ at a particular time $t_1$. Then
         \item $X(t_k)$ for all $k$ are independent random variables,
         \item $X(t_k)$ for all $k$ have identical probability distribution functions.
     \end{enumerate}
-\end{definition}    
+\end{definition}
 
 \begin{definition}
     The \textbf{expected value} of a stochastic process $X(t)$ is the function
@@ -402,7 +385,7 @@ The autocovariance of a stochastic process simplifies to
 \end{proof}
 
 
-\section{Power Spectral Density}
+\subsection{Power Spectral Density}
 Consider a realisation $x(t)$ of a stochastic process $X(t)$. Its average power is calculated by
 \begin{align*}
     P &= \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} x(t) dt \\
@@ -415,7 +398,7 @@ We now define $X_T(f) = \F[x_T(t)]$. Then by Parseval's theorem
 \end{align*}
 This motivates the following definition.
 \begin{definition}
-    The \textbf{power spectral density} (PSD) of a deterministic waveform $x(t)$ is 
+    The \textbf{power spectral density} (PSD) of a deterministic waveform $x(t)$ is
     \begin{align*}
         \mathcal{P}(f) = \lim_{T \to \infty} \frac{|X_T(f)|^2}{T}.
     \end{align*}
@@ -484,7 +467,7 @@ More to come.
     This implies that $\lambda = \bar{\lambda}$ and $\lambda$ must therefore be real.
 \end{proof}
 
-\section{Quadratic Form}
+\subsection{Quadratic Form}
 \begin{definition}
     A \textbf{quadratic form} in $n$ variables is a function $f: \mathbb{R}^n \to \mathbb{R}$ of the form
     \begin{align*}
@@ -526,7 +509,7 @@ More to come.
     The equivalence follows directly from the principal axes theorem.
 \end{proof}
 
-\section{Complex Vectors and Matrices}
+\subsection{Complex Vectors and Matrices}
 \begin{definition}
     If $\mat{A}$ is a complex matrix, then the \textbf{conjugate transpose} of $\mat{A}$ is given by
     \begin{align*}
@@ -580,7 +563,7 @@ The following definition is the complex analogue of an orthogonal matrix.
     So $\mat{A}$ is normal. The other part of the proof is emitted.
 \end{proof}
 
-\section{Least Squares}
+\subsection{Least Squares}
 \begin{definition}
     If $W$ is a subspace of a normed linear space $V$ and if $\vec{v}$ is vector in $V$, then the \textbf{best approximation to $\vec{v}$ in $W$} is the vector $\vec{\hat{v}}$ in $W$ such that
     \begin{align*}
@@ -599,7 +582,7 @@ The following definition is the complex analogue of an orthogonal matrix.
         &= ||\Perp_W(\vec{v}) + \proj_W(\vec{v}) - \vec{w}||^2 \\
         &= ||\Perp_W(\vec{v})||^2 + 2\langle \Perp_W(\vec{v}), [\proj_W(\vec{v}) - \vec{w}]\rangle + ||\proj_W(\vec{v}) - \vec{w}||^2 \\
         &=||\Perp_W(\vec{v})||^2 + ||\proj_W(\vec{v}) - \vec{w}||^2 \\
-        &\ge ||\Perp_W(\vec{v})||^2 \\ 
+        &\ge ||\Perp_W(\vec{v})||^2 \\
         &= ||\vec{v} - \proj_W(\vec{v})||^2.
     \end{align*}
 \end{proof}
@@ -637,8 +620,12 @@ The following definition is the complex analogue of an orthogonal matrix.
     \end{align*}
 \end{proof}
 
-\chapter{Signal Processing}
-\section{Sampling and Aliasing}
+\section{Signal Processing}
+% Signal processing:
+% SnR
+% Matched Filter
+% Complex envelope
+\subsection{Sampling and Aliasing}
 \begin{definition}
     The \textbf{Fourier transform} of a function $x(t)$ is
     \begin{align*}
@@ -717,7 +704,7 @@ Thus sampling replicates $\F[x(t)]$'s spectrum at distances $w_s$. This yields t
     \end{enumerate}
 \end{theorem}
 
-\section{Fourier Transform of Discrete Signals}
+\subsection{Fourier Transform of Discrete Signals}
 We can write $x(t)$ ideally sampled as
 \begin{align*}
     \tilde{x}(t) = x(t) \cdot \frac{1}{T}\IT\left(\frac{t}{T}\right) = \sum_{n=-\infty}^{\infty} x(nT) \delta(t - nT) = \sum_{n=-\infty}^{\infty} x[n] \delta(t - nT).
@@ -811,6 +798,5 @@ The results of the theory of sampling may be stated in a more general way.
 % Derivation
 % Bit energy
 % Bit probability
-
 
 \end{document}
