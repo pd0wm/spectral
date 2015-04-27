@@ -75,6 +75,7 @@
 {\endMakeFramed}
 
 % Impulse train
-\usepackage[OT2,T1]{fontenc}
-\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
-\DeclareMathSymbol{\Sha}{\mathalpha}{cyrletters}{"58}
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\Sha}{\mathord}{mcy}{"58}
