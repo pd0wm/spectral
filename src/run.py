@@ -1,6 +1,6 @@
-#!/usr/bin/env python
-
 import cogradio
 
-print "yolo"
-a = cogradio.sampling.mc_sampler()
+cogradio.detection.detector()
+cogradio.sampling.mc_sampler()
+cogradio.reconstruction.reconstructor()
+cogradio.source.source()
