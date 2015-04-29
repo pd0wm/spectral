@@ -1,10 +1,13 @@
 import cogradio
+import numpy as np
 
-frequencies = [10]
-samp_freq = 250
-window = 5
+frequencies = [100e3]
+samp_freq = 300e3
+window = 0.1
+snr = -20
 
 
-sig = cogradio.source.Sinusoidal(frequencies)
+sig = cogradio.source.Sinusoidal(frequencies, SNR=snr)
 samps = sig.generate(samp_freq, window)
+#cogradio.plot(samps)
 cogradio.plot_fft(samps, samp_freq, window)
