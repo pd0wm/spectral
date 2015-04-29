@@ -136,10 +136,45 @@ g & f & e & d & ~ \\
 $$
 \todo[inline, author = Kees]{waarom is dit zo logisch? :S}
 
-This does not
+$\mathbf{y}[n]$ is not Wide Sense Stationary, however and therefore $\mathbf{R}_y[0]$ is not necessarily a Toeplitz Matrix.
+We can exploit the nature of a Toeplitz matrix by only estimating one column of $\mathbf{R}_x^a$. \\
 
-\subsection{implementation}
+The operation $vec(.)$ stacks a matrix into one big vector. For example:
+$$
+vec(\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix})
+= 
+\begin{bmatrix}
+a \\ b \\ c \\ d
+\end{bmatrix}
+$$ 
+The operation $\otimes$ is the Kronecker product operation. For example:
+$$
+\begin{bmatrix}
+a \\ b
+\end{bmatrix} \otimes
+\begin{bmatrix}
+c \\ d
+\end{bmatrix} = 
+\begin{bmatrix}
+a\cdot c \\ a\cdot d \\b\cdot c \\ b\cdot d
+\end{bmatrix}
+$$ 
+We now define
+$$
+\mathbf{r}_y[0] = vec(\mathbf{R}_y[0])
+$$
 
-\subsection{verification}
+\todo[inline, author=Kees]{Hier gebleven}
+The paper states that this method is inferior to the main method in some ways without clearly indicating significant advantages.
+
+\subsubsection{Frequency-Domain Reconstruction Approach}
+This method tries to reconstruct the spectrum instead of the PSD.
+
+\subsection{Implementation}
+
+\subsection{Verification}
 
 \end{document}
