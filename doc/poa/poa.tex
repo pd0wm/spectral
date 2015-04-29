@@ -1,0 +1,36 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+
+\title{Plan of Attack}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\frontmatter
+
+\begin{titlingpage}
+  \pagestyle{empty}
+  \maketitle
+\end{titlingpage}
+
+%\clearpage
+
+\tableofcontents
+
+\mainmatter
+\subimport{introduction/}{introduction}
+\subimport{project/}{project}
+\subimport{requirements/}{requirements}
+\subimport{organisational-details/}{organisational-details}
+\subimport{external-details/}{external-details}
+\subimport{planning/}{planning}
+
+\printbibliography
+
+\appendix
+\end{document}
