@@ -1,4 +1,4 @@
-class reconstructor(object):
+class Reconstructor(object):
 
     """Parent class for reconstruction of spectrum sensed signal"""
 

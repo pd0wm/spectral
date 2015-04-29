@@ -1,1 +1,1 @@
-from detector import detector
+from detector import Detector

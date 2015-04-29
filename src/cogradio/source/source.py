@@ -1,4 +1,4 @@
-class source(object):
+class Source(object):
 
     """Source object for spectrum sensing"""
 

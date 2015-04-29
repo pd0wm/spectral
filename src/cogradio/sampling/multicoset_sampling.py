@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-class mc_sampler(object):
+class MultiCosetSampler(object):
 
     """Multicoset implementation of sampling"""
 

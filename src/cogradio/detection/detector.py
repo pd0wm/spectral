@@ -1,4 +1,4 @@
-class detector(object):
+class Detector(object):
 
     """Detector parent object"""
 

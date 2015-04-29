@@ -1,1 +1,1 @@
-from reconstructor import reconstructor
+from reconstructor import Reconstructor

@@ -1,6 +1,6 @@
 import cogradio
 
-cogradio.detection.detector()
-cogradio.sampling.mc_sampler()
-cogradio.reconstruction.reconstructor()
-cogradio.source.source()
+cogradio.detection.Detector()
+cogradio.sampling.MultiCosetSampler()
+cogradio.reconstruction.Reconstructor()
+cogradio.source.Source()
