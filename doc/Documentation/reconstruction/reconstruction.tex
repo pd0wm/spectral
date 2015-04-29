@@ -14,7 +14,7 @@ The reconstruction uses the output of the sampling block to estimate the power s
 \subsection{Concept}
 The expected input of this reconstruction method is a multicoset sampled signal of the form:
 $$
-\sum_{l=0}^{M-1}z_l[kN]
+\sum_{l=0}^{M-1}z_l[kN] = \sum_{l=0}^{M-1}y_l[k]
 $$
 Where
 \begin{itemize}
@@ -55,8 +55,46 @@ Again recall that $l$ is a boolean and that $l=0$ covers $m\leq 0$ and $l=1$ cov
 $$
 \mathbf{R}_c[l] = [\dots,\mathbf{r}_{ci,cj}[l],\dots]^T \quad l \in \{0,1\}, i,j \in \{0,1, \dots, M-1\}
 $$
-Note that $\mathbf{r}_{ci,cj}[l]$ is a matrix of $N \times 2$! $\mathbf{R}_c[l]$ is therefore a matrix with elements that are time dependent.
+Note that $\mathbf{r}_{ci,cj}[l]$ is a matrix of $N \times 2$! $\mathbf{R}_c[l]$ is therefore a matrix with elements that are time dependent.\\
+\\
+Next up we introduce a new variable $L$. This is the amount of samples of $y[k]$ that we use to determine the PSD. This value can be choosen freely, 
+but has influence on the accuracy and processing of the algoritm. 
+Note that the cross-correlation between two samples of length $L$ has a length of $2L+1$. Because of this, we only need to calculate $\mathbf{r}_x[k]$ for $L<k\leq L$. We can use this to pick $\mathbf{r}_y[k]$ and $\mathbf{r}_x[k]$, and put them into two big vectors.
+$$
+\mathbf{r}_y = [\mathbf{r}^T_y[0],\mathbf{r}^T_y[1],\dots,\mathbf{r}^T_y[L],\mathbf{r}^T_y[-L],\dots,\mathbf{r}^T_y[-1]]^T
+$$
+$$
+\mathbf{r}_x = [\mathbf{r}^T_x[0],\mathbf{r}^T_x[1],\dots,\mathbf{r}^T_x[L],\mathbf{r}^T_x[-L],\dots,\mathbf{r}^T_x[-1]]^T
+$$
+where $\mathbf{r}_y$ has size $(2L+1)M^2\times 1$ and $\mathbf{r}_x$ has size $(2L+1)N \times 1$. \\
 
+After this batch of new definitions and variables we finally arrive at the key point of the previous math:
+$$
+\mathbf{r}_y = \mathbf{R}_c\mathbf{r}_x
+$$ 
+Where
+\begin{itemize}
+\item $\mathbf{r}_y$ represents the auto-correlations of the different measurement devices
+\item $\mathbf{R}_c$ represents the cross-correlations of the different measurement devices 
+\item $\mathbf{r}_x$ represents the auto-correlation of the original signal
+\end{itemize}
+This equation is solvable for $\mathbf{r}_x$ if $M^2\geq N$. \\
+Now we apply LS to solve the equation. We use
+\begin{equation*}
+\begin{split}
+\mathbf{q}_x &= (\mathbf{F}_{2L+1}\otimes \mathbf{I}_N)\mathbf{r}_x \\
+\mathbf{q}_y &= (\mathbf{F}_{2L+1}\otimes \mathbf{I}_M)\mathbf{r}_y \\
+\mathbf{Q}_c[\omega] &= \sum_{k=0}^1\mathbf{R}_c[k]e^{-jk\omega}
+\end{split}
+\end{equation*}
+Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. We use this to rewrite our equation
+$$
+\mathbf{q}_y = \mathbf{Q}_c\mathbf{q}_x
+$$
+This is enough to calculate $\mathbf{r}_x$ with the initial input of the block. Finally we calculate the PSD with
+$$
+\mathbf{s}_x = \mathbf{F}_{(2L+1)N}\mathbf{r}_x
+$$ 
 
 
 
