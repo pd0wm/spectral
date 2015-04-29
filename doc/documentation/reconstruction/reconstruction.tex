@@ -12,21 +12,21 @@ The reconstruction uses the output of the sampling block to estimate the power s
 
 \section{Multicoset Sampling Reconstruction -Ariananda}
 \subsection{Concept}
-The expected input of this reconstruction method is a multicoset sampled signal of the form:
-$$
-\sum_{l=0}^{M-1}z_l[kN] = \sum_{l=0}^{M-1}y_l[k]
-$$
+The expected input of this reconstruction method is a multicoset sampled signal of the form 
+$$z_l[kN]=y_l[k] \quad l \in \{0,1,\dots, M-1\}$$
 Where
 \begin{itemize}
 \item $M$  = amount of sampling devices
 \item $N = \frac{\text{Nyquist rate}}{\text{Sample Frequency}}$
-\item $k$ = the sampling index.
+\item $k$ = the sampling index
+\item $z[k]$ = sampled signal if on Nyquist
+\item $y[k]$ = sampled signal on actual sample rate
 \end{itemize}
 
 Now there are three different methods proposed to reconstruct the Power Spectral Density (PSD) of $x[n]$.
 
 \subsubsection{Time-Domain Reconstruction Approach}
-We desire to reconstruct $r_x[n]$, the auto correlation of $x[n]$, for this holds enough information to determine the PSD.
+We desire to reconstruct $r_x[n]$, the auto correlation of $x[n]$, because this contains enough information to determine the PSD.
 We want to pick the $M$ different device measurements, combine these into $M^2$ different cross-correlation functions and use these to reconstruct the auto-correlation with a sampling that is $N$ lower than nyquist. 
 This is only possible when $M^2>N$.
 
@@ -35,7 +35,7 @@ $$
 r_{yi,yj}[k] = r_{zi,zj}[kN]
 $$
 here $r_{yi,yj}[k]$ is the cross-corelation function of $y_i[k]$ and $y_j[k]$.
-$z[n]$ is the signal we would have got if we sampled on nyquist frequency. Therefore $z[n]$ has N times more samples than $y[n]$.
+$z[n]$ is the signal we would have if we sampled on nyquist frequency. Therefore $z[n]$ has N times more samples than $y[n]$.
 $$
 r_{yi,yj}[k] = r_{zi,zj}[kN] = \sum_{m=-N+1}^{N-1}r_{ci,cj}[m]r_x[kN-m] = \sum_{l=0}^1\mathbf{r}^T_{ci,cj}[l]\mathbf{r}_x[k-l]
 $$
@@ -46,7 +46,7 @@ $$
 $$
 \mathbf{r}_x[k]= [r_x[kN],r_x[kN+1],\dots,r_x[(k+1)N-1]]^T
 $$
-Note that $\mathbf{r}_t[k]$ is the auto-correlation function we want to get, consisting of N parts. Recall that we need N parts because we want to sample at a rate N times less than nyquist ratre.\\
+Note that $\mathbf{r}_t[k]$ is the auto-correlation function we want to get, consisting of N parts. Recall that we need N parts because we want to sample at a rate N times less than nyquist rate.\\
 \\
 Now we make a vector $\mathbf{r}_y[k]$ by combining every possible combination of the $M$ auto-correlations into $M^2$ cross-correlations. $\mathbf{r}_y[k]$ is basically a vector containing all available $\mathbf{r}_{yi,yj}[k]$
 $$
@@ -136,10 +136,45 @@ g & f & e & d & ~ \\
 $$
 \todo[inline, author = Kees]{waarom is dit zo logisch? :S}
 
-This does not
+$\mathbf{y}[n]$ is not Wide Sense Stationary, however and therefore $\mathbf{R}_y[0]$ is not necessarily a Toeplitz Matrix.
+We can exploit the nature of a Toeplitz matrix by only estimating one column of $\mathbf{R}_x^a$. \\
 
-\subsection{implementation}
+The operation $vec(.)$ stacks a matrix into one big vector. For example:
+$$
+vec(\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix})
+= 
+\begin{bmatrix}
+a \\ b \\ c \\ d
+\end{bmatrix}
+$$ 
+The operation $\otimes$ is the Kronecker product operation. For example:
+$$
+\begin{bmatrix}
+a \\ b
+\end{bmatrix} \otimes
+\begin{bmatrix}
+c \\ d
+\end{bmatrix} = 
+\begin{bmatrix}
+a\cdot c \\ a\cdot d \\b\cdot c \\ b\cdot d
+\end{bmatrix}
+$$ 
+We now define
+$$
+\mathbf{r}_y[0] = vec(\mathbf{R}_y[0])
+$$
 
-\subsection{verification}
+\todo[inline, author=Kees]{Hier gebleven}
+The paper states that this method is inferior to the main method in some ways without clearly indicating significant advantages.
+
+\subsubsection{Frequency-Domain Reconstruction Approach}
+This method tries to reconstruct the spectrum instead of the PSD.
+
+\subsection{Implementation}
+
+\subsection{Verification}
 
 \end{document}
