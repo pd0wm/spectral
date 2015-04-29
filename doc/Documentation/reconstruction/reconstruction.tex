@@ -19,7 +19,7 @@ $$
 Where
 \begin{itemize}
 \item $M$  = amount of sampling devices
-\item $N = \frac{\text{sample frequency}}{\text{nyquist rate}}$
+\item $N = \frac{\text{Nyquist rate}}{\text{Sample Frequency}}$
 \item $k$ = the sampling index.
 \end{itemize}
 
@@ -27,18 +27,19 @@ Now there are three different methods proposed to reconstruct the Power Spectral
 
 \subsubsection{Time-Domain Reconstruction Approach}
 We desire to reconstruct $r_x[n]$, the auto correlation of $x[n]$, for this holds enough information to determine the PSD.
-We want to pick the $M$ different measurement device outputs, combine these into $M^2$ different cross-correlation functions and use these to reconstruct the auto-correlation with a sampling that is $N$ lower than nyquist. Thisn is only possible when $M^2>N$.
+We want to pick the $M$ different device measurements, combine these into $M^2$ different cross-correlation functions and use these to reconstruct the auto-correlation with a sampling that is $N$ lower than nyquist. 
+This is only possible when $M^2>N$.
 
 For example: if  one would use 10 different measurement devices, one would theoretically be able to reconstruct a PSD with a sampling rate that is 100 times less than nyquist! This would however require a lot of processing power, which limits the application of this algoritm.
 $$
 r_{yi,yj}[k] = r_{zi,zj}[kN]
 $$
-where $r_{yi,yj}[k]$ is the cross-corelation function of $y_i[k]$ and $y_j[k]$.
+here $r_{yi,yj}[k]$ is the cross-corelation function of $y_i[k]$ and $y_j[k]$.
 $z[n]$ is the signal we would have got if we sampled on nyquist frequency. Therefore $z[n]$ has N times more samples than $y[n]$.
 $$
 r_{yi,yj}[k] = r_{zi,zj}[kN] = \sum_{m=-N+1}^{N-1}r_{ci,cj}[m]r_x[kN-m] = \sum_{l=0}^1\mathbf{r}^T_{ci,cj}[l]\mathbf{r}_x[k-l]
 $$
-This is basically a rewrite with new defined variables. Note that $l$ is a boolean here. $\mathbf{r}_{ci,cj}[0]$ is the part where $m\leq 0$ and $\mathbf{r}_{ci,cj}[1]$ is the part where $m > 0$ 
+This is basically a rewrite with new defined variables. Note that $l$ is a boolean. $\mathbf{r}_{ci,cj}[0]$ is the part where $m\leq 0$ and $\mathbf{r}_{ci,cj}[1]$ is the part where $m > 0$ 
 $$
 \mathbf{r}_{ci,cj}[l] = [r_{ci,cj}[Nl], r_{ci,cj}[Nl-1], \dots, r_{ci,cj}[Nl-N+1]]^T
 $$
@@ -96,8 +97,46 @@ $$
 \mathbf{s}_x = \mathbf{F}_{(2L+1)N}\mathbf{r}_x
 $$ 
 
+\subsubsection{Alternative Time-Domain Approach}
+For this alternate method we start with 
+$$
+\mathbf{y}[k] = \mathbf{Cx}[k]
+$$
+Where 
+\begin{equation*}
+\begin{alignedat}{2}
+\mathbf{y}[k] &= [y_0[k], y_1[k],\dots,y_{M-1}[k]]^T \quad &\text{size}: M \times 1\\
+\mathbf{x}[k] &= [x[kN],x[kN+1],\dots, x[kN+N-1]]^T \quad &\text{size}: N \times 1\\
+\mathbf{C} &= [\mathbf{c}_0,\mathbf{c}_1,dots,\mathbf{c}_{M-1}] \quad &\text{size}: M \times N
+\end{alignedat}
+\end{equation*}
+Next, we construct the autocorrelation matrix of $\mathbf{y}[k]$ and $\mathbf{x}[k]$
+\begin{equation*}
+\begin{alignedat}{2}
+\mathbf{R}_y[0] &= E(\mathbf{y}[k]\mathbf{y}^H[k]) \quad &\text{size}: M \times M \\
+\mathbf{R}_x^a &= E(\mathbf{x}[k]\mathbf{x}^H[k]) \quad &\text{size}: N \times N
+\end{alignedat}
+\end{equation*}
+Their relation can be expressed as
+$$
+\mathbf{R}_y[0] = \mathbf{CR}_x^a\mathbf{C}^H
+$$
+An element of $\mathbf{R}_x^a$ is defined as 
+$$[\mathbf{R}_x^a]_{ij} = r_x[i-j]$$ 
+Because $x[n]$ is Wide Sense Stationary, $\mathbf{R_x^a}$ is a Toeplitz matrix. 
+Recall a Toeplitz matrix is of the form
+$$
+\begin{bmatrix}
+d &c & b & a & \dots \\
+e & d & c & b & ~ \\
+f & e & d & c & ~ \\
+g & f & e & d & ~ \\
+\vdots & ~ & ~ & ~& \ddots
+\end{bmatrix}
+$$
+\todo[inline, author = Kees]{waarom is dit zo logisch? :S}
 
-
+This does not
 
 \subsection{implementation}
 
