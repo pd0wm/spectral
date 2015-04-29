@@ -1,0 +1,145 @@
+
+\documentclass[report, oneside, a4paper, openany]{memoir}
+\input{../../includes/preamble.tex}
+
+\title{Documentation}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\begin{document}
+\chapter{Reconstruction}
+The reconstruction uses the output of the sampling block to estimate the power spectral density.
+
+\section{Multicoset Sampling Reconstruction -Ariananda}
+\subsection{Concept}
+The expected input of this reconstruction method is a multicoset sampled signal of the form 
+$$z_l[kN]=y_l[k] \quad l \in \{0,1,\dots, M-1\}$$
+Where
+\begin{itemize}
+\item $M$  = amount of sampling devices
+\item $N = \frac{\text{Nyquist rate}}{\text{Sample Frequency}}$
+\item $k$ = the sampling index
+\item $z[k]$ = sampled signal if on Nyquist
+\item $y[k]$ = sampled signal on actual sample rate
+\end{itemize}
+
+Now there are three different methods proposed to reconstruct the Power Spectral Density (PSD) of $x[n]$.
+
+\subsubsection{Time-Domain Reconstruction Approach}
+We desire to reconstruct $r_x[n]$, the auto correlation of $x[n]$, because this contains enough information to determine the PSD.
+We want to pick the $M$ different device measurements, combine these into $M^2$ different cross-correlation functions and use these to reconstruct the auto-correlation with a sampling that is $N$ lower than nyquist. 
+This is only possible when $M^2>N$.
+
+For example: if  one would use 10 different measurement devices, one would theoretically be able to reconstruct a PSD with a sampling rate that is 100 times less than nyquist! This would however require a lot of processing power, which limits the application of this algoritm.
+$$
+r_{yi,yj}[k] = r_{zi,zj}[kN]
+$$
+here $r_{yi,yj}[k]$ is the cross-corelation function of $y_i[k]$ and $y_j[k]$.
+$z[n]$ is the signal we would have if we sampled on nyquist frequency. Therefore $z[n]$ has N times more samples than $y[n]$.
+$$
+r_{yi,yj}[k] = r_{zi,zj}[kN] = \sum_{m=-N+1}^{N-1}r_{ci,cj}[m]r_x[kN-m] = \sum_{l=0}^1\mathbf{r}^T_{ci,cj}[l]\mathbf{r}_x[k-l]
+$$
+This is basically a rewrite with new defined variables. Note that $l$ is a boolean. $\mathbf{r}_{ci,cj}[0]$ is the part where $m\leq 0$ and $\mathbf{r}_{ci,cj}[1]$ is the part where $m > 0$ 
+$$
+\mathbf{r}_{ci,cj}[l] = [r_{ci,cj}[Nl], r_{ci,cj}[Nl-1], \dots, r_{ci,cj}[Nl-N+1]]^T
+$$
+$$
+\mathbf{r}_x[k]= [r_x[kN],r_x[kN+1],\dots,r_x[(k+1)N-1]]^T
+$$
+Note that $\mathbf{r}_t[k]$ is the auto-correlation function we want to get, consisting of N parts. Recall that we need N parts because we want to sample at a rate N times less than nyquist rate.\\
+\\
+Now we make a vector $\mathbf{r}_y[k]$ by combining every possible combination of the $M$ auto-correlations into $M^2$ cross-correlations. $\mathbf{r}_y[k]$ is basically a vector containing all available $\mathbf{r}_{yi,yj}[k]$
+$$
+\mathbf{r}_y[k]=\sum_{l=0}^1\mathbf{R}_c[l]\mathbf{r}_x[k-l]
+$$
+Again recall that $l$ is a boolean and that $l=0$ covers $m\leq 0$ and $l=1$ covers $m > 0$. $\mathbf{R}_c$ is an $M^2 \times N \times 2$ matrix.
+$$
+\mathbf{R}_c[l] = [\dots,\mathbf{r}_{ci,cj}[l],\dots]^T \quad l \in \{0,1\}, i,j \in \{0,1, \dots, M-1\}
+$$
+Note that $\mathbf{r}_{ci,cj}[l]$ is a matrix of $N \times 2$! $\mathbf{R}_c[l]$ is therefore a matrix with elements that are time dependent.\\
+\\
+Next up we introduce a new variable $L$. This is the amount of samples of $y[k]$ that we use to determine the PSD. This value can be choosen freely, 
+but has influence on the accuracy and processing of the algoritm. 
+Note that the cross-correlation between two samples of length $L$ has a length of $2L+1$. Because of this, we only need to calculate $\mathbf{r}_x[k]$ for $L<k\leq L$. We can use this to pick $\mathbf{r}_y[k]$ and $\mathbf{r}_x[k]$, and put them into two big vectors.
+$$
+\mathbf{r}_y = [\mathbf{r}^T_y[0],\mathbf{r}^T_y[1],\dots,\mathbf{r}^T_y[L],\mathbf{r}^T_y[-L],\dots,\mathbf{r}^T_y[-1]]^T
+$$
+$$
+\mathbf{r}_x = [\mathbf{r}^T_x[0],\mathbf{r}^T_x[1],\dots,\mathbf{r}^T_x[L],\mathbf{r}^T_x[-L],\dots,\mathbf{r}^T_x[-1]]^T
+$$
+where $\mathbf{r}_y$ has size $(2L+1)M^2\times 1$ and $\mathbf{r}_x$ has size $(2L+1)N \times 1$. \\
+
+After this batch of new definitions and variables we finally arrive at the key point of the previous math:
+$$
+\mathbf{r}_y = \mathbf{R}_c\mathbf{r}_x
+$$ 
+Where
+\begin{itemize}
+\item $\mathbf{r}_y$ represents the auto-correlations of the different measurement devices
+\item $\mathbf{R}_c$ represents the cross-correlations of the different measurement devices 
+\item $\mathbf{r}_x$ represents the auto-correlation of the original signal
+\end{itemize}
+This equation is solvable for $\mathbf{r}_x$ if $M^2\geq N$. \\
+Now we apply LS to solve the equation. We use
+\begin{equation*}
+\begin{split}
+\mathbf{q}_x &= (\mathbf{F}_{2L+1}\otimes \mathbf{I}_N)\mathbf{r}_x \\
+\mathbf{q}_y &= (\mathbf{F}_{2L+1}\otimes \mathbf{I}_M)\mathbf{r}_y \\
+\mathbf{Q}_c[\omega] &= \sum_{k=0}^1\mathbf{R}_c[k]e^{-jk\omega}
+\end{split}
+\end{equation*}
+Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. We use this to rewrite our equation
+$$
+\mathbf{q}_y = \mathbf{Q}_c\mathbf{q}_x
+$$
+This is enough to calculate $\mathbf{r}_x$ with the initial input of the block. Finally we calculate the PSD with
+$$
+\mathbf{s}_x = \mathbf{F}_{(2L+1)N}\mathbf{r}_x
+$$ 
+
+\subsubsection{Alternative Time-Domain Approach}
+For this alternate method we start with 
+$$
+\mathbf{y}[k] = \mathbf{Cx}[k]
+$$
+Where 
+\begin{equation*}
+\begin{alignedat}{2}
+\mathbf{y}[k] &= [y_0[k], y_1[k],\dots,y_{M-1}[k]]^T \quad &\text{size}: M \times 1\\
+\mathbf{x}[k] &= [x[kN],x[kN+1],\dots, x[kN+N-1]]^T \quad &\text{size}: N \times 1\\
+\mathbf{C} &= [\mathbf{c}_0,\mathbf{c}_1,dots,\mathbf{c}_{M-1}] \quad &\text{size}: M \times N
+\end{alignedat}
+\end{equation*}
+Next, we construct the autocorrelation matrix of $\mathbf{y}[k]$ and $\mathbf{x}[k]$
+\begin{equation*}
+\begin{alignedat}{2}
+\mathbf{R}_y[0] &= E(\mathbf{y}[k]\mathbf{y}^H[k]) \quad &\text{size}: M \times M \\
+\mathbf{R}_x^a &= E(\mathbf{x}[k]\mathbf{x}^H[k]) \quad &\text{size}: N \times N
+\end{alignedat}
+\end{equation*}
+Their relation can be expressed as
+$$
+\mathbf{R}_y[0] = \mathbf{CR}_x^a\mathbf{C}^H
+$$
+An element of $\mathbf{R}_x^a$ is defined as 
+$$[\mathbf{R}_x^a]_{ij} = r_x[i-j]$$ 
+Because $x[n]$ is Wide Sense Stationary, $\mathbf{R_x^a}$ is a Toeplitz matrix. 
+Recall a Toeplitz matrix is of the form
+$$
+\begin{bmatrix}
+d &c & b & a & \dots \\
+e & d & c & b & ~ \\
+f & e & d & c & ~ \\
+g & f & e & d & ~ \\
+\vdots & ~ & ~ & ~& \ddots
+\end{bmatrix}
+$$
+\todo[inline, author = Kees]{waarom is dit zo logisch? :S}
+
+This does not
+
+\subsection{implementation}
+
+\subsection{verification}
+
+\end{document}
