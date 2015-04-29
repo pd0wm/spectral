@@ -1,0 +1,34 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+
+\title{Documentation}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\frontmatter
+
+\begin{titlingpage}
+  \pagestyle{empty}
+  \maketitle
+\end{titlingpage}
+
+%\clearpage
+
+\tableofcontents
+
+\mainmatter
+
+\subimport{software_framework/}{software_framework}
+\subimport{usrp/}{usrp}
+\subimport{multicoset_sampling/}{multicoset_sampling}
+\subimport{reconstruction/}{reconstruction}
+
+%\printbibliography
+
+\appendix
+\end{document}
