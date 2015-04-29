@@ -8,6 +8,54 @@
 
 \begin{document}
 \chapter{Reconstruction}
+The reconstruction uses the output of the sampling block to estimate the power spectral density.
 
-\section{This is a section}
+\section{Multicoset Sampling Reconstruction -Ariananda}
+\subsection{concept}
+The expected input of this reconstruction method is a multicoset sampled signal.
+\\ \\
+The expected input of this block is
+$$
+\sum_{l=0}^{M-1}z_l[kN]
+$$
+With $M$ the amount of sampling devices, N = sample frequency/nyquist rate and k the sampling index.\\
+\\
+The Cross Spectral Density (CSD) is given by
+$$
+P_{yi,yj}(\omega) = \sum_{k=-\infty}^\infty r_{yi,yj}[k]e^{-jk\omega}, \quad  \leq \omega < 2\pi
+$$ 
+where $r_{yi,yj}[k]$ is the cross-corelation function of $y_i[k]$ and $y_j[k]$.\\
+\\
+Now there are three different methods proposed to reconstruct the Power Spectral Density (PSD)
+
+\subsubsection{Time-Domain Reconstruction Approach}
+We desire to reconstruct $r_x[n]$, the auto correlation of $x[n]$. If we are able to reconstruct $r_x[n]$ we have enough information to determine the PSD.\\
+The big idea of this method is to get $M^2$ equations to calculate the $N$ parts of the autocorrelation function. We want to pick the $M$ different measurement device outputs, combine these into $M^2$ different cross-correlation functions, and use these to reconstruct the auto-correlation with a sampling that is N lower than nyquist. \\
+\\
+For example: if  one would use 10 different measurement devices, one would be able to reconstruct a Power Spectral Density with a samplingrate that is 100 times lower than nyquist!
+$$
+r_{yi,yj}[k] = r_{zi,zj}[kN] = \sum_{m=-N+1}^{N-1}r_{ci,cj}[m]r_x[kN-m] = \sum_{l=0}^1\mathbf{r}^T_{ci,cj}[l]\mathbf{r}_x[k-l]
+$$
+This is basically a rewrite with new defined variables. Note that $l$ is a boolean here. $\mathbf{r}_{ci,cj}[0]$ is the part where $m\leq 0$ and $\mathbf{r}_{ci,cj}[1]$ is the part where $m > 0$ 
+$$
+\mathbf{r}_{ci,cj}[l] = [r_{ci,cj}[Nl], r_{ci,cj}[Nl-1], \dots, r_{ci,cj}[Nl-N+1]]^T
+$$
+$$
+\mathbf{r}_x[k]= [r_x[kN],r_x[kN+1],\dots,r_x[(k+1)N-1]]^T
+$$
+Note that $\mathbf{r}_t[k]$ is the autocorrelationfunction we want to get, consisting of N parts. Recall that we need N parts because we want to sample at a rate N times slower than nyquist ratre.\\
+\\
+Now we make a vector $\mathbf{r}_y[k]$ by combining every possible combination of the $M$ auto_correlations into $M^2$ cross-correlations.
+$$
+\mathbf{r}_y[k]=\sum_{l=0}^1\mathbf{R}_c[l]\mathbf{r}_x[k-l]
+$$
+Again recall that $l$ is a boolean and that $l=0$ covers $m\leq 0$ and $l=1$ covers $m > 0$.
+
+
+
+
+\subsection{implementation}
+
+\subsection{verification}
+
 \end{document}
