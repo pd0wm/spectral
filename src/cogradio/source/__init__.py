@@ -1,1 +1,1 @@
-from .source import Source
+from .sinusoidal import Sinusoidal

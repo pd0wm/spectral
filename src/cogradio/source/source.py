@@ -2,9 +2,9 @@ class Source(object):
 
     """Source object for spectrum sensing"""
 
-    def __init__(self):
-        """TODO: to be defined1. """
-        print "Source"
+    def __init__(self, frequencies, SNR):
+        self.frequencies = frequencies
+        self.SNR = SNR
 
-    def generate(self):
-        return [1, 2, 3]
+    def generate(self, samp_freq, duration):
+        raise NotImplementedError("Implement this method")
