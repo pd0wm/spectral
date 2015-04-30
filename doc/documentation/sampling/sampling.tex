@@ -16,14 +16,14 @@ This section is the simulation of hardware with less sample rate than the input 
 \section{Minimal Sparse Ruler Sampling}
 The minimal sparse ruler sampling is design to use the sampling filters in such a way, that the reconstruction method performs optimally. This optimal solution is achieved using the minimal sparse ruler problem.
 \subsection{Theory}
-This Sampling method is a kind of multi-coset sampling. This means that multiple (cheaper) devices are used to acquire the data. Every device measures the signal $x[n]$, samples it with a function $c_l[n]$, and then integrate and dumps the signal with over a period of $N$ samples. We define 
+This Sampling method is a form of multi-coset sampling. This means that multiple devices with lower sampling rates are used to acquire the data. Every device measures the signal $x[n]$, samples it with a function $c_l[n]$, and then applies integrate and dump on the signal over a period of $N$ samples. We define 
 $$
 c_l[n] = \delta[-n -n_i]
 $$
 $$
-z_l[n] = c_l[n]\ast x[n] 
+z_l[n] = c_l[n]\ast x[n],
 $$
-Where
+where
 \begin{itemize}
 \item $x[n]$ the input signal
 \item $c_l[n]$ the filter of device $l$
@@ -40,7 +40,7 @@ The cross-correlation between the sampling filters is
 $$
 r_{ci,cj}[n] = \delta [n-n_i+n_j]
 $$
-We want to get enough different values for $n_i+n_j$ to solve the problem. This is a minimal sparse ruler problem. For a decimation of $N$ we want to get the least amount of $n_i \in \{0,1,\dots,N-1\}$, that are able to combine into $N$ different values of $n_i+n_j$. 
+We want to get enough different values for $n_i-n_j$ to solve the problem. This is a minimal sparse ruler problem. For a decimation of $N$ we want to get the least amount of $n_i \in \{0,1,\dots,N-1\}$, that are able to combine into $N$ different values of $n_i-n_j$. 
 
 For example, for $N=6$ we get
 
