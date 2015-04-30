@@ -12,9 +12,53 @@ This block takes the output of the generation block and takes samples of it to b
 This section is the simulation of hardware with less samplerate than the input signal.
 
 
-\section{Minimal Sparse Ruler Sampling}
+\section{Mimial Sparse Ruler Sampling}
 \subsection{Concept}
-This sampling method ensures uniqueness of the LS solution of the Time-Domain and Alternative Time-Domain Approach. Therefore this is a vital part of the sampling process.
+The minimal sarse ruler sampling is design to use the sampling filters in such a way, that the reconstruction method performs optimally. This optimal solution is achieved using the minimal sparse ruler problem.
+\subsection{Theory}
+This Sampling method is a kind of multicoset sampling. This means that multiple (cheaper) devices are used to aquire the data. Every device measures the signal $x[n]$, samples it with a function $c_l[n]$, and then integrate and dumps the signal with over a period of $N$ samples. We define 
+$$
+c_l[n] = \delta[-n -n_i]
+$$
+$$
+z_l[n] = c_l[n]\ast x[n] 
+$$
+Where
+\begin{itemize}
+\item $x[n]$ the input signal
+\item $c_l[n]$ the filter of device $l$
+\item $n_i$ the location of the dirac pulse
+\item $z_l[n]$ the output of the sampling
+\end{itemize}
+Note that the dirac pulses make sure that
+$$z_l[n]=0 \quad \quad \text{for }\;n\,\text{mod}\,N\neq n_i$$
+When we Integrate and dump the signal we get output $y_l[k]$, which basically is the one sampled value in the period $kN\leq n<(k+1)N$.\\
+\\
+Now we want to choose the $n_i$ in such a way, that the cross-correlations of the different devices are lineary independent. We also largest decimationfactor. we can get with $M$ devices.\\
+\\
+The cross-correlation between the sampling filters is 
+$$
+r_{ci,cj}[n] = \delta [n-n_i+n_j]
+$$
+We want to get enough different values for $n_i+n_j$ to solve the problem. This is a minimal sparse ruler problem. For a decimation of $N$ we want to get the least amount of $n_i \in \{0,1,\dots,N-1\}$, that are able to combine into $N$ different values of $n_i+n_j$. 
+
+For example, for $N=6$ we get
+\begin{equation*}
+\begin{split}
+n_i&\in\{0,1,4,6\}\\
+1 &= 1-0\\
+2 &= 6-4\\
+3 &= 4-1\\
+4 &= 4-0\\
+5 &= 6-1\\
+6 &= 6-0
+\end{split}
+\end{equation*}
+
+
+There are algoritms to calculate this exactly, but if we limit the $N$ to a set of values, we can simply use a look-up table to improve performance dramatically.
+
+When the set of $n_i$ is aqcuired we build the filter-matrix $c$ by picking an identity matrix $\mathbf{I}_N$ and choose columns of it with index $n_i$ to get matrix $c$ with size $M \times N$.
 
 \subsection{Implementation}
 

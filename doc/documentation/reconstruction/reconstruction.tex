@@ -17,12 +17,12 @@ We want to get a system of linear equations with equations$\geq$variables, to so
 This reconstruction method uses the cross-correlation of $M$ different devices to achieve this. 
 It allows you to get $M^2$ different equations (all the cross-correlation combinations of the $M$ devices). This method only works when $M^2\geq N$\\
 \\
-The acquiring of samples is handled in the section about Sampling. It is the job of the Sampling block to deliver a set of sampled signals of the form 
+The acquisition of samples is handled in the section about Sampling. It is the job of the Sampling block to deliver a set of sampled signals of the form 
 $$y_l[k] = z_l[kN] \quad l \in \{0,1,\dots, M-1\}$$
 Where
 \begin{itemize}
 \item $M$  = amount of sampling devices
-\item $N = \frac{\text{Nyquist rate}}{\text{Sampling Frequency}}$
+\item $N = \frac{\text{Nyquist rate}}{\text{Sampling Frequency}} = $ the decimationfactor
 \item $k$ = the sampling index
 \item $z[k]$ = sampled signal if on Nyquist
 \item $y[k]$ = sampled signal on actual sample rate
@@ -35,16 +35,18 @@ z_l[n] &= c_l[n]\ast x[n]\\
 y_l[k] &= \frac{1}{NT}\int_{kNT}^{(k+1)NT} z_l[n]
 \end{split}
 \end{equation*}
-Note that $c[n]$ could be anything, but this is discussed further in the Sampling section.\\
-\\
+Note that $c_l[n]$ is a set of filters. We previously saw that this is f the form 
+$$
+c_l[n] = \delta[-n -n_l]
+$$
 Now there are three different methods proposed to reconstruct the Power Spectral Density (PSD) of $x[n]$. 
 However, the first method is the most convenient for our application. 
 Therefore we will focus on the time-domain reconstruction method.
 
 \subsubsection{Theory}
 We want to estimate $r_x[n]$, the auto correlation of $x[n]$, because this contains enough information to determine the PSD.
-We want to pick the $M$ different device measurements, combine these into $M^2$ different cross-correlation functions and use these to reconstruct the auto-correlation with a sampling that is $N$ lower than nyquist. 
-This is only possible when $M^2>N$. We want to get an expression of the form
+Recall that the samples signals are $N$ times decimated, so in order to estimate the auto-correlation of the original signal we need to get at least $N$ equations. 
+We want an expression of the form
 $$
 \mathbf{r}_y = \mathbf{R}_c\mathbf{r}_x
 $$ 
@@ -62,6 +64,12 @@ $$
 r_{yi,yj}[k] = r_{zi,zj}[kN]
 $$
 here $r_{yi,yj}[k]$ is the cross-correlation function of $y_i[k]$ and $y_j[k]$.
+We define $r_{ci,cj}$ as the cross-correlation of the different filers $c_l[n]$.
+Recall that 
+$$
+z_l[n] = c_l[n]\ast x[n]
+$$
+Therefore we can write
 $$
 r_{yi,yj}[k] = r_{zi,zj}[kN] = \sum_{m=-N+1}^{N-1}r_{ci,cj}[m]r_x[kN-m] = \sum_{l=0}^1\mathbf{r}^T_{ci,cj}[l]\mathbf{r}_x[k-l]
 $$
@@ -72,10 +80,8 @@ $$
 $$
 \mathbf{r}_x[k]= [r_x[kN],r_x[kN+1],\dots,r_x[(k+1)N-1]]^T
 $$
-Note that $\mathbf{r}_x[k]$ is the auto-correlation function we want to get. 
-Because $y_l[k]$ has $N$ times less samples than the original $x[n]$, we need an $\mathbf{r}_x$ of size $N \times 1$.
-This vector $\mathbf{r}_x[k]$ basically contains the $N$ variables we want to solve with the $M^2$ equations.
-
+Recall that $\mathbf{r}_x[k]$ is the auto-correlation function we want to get and that it contains the $N$ variables we want to estimate.\\
+\\
 Now we make a vector $\mathbf{r}_y[k]$ by combining every possible combination of the $M$ devices into $M^2$ cross-correlations. $\mathbf{r}_y[k]$ is basically a vector containing all available $\mathbf{r}_{yi,yj}[k]$
 $$
 \mathbf{r}_y[k]=\sum_{l=0}^1\mathbf{R}_c[l]\mathbf{r}_x[k-l]
@@ -84,13 +90,11 @@ Again note that $l \in \{0,1\}$ and that $l=0$ covers $m\leq 0$ and $l=1$ covers
 $$
 \mathbf{R}_c[l] = [\dots,\mathbf{r}_{ci,cj}[l],\dots]^T \quad l \in \{0,1\}, i,j \in \{0,1, \dots, M-1\}
 $$
-Note that every element $\mathbf{r}_{ci,cj}[l]$ of $\mathbf{R}_c[l]$ is a vector of $N \times 1$! $\mathbf{R}_c[l]$ is therefore a matrix with elements that are time dependent.\\
+Note that every element $\mathbf{r}_{ci,cj}[l]$ of $\mathbf{R}_c[l]$ is a vector of $N \times 1$. $\mathbf{R}_c[l]$ is therefore a matrix with elements that are time dependent.\\
 \\
-Next up we introduce a new variable $L$. This is the amount of samples of $y[k]$ that we use to determine the PSD. This value can be choosen freely, 
-but has influence on the accuracy and the processing cost of the algoritm. 
-Note that the cross-correlation between two samples of length $L$ has a length of $2L+1$. 
-Because of this, we only need to calculate $\mathbf{r}_x[k]$ for $-L<k\leq L$. 
-We can use this to pick $\mathbf{r}_y[k]$ and $\mathbf{r}_x[k]$, and put them into two big vectors.
+Next up we introduce a new variable $L$. we use this to determine the range of k: $-L\leq k<L$. 
+This value can be choosen freely, but has influence on the accuracy and the processing cost of the algoritm. 
+Note that the amount of values of $k$ is $2L+1$. We can use this to pick $\mathbf{r}_y[k]$ and $\mathbf{r}_x[k]$, and put them into two big vectors.
 $$
 \mathbf{r}_y = [\mathbf{r}^T_y[0],\mathbf{r}^T_y[1],\dots,\mathbf{r}^T_y[L],\mathbf{r}^T_y[-L],\dots,\mathbf{r}^T_y[-1]]^T
 $$
@@ -109,7 +113,7 @@ Where
 \item $\mathbf{R}_c$ represents the cross-correlations of the different measurement devices 
 \item $\mathbf{r}_x$ represents the auto-correlation of the original signal
 \end{itemize}
-This equation is solvable for $\mathbf{r}_x$ if $M^2\geq N$. So, if you are able to construct the elements in the equations above, you can use LS to estimate $\mathbf{r}_x$, the auto-correlation of the original $x[n]$ signal.\\
+If you are able to construct the elements in the equations above, and $\mathbf{r}_y$ has more elements than $\mathbf{r}_x$, you can use LS to estimate $\mathbf{r}_x$, the auto-correlation of the original $x[n]$ signal.\\
 Now we apply the LS. We use
 \begin{equation*}
 \begin{split}
@@ -118,7 +122,8 @@ Now we apply the LS. We use
 \mathbf{Q}_c[\omega] &= \sum_{k=0}^1\mathbf{R}_c[k]e^{-jk\omega}
 \end{split}
 \end{equation*}
-Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. We use this to rewrite the equation into
+Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. $F$ is the DFT matrix. 
+We use this to rewrite the equation into
 $$
 \mathbf{q}_y = \mathbf{Q}_c\mathbf{q}_x
 $$
@@ -126,8 +131,6 @@ This is enough to calculate $\mathbf{r}_x$. Finally we calculate the PSD $s_x$ w
 $$
 \mathbf{s}_x = \mathbf{F}_{(2L+1)N}\mathbf{r}_x
 $$ 
-
-\subsection{Mimial Sparse Ruler Sampling}
 
 \subsection{Implementation}
 
