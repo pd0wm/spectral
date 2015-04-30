@@ -28,7 +28,7 @@ Where
 \begin{itemize}
 \item $x[n]$ the input signal
 \item $c_l[n]$ the filter of device $l$
-\item $n_i$ the location of the dirac pulse
+\item $n_i$ the location of the Dirac pulse
 \item $z_l[n]$ the output of the sampling
 \end{itemize}
 Note that the Dirac pulses make sure that
@@ -44,8 +44,8 @@ $$
 We want to get enough different values for $n_i+n_j$ to solve the problem. This is a minimal sparse ruler problem. For a decimation of $N$ we want to get the least amount of $n_i \in \{0,1,\dots,N-1\}$, that are able to combine into $N$ different values of $n_i+n_j$. 
 
 For example, for $N=6$ we get
-\begin{equation*}
-\begin{split}
+
+\begin{align}
 n_i&\in\{0,1,4,6\}\\
 1 &= 1-0\\
 2 &= 6-4\\
@@ -53,8 +53,7 @@ n_i&\in\{0,1,4,6\}\\
 4 &= 4-0\\
 5 &= 6-1\\
 6 &= 6-0
-\end{split}
-\end{equation*}
+\end{align}
 
 
 There are algorithms to calculate this exactly, but if we limit the $N$ to a set of values, we can simply use a look-up table to improve performance dramatically.
