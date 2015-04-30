@@ -9,10 +9,17 @@ def signal_power(signal):
     return np.linalg.norm(signal)**2 / len(signal)
 
 
-def fft(signal, samp_freq, window):
+def fft(signal):
     fft = np.abs(np.fft.fftshift(np.fft.fft(signal)))
-    freq = np.linspace(-samp_freq/2, samp_freq/2, samp_freq*window)
-    return (freq, fft)
+    return fft
+
+
+def freq_axis(samp_freq, duration):
+    return np.linspace(-samp_freq/2, samp_freq/2, samp_freq * duration)
+
+
+def time_axis(samp_freq, duration):
+    return np.linspace(0, duration, duration * samp_freq)
 
 
 def convert_db(value):
