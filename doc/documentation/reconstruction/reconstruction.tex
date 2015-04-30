@@ -10,7 +10,7 @@
 \chapter{Reconstruction}
 The reconstruction uses the output of the sampling block to estimate the power spectral density.
 
-\section{Multicoset Sampling Reconstruction -Time-Domain Approach}
+\section{Multi-coset Sampling Reconstruction -Time-Domain Approach}
 \subsection{Concept}
 We want to estimate the PSD of a signal $x[n]$, but we want to achieve this with a sampling-rate that is a factor $N$ lower than Nyquist. 
 We want to get a system of linear equations with equations$\geq$variables, to solve it with the Least Squares (LS) method. 
@@ -22,7 +22,7 @@ $$y_l[k] = z_l[kN] \quad l \in \{0,1,\dots, M-1\}$$
 Where
 \begin{itemize}
 \item $M$  = amount of sampling devices
-\item $N = \frac{\text{Nyquist rate}}{\text{Sampling Frequency}} = $ the decimationfactor
+\item $N = \frac{\text{Nyquist rate}}{\text{Sampling Frequency}} = $ the decimation factor
 \item $k$ = the sampling index
 \item $z[k]$ = sampled signal if on Nyquist
 \item $y[k]$ = sampled signal on actual sample rate

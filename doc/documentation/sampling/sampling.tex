@@ -1,3 +1,4 @@
+%!TEX program=xelatex
 
 \documentclass[report, oneside, a4paper, openany]{memoir}
 \input{../../includes/preamble.tex}
@@ -9,14 +10,14 @@
 \begin{document}
 \chapter{Sampling}
 This block takes the output of the generation block and takes samples of it to be send to the reconstruction block. 
-This section is the simulation of hardware with less samplerate than the input signal.
+This section is the simulation of hardware with less sample rate than the input signal.
 
 
-\section{Mimial Sparse Ruler Sampling}
+\section{Minimal Sparse Ruler Sampling}
 \subsection{Concept}
-The minimal sarse ruler sampling is design to use the sampling filters in such a way, that the reconstruction method performs optimally. This optimal solution is achieved using the minimal sparse ruler problem.
+The minimal sparse ruler sampling is design to use the sampling filters in such a way, that the reconstruction method performs optimally. This optimal solution is achieved using the minimal sparse ruler problem.
 \subsection{Theory}
-This Sampling method is a kind of multicoset sampling. This means that multiple (cheaper) devices are used to aquire the data. Every device measures the signal $x[n]$, samples it with a function $c_l[n]$, and then integrate and dumps the signal with over a period of $N$ samples. We define 
+This Sampling method is a kind of multi-coset sampling. This means that multiple (cheaper) devices are used to acquire the data. Every device measures the signal $x[n]$, samples it with a function $c_l[n]$, and then integrate and dumps the signal with over a period of $N$ samples. We define 
 $$
 c_l[n] = \delta[-n -n_i]
 $$
@@ -30,11 +31,11 @@ Where
 \item $n_i$ the location of the dirac pulse
 \item $z_l[n]$ the output of the sampling
 \end{itemize}
-Note that the dirac pulses make sure that
+Note that the Dirac pulses make sure that
 $$z_l[n]=0 \quad \quad \text{for }\;n\,\text{mod}\,N\neq n_i$$
 When we Integrate and dump the signal we get output $y_l[k]$, which basically is the one sampled value in the period $kN\leq n<(k+1)N$.\\
 \\
-Now we want to choose the $n_i$ in such a way, that the cross-correlations of the different devices are lineary independent (see reconstruction to understand this). We also largest decimationfactor. we can get with $M$ devices.\\
+Now we want to choose the $n_i$ in such a way, that the cross-correlations of the different devices are linearly independent (see reconstruction to understand this). We also largest decimation factor. we can get with $M$ devices.\\
 \\
 The cross-correlation between the sampling filters is 
 $$
@@ -56,9 +57,9 @@ n_i&\in\{0,1,4,6\}\\
 \end{equation*}
 
 
-There are algoritms to calculate this exactly, but if we limit the $N$ to a set of values, we can simply use a look-up table to improve performance dramatically.
+There are algorithms to calculate this exactly, but if we limit the $N$ to a set of values, we can simply use a look-up table to improve performance dramatically.
 
-When the set of $n_i$ is aqcuired we build the filter-matrix $c$ by picking an identity matrix $\mathbf{I}_N$ and choose columns of it with index $n_i$ to get matrix $c$ with size $M \times N$.
+When the set of $n_i$ is acquired we build the filter-matrix $c$ by picking an identity matrix $\mathbf{I}_N$ and choose columns of it with index $n_i$ to get matrix $c$ with size $M \times N$.
 
 \subsection{Implementation}
 
