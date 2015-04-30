@@ -10,7 +10,7 @@ def signal_power(signal):
 
 
 def fft(signal, samp_freq, window):
-    fft = np.fft.fftshift(np.abs(np.fft.fft(signal)))
+    fft = np.abs(np.fft.fftshift(np.fft.fft(signal)))
     freq = np.linspace(-samp_freq/2, samp_freq/2, samp_freq*window)
     return (freq, fft)
 
