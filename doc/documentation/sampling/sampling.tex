@@ -17,12 +17,10 @@ This section is the simulation of hardware with less sample rate than the input 
 The minimal sparse ruler sampling is design to use the sampling filters in such a way, that the reconstruction method performs optimally. This optimal solution is achieved using the minimal sparse ruler problem.
 \subsection{Theory}
 This Sampling method is a form of multi-coset sampling. This means that multiple devices with lower sampling rates are used to acquire the data. Every device measures the signal $x[n]$, samples it with a function $c_l[n]$, and then applies integrate and dump on the signal over a period of $N$ samples. We define 
-$$
-c_l[n] = \delta[-n -n_i]
-$$
-$$
-z_l[n] = c_l[n]\ast x[n],
-$$
+\begin{align}
+c_l[n] &= \delta[-n -n_i] \text{ and}\\
+z_l[n] &= c_l[n]\ast x[n],
+\end{align}
 where
 \begin{itemize}
 \item $x[n]$ the input signal
