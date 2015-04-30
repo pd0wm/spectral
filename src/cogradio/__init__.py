@@ -6,7 +6,7 @@ import numpy as np
 
 
 def signal_power(signal):
-    return np.linalg.norm(signal)**2 / len(signal)
+    return np.linalg.norm(signal) ** 2 / len(signal)
 
 
 def fft(signal):
@@ -15,7 +15,7 @@ def fft(signal):
 
 
 def freq_axis(samp_freq, duration):
-    return np.linspace(-samp_freq/2, samp_freq/2, samp_freq * duration)
+    return np.linspace(-samp_freq / 2, samp_freq / 2, samp_freq * duration)
 
 
 def time_axis(samp_freq, duration):
@@ -23,11 +23,12 @@ def time_axis(samp_freq, duration):
 
 
 def convert_db(value):
-    return 10*np.log10(value)
+    return 10 * np.log10(value)
 
 
 def invert_db(value):
-    return 10**(value/10.0)
+    return 10 ** (value / 10.0)
+
 
 def auto_correlation(signal):
-	return np.correlate(signal, signal, mode='same')
+    return np.correlate(signal, signal, mode='same')

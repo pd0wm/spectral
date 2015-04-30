@@ -2,13 +2,13 @@ from nose.tools import *
 import cogradio
 
 
-#def setup():
+# def setup():
 #    print "SETUP!"
 #
 #
-#def teardown():
+# def teardown():
 #    print "Tear DOWN"
 #
 #
-#def test_basic():
+# def test_basic():
 #    print "I RAN I CAME I CONQUERED"
