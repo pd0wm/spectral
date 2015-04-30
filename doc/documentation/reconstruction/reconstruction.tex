@@ -22,7 +22,7 @@ $$y_l[k] = z_l[kN] \quad l \in \{0,1,\dots, M-1\}$$
 Where
 \begin{itemize}
 \item $M$  = amount of sampling devices
-\item $N = \frac{\text{Nyquist rate}}{\text{Sample Frequency}}$
+\item $N = \frac{\text{Nyquist rate}}{\text{Sampling Frequency}}$
 \item $k$ = the sampling index
 \item $z[k]$ = sampled signal if on Nyquist
 \item $y[k]$ = sampled signal on actual sample rate
@@ -118,16 +118,16 @@ Now we apply the LS. We use
 \mathbf{Q}_c[\omega] &= \sum_{k=0}^1\mathbf{R}_c[k]e^{-jk\omega}
 \end{split}
 \end{equation*}
-Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. We use this to rewrite our equation
+Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. We use this to rewrite the equation into
 $$
 \mathbf{q}_y = \mathbf{Q}_c\mathbf{q}_x
 $$
-This is enough to calculate $\mathbf{r}_x$. Finally we calculate the PSD with
+This is enough to calculate $\mathbf{r}_x$. Finally we calculate the PSD $s_x$ with
 $$
 \mathbf{s}_x = \mathbf{F}_{(2L+1)N}\mathbf{r}_x
 $$ 
 
-
+\subsection{Mimial Sparse Ruler Sampling}
 
 \subsection{Implementation}
 
