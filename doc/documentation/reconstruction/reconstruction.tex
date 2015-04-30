@@ -12,11 +12,10 @@ The reconstruction uses the output of the sampling block to estimate the power s
 
 \section{Multicoset Sampling Reconstruction -Time-Domain Approach}
 \subsection{Concept}
-We want to estimate the PSD of a signal $x[n]$, but we want to achieve this with a sampling-rate that is significantly lower than Nyquist. 
-This method uses multiple devices to achieve this. 
-We want to get a system of linear equations with more equations than variables so that we can solve it with the Least Squares (LS) method. 
-If we sample down with a factor $N$ we need $N$ lineary independent equations to use LS.
-This reconstruction method uses the cross-correlation of the different devices to get these equations. It allows you to get $M^2$ different equations with $M$ being the amount of devices used.\\
+We want to estimate the PSD of a signal $x[n]$, but we want to achieve this with a sampling-rate that is a factor $N$ lower than Nyquist. 
+We want to get a system of linear equations with equations$\geq$variables, to solve it with the Least Squares (LS) method. 
+This reconstruction method uses the cross-correlation of $M$ different devices to achieve this. 
+It allows you to get $M^2$ different equations (all the cross-correlation combinations of the $M$ devices). This method only works when $M^2\geq N$\\
 \\
 The acquiring of samples is handled in the section about Sampling. It is the job of the Sampling block to deliver a set of sampled signals of the form 
 $$y_l[k] = z_l[kN] \quad l \in \{0,1,\dots, M-1\}$$
