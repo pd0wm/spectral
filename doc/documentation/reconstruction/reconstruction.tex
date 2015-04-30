@@ -11,10 +11,7 @@
 The reconstruction uses the output of the sampling block to estimate the power spectral density.
 
 \section{Multi-coset Sampling Reconstruction -Time-Domain Approach}
-\subsection{Concept}
-We want to estimate the PSD of a signal $x[n]$, but we want to achieve this with a sampling-rate that is a factor $N$ lower than Nyquist. 
-We want to get a system of linear equations with equations$\geq$variables, to solve it with the Least Squares (LS) method. 
-This reconstruction method uses the cross-correlation of $M$ different devices to achieve this. 
+We want to estimate the PSD of a signal $x[n]$, but we want to achieve this with a sampling-rate that is a factor $N$ lower than Nyquist. We want to get a system of linear equations with $\text{equation}\geq \text{variables}$, to solve it with the Least-squares method (LS). This reconstruction method uses the cross-correlation of $M$ different devices to achieve this. 
 It allows you to get $M^2$ different equations (all the cross-correlation combinations of the $M$ devices). This method only works when $M^2\geq N$\\
 \\
 The acquisition of samples is handled in the section about Sampling. It is the job of the Sampling block to deliver a set of sampled signals of the form 
@@ -29,12 +26,10 @@ Where
 \end{itemize}
 
 Note that $y_l[k]$ is acquired in the Sampling method using
-\begin{equation*}
-\begin{split}
+\begin{align}
 z_l[n] &= c_l[n]\ast x[n]\\
 y_l[k] &= \frac{1}{NT}\int_{kNT}^{(k+1)NT} z_l[n]
-\end{split}
-\end{equation*}
+\end{align}
 Note that $c_l[n]$ is a set of filters. We previously saw that this is f the form 
 $$
 c_l[n] = \delta[-n -n_l]
@@ -52,8 +47,8 @@ $$
 $$ 
 Where
 \begin{itemize}
-\item $\mathbf{r}_y$ represents the auto-correlations of the different measurement devices
-\item $\mathbf{R}_c$ represents the cross-correlations of the different measurement devices 
+\item $\mathbf{r}_y$ represents the auto-correlations of the signals of the different measurement devices
+\item $\mathbf{R}_c$ represents the cross-correlations of the signals of the different measurement devices 
 \item $\mathbf{r}_x$ represents the auto-correlation of the original signal
 \end{itemize}
 If we would be able to define the variables in this equation we can solve our system with LS.\\
@@ -115,13 +110,11 @@ Where
 \end{itemize}
 If you are able to construct the elements in the equations above, and $\mathbf{r}_y$ has more elements than $\mathbf{r}_x$, you can use LS to estimate $\mathbf{r}_x$, the auto-correlation of the original $x[n]$ signal.\\
 Now we apply the LS. We use
-\begin{equation*}
-\begin{split}
+\begin{align}
 \mathbf{q}_x &= (\mathbf{F}_{2L+1}\otimes \mathbf{I}_N)\mathbf{r}_x \\
 \mathbf{q}_y &= (\mathbf{F}_{2L+1}\otimes \mathbf{I}_M)\mathbf{r}_y \\
 \mathbf{Q}_c[\omega] &= \sum_{k=0}^1\mathbf{R}_c[k]e^{-jk\omega}
-\end{split}
-\end{equation*}
+\end{align}
 Here $\mathbf{Q}_c$ is a diagonalisation of $\mathbf{R}_c$. $F$ is the DFT matrix. 
 We use this to rewrite the equation into
 $$

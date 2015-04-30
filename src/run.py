@@ -10,12 +10,12 @@ snr = 20
 
 
 # sig = cogradio.source.Sinusoidal(frequencies, SNR=snr)
-sig = cogradio.source.Rect(frequencies, widths)
-samps = sig.generate(samp_freq, window)
+signal = cogradio.source.Rect(frequencies, widths)
+samples = signal.generate(samp_freq, window)
 # plt.plot(samps)
 # plt.show()
 # plt.cla()
-signal_fft = cogradio.fft(samps, samp_freq, window)
+signal_fft = cogradio.fft(samples, samp_freq, window)
 # plt.plot(signal_fft[0], signal_fft[1])
 # plt.show()
 # autocor = cogradio.auto_correlation(samps)
