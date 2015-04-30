@@ -12,7 +12,7 @@ class Sinusoidal(Source):
 
     def generate(self, samp_freq, duration):
         signal = 0
-        t = np.arange(0, np.ceil(duration*samp_freq)) / samp_freq
+        t = np.arange(0, np.ceil(duration * samp_freq)) / samp_freq
         for f in self.frequencies:
             signal += np.sin(2 * np.pi * f * t)
 
@@ -20,9 +20,3 @@ class Sinusoidal(Source):
             signal = self.white_gaussian_noise(self.SNR, signal)
 
         return signal
-
-    def white_gaussian_noise(self, SNR, signal):
-        noise = np.random.normal(0, 1, len(signal))
-        scaled_signal = np.std(noise)/np.std(signal)*(np.sqrt(cg.invert_db(SNR))) * signal
-        print cg.convert_db(cg.signal_power(scaled_signal)/cg.signal_power(noise))
-        return scaled_signal + noise
