@@ -1,11 +1,10 @@
 from nose.tools import *
-from cogradio.source import Sinusoidal
 import numpy as np
+import cogradio as cg
 
 
 def sinusoidal_snr_test():
     snr = 20
-    signal = Sinusoidal([10e3], SNR=snr).generate(250e3, 1)
-    snr_meas = np.mean(signal) / np.sqrt(np.var(signal))
-    print snr_meas
+    signal = cg.source.Sinusoidal([10e3], SNR=snr).generate(250e3, 1)
+    print cg.convert_db(snr_meas)
     assert_equal(snr_meas, snr)

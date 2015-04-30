@@ -9,5 +9,4 @@ snr = -20
 
 sig = cogradio.source.Sinusoidal(frequencies, SNR=snr)
 samps = sig.generate(samp_freq, window)
-#cogradio.plot(samps)
-cogradio.plot_fft(samps, samp_freq, window)
+cogradio.fft(samps, samp_freq, window)

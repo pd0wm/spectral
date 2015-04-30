@@ -1,6 +1,6 @@
 class Source(object):
 
-    """Source object for spectrum sensing"""
+    """Source parent object for spectrum sensing"""
 
     def __init__(self, frequencies, SNR):
         self.frequencies = frequencies
