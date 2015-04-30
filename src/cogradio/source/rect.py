@@ -16,7 +16,10 @@ class Rect(Source):
         signal = 0
         t = np.arange(0, np.ceil(duration * samp_freq)) / samp_freq
         for f, width in zip(self.frequencies, self.widths):
-            signal += 2 * width * np.sinc(2 * width * (t - duration/2))
+            component = 2 * width * np.sinc(2 * width * (t - duration/2))
+            carrier = np.sin(2 * np.pi * f * t)
+            component*=carrier
+            signal += component
 
         window = sp.hamming(duration * samp_freq)
         signal *= window
@@ -25,9 +28,3 @@ class Rect(Source):
             signal = self.white_gaussian_noise(self.SNR, signal)
 
         return signal
-
-    def white_gaussian_noise(self, SNR, signal):
-        noise = np.random.normal(0, 1, len(signal))
-        scaled_signal = np.std(
-            noise) / np.std(signal) * (np.sqrt(10 ** (SNR / 10.0))) * signal
-        return scaled_signal + noise
