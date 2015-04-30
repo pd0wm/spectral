@@ -1,6 +1,6 @@
 from .source import Source
 import numpy as np
-import scipy as sp
+import scipy.signal as sp
 import cogradio
 
 
@@ -18,7 +18,7 @@ class Rect(Source):
         for f, width in zip(self.frequencies, self.widths):
             signal += 2 * width * np.sinc(2 * width * (t - duration/2))
 
-        window = sp.signal.hamming(duration * samp_freq)
+        window = sp.hamming(duration * samp_freq)
         signal *= window
 
         if self.SNR != 0:
