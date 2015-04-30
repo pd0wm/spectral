@@ -143,3 +143,9 @@ Session.vim
 
 *.sublime-workspace
 *.sublime-project
+# Created by https://www.gitignore.io
+
+### IPythonNotebook ###
+# Temporary data
+.ipynb_checkpoints/
+
