@@ -2,10 +2,8 @@ class Sampler(object):
 
     """A parent class for sampling methods"""
 
-    def __init__(self, frequency, sparsity, sample_length):
-        self._frequency = frequency
-        self._sparsity = sparsity
-        self._sample_length = sample_length
+    def __init__(self):
+        pass
 
     def sample(self, signal):
-        pass
+        raise NotImplementedError("Implement this method")
