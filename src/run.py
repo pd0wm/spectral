@@ -1,4 +1,4 @@
-import cogradio
+import cogradio as cg
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,18 +9,18 @@ window = 0.1
 snr = 20
 
 
-# sig = cogradio.source.Sinusoidal(frequencies, SNR=snr)
-sig = cogradio.source.Rect(frequencies, widths)
+# sig = cg.source.Sinusoidal(frequencies, SNR=snr)
+sig = cg.source.Rect(frequencies, widths)
 samps = sig.generate(samp_freq, window)
 # plt.plot(samps)
 # plt.show()
 # plt.cla()
-signal_fft = cogradio.fft(samps, samp_freq, window)
+signal_fft = cg.fft(samps)
 # plt.plot(signal_fft[0], signal_fft[1])
 # plt.show()
-# autocor = cogradio.auto_correlation(samps)
-# psd = cogradio.fft(autocor, samp_freq, window)
+# autocor = cg.auto_correlation(samps)
+# psd = cg.fft(autocor, samp_freq, window)
 # plt.plot(psd[1])
 # plt.show()
-plt.plot(signal_fft[0], signal_fft[1])
+plt.plot(cg.freq_axis(samp_freq, window), signal_fft)
 plt.show()
