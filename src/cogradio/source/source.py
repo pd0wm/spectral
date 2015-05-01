@@ -10,7 +10,7 @@ class Source(object):
         self.SNR = SNR
 
     def generate(self, samp_freq, duration):
-        raise NotImplementedError("Implement this method")
+        raise NotImplementedError("Implement this method.")
 
     def white_gaussian_noise(self, SNR, signal):
         noise = np.random.normal(0, 1, len(signal))
