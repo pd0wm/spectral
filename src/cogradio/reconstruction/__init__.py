@@ -1,1 +1,1 @@
-from .reconstructor import Reconstructor
+from .crosscorr import CrossCorrelation
