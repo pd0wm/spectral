@@ -17,5 +17,5 @@ print L
 
 signal = np.random.rand(M, L)
 
-a = cg.reconstruction.CrossCorrelation(N, M, C, samp_freq, L)
+a = cg.reconstruction.CrossCorrelation(N, M, C, L)
 a.reconstruct(signal)
