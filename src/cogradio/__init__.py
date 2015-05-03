@@ -29,6 +29,9 @@ def convert_db(value):
 def invert_db(value):
     return 10 ** (value / 10.0)
 
+def psd(signal):
+    return fft(auto_correlation(signal))
+
 
 def auto_correlation(signal):
     return np.correlate(signal, signal, mode='same')
