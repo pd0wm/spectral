@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<block>
+  <name>PSD</name>
+  <key>cogradio_PSD</key>
+  <category>Cogradio</category>
+  <import>import cogradio</import>
+  <make>cogradio.PSD($length)</make>
+  <param>
+    <name>Length</name>
+    <key>length</key>
+    <value>100</value>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>float</type>
+    <vlen>$length</vlen>
+  </sink>
+</block>
