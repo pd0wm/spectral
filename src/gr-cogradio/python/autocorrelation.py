@@ -15,23 +15,25 @@ class autocorrelation(gr.sync_block):
         self.frequency = frequency
         gr.sync_block.__init__(self,
                                name="autocorrelation",
-                               in_sig=[np.float32],
-                               out_sig=[(np.float32, 2 * self.length - 1)])
+                               in_sig=[np.complex64],
+                               out_sig=[(np.complex64, 2 * self.length - 1)])
         self.buffer = np.zeros(self.length)
+        self.rx = np.zeros(2 * self.length - 1)
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
         out = output_items[0]
-        for i in range(len(in0)):
-            out[i] = self.workItem(in0[i])
-        return len(output_items[0])
 
-    def workItem(self, item):
-        self.buffer = np.delete(np.append(self.buffer, item), 1)
-
-        if self.count % self.frequency == 0:
-            self.rx = np.correlate(
-                self.buffer, self.buffer, 'full') / float(self.length)
         self.count += 1
+        if self.count == self.frequency:
+            if len(in0) - self.length >= 0:
+                sig = in0[(len(in0) - self.length):len(in0)]
+            else:
+                sig = np.append(np.zeros(self.length - len(in0)), in0)
 
-        return self.rx
+            self.rx = np.correlate(
+                sig, sig, 'full') / float(self.length)
+            self.count = 0
+
+        out[:] = np.tile(self.rx, (len(out), 1))
+        return len(out)

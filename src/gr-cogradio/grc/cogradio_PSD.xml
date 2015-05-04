@@ -4,17 +4,25 @@
   <key>cogradio_PSD</key>
   <category>Cogradio</category>
   <import>import cogradio</import>
-  <make>cogradio.PSD($length)</make>
+  <make>cogradio.PSD($length, $frequency)</make>
   <param>
     <name>Length</name>
     <key>length</key>
     <value>100</value>
     <type>int</type>
   </param>
+  
+  <param>
+    <name>Frequency</name>
+    <key>frequency</key>
+    <value>10</value>
+    <type>int</type>
+  </param>
+
 
   <sink>
     <name>in</name>
-    <type>float</type>
+    <type>complex</type>
     <vlen>$length</vlen>
   </sink>
 </block>
