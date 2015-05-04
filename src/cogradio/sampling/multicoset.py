@@ -13,13 +13,14 @@ class MultiCoset(Sampler):
         self.mode = mode
 
     def sample(self, signal):
-        if "msr":
+        if self.mode == "msr":
             C = self.get_C()
             length = int(np.floor(len(signal) / self.decimation))
-            y = np.zeros((length, len(C[0:])))
+            y = np.zeros((len(C[0:]), length))
 
-            for i in np.arange(0, len(signal) - self.decimation, self.decimation):
-                y[i / self.decimation] = np.dot(np.fliplr(C), signal[i:(i + self.decimation)])
+
+            for i in np.arange(0, len(signal), self.decimation):
+                y[:, i / self.decimation] = np.dot(np.fliplr(C), signal[i:(i + self.decimation)])
 
             return y
         else:
