@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <block>
-  <name>Multi-Coset Sampler</name>
-  <key>cogradio_mc_sampling</key>
+  <name>Multi-Coset Crosscorrelation</name>
+  <key>cogradio_mc_crosscorr</key>
   <category>Cogradio</category>
   <import>import cogradio</import>
-  <make>cogradio.mc_sampling($chunk_size, $m, $n)</make>
+  <make>cogradio.mc_crosscorr($chunk_size, $m, $n)</make>
+  
   <param>
     <name>Chunk Size</name>
     <key>chunk_size</key>
@@ -23,16 +24,17 @@
     <value>14</value>
     <type>int</type>
   </param>
+  
 
   <sink>
     <name>in</name>
     <type>complex</type>
-    <vlen>$chunk_size</vlen>
+    <vlen>int($chunk_size) / int($n) * int($m)</vlen>
   </sink>
-
+  
   <source>
     <name>out</name>
     <type>complex</type>
-    <vlen>int($chunk_size) / int($n) * int($m)</vlen>
+    <vlen>int($n) * (2 * int($chunk_size) / $n - 1)</vlen>
   </source>
 </block>

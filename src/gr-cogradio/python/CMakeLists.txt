@@ -33,7 +33,8 @@ GR_PYTHON_INSTALL(
     __init__.py
     autocorrelation.py
     PSD.py
-    mc_sampling.py DESTINATION ${GR_PYTHON_DIR}/cogradio
+    mc_sampling.py
+    mc_crosscorr.py DESTINATION ${GR_PYTHON_DIR}/cogradio
 )
 
 ########################################################################
@@ -46,3 +47,4 @@ set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
 GR_ADD_TEST(qa_autocorrelation ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_autocorrelation.py)
 GR_ADD_TEST(qa_PSD ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_PSD.py)
 GR_ADD_TEST(qa_mc_sampling ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mc_sampling.py)
+GR_ADD_TEST(qa_mc_crosscorr ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mc_crosscorr.py)

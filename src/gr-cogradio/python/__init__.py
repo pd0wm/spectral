@@ -34,6 +34,7 @@ except ImportError:
 from autocorrelation import autocorrelation
 from PSD import PSD
 from mc_sampling import mc_sampling
+from mc_crosscorr import mc_crosscorr
 
 
 #
