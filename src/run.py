@@ -39,14 +39,20 @@ y_avgd = np.zeros((y_s.shape[0]))
 for i in range(0, y_s.shape[0], binwidth):
     y_avgd[i:i+binwidth] = np.mean(y_s[i:i+binwidth])
 
-# print y_avgd
+# Simple Energy Detection
+threshold = 2000
+detector = cg.detection.energy_d(threshold)
+y_avgd = detector.detect(rx) * threshold
 
+
+#Plotting
 plt.figure(1)
 plt.subplot(211)
 rx_len = (rx.shape[0])
 f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
-plt.stem(f_axis_recon, y_avgd)
 plt.stem(f_axis_recon, y_s)
+plt.stem(f_axis_recon, y_avgd, 'ro')
+
 
 # print "autocorr length = " + str(rx.shape)
 
