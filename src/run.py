@@ -11,27 +11,40 @@ L = 50
 N = 14
 nyq_block_size = L * N
 f_samp = 1
-M = 6
 window = (L + 1) * N
 numbbins = 15
+threshold = 2000
 
-
+# Init blocks
 source = cg.source.Sinusoidal(frequencies)
 sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.CrossCorrelation(N, L)
+detector = cg.detection.CAV()
 
+# Compressive sensing
 nyq_signal = source.generate(f_samp, window)
 mc_signal = sampler.sample(nyq_signal)
 rx = reconstructor.reconstruct(mc_signal)
+y_s = cg.fft(rx)
+detector.detect(rx)
 
+# Axis generation
 rx_len = (rx.shape[0])
 f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
-y_s = cg.fft(rx)
 
+# Simple Energy Detection
+detector = cg.detection.energy_d(threshold)
+y_avgd = detector.detect(rx) * threshold
+rx_len = (rx.shape[0])
+f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
+
+# Plotting
+# Reconstruction
 plt.figure(1)
 plt.subplot(211)
 plt.stem(f_axis_recon, y_s)
 
+# Original
 plt.subplot(212)
 plt.stem(np.linspace(-0.5, 0.5, nyq_signal.shape[0]), cg.psd(nyq_signal))
 plt.show()

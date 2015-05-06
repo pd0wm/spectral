@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<block>
+  <name>Multi-Coset Sampler</name>
+  <key>cogradio_mc_sampling</key>
+  <category>Cogradio</category>
+  <import>import cogradio</import>
+  <make>cogradio.mc_sampling($chunk_size)</make>
+  <param>
+    <name>Chunk Size</name>
+    <key>chunk_size</key>
+    <value>100</value>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>$chunk_size</vlen>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>$chunk_size</vlen>
+  </source>
+</block>
