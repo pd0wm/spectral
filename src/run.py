@@ -11,7 +11,7 @@ L = 50
 N = 14
 nyq_block_size = L * N
 f_samp = 1
-window = (L + 1) * N
+window = L * N
 numbbins = 15
 threshold = 2000
 
@@ -38,7 +38,7 @@ f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
 # Reconstruction
 plt.figure(1)
 plt.subplot(211)
-plt.stem(f_axis_recon, y_s)
+plt.plot(f_axis_recon, y_s)
 
 # Original
 plt.subplot(212)

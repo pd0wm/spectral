@@ -30,12 +30,13 @@ class PSD(gr.sync_block):
         self.count += 1
         if self.count == self.frequency:
             self.axes.clear()
-            Y = fftp.fftshift(fftp.fft(in0[0]))
-            Y = np.log10(np.abs(Y)) * 20
+            Y = np.abs(fftp.fftshift(fftp.fft(in0[0])))
+            #Y = np.log10(np.abs(Y)) * 20
             self.axes.plot(Y)
             self.axes.set_title("PSD")
-            self.axes.set_ylim([-140, -20])
+            #self.axes.set_ylim([-140, -20])
             plt.draw()
             self.count = 0
 
         return len(input_items[0])
+

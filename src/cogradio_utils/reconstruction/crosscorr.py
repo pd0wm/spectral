@@ -13,7 +13,7 @@ class CrossCorrelation(Reconstructor):
         sparseruler = cg.sparseruler(N)
         self.M = len(sparseruler)
         self.C = cg.build_C(sparseruler, N)
-        self.L = L              # Length of input vector
+        self.L = L - 1            # Length of input vector
         self.Rc_Pinv = np.linalg.pinv(self.cross_correlation_filters())
 
     def reconstruct(self, signal):
