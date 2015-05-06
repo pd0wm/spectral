@@ -18,7 +18,6 @@ class MultiCoset(Sampler):
             length = int(np.floor(len(signal) / self.decimation))
             y = np.zeros((len(C[0:]), length))
 
-
             for i in np.arange(0, len(signal), self.decimation):
                 y[:, i / self.decimation] = np.dot(np.fliplr(C), signal[i:(i + self.decimation)])
 
