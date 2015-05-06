@@ -33,5 +33,7 @@ except ImportError:
 # import any pure python here
 from autocorrelation import autocorrelation
 from PSD import PSD
+from mc_sampling import mc_sampling
+
 
 #

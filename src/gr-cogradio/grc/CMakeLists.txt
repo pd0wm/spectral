@@ -18,5 +18,6 @@
 # Boston, MA 02110-1301, USA.
 install(FILES
     cogradio_autocorrelation.xml
-    cogradio_PSD.xml DESTINATION share/gnuradio/grc/blocks
+    cogradio_PSD.xml
+    cogradio_mc_sampling.xml DESTINATION share/gnuradio/grc/blocks
 )
