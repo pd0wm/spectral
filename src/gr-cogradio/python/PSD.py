@@ -17,7 +17,7 @@ class PSD(gr.sync_block):
         self.frequency = frequency
         gr.sync_block.__init__(self,
                                name="PSD",
-                               in_sig=[(np.complex64, 2 * self.length - 1)],
+                               in_sig=[(np.complex64, self.length)],
                                out_sig=None)
 
         self.fig = plt.figure()
