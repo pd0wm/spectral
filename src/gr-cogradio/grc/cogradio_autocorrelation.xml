@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<block>
+  <name>Autocorrelation</name>
+  <key>cogradio_autocorrelation</key>
+  <category>Cogradio</category>
+  <import>import cogradio</import>
+  <make>cogradio.autocorrelation($length, $frequency)</make>
+  <param>
+    <name>Length</name>
+    <key>length</key>
+    <value>100</value>
+    <type>int</type>
+  </param>
+  
+  <param>
+    <name>Frequency</name>
+    <key>frequency</key>
+    <value>10</value>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>$length</vlen>
+  </source>
+</block>

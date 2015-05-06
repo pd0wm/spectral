@@ -3,8 +3,8 @@ class Detector(object):
     """Detector parent object"""
 
     def __init__(self):
-        """TODO: to be defined1. """
-        print "Detector"
-
-    def detect(self, signal):
-        return True
+        print("init");
+        
+    def detect(self, rx):
+        raise NotImplementedError("Implement this method.")
+    
