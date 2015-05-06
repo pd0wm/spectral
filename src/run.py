@@ -19,24 +19,20 @@ threshold = 2000
 source = cg.source.Sinusoidal(frequencies)
 sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.CrossCorrelation(N, L)
-detector = cg.detection.CAV()
 
 # Compressive sensing
 nyq_signal = source.generate(f_samp, window)
 mc_signal = sampler.sample(nyq_signal)
 rx = reconstructor.reconstruct(mc_signal)
 y_s = cg.fft(rx)
-detector.detect(rx)
 
 # Axis generation
 rx_len = (rx.shape[0])
 f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
 
-# Simple Energy Detection
-detector = cg.detection.energy_d(threshold)
-y_avgd = detector.detect(rx) * threshold
-rx_len = (rx.shape[0])
-f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
+# Detection 
+# detector = cg.detection.SPFL()
+# detector.detect(rx)
 
 # Plotting
 # Reconstruction
