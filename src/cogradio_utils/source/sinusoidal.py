@@ -1,6 +1,6 @@
 from .source import Source
 import numpy as np
-import cogradio as cg
+import cogradio_utils as cg
 
 
 class Sinusoidal(Source):

@@ -1,5 +1,5 @@
 from .reconstructor import Reconstructor
-import cogradio as cg
+import cogradio_utils as cg
 import numpy as np
 
 

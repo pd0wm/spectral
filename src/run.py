@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import cogradio as cg
+import cogradio_utils as cg
 import numpy as np
 import matplotlib.pyplot as plt
 

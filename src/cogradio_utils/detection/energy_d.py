@@ -1,6 +1,6 @@
 from .detector import Detector
 import numpy as np
-import cogradio as cg
+import cogradio_utils as cg
 
 class energy_d(Detector):
 

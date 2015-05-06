@@ -1,7 +1,7 @@
 from .source import Source
 import numpy as np
 import scipy.signal as sp
-import cogradio
+import cogradio_utils as cg
 
 
 class Rect(Source):

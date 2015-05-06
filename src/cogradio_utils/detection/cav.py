@@ -1,6 +1,6 @@
 from .detector import Detector
 import numpy as np
-import cogradio as cg
+import cogradio_utils as cg
 from scipy.linalg import toeplitz
 from scipy import stats
 

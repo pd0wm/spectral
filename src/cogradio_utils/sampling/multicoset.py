@@ -1,5 +1,5 @@
 import numpy as np
-import cogradio as cg
+import cogradio_utils as cg
 from .sampling import Sampler
 
 
