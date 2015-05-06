@@ -26,14 +26,17 @@ def invert_db(value):
     return 10 ** (value / 10.0)
 
 
+def psd(signal):
+    return fft(auto_correlation(signal))
+
+
 def auto_correlation(signal):
     return np.correlate(signal, signal, mode='same')
 
 
-def build_C(self, sparseruler, N):
-    S = self.RULERS[self.decimation - 1]
-    M = len(S)
+def build_C(sparseruler, N):
+    M = len(sparseruler)
     C = np.zeros((M, N))
     for i in range(0, M):
-        C[i, S[i]] = 1
+        C[i, sparseruler[i]] = 1
     return C
