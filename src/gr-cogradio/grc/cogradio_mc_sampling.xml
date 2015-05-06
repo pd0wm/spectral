@@ -4,11 +4,17 @@
   <key>cogradio_mc_sampling</key>
   <category>Cogradio</category>
   <import>import cogradio</import>
-  <make>cogradio.mc_sampling($chunk_size)</make>
+  <make>cogradio.mc_sampling($chunk_size, $m)</make>
   <param>
     <name>Chunk Size</name>
     <key>chunk_size</key>
     <value>100</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>M</name>
+    <key>m</key>
+    <value>6</value>
     <type>int</type>
   </param>
 
@@ -21,6 +27,6 @@
   <source>
     <name>out</name>
     <type>complex</type>
-    <vlen>$chunk_size</vlen>
+    <vlen>$chunk_size*$m</vlen>
   </source>
 </block>
