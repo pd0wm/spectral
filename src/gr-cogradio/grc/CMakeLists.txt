@@ -19,5 +19,6 @@
 install(FILES
     cogradio_autocorrelation.xml
     cogradio_PSD.xml
-    cogradio_mc_sampling.xml DESTINATION share/gnuradio/grc/blocks
+    cogradio_mc_sampling.xml
+    cogradio_sink.xml DESTINATION share/gnuradio/grc/blocks
 )

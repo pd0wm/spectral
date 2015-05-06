@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<block>
+  <name>Sink</name>
+  <key>cogradio_sink</key>
+  <category>Cogradio</category>
+  <import>import cogradio</import>
+  <make>cogradio.sink()</make>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+</block>

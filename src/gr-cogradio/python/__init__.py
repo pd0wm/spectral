@@ -34,6 +34,8 @@ except ImportError:
 from autocorrelation import autocorrelation
 from PSD import PSD
 from mc_sampling import mc_sampling
+from sink import sink
+
 
 
 #
