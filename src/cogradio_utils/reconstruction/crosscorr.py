@@ -13,7 +13,7 @@ class CrossCorrelation(Reconstructor):
         sparseruler = cg.sparseruler(N)
         self.M = len(sparseruler)
         self.C = cg.build_C(sparseruler, N)
-        self.L = L - 1            # Length of input vector
+        self.L = L            # Length of input vector
         self.Rc_Pinv = np.linalg.pinv(self.cross_correlation_filters())
 
     def reconstruct(self, signal):
@@ -25,7 +25,7 @@ class CrossCorrelation(Reconstructor):
         return rx
 
     def cross_correlation_signals(self, signal):
-        Ry = np.zeros((self.M ** 2, 2 * self.L + 1))
+        Ry = np.zeros((self.M ** 2, 2 * self.L - 1))
         for i in range(self.M):
             for j in range(self.M):
                 Ry[i * self.M + j] = np.correlate(signal[i, :],
@@ -48,10 +48,10 @@ class CrossCorrelation(Reconstructor):
         return Rc
 
     def block_toeplitz(self, Rc0, Rc1):
-        Rc = np.zeros(((2 * self.L + 1) * self.M ** 2,
-                      (2 * self.L + 1) * self.N))
-        for i in range((2 * self.L + 1)):
-            for j in range((2 * self.L + 1)):
+        Rc = np.zeros(((2 * self.L - 1) * self.M ** 2,
+                      (2 * self.L - 1) * self.N))
+        for i in range((2 * self.L - 1)):
+            for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate
                 y = j * self.N    # Top left y coordinate
                 # Holy shait pretty multi-dim block indexing mind==blown
@@ -59,6 +59,7 @@ class CrossCorrelation(Reconstructor):
                     Rc[x:x + Rc0.shape[0], y:y + Rc0.shape[1]] = Rc0
                 elif (i - j) == 1:  # Off diagonal entries
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
-                elif (j == (2 * self.L) and i == 0):  # Right top case
+                elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
+                    print "Dit gaat nog goed"
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
