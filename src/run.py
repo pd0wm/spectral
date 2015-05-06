@@ -19,16 +19,19 @@ numbbins = 15
 
 source = cg.source.Sinusoidal(frequencies).generate(f_samp, window)
 # print "Source shape " + str(source.shape)
-np.savetxt("py_source.tmp", source, delimiter=',')
+#np.savetxt("py_source.tmp", source, delimiter=',')
 
 sampler = cg.sampling.MultiCoset(N)
 multicos_signal = sampler.sample(source)
 print multicos_signal.shape
 # print "mc_signal shape " + str(multicos_signal.shape)
-np.savetxt("py_mc.tmp", multicos_signal, delimiter=',')
+#np.savetxt("py_mc.tmp", multicos_signal, delimiter=',')
 
 reconstructor = cg.reconstruction.CrossCorrelation(N, M, sampler.get_C(), L)
 rx = reconstructor.reconstruct(multicos_signal)
+
+detector = cg.detection.CAV()
+detector.detect(rx)
 
 y_s = cg.fft(rx)
 binwidth = np.round(y_s.shape[0] / numbbins)
@@ -51,4 +54,4 @@ plt.subplot(212)
 plt.stem(np.linspace(-0.5, 0.5, source.shape[0]), cg.psd(source))
 plt.show()
 
-np.savetxt("py_rx.tmp", rx, delimiter=',')
+#np.savetxt("py_rx.tmp", rx, delimiter=',')
