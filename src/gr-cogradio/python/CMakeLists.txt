@@ -34,7 +34,7 @@ GR_PYTHON_INSTALL(
     autocorrelation.py
     PSD.py
     mc_sampling.py
-    sink.py DESTINATION ${GR_PYTHON_DIR}/cogradio
+    sink.py
     mc_crosscorr.py DESTINATION ${GR_PYTHON_DIR}/cogradio
 )
 
