@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<block>
+  <name>SPFL</name>
+  <key>Cogradio_SPFL</key>
+  <category>Cogradio</category>
+  <import>import cogradio</import>
+  <make>cogradio.SPFL($length)</make>
+
+  <param>
+    <name>Length</name>
+    <key>length</key>
+    <value>100</value>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>$length</vlen>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>
