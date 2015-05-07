@@ -1,0 +1,63 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+
+\title{Thesis}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\frontmatter
+
+\begin{titlingpage}
+  \pagestyle{empty}
+  \maketitle
+\end{titlingpage}
+
+\chapter{Reconstruction}
+Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$.
+
+\begin{definition}[Convolution]
+    Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
+    \begin{align*}
+        (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1}
+    \end{align*}
+    where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
+\end{definition}
+
+\begin{theorem}[Commutativity of Convolution]
+    Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
+\end{theorem}
+\begin{proof}
+    A simple change of index yields that
+    \begin{align*}
+        (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
+        &= \sum_{k=-\infty}^{\infty} (\vec{x})_k (\vec{y})_{i-k+1} \\
+        &= \sum_{k'=-\infty}^{\infty} (\vec{x})_{i-k'+1} (\vec{y})_k' \\
+        &= \sum_{k'=-\infty}^{\infty} (\vec{y})_k' (\vec{x})_{i-k'+1} \\
+        &= \sum_{k'=1}^{M} (\vec{y})_k' (\vec{x})_{i-k'+1} \\
+        &= (\vec{y} \ast \vec{x})_i.
+    \end{align*}
+\end{proof}
+
+\begin{definition}[Correlation]
+    Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
+    \begin{align*}
+        (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{M-i+k}
+    \end{align*}
+    where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
+\end{definition}
+
+Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$. Now note that
+\begin{align*}
+    \vec{y}_i \circ \vec{y}_j &= (\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) \\
+    &=\sum_{k''=1}^{LN+N-1}\sum_{k=1}^N (\vec{c}_i)_k (\vec{x})_{k''-k+1}\sum_{k'=1}^{N}(\vec{c}_j)_{k'}(\vec{x})_{(LN+N-1-l+k'')-k'+1} \\
+    &=(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})
+\end{align*}
+
+
+\end{document}
