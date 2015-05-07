@@ -46,7 +46,7 @@ class CrossCorrelation(Reconstructor):
                                   mode='full')
                 Rc0[i * self.M + j, :] = rc[0:self.N][::-1]
                 Rc1[i * self.M + j, :] = np.append(np.array([0]),
-                                                   rc[self.N:2*self.N-1][::-1])
+                                                   rc[self.N:2 * self.N - 1][::-1])
         Rc = self.block_toeplitz(Rc0, Rc1)
         return Rc
 
@@ -56,7 +56,7 @@ class CrossCorrelation(Reconstructor):
         for i in range((2 * self.L - 1)):
             for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate
-                y = j * self.N    # Top left y coordinate
+                y = j * self.N   # Top left y coordinate
                 # Holy shait pretty multi-dim block indexing mind==blown
                 if i == j:
                     Rc[x:x + Rc0.shape[0], y:y + Rc0.shape[1]] = Rc0

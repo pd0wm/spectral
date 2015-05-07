@@ -1,0 +1,154 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[dutch]{babel}
+\usepackage[strict,autostyle]{csquotes}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{datetime}
+\usepackage{fullpage}
+\usepackage{eurosym}
+\usepackage{xcolor,mdframed}
+\usepackage{tikz}
+\usepackage{framed}
+
+\usepackage{fontspec}
+
+% Fancy quotes
+\newfontfamily\quotefont[Ligatures=TeX]{Palatino Linotype} % selects Libertine as the quote font
+
+\newcommand*\quotesize{60} % if quote size changes, need a way to make shifts relative
+% Make commands for the quotes
+\newcommand*{\openquote}
+   {\tikz[remember picture,overlay,xshift=-4ex,yshift=-2.5ex]
+   \node (OQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont``};\kern0pt}
+
+\newcommand*{\closequote}[1]
+  {\tikz[remember picture,overlay,xshift=4ex,yshift={#1}]
+   \node (CQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont''};}
+
+% select a colour for the shading
+\colorlet{shadecolor}{white}
+
+\newcommand*\shadedauthorformat{\emph} % define format for the author argument
+
+% Now a command to allow left, right and centre alignment of the author
+\newcommand*\authoralign[1]{%
+  \if#1l
+    \def\authorfill{}\def\quotefill{\hfill}
+  \else
+    \if#1r
+      \def\authorfill{\hfill}\def\quotefill{}
+    \else
+      \if#1c
+        \gdef\authorfill{\hfill}\def\quotefill{\hfill}
+      \else\typeout{Invalid option}
+      \fi
+    \fi
+  \fi}
+% wrap everything in its own environment which takes one argument (author) and one optional argument
+% specifying the alignment [l, r or c]
+%
+\newenvironment{shadequote}[2][l]%
+{\authoralign{#1}
+\ifblank{#2}
+   {\def\shadequoteauthor{}\def\yshift{-2ex}\def\quotefill{\hfill}}
+   {\def\shadequoteauthor{\par\authorfill\shadedauthorformat{#2}}\def\yshift{2ex}}
+\begin{snugshade}\begin{quote}\openquote}
+{\shadequoteauthor\quotefill\closequote{\yshift}\end{quote}\end{snugshade}}
+
+
+% Setup actiepunten
+\newenvironment{important}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={red!15}, hidealllines=true,
+      skipabove=0.7\baselineskip, skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt, splittopskip=4pt, #1]%
+   \makebox[0pt]{% ignore the withd of !
+      \smash{% ignor the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{red!70!black}\sffamily\bfseries !}% type the bold red !
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+\newcommand{\excl}[1]{
+\begin{important}
+  \textbf{#1}
+\end{important}
+}
+\newcommand{\excll}[2]{
+\begin{important}
+  \textbf{#1}\\#2
+\end{important}
+}
+
+% Setup fonts
+\defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
+\setmainfont[Ligatures={Common,TeX}]{Palatino Linotype}
+\newfontfamily\hdrfont{Bookman Old Style}
+
+% Setup hyperlinks
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+% Setup header
+\pagestyle{fancy}
+%\rhead{\includegraphics[height=3cm]{kascomlogo.png}}
+%\lhead{\includegraphics[height=3cm]{bondslogo.pdf}}
+\rhead{}
+\lhead{}
+\chead{\hdrfont \hspace{4cm} {\Huge \bf \sc Cognitive Radio} \vspace{0.5cm} \\ \rule{15cm}{0.5pt} \vspace{0.2cm} \\ {\Large \sc Notulen gesprek Koen Bertels \displaydate{date}} \vspace{0.2cm}}
+\usepackage[headsep=.5cm, top=5cm, headheight=10cm, heightrounded]{geometry}
+
+% Setup date
+\newdate{date}{06}{05}{2015}
+\date{\displaydate{date}}
+
+\begin{document}
+\section{Businessplan}
+Het businessplan moet vooral gedreven worden door commerciële motivaties. Hiervoor kunnen best technische aannames gedaan worden, bijvoorbeeld dat bepaald product of technologie al ontwikkeld is. Het is belangrijk om in je businessplan ambitieus te zijn, laat je niet tegenhouden door technische uitdagingen. Neem een uitontwikkeld product als uitgangspunt.
+\excl{Laat je bij het businessplan niet tegenhouden door technische uitdagingen}
+
+Op dit moment hebben we een aantal mogelijkheden:
+\begin{itemize}
+\item Een systeem voor mobiele providers voor dynamisch gebruik spectrum
+\item Een robuust systeem voor gebruik in noodsituaties
+\item Onze algoritmes gebruiken in medische beeldvorming om dit goedkoper/sneller te kunnen doen
+\end{itemize}
+
+Het is voor investeerders interessant om snel een product\footnote{Dit wordt soms ook aangeduid met het \textit{Minimum Viable Product (MVP)}. Dit een product wat snel op de markt gebracht kan worden met een grote kans van slagen.} op de markt te brengen om een cash flow te genereren. Daarna kun je verder gaan met de (dure) ontwikkeling van je uiteindelijke product. In ons geval zouden we bijvoorbeeld eerst ons kunnen richten op een noodsysteem, en ondertussen ons richten op mobiele providers.
+
+Hierbij kan het nuttig zijn om je wel op de zelfde markt te richten als je eindproduct. Je kan dan vast naamsbekendheid vergaren in die markt. Voor ons kan het nuttig zijn om ons daarom te richten op het robuuste noodsysteem aangezien dit in de telecom-markt ligt.
+
+In je businessplan kan je in eerste instantie ook focussen op twee markten, en later besluiten welke markt je daadwerkelijk gaat aanboren. Let er wel op dat je hierdoor niet je focus verliest.
+
+\section{Gesprek met CIO ING Global, oud medewerker KPN}
+In het gesprek met de CIO ING Global moeten we eerst een presentatie geven met onze insteek om het gesprek focus te geven. Daarna kunnen we efficiënter in gesprek gaan. Wij geven een presentatie met vooral de concepten van ons product, maar ook met een paar technische slides. Vervolgens kunnen we horen wat hij over dit onderwerp te zeggen heeft. Heeft hij bijvoorbeeld al vraag naar ons product ervaren?
+
+\excll{Belangrijk bij gesprek}{\begin{itemize}
+  \item Zeggen dat we hem niet gaan quoten.
+  \item Vragen of we het gesprek op mogen nemen.
+  \item Hem aankondigen dat we de slides van onze eindpresentatie sturen. Dan kan hij controleren of we hem niet verkeerd begrepen hebben.
+  \end{itemize}
+}
+
+\section{Volgende keer}
+Ons volgende gesprek is waarschijnlijk over twee weken aangezien Koen Bertels `even' naar Amerika is. Voor volgende keer moeten we een presentatie voorbereid hebben met de volgende elementen:
+\begin{itemize}
+\item De markt(en) die we willen aanboren.
+\item Welk product we willen gaan verkopen, en eventuele concurrenten.
+\item Wat onze klanten zouden zijn.
+\end{itemize}
+Waarschijnlijk hebben we tegen die tijd onze afspraak met de CIO van ING Global rond en kunnen we ons verhaal vast oefenen met Koen Bertels.
+
+\end{document}
