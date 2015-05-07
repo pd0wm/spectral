@@ -1,4 +1,5 @@
-# Copyright 2011 Free Software Foundation, Inc.
+#
+# Copyright 2008 Free Software Foundation, Inc.
 #
 # This file is part of GNU Radio
 #
@@ -16,14 +17,8 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-install(FILES
-    cogradio_autocorrelation.xml
-    cogradio_PSD.xml
-    cogradio_mc_sampling.xml
-    cogradio_sink.xml
-    cogradio_mc_crosscorr.xml
-    cogradio_vector_plot.xml
-    cogradio_SPFL.xml
-    cogradio_vector_fft.xml
-    DESTINATION share/gnuradio/grc/blocks
-)
+#
+
+from channel_plotter import channel_plotter
+from waterfall_plotter import waterfall_plotter
+from bar_plotter import bar_plotter

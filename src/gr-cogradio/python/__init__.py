@@ -36,5 +36,7 @@ from PSD import PSD
 from mc_sampling import mc_sampling
 from sink import sink
 from mc_crosscorr import mc_crosscorr
-
+from vector_plot import vector_plot
+from SPFL import SPFL
+from vector_fft import vector_fft
 #
