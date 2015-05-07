@@ -331,7 +331,7 @@ class fft_window(wx.Panel, pubsub.pubsub):
 		Args:
 		    msg: the fft array as a character array
 		"""
-
+                
 		if not self[RUNNING_KEY]: return
 		#convert to floating point numbers
 		samples = numpy.fromstring(msg, numpy.complex64)[:self.fft_size] #only take first frame
