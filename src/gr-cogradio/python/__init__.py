@@ -38,4 +38,5 @@ from sink import sink
 from mc_crosscorr import mc_crosscorr
 from vector_plot import vector_plot
 from SPFL import SPFL
+from vector_fft import vector_fft
 #

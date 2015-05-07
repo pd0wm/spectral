@@ -41,6 +41,7 @@ GR_PYTHON_INSTALL(
     common.py
     constants.py
     pubsub.py
+    vector_fft.py
     DESTINATION ${GR_PYTHON_DIR}/cogradio
 )
 

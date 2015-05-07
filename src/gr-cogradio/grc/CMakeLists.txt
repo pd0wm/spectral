@@ -24,5 +24,6 @@ install(FILES
     cogradio_mc_crosscorr.xml
     cogradio_vector_plot.xml
     cogradio_SPFL.xml
+    cogradio_vector_fft.xml
     DESTINATION share/gnuradio/grc/blocks
 )
