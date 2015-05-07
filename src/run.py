@@ -11,7 +11,7 @@ L = 50
 N = 14
 nyq_block_size = L * N
 f_samp = 1
-window = (L + 1) * N
+window = L * N
 numbbins = 15
 threshold = 2000
 

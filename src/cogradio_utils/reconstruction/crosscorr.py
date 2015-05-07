@@ -25,7 +25,7 @@ class CrossCorrelation(Reconstructor):
         return rx
 
     def cross_correlation_signals(self, signal):
-        Ry = np.zeros((self.M ** 2, 2 * self.L + 1))
+        Ry = np.zeros((self.M ** 2, 2 * self.L - 1))
         for i in range(self.M):
             for j in range(self.M):
                 Ry[i * self.M + j] = np.correlate(signal[i, :],
@@ -43,22 +43,22 @@ class CrossCorrelation(Reconstructor):
                                   mode='full')
                 Rc0[i * self.M + j, :] = rc[0:self.N][::-1]
                 Rc1[i * self.M + j, :] = np.append(np.array([0]),
-                                                   rc[self.N:2*self.N-1][::-1])
+                                                   rc[self.N:2 * self.N - 1][::-1])
         Rc = self.block_toeplitz(Rc0, Rc1)
         return Rc
 
     def block_toeplitz(self, Rc0, Rc1):
-        Rc = np.zeros(((2 * self.L + 1) * self.M ** 2,
-                      (2 * self.L + 1) * self.N))
-        for i in range((2 * self.L + 1)):
-            for j in range((2 * self.L + 1)):
+        Rc = np.zeros(((2 * self.L - 1) * self.M ** 2,
+                       (2 * self.L - 1) * self.N))
+        for i in range((2 * self.L - 1)):
+            for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate
-                y = j * self.N    # Top left y coordinate
+                y = j * self.N   # Top left y coordinate
                 # Holy shait pretty multi-dim block indexing mind==blown
                 if i == j:
                     Rc[x:x + Rc0.shape[0], y:y + Rc0.shape[1]] = Rc0
                 elif (i - j) == 1:  # Off diagonal entries
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
-                elif (j == (2 * self.L) and i == 0):  # Right top case
+                elif (j == (2 * self.L - 1) and i == 0):  # Right top case
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
