@@ -75,7 +75,7 @@ Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
         &=\sum_{l''=1}^{2N-1}\sum_{k=1}^{N}(\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}\sum_{l'=1}^{LN}(\vec{x})_{l'}
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
-        &=\sum_{k''=1}^{2N-1} \sum_{k=1}^{N} (\vec{c}_i)_k (\vec{c}_j)_{N-k''+k} \sum_{k'=1}^{LN} (\vec{x})_{k'} (\vec{x})_{LN-(m-k''+1)+k'} \\
+        % &=\sum_{k''=1}^{2N-1} \sum_{k=1}^{N} (\vec{c}_i)_k (\vec{c}_j)_{N-k''+k} \sum_{k'=1}^{LN} (\vec{x})_{k'} (\vec{x})_{LN-(m-k''+1)+k'} \\
         &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
     \end{align*}
 \end{proof}
@@ -103,20 +103,52 @@ Using commutativity and the definition of the convolution operator, we can write
     \end{bmatrix} \\
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Now let
+Let the $L \times NL$ decimation matrix be defined by $(\mat{D})_{i(Ni)} = 1$ for $i=1,\ldots,L$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
 \begin{align*}
-    \vec{r}_y &= \begin{bmatrix}
-        \vec{r}_{y_1,y_1} \\
+    \begin{bmatrix}
+        \mat{D}\vec{r}_{y_1,y_1} \\
         \vdots \\
-        \vec{r}_{y_M,y_M}
-    \end{bmatrix} = \begin{bmatrix}
-        \mat{R}_{c_1,c_1} \vec{r}_x \\
+        \mat{D}\vec{r}_{y_M,y_M}
+    \end{bmatrix}
+    = \begin{bmatrix}
+        \vec{r}_{y'_1,y'_1} \\
         \vdots \\
-        \mat{R}_{c_M,c_M} \vec{r}_x
-    \end{bmatrix} = \begin{bmatrix}
-        \mat{R}_{c_1,c_1}\\
+        \vec{r}_{y'_M,y'_M}
+    \end{bmatrix}
+    = \vec{r}_y
+    = \begin{bmatrix}
+        \mat{D}\mat{R}_{c_1,c_1} \vec{r}_x \\
         \vdots \\
-        \mat{R}_{c_M,c_M}
-    \end{bmatrix} \vec{r}_x = \mat{R} \vec{r}_x.
+        \mat{D}\mat{R}_{c_M,c_M} \vec{r}_x
+    \end{bmatrix}
+    = \begin{bmatrix}
+        \mat{D}\mat{R}_{c_1,c_1}\\
+        \vdots \\
+        \mat{D}\mat{R}_{c_M,c_M}
+    \end{bmatrix} \vec{r}_x
+    = \mat{R} \vec{r}_x.
 \end{align*}
+Thus $\mat{R}$ relates $\vec{r}_y$ and $\vec{r}_x$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
+\begin{align*}
+    \vec{r}_{y'_i,y'_j}
+    = \begin{bmatrix}
+        (\vec{r}_{y'_i,y'_j})_1 \\
+        (\vec{r}_{y'_i,y'_j})_2 \\
+        \vdots \\
+        (\vec{r}_{y'_i,y'_j})_{L} \\
+    \end{bmatrix}
+    = \begin{bmatrix}
+        (\vec{r}_{y_i,y_j})_{N} \\
+        (\vec{r}_{y_i,y_j})_{2N} \\
+        \vdots \\
+        (\vec{r}_{y_i,y_j})_{NL} \\
+    \end{bmatrix}
+    = \begin{bmatrix}
+        (\vec{r}_{y_i,y_j})_{N} \\
+        (\vec{r}_{y_i,y_j})_{2N} \\
+        \vdots \\
+        (\vec{r}_{y_i,y_j})_{NL} \\
+    \end{bmatrix}.
+\end{align*}
+Thus $\vec{r}_{y'_i,y'_j}$ is a $N$-decimation of $\vec{r}_{y_i,y_j}$. It can be shown that is equivalent to correlation of the $N$-decimation between
 \end{document}
