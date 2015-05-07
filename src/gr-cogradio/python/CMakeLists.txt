@@ -35,7 +35,12 @@ GR_PYTHON_INSTALL(
     PSD.py
     mc_sampling.py
     sink.py
-    mc_crosscorr.py DESTINATION ${GR_PYTHON_DIR}/cogradio
+    mc_crosscorr.py
+    fft_window.py
+    common.py
+    constants.py
+    pubsub.py
+    DESTINATION ${GR_PYTHON_DIR}/cogradio
 )
 
 ########################################################################
