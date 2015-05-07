@@ -18,9 +18,7 @@
   \maketitle
 \end{titlingpage}
 
-\chapter{Reconstruction}
-Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$.
-
+\chapter{Preliminaries}
 \begin{definition}[Convolution]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
@@ -28,21 +26,9 @@ Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec
     \end{align*}
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{definition}
-
-\begin{theorem}[Commutativity of Convolution]
+\begin{theorem}[Commutativity of Convolution] \label{th:conv-comm}
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
 \end{theorem}
-\begin{proof}
-    A change of index yields that
-    \begin{align*}
-        (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
-        &= \sum_{k=-\infty}^{\infty} (\vec{x})_k (\vec{y})_{i-k+1} \\
-        &= \sum_{k'=-\infty}^{\infty} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
-        &= \sum_{k'=1}^{M} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
-        &= (\vec{y} \ast \vec{x})_i.
-    \end{align*}
-\end{proof}
-
 \begin{definition}[Correlation]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
@@ -50,41 +36,22 @@ Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec
     \end{align*}
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{definition}
+\begin{theorem} \label{th:corr-unbiased}
+    The correlation operator is an unbiased estimator of the correlation of the signal.
+\end{theorem}
 
-Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
-
-\begin{theorem}
+\chapter{Reconstruction}
+Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$. Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
+\begin{theorem} \label{th:conv-corr}
     \begin{align*}
         \vec{y}_i \circ \vec{y}_j = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}).
     \end{align*}
 \end{theorem}
-\begin{proof}
-    Note that
-    \begin{align*}
-        (\vec{y}_i \circ \vec{y}_j)_m
-        &= [(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x})]_m \\
-        &=\sum_{k''=1}^{LN+N-1}\sum_{k=1}^N (\vec{c}_i)_k (\vec{x})_{k''-k+1}\sum_{k'=1}^{N}(\vec{c}_j)_{k'}(\vec{x})_{(LN+N-1-m+k'')-k'+1} \\
-        &=\sum_{k=-\infty}^\infty\sum_{k'=\infty}^{\infty}\sum_{k''=-\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{k'}(\vec{x})_{k''-k+1}(\vec{x})_{(LN+N-1-m+k'')-k'+1}.
-    \end{align*}
-    To further evaluate this expression, we introduce a change of variables. To this end, let $k' = N -l'' +k$ and $k'' = l' + k - 1$. This transformation is invertible, so
-    \begin{align*}
-        (\vec{y}_i \circ \vec{y}_j)_m
-        % I don't think this step is necessary
-        % &=\sum_{k=-\infty}^\infty\sum_{l''=-\infty}^{\infty}\sum_{l'=\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}(\vec{x})_{(l' + k - 1)-k+1}(\vec{x})_{[LN+N-1-m+(l' + k - 1)]-(N -l'' +k)+1} \\
-        &=\sum_{k=-\infty}^\infty\sum_{l''=-\infty}^{\infty}\sum_{l'=\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}(\vec{x})_{l'}
-        (\vec{x})_{LN-(m-l'' + 1)+l'} \\
-        &=\sum_{l''=1}^{2N-1}\sum_{k=1}^{N}(\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}\sum_{l'=1}^{LN}(\vec{x})_{l'}
-        (\vec{x})_{LN-(m-l'' + 1)+l'} \\
-        % &=\sum_{k''=1}^{2N-1} \sum_{k=1}^{N} (\vec{c}_i)_k (\vec{c}_j)_{N-k''+k} \sum_{k'=1}^{LN} (\vec{x})_{k'} (\vec{x})_{LN-(m-k''+1)+k'} \\
-        &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
-    \end{align*}
-\end{proof}
-
 We denote 
 \begin{align*}
     \vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
-Using commutativity and the definition of the convolution operator, we can write this equation as
+Using commutativity and the definition of the convolution operator, we can write this equation as (FIX halve notatie en afvallende matrix)
 \begin{align*}
     \vec{r}_{y_i,y_j} &=  \vec{r}_{c_i,c_j} \ast \vec{r}_x \\
     &= \vec{r}_x \ast \vec{r}_{c_i,c_j} \\
@@ -103,7 +70,7 @@ Using commutativity and the definition of the convolution operator, we can write
     \end{bmatrix} \\
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $L \times NL$ decimation matrix be defined by $(\mat{D})_{i(Ni)} = 1$ for $i=1,\ldots,L$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
+Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ for $i=1,\ldots,FIX$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
 \begin{align*}
     \begin{bmatrix}
         \mat{D}\vec{r}_{y_1,y_1} \\
@@ -130,25 +97,55 @@ Let the $L \times NL$ decimation matrix be defined by $(\mat{D})_{i(Ni)} = 1$ fo
 \end{align*}
 Thus $\mat{R}$ relates $\vec{r}_y$ and $\vec{r}_x$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
 \begin{align*}
-    \vec{r}_{y'_i,y'_j}
-    = \begin{bmatrix}
-        (\vec{r}_{y'_i,y'_j})_1 \\
-        (\vec{r}_{y'_i,y'_j})_2 \\
-        \vdots \\
-        (\vec{r}_{y'_i,y'_j})_{L} \\
-    \end{bmatrix}
-    = \begin{bmatrix}
-        (\vec{r}_{y_i,y_j})_{N} \\
-        (\vec{r}_{y_i,y_j})_{2N} \\
-        \vdots \\
-        (\vec{r}_{y_i,y_j})_{NL} \\
-    \end{bmatrix}
-    = \begin{bmatrix}
-        (\vec{r}_{y_i,y_j})_{N} \\
-        (\vec{r}_{y_i,y_j})_{2N} \\
-        \vdots \\
-        (\vec{r}_{y_i,y_j})_{NL} \\
-    \end{bmatrix}.
+    (\vec{r}_{y'_i,y'_j})_m = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
-Thus $\vec{r}_{y'_i,y'_j}$ is a $N$-decimation of $\vec{r}_{y_i,y_j}$. It can be shown that is equivalent to correlation of the $N$-decimation between
+Thus $\vec{r}_{y'_i,y'_j}$ is a $N$-decimation of $\vec{r}_{y_i,y_j}$.
+\begin{theorem} \label{th:deci-corr}
+   The correlation of the $N$-decimations of $\vec{y}_i$ and $\vec{y}_j$ is an unbiased estimator of the $N$-decimation of $\vec{r}_{y_i,y_j}$.
+\end{theorem}
+Finally, since $\vec{c}_i \in \mathbb{R}^N$
+\begin{align*}
+    (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \hat{\vec{c}}_i \cdot \vec{x}[mN-N+1,mN]
+\end{align*}
+where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ denotes the subvector consisting of $\vec{x}$'s elements $mN-N+1$ up to $mN$.
+
+\chapter{Proofs}
+\begin{proof}[Proof of Theorem \ref{th:conv-comm}]
+    A change of index yields that
+    \begin{align*}
+        (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
+        &= \sum_{k=-\infty}^{\infty} (\vec{x})_k (\vec{y})_{i-k+1} \\
+        &= \sum_{k'=-\infty}^{\infty} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
+        &= \sum_{k'=1}^{M} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
+        &= (\vec{y} \ast \vec{x})_i.
+    \end{align*}
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{th:corr-unbiased}]
+    FIX proof missing
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{th:conv-corr}]
+    Note that
+    \begin{align*}
+        (\vec{y}_i \circ \vec{y}_j)_m
+        &= [(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x})]_m \\
+        &=\sum_{k''=1}^{LN+N-1}\sum_{k=1}^N (\vec{c}_i)_k (\vec{x})_{k''-k+1}\sum_{k'=1}^{N}(\vec{c}_j)_{k'}(\vec{x})_{(LN+N-1-m+k'')-k'+1} \\
+        &=\sum_{k=-\infty}^\infty\sum_{k'=\infty}^{\infty}\sum_{k''=-\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{k'}(\vec{x})_{k''-k+1}(\vec{x})_{(LN+N-1-m+k'')-k'+1}.
+    \end{align*}
+    To further evaluate this expression, we introduce a change of variables. To this end, let $k' = N -l'' +k$ and $k'' = l' + k - 1$. This transformation is invertible, so
+    \begin{align*}
+        (\vec{y}_i \circ \vec{y}_j)_m
+        % I don't think this step is necessary
+        % &=\sum_{k=-\infty}^\infty\sum_{l''=-\infty}^{\infty}\sum_{l'=\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}(\vec{x})_{(l' + k - 1)-k+1}(\vec{x})_{[LN+N-1-m+(l' + k - 1)]-(N -l'' +k)+1} \\
+        &=\sum_{k=-\infty}^\infty\sum_{l''=-\infty}^{\infty}\sum_{l'=\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}(\vec{x})_{l'}
+        (\vec{x})_{LN-(m-l'' + 1)+l'} \\
+        &=\sum_{l''=1}^{2N-1}\sum_{k=1}^{N}(\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}\sum_{l'=1}^{LN}(\vec{x})_{l'}
+        (\vec{x})_{LN-(m-l'' + 1)+l'} \\
+        % &=\sum_{k''=1}^{2N-1} \sum_{k=1}^{N} (\vec{c}_i)_k (\vec{c}_j)_{N-k''+k} \sum_{k'=1}^{LN} (\vec{x})_{k'} (\vec{x})_{LN-(m-k''+1)+k'} \\
+        &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
+    \end{align*}
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{th:deci-corr}]
+    FIX proof missing
+\end{proof}
+
 \end{document}
