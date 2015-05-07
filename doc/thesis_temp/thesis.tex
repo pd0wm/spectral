@@ -75,7 +75,8 @@ Using commutativity and the definition of the convolution operator, we can write
 \end{align*}
 Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ for $i=1,\ldots,FIX$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
 \begin{align*}
-    \begin{bmatrix}
+    \vec{r}_y
+    = \begin{bmatrix}
         \mat{D}\vec{r}_{y_1,y_1} \\
         \vdots \\
         \mat{D}\vec{r}_{y_M,y_M}
@@ -85,7 +86,6 @@ Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ fo
         \vdots \\
         \vec{r}_{y'_M,y'_M}
     \end{bmatrix}
-    = \vec{r}_y
     = \begin{bmatrix}
         \mat{D}\mat{R}_{c_1,c_1} \vec{r}_x \\
         \vdots \\
@@ -98,7 +98,7 @@ Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ fo
     \end{bmatrix} \vec{r}_x
     = \mat{R} \vec{r}_x.
 \end{align*}
-Thus $\mat{R}$ relates $\vec{r}_y$ and $\vec{r}_x$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
+Thus $\mat{R}$ relates $\vec{r}_x$ to $\vec{r}_x$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
 \begin{align*}
     (\vec{r}_{y'_i,y'_j})_m = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
