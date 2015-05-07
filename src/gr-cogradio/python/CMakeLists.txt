@@ -36,6 +36,7 @@ GR_PYTHON_INSTALL(
     mc_sampling.py
     sink.py
     mc_crosscorr.py
+    SPFL.py
     fft_window.py
     common.py
     constants.py
@@ -54,3 +55,4 @@ GR_ADD_TEST(qa_autocorrelation ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/
 GR_ADD_TEST(qa_PSD ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_PSD.py)
 GR_ADD_TEST(qa_mc_sampling ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mc_sampling.py)
 GR_ADD_TEST(qa_mc_crosscorr ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_mc_crosscorr.py)
+GR_ADD_TEST(qa_SPFL ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_SPFL.py)

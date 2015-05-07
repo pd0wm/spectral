@@ -22,5 +22,7 @@ install(FILES
     cogradio_mc_sampling.xml
     cogradio_sink.xml
     cogradio_mc_crosscorr.xml
-    cogradio_vector_plot.xml DESTINATION share/gnuradio/grc/blocks
+    cogradio_vector_plot.xml
+    cogradio_SPFL.xml
+    DESTINATION share/gnuradio/grc/blocks
 )

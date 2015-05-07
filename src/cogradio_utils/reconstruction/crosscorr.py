@@ -1,27 +1,30 @@
 from .reconstructor import Reconstructor
 import cogradio_utils as cg
 import numpy as np
+import scipy.linalg
+import scipy.sparse
+import scipy as sp
 
 
 class CrossCorrelation(Reconstructor):
 
     """Implementation of ariananda2012 algorithm"""
 
-    def __init__(self, N, L):
+    def __init__(self, N, L, svthresh=None):
         Reconstructor.__init__(self)
         self.N = N              # Decimation factor
         sparseruler = cg.sparseruler(N)
         self.M = len(sparseruler)
         self.C = cg.build_C(sparseruler, N)
         self.L = L            # Length of input vector
-        self.Rc_Pinv = np.linalg.pinv(self.cross_correlation_filters())
+        Rc_Pinv = sp.linalg.pinv(self.cross_correlation_filters(),
+                                 rcond=svthresh)
+        self.Rc_Pinv = sp.sparse.csr_matrix(Rc_Pinv)
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
         y_stacked = cross_corr_mat.ravel(order='F')
-        # y_stacked = np.roll(y_stacked, y_stacked.shape[0] / 2 )
-        rx = np.dot(self.Rc_Pinv, y_stacked)  # Ravel reforms to 1 column
-        # rx = np.roll(rx, rx.shape[0] / 2)
+        rx = self.Rc_Pinv.dot(y_stacked)  # Ravel reforms to 1 column
         return rx
 
     def cross_correlation_signals(self, signal):
@@ -43,7 +46,7 @@ class CrossCorrelation(Reconstructor):
                                   mode='full')
                 Rc0[i * self.M + j, :] = rc[0:self.N][::-1]
                 Rc1[i * self.M + j, :] = np.append(np.array([0]),
-                                                   rc[self.N:2*self.N-1][::-1])
+                                                   rc[self.N:2 * self.N - 1][::-1])
         Rc = self.block_toeplitz(Rc0, Rc1)
         return Rc
 
@@ -53,13 +56,12 @@ class CrossCorrelation(Reconstructor):
         for i in range((2 * self.L - 1)):
             for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate
-                y = j * self.N    # Top left y coordinate
+                y = j * self.N   # Top left y coordinate
                 # Holy shait pretty multi-dim block indexing mind==blown
                 if i == j:
                     Rc[x:x + Rc0.shape[0], y:y + Rc0.shape[1]] = Rc0
                 elif (i - j) == 1:  # Off diagonal entries
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
                 elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
-                    print "Dit gaat nog goed"
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
