@@ -13,7 +13,7 @@ class CrossCorrelation(Reconstructor):
         sparseruler = cg.sparseruler(N)
         self.M = len(sparseruler)
         self.C = cg.build_C(sparseruler, N)
-        self.L = L              # Length of input vector
+        self.L = L            # Length of input vector
         self.Rc_Pinv = np.linalg.pinv(self.cross_correlation_filters())
 
     def reconstruct(self, signal):
@@ -49,7 +49,7 @@ class CrossCorrelation(Reconstructor):
 
     def block_toeplitz(self, Rc0, Rc1):
         Rc = np.zeros(((2 * self.L - 1) * self.M ** 2,
-                       (2 * self.L - 1) * self.N))
+                      (2 * self.L - 1) * self.N))
         for i in range((2 * self.L - 1)):
             for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate
@@ -59,6 +59,7 @@ class CrossCorrelation(Reconstructor):
                     Rc[x:x + Rc0.shape[0], y:y + Rc0.shape[1]] = Rc0
                 elif (i - j) == 1:  # Off diagonal entries
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
-                elif (j == (2 * self.L - 1) and i == 0):  # Right top case
+                elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
+                    print "Dit gaat nog goed"
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc

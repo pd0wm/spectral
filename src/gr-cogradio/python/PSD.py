@@ -12,7 +12,8 @@ class PSD(gr.sync_block):
 
     count = 1
 
-    def __init__(self, length, frequency):
+    def __init__(self, samp_rate, length, frequency):
+        self.samp_rate = samp_rate
         self.length = length
         self.frequency = frequency
         gr.sync_block.__init__(self,
@@ -29,13 +30,35 @@ class PSD(gr.sync_block):
 
         self.count += 1
         if self.count == self.frequency:
+            ylim_prev = self.axes.get_ylim()
             self.axes.clear()
-            Y = fftp.fftshift(fftp.fft(in0[0]))
-            Y = np.log10(np.abs(Y)) * 20
+            Y = np.abs(fftp.fftshift(fftp.fft(in0[0])))
+            # Y = np.log10(np.abs(Y)) * 20
             self.axes.plot(Y)
+
+            ylim_new = self.axes.get_ylim()
+            self.set_xaxis()
+            self.set_yaxis(ylim_prev, ylim_new)
+
             self.axes.set_title("PSD")
-            self.axes.set_ylim([-140, -20])
             plt.draw()
             self.count = 0
 
         return len(input_items[0])
+
+    def set_xaxis(self):
+        xmax = self.samp_rate / 2
+        labels = np.arange(0, xmax / 1000, 5)
+        labels = np.concatenate((-labels[1::][::-1], labels))
+        ticks = labels * self.length / self.samp_rate * 1000 + self.length / 2
+
+        self.axes.set_xlim((0, self.length))
+        self.axes.set_xticks(ticks)
+        self.axes.set_xticklabels(labels)
+
+    def set_yaxis(self, ylim_prev, ylim_new):
+        if ylim_prev[0] < ylim_new[0]:
+            self.axes.set_ylim(ymin=ylim_prev[0])
+
+        if ylim_prev[1] > ylim_new[1]:
+            self.axes.set_ylim(ymax=ylim_prev[1])

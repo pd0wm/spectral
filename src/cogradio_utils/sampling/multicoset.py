@@ -23,8 +23,9 @@ class MultiCoset(Sampler):
 
     def __msr_sample(self, signal):
         length = int(np.floor(len(signal) / self.N))
+        tmp = length * self.N
         y = np.zeros((self.M, length))
-        for i in np.arange(0, length, self.N):
+        for i in np.arange(0, tmp, self.N):
             y[:, i / self.N] = np.dot(np.fliplr(self.C),
                                       signal[i:(i + self.N)])
         return y

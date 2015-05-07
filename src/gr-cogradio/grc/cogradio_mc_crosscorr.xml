@@ -4,37 +4,32 @@
   <key>cogradio_mc_crosscorr</key>
   <category>Cogradio</category>
   <import>import cogradio</import>
-  <make>cogradio.mc_crosscorr($chunk_size, $m, $n)</make>
-  
+  <make>cogradio.mc_crosscorr($chunk_size, $n)</make>
+
   <param>
     <name>Chunk Size</name>
     <key>chunk_size</key>
     <value>100</value>
     <type>int</type>
   </param>
-  <param>
-    <name>M</name>
-    <key>m</key>
-    <value>6</value>
-    <type>int</type>
-  </param>
+
   <param>
     <name>N</name>
     <key>n</key>
     <value>14</value>
     <type>int</type>
   </param>
-  
+
 
   <sink>
     <name>in</name>
     <type>complex</type>
-    <vlen>int($chunk_size) / int($n) * int($m)</vlen>
+    <vlen>int($chunk_size / $n)</vlen>
   </sink>
-  
+
   <source>
     <name>out</name>
     <type>complex</type>
-    <vlen>int($n) * (2 * int($chunk_size) / $n - 1)</vlen>
+    <vlen>$n * (2 * int($chunk_size / $n) - 1)</vlen>
   </source>
 </block>
