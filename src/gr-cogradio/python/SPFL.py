@@ -21,6 +21,7 @@
 
 import numpy as np
 from gnuradio import gr
+import cogradio_utils as cg
 
 class SPFL(gr.sync_block):
     """
@@ -28,16 +29,18 @@ class SPFL(gr.sync_block):
     """
     def __init__(self, length):
         self.length = length
+        self.detector = cg.detection.SPFL()
         gr.sync_block.__init__(self,
             name="SPFL",
             in_sig=[(np.complex64, self.length)],
-            out_sig=[np.complex64])
+            out_sig=[(np.complex64, 1)])
 
 
     def work(self, input_items, output_items):
-        in0 = input_items[0]
+        # select first vector for rx
+        in0 = input_items[0][0]
+        self.detector.detect(in0)
         out = output_items[0]
-        # <+signal processing here+>
-        out[:] = in0
+        print(output_items[0].shape)
         return len(output_items[0])
 
