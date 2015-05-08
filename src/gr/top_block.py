@@ -2,7 +2,7 @@
 ##################################################
 # Gnuradio Python Flow Graph
 # Title: Top Block
-# Generated: Fri May  8 13:53:06 2015
+# Generated: Fri May  8 14:49:00 2015
 ##################################################
 
 from gnuradio import analog
@@ -21,6 +21,8 @@ class top_block(grc_wxgui.top_block_gui):
 
     def __init__(self):
         grc_wxgui.top_block_gui.__init__(self, title="Top Block")
+        _icon_path = "/usr/share/icons/hicolor/32x32/apps/gnuradio-grc.png"
+        self.SetIcon(wx.Icon(_icon_path, wx.BITMAP_TYPE_ANY))
 
         ##################################################
         # Variables
@@ -97,7 +99,7 @@ class top_block(grc_wxgui.top_block_gui):
         self.Add(self.cogradio_vector_plot_0.win)
         self.cogradio_mc_sampling_0 = cogradio.mc_sampling(length, N)
         self.cogradio_mc_crosscorr_0 = cogradio.mc_crosscorr(length, N)
-        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
+        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate)
         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, length)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
         self.analog_sig_source_x_1 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, cos_freq, 1, 0)
@@ -119,6 +121,7 @@ class top_block(grc_wxgui.top_block_gui):
         self.connect((self.Cogradio_SPFL_0, 0), (self.cogradio_vector_plot_0, 0))
 
 
+# QT sink close method reimplementation
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -156,8 +159,8 @@ class top_block(grc_wxgui.top_block_gui):
 
 if __name__ == '__main__':
     import ctypes
-    import sys
-    if sys.platform.startswith('linux'):
+    import os
+    if os.name == 'posix':
         try:
             x11 = ctypes.cdll.LoadLibrary('libX11.so')
             x11.XInitThreads()
@@ -168,3 +171,4 @@ if __name__ == '__main__':
     tb = top_block()
     tb.Start(True)
     tb.Wait()
+
