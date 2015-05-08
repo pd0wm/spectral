@@ -21,9 +21,7 @@ class SPFL(Detector):
             sstd[i] = np.std(spectrum_norm[iBegin:iEnd])
 
         treshold = 1;
-        # Plot used bands
-        # spectrum_abs = sstd > treshold
-        plt.figure(5)
-        plt.stem(sstd)
+        return  sstd*1E5 #(sstd > treshold)
+
         
         

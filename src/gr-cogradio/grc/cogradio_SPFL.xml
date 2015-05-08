@@ -22,5 +22,6 @@
   <source>
     <name>out</name>
     <type>complex</type>
+    <vlen>$length</vlen>
   </source>
 </block>
