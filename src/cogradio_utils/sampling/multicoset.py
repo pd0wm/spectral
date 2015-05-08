@@ -15,6 +15,10 @@ class MultiCoset(Sampler):
         self.C = cg.build_C(sparseruler, N)
         self.M = len(sparseruler)
 
+    def generateC(self):
+        return self.C
+
+
     def sample(self, signal):
         if self.mode == "msr":
             return self.__msr_sample(signal)

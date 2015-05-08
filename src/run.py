@@ -18,7 +18,8 @@ threshold = 2000
 # Init blocks
 source = cg.source.Sinusoidal(frequencies)
 sampler = cg.sampling.MultiCoset(N)
-reconstructor = cg.reconstruction.CrossCorrelation(N, L)
+C = sampler.generateC()
+reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 
 # Compressive sensing
 nyq_signal = source.generate(f_samp, window)
