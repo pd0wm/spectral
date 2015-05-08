@@ -42,7 +42,7 @@ class vector_fft(gr.sync_block):
         out_0 = output_items[0]
 
         for i, input_ndarray in enumerate(in_0):
-            # out_0[i] = 20 * np.log10(np.abs(fftp.fftshift(fftp.fft(input_ndarray))))
+            #out_0[i] = 20 * np.log10(np.abs(fftp.fftshift(fftp.fft(input_ndarray))))
             out_0[i] = 1000 * np.abs(fftp.fftshift(fftp.fft(input_ndarray)))
             self.tmr = 0
 
