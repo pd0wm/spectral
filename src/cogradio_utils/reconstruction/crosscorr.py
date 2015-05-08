@@ -16,10 +16,8 @@ class CrossCorrelation(Reconstructor):
         sparseruler = cg.sparseruler(N)
         if C is None:
             self.C = cg.build_C(sparseruler, N)
-            print(type(self.C))
         else:
             self.C = C
-        print(type(self.C))
         self.M = self.C.shape[0]
         self.L = L            # Length of input vector
         Rc_Pinv = sp.linalg.pinv(self.cross_correlation_filters(),
