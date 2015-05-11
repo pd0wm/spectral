@@ -11,6 +11,7 @@ def index():
 if __name__ == '__main__':
     app.run()
 
-flask.url_for('static', filename='/bootstrap/js/bootstrap-theme.min.css')
+flask.url_for('static', filename='/bootstrap/css/bootstrap-theme.min.css')
 flask.url_for('static', filename='/bootstrap/css/bootstrap.min.css')
 flask.url_for('static', filename='/bootstrap/js/bootstrap.min.js')
+flask.url_for('static', filename='/bootstrap/js/doc.min.js')
