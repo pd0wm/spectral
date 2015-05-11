@@ -22,6 +22,16 @@
 
 \mainmatter
 \chapter{Preliminaries}
+A vector is always assumed to be a column vector, unless stated otherwise.
+
+\begin{definition}[Vector Element]
+    Let $\vec{x} \in \mathbb{R}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$.
+\end{definition}
+
+\begin{definition}[Subvector]
+    Let $\vec{x} \in \mathbb{R}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{R}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
+\end{definition}
+
 \begin{definition}[Convolution]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
@@ -32,7 +42,7 @@
 \begin{theorem}[Commutativity of Convolution] \label{th:conv-comm}
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
 \end{theorem}
-\begin{definition}[Correlation]
+\begin{definition}[Cross-correlation]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{M-i+k}
@@ -40,46 +50,55 @@
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{definition}
 \begin{theorem} \label{th:corr-unbiased}
-    The correlation operator is an unbiased estimator of the correlation of the signal.
+    Let $X[i]$ where $i = 1,\ldots,N$ and $Y[i]$ where $i = 1,\ldots,M$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$ be such that $(\vec{x})_i = X[i]$ and $(\vec{y})_i = Y[i]$. Then
+    \begin{align*}
+        \frac{\vec{x} \circ \vec{y}}{N+M-1} 
+    \end{align*}
+    is an unbiased estimator of the cross-correlation of $X[i]$ and $Y[i]$ such that $X[i] = 0$ for $i < 0$ and $i > N$ and $Y[i]=0$ for $i < 0$ and $t > M$.
 \end{theorem}
 
 \chapter{Reconstruction}
+\section{Main Analysis}
 Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$. Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
 \begin{theorem} \label{th:conv-corr}
     \begin{align*}
-        \vec{y}_i \circ \vec{y}_j = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}).
+        (\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}).
     \end{align*}
 \end{theorem}
-We denote 
+Let $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$ and $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
 \begin{align*}
-    \vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
+    \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
-Using commutativity and the definition of the convolution operator, we can write this equation as (FIX halve notatie en afvallende matrix)
+Let $\hat{\vec{r}}_{y_i,y_j} = \vec{r}_{y_i,y_j}[0,2LN-1]$. Then commutativity and the definition of the convolution operator yield that
 \begin{align*}
-    \vec{r}_{y_i,y_j} &=  \vec{r}_{c_i,c_j} \ast \vec{r}_x \\
-    &= \vec{r}_x \ast \vec{r}_{c_i,c_j} \\
-    &= \begin{bmatrix}
-        (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & & &  0 \\
-        (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & & & 0 \\
-        \vdots &  & & \ddots & &  & \vdots\\
-        \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 \\
-        \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_3 & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 \\
-    \end{bmatrix} \begin{bmatrix}
+    \hat{\vec{r}}_{y_i,y_j}
+    &= \vec{r}_{y_i,y_j}[0,2LN-1] \\
+    &= (\vec{r}_{c_i,c_j} \ast \vec{r}_x)[0,2LN-1] \\
+    &= (\vec{r}_x \ast \vec{r}_{c_i,c_j})[0,2LN-1] \\
+    &= \hskip \textwidth minus \textwidth \\ % Fill line
+    \intertext{$\begin{bmatrix}
+        (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & &  0 \\
+        (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & & 0 \\
+        &  & & \vdots &  & \\
+        \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_1 & 0 \\
+        \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 \\
+    \end{bmatrix}
+    \begin{bmatrix}
         (\vec{r}_x)_1 \\
         (\vec{r}_x)_2 \\
         \vdots \\
         (\vec{r}_x)_{2LN-2} \\
         (\vec{r}_x)_{2LN-1}
-    \end{bmatrix} \\
+    \end{bmatrix}$}
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ for $i=1,\ldots,FIX$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
+Let the $2L-1\times 2NL-1$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
 \begin{align*}
     \vec{r}_y
     = \begin{bmatrix}
-        \mat{D}\vec{r}_{y_1,y_1} \\
+        \mat{D}\hat{\vec{r}}_{y_1,y_1} \\
         \vdots \\
-        \mat{D}\vec{r}_{y_M,y_M}
+        \mat{D}\hat{\vec{r}}_{y_M,y_M}
     \end{bmatrix}
     = \begin{bmatrix}
         \vec{r}_{y'_1,y'_1} \\
@@ -98,22 +117,34 @@ Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ fo
     \end{bmatrix} \vec{r}_x
     = \mat{R} \vec{r}_x.
 \end{align*}
-Thus $\mat{R}$ relates $\vec{r}_x$ to $\vec{r}_x$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
+Thus $\mat{R}$ relates $\vec{r}_x$ to $\vec{r}_y$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
 \begin{align*}
-    (\vec{r}_{y'_i,y'_j})_m = (\vec{r}_{y_i,y_j})_{mN}.
+    (\vec{r}_{y'_i,y'_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
-Thus $\vec{r}_{y'_i,y'_j}$ is a $N$-decimation of $\vec{r}_{y_i,y_j}$.
+Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$ for $i = 1, \ldots, M$.
 \begin{theorem} \label{th:deci-corr}
-   The correlation of the $N$-decimations of $\vec{y}_i$ and $\vec{y}_j$ is an unbiased estimator of the $N$-decimation of $\vec{r}_{y_i,y_j}$.
+   Then
+    \begin{align*}
+        \frac{2LN-1}{2L-1}\vec{y}'_i \circ \vec{y}'_j
+    \end{align*}
+   is an unbiased estimator of $\vec{r}_{y'_i,y'_j}$.
 \end{theorem}
 Finally, since $\vec{c}_i \in \mathbb{R}^N$
 \begin{align*}
-    (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \hat{\vec{c}}_i \cdot \vec{x}[mN-N+1,mN]
+    (\vec{y}'_i)_m = (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \hat{\vec{c}}_i \cdot \vec{x}[(m-1)N+1,mN]
 \end{align*}
-where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ denotes the subvector consisting of $\vec{x}$'s elements $mN-N+1$ up to $mN$.
+where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed. This concludes the main analysis.
+
+\section{The Algorithm}
+
+\section{Exploring Further Possibilities}
+\subsection{Sample-Wide Autocorrelation}
+
+\subsection{Unbiased Estimate}
+Unbiased PSD estimate? But mean square error worse! Wikipedia reference. Mean square error calculation? Describe as dewindowing
 
 \chapter{Proofs}
-\begin{proof}[Proof of Theorem \ref{th:conv-comm}]
+\begin{proof}[Proof of \cref{th:conv-comm}]
     A change of index yields that
     \begin{align*}
         (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
@@ -123,10 +154,20 @@ where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ de
         &= (\vec{y} \ast \vec{x})_i.
     \end{align*}
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{th:corr-unbiased}]
-    FIX proof missing
+\begin{proof}[Proof of \cref{th:corr-unbiased}]
+    Assume that $X[i] = 0$ for $i < 0$ and $i > N$ and $Y[i] = 0$ for $i < 0$ and $i > M$. Then
+    \begin{align*}
+        \frac{E[(\vec{x} \circ \vec{y})_i]}{N+M-1} &= \frac{1}{N+M-1} \sum_{k=1}^N E[(\vec{x})_k (\vec{y})_{M-i+k}] \\
+        &= \frac{1}{N+M-1} \sum_{k=1}^N E(X[k] Y[M-i+k]) \\
+        &= \frac{1}{N+M-1} \sum_{k=1}^{N+M-1} E(X[k] Y[M-i+k]).
+    \end{align*}
+    Since $X[i]$ and $Y[i]$ are wide sense stationary stochastic processes,
+    \begin{align*}
+        E[(\hat{\vec{\theta}})_i] &= \frac{1}{N+M-1} \sum_{k=1}^{N+M-1} R_{X,Y}(M-i) \\
+        &= R_{X,Y}(M-i).
+    \end{align*}
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{th:conv-corr}]
+\begin{proof}[Proof of \cref{th:conv-corr}]
     Note that
     \begin{align*}
         (\vec{y}_i \circ \vec{y}_j)_m
@@ -143,11 +184,10 @@ where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ de
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
         &=\sum_{l''=1}^{2N-1}\sum_{k=1}^{N}(\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}\sum_{l'=1}^{LN}(\vec{x})_{l'}
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
-        % &=\sum_{k''=1}^{2N-1} \sum_{k=1}^{N} (\vec{c}_i)_k (\vec{c}_j)_{N-k''+k} \sum_{k'=1}^{LN} (\vec{x})_{k'} (\vec{x})_{LN-(m-k''+1)+k'} \\
         &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
     \end{align*}
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{th:deci-corr}]
+\begin{proof}[Proof of \cref{th:deci-corr}]
     FIX proof missing
 \end{proof}
 
