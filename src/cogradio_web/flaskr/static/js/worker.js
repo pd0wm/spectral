@@ -1,4 +1,4 @@
-(function worker() {
+var worker = function() {
     $.ajax({
 	url: '/status',
 	success: function(data) {
@@ -11,4 +11,6 @@
 	    setTimeout(worker, 1000);
 	}
     });
-})();
+};
+
+worker();

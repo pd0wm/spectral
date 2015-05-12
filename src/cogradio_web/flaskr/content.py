@@ -16,6 +16,18 @@ class Content(object):
         self._by_uuid[element.uuid] = element
         self._by_position[position] = element
         self._by_key[element.key] = element
+
+    def set_by_uuid(self, uuid, value):
+        self._by_uuid[uuid].value = value
+
+    @property
+    def js_init(self):
+        r = ""
+        for k, v in self._by_uuid.items():
+            r += "//" + k + "\n"
+            r += v.js_init
+            r += "\n"
+        return r
     
     @property
     def html(self):

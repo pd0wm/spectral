@@ -90,5 +90,8 @@
     <script src="{{ url_for('bower.static', filename='bootstrap/dist/js/bootstrap.js') }}"></script>
     <script src="{{ url_for('bower.static', filename='seiyria-bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/worker.js') }}"></script>
+    <script type="text/javascript">
+      {{ js_init|safe }}
+    </script>
   </body>
 </html>

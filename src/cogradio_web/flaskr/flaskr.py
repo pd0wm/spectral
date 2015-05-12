@@ -26,12 +26,19 @@ cnt.add(el3, (2, 2))
 @app.route('/')
 def index():
     content = "test"
-    return render_template('index.html', content=cnt.html)
+    return render_template('index.html', content=cnt.html, js_init=cnt.js_init)
 
 @app.route('/status')
 def status():
     sts = cnt.values
     return jsonify(**sts)
+
+@app.route('/update/<id>/<value>')
+def update(id, value):
+    print id, value
+    cnt.set_by_uuid(id, value)
+    cnt.set_by_uuid(el1.uuid, value)
+    return jsonify({id: value})
 
 if __name__ == '__main__':
     app.run()

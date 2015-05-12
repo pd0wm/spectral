@@ -14,16 +14,18 @@ class Element(object):
     def html(self):
         raise NotImplementedError
 
+    @property
+    def js_init(self):
+        return ""
+
 class TextElement(Element):
     def __init__(self, key, title=None, value=None):
         super(TextElement, self).__init__(key, title)
-        self._value = value
+        self.value = value
 
     @property
     def update_eval(self):
-        import random
-        val = random.randint(0,1000)
-        code = """$('#{0}').html("{1}")""".format(self.uuid, val)
+        code = """$('#{0}').html("{1}")""".format(self.uuid, self.value)
         return code
     
     @property
@@ -41,13 +43,19 @@ class TextElement(Element):
 class SliderElement(Element):
     def __init__(self, key, title=None, value=None):
         super(SliderElement, self).__init__(key, title)
-        self._value = value
+        self.value = value
 
     @property
     def update_eval(self):
-        import random
-        val = random.randint(0,1000)
-        code = """$('#{0}').slider().slider('setValue', {1})""".format(self.uuid, val)
+        code = """$('#{0}').slider('setValue', {1})""".format(self.uuid, self.value)
+        return code
+
+    @property
+    def js_init(self):
+        code = """$('#{0}').slider().on('change', function(ev){{
+                      $.ajax({{url:'/update/{0}/' + ev.value.newValue}});
+                      worker();
+                   }});""".format(self.uuid)
         return code
 
     @property
