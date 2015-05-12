@@ -13,7 +13,7 @@ class Sinusoidal(Source):
     def generate(self, samp_freq, duration):
         signal = 0
         t = np.arange(0, np.ceil(duration * samp_freq)) / samp_freq
-        
+
         for f in self.frequencies:
             signal += np.cos(2 * np.pi * f * t)
 
