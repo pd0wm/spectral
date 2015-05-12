@@ -2,13 +2,13 @@
     $.ajax({
 	url: '/status',
 	success: function(data) {
-	    $('#uptime-content').html(data['uptime']);
-	    console.log(data);
+	    for (var id in data){
+		$('#' + id).html(data[id]);
+	    }	    
 	},
 	complete: function() {
 	    // Schedule the next request when the current one's complete
-	    setTimeout(worker, 100);
-	    console.log("schudeled");
+	    setTimeout(worker, 1000);
 	}
     });
 })();

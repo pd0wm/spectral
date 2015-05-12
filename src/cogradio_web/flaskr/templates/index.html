@@ -73,17 +73,7 @@
       <div class="page-header">
 	<h1>System Status</h1>
       </div>
-      <div class="row">
-	<div class="col-sm-4">
-	  <div class="panel panel-default">
-	    <div class="panel-heading">
-	      <h3 class="panel-title">Uptime</h3>
-	    </div>
-	    <div class="panel-body" id="uptime-content">
-	      1337:10
-	    </div>
-	  </div>
-	</div>		
+      {{ content|safe }} 
     </div> <!-- /container -->
 
 
