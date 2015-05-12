@@ -41,9 +41,10 @@ class TextElement(Element):
         
 
 class SliderElement(Element):
-    def __init__(self, key, title=None, value=None):
+    def __init__(self, key, title=None, value=None, range=(0, 1000)):
         super(SliderElement, self).__init__(key, title)
         self.value = value
+        self.range = range
 
     @property
     def update_eval(self):
@@ -66,9 +67,9 @@ class SliderElement(Element):
 	      <h3 class="panel-title">{0}</h3>
 	    </div>
 	    <div class="panel-body">
-              <input id="{1}" type="text" style="width: 100%;"" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+              <input id="{1}" type="text" style="width: 100%;"" value="" data-slider-min="{2}" data-slider-max="{3}" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
 	    </div>
-	</div>""".format(self.title, self.uuid)
+	</div>""".format(self.title, self.uuid, self.range[0], self.range[1])
     
 if __name__ == '__main__':
     print "Hello, World!"
