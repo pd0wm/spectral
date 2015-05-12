@@ -30,7 +30,7 @@ def index():
 
 @app.route('/status')
 def status():
-    sts = cnt.values
+    sts = cnt.update_eval
     return jsonify(**sts)
 
 @app.route('/update/<id>/<value>')

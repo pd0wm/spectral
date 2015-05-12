@@ -44,7 +44,7 @@ class Content(object):
         return r
 
     @property
-    def values(self):
+    def update_eval(self):
         return {k: v.update_eval for k, v in self._by_uuid.items()}
 
 if __name__ == '__main__':
