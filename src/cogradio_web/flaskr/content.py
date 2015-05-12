@@ -33,7 +33,7 @@ class Content(object):
 
     @property
     def values(self):
-        return {k: v.value for k, v in self._by_uuid.items()}
+        return {k: v.update_eval for k, v in self._by_uuid.items()}
 
 if __name__ == '__main__':
     from element import TextElement

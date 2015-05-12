@@ -5,6 +5,7 @@
     "dependencies": {
 	"jquery": "*",
 	"bootstrap": "*",
-	"highcharts": "*"
+	"highcharts": "*",
+	"seiyria-bootstrap-slider": "*"
     }
 }

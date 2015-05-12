@@ -16,8 +16,10 @@
     <!-- Bootstrap theme -->
     <link href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap-theme.css') }}" rel="stylesheet"></link>
     
+    
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet"></link>
+    <link href="{{ url_for('bower.static', filename='seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" rel="stylesheet"></link>
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -70,11 +72,15 @@
 	<p>Hello, World</p>
       </div>
 
+
+
       <div class="page-header">
 	<h1>System Status</h1>
       </div>
       {{ content|safe }} 
     </div> <!-- /container -->
+
+    
 
 
     <!-- Bootstrap core JavaScript
@@ -82,6 +88,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.js') }}"></script>
     <script src="{{ url_for('bower.static', filename='bootstrap/dist/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='seiyria-bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/worker.js') }}"></script>
   </body>
 </html>

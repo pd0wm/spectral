@@ -3,7 +3,7 @@
 	url: '/status',
 	success: function(data) {
 	    for (var id in data){
-		$('#' + id).html(data[id]);
+		eval(data[id]);
 	    }	    
 	},
 	complete: function() {

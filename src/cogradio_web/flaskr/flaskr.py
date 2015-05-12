@@ -14,12 +14,12 @@ from element import TextElement, SliderElement
 from content import Content
 el1 = TextElement(key="uptime", title="Uptime", value=123)
 el2 = TextElement(key="system_status", title="System Status", value="Critical")
-el3 = SliderElement(key="moeder", title="Je moeder", value="test")
+el3 = SliderElement(key="slider", title="Test slider", value=42)
 
 cnt = Content()
 cnt.add(el1, (0, 1))
 cnt.add(el2, (1, 0))
-cnt.add(el3, (2, 3))
+cnt.add(el3, (2, 2))
 
     
 
