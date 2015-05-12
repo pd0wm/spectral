@@ -4,12 +4,33 @@
   <key>Cogradio_SPFL</key>
   <category>Cogradio</category>
   <import>import cogradio</import>
-  <make>cogradio.SPFL($length)</make>
+  <make>cogradio.SPFL($length, $multiplier, $treshold, $binwidth)</make>
 
   <param>
     <name>Length</name>
     <key>length</key>
     <value>100</value>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Multiplier</name>
+    <key>multiplier</key>
+    <value>1</value>
+    <type>float</type>
+  </param>
+
+    <param>
+    <name>Treshold</name>
+    <key>treshold</key>
+    <value>0.2</value>
+    <type>float</type>
+    </param>
+
+      <param>
+    <name>Binwidth</name>
+    <key>binwidth</key>
+    <value>60</value>
     <type>int</type>
   </param>
 
