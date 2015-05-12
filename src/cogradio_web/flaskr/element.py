@@ -2,7 +2,7 @@ import uuid
 
 class Element(object):
     def __init__(self, key, title):
-        self.uuid = uuid.uuid4().hex
+        self.uuid = uuid.uuid1().hex
         self.key = key
         self.title = title
 
