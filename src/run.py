@@ -23,8 +23,8 @@ reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 def signal_generation(signal, generator, mc_sampler, f_samp, window):
     while True:
         orig_signal = generator.generate(f_samp, window)
-        if signal.qsize() < 10:
-            signal.put(mc_sampler.sample(orig_signal))
+        #if signal.qsize() < 10:
+        signal.put(mc_sampler.sample(orig_signal))
 
 
 def signal_reconstruction(signal, plot_queue, reconstructor):
@@ -32,20 +32,21 @@ def signal_reconstruction(signal, plot_queue, reconstructor):
         inp = signal.get()
         if inp.any():
             out = reconstructor.reconstruct(inp)
-            if plot_queue.qsize() < 10:
-                plot_queue.put(out)
+            # if plot_queue.qsize() < 10:
+            plot_queue.put(out)
 
 
 def plotter(plot_queue):
-    plt.ion()
-    while True:
-        to_plot = plot_queue.get()
-        if to_plot.any():
-            plt.cla()
-            plt.plot(cg.fft(to_plot))
-            plt.draw()
-            plt.show()
-            plt.pause(0.01)
+    print "Mac is voor winnaars"
+#    plt.ion()
+#    while True:
+#        to_plot = plot_queue.get()
+#        if to_plot.any():
+#            plt.cla()
+#            plt.plot(cg.fft(to_plot))
+#            plt.draw()
+#            plt.show()
+#            plt.pause(0.01)
 
 
 def settings_server():

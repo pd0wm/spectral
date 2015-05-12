@@ -47,6 +47,10 @@ class Content(object):
     def update_eval(self):
         return {k: v.update_eval for k, v in self._by_uuid.items()}
 
+    @property
+    def values(self):
+        return {k: v.value for k, v in self._by_key.items()}
+
 if __name__ == '__main__':
     from element import TextElement
     el1 = TextElement(key="uptime", title="Uptime", value=123)

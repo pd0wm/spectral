@@ -2,7 +2,7 @@ import uuid
 
 class Element(object):
     def __init__(self, key, title):
-        self.uuid = uuid.uuid1().hex
+        self.uuid = uuid.uuid4().hex
         self.key = key
         self.title = title
 
@@ -53,10 +53,11 @@ class SliderElement(Element):
 
     @property
     def js_init(self):
-        code = """$('#{0}').slider().on('change', function(ev){{
+        code = """$('#{0}').slider();
+                  $('#{0}').slider().on('change', function(ev){{
                       $.ajax({{url:'/update/{0}/' + ev.value.newValue}});
                       //worker();
-                   }});""".format(self.uuid)
+                  }});""".format(self.uuid)
         return code
 
     @property
