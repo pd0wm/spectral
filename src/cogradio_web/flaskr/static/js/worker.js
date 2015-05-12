@@ -8,7 +8,7 @@ var worker = function() {
 	},
 	complete: function() {
 	    // Schedule the next request when the current one's complete
-	    setTimeout(worker, 1000);
+	    setTimeout(worker, 100);
 	}
     });
 };

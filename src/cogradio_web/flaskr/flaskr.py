@@ -14,7 +14,7 @@ from element import TextElement, SliderElement
 from content import Content
 el1 = TextElement(key="uptime", title="Uptime", value=123)
 el2 = TextElement(key="system_status", title="System Status", value="Critical")
-el3 = SliderElement(key="slider", title="Test slider", value=42)
+el3 = SliderElement(key="slider", title="Test slider", value=42, range=(0,100))
 
 cnt = Content()
 cnt.add(el1, (0, 1))
@@ -41,4 +41,4 @@ def update(id, value):
     return jsonify({id: value})
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host= '0.0.0.0')

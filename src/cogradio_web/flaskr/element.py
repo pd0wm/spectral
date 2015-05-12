@@ -55,7 +55,7 @@ class SliderElement(Element):
     def js_init(self):
         code = """$('#{0}').slider().on('change', function(ev){{
                       $.ajax({{url:'/update/{0}/' + ev.value.newValue}});
-                      worker();
+                      //worker();
                    }});""".format(self.uuid)
         return code
 
