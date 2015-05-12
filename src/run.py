@@ -87,10 +87,10 @@ if __name__ == '__main__':
     p1 = Process(target=signal_generation,
                  args=(signal, source, sampler, f_samp, window))
     p2 = Process(target=signal_reconstruction,
-                 args=(signal, plot_queue, reconstructor))
+                 args=(signal, plot_queue, websocket_queue, reconstructor))
     p3 = Process(target=plotter, args=(plot_queue,))
     p4 = Process(target=settings_server)
-    p5 = Process(target=websocket, args=(websocket_queue))
+    p5 = Process(target=websocket, args=(websocket_queue,))
 
     try:
         p1.start()

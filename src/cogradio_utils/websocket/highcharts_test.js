@@ -1,6 +1,8 @@
 var socket;
 var output;
 var toggleButton;
+var samplerate = 32000;
+var chart;
 
 $(document).ready(function() {
     output = document.getElementById("output");
@@ -20,6 +22,8 @@ function onClose (event) {
 function onMessage (event) {
     if (typeof event.data == 'string' || event.data instanceof String) {
         writeLine('Received message: ' + event.data);
+        chart = $('#container').highcharts();
+        chart.series[0].setData(JSON.parse(event.data));
     }
     else{
         writeLine('Received binary message');
@@ -58,8 +62,6 @@ function writeLine(line) {
 window.addEventListener("load", "init()", false);
 
 $(function () {
-    var samplerate = 32000;
-
     $('#container').highcharts({
         chart: {
             zoomType: 'x'
@@ -69,8 +71,8 @@ $(function () {
         },
         xAxis: {
             type: 'linear',
-            minRange: -samplerate / 2,
-            maxRange: samplerate / 2
+            // minRange: -samplerate / 2,
+            // maxRange: samplerate / 2
         },
         yAxis: {
             title: {
@@ -101,13 +103,12 @@ $(function () {
                 threshold: null
             }
         },
-
         series: [{
             type: 'area',
             name: 'FFT',
             pointInterval: 1,
-            pointStart: -samplerate / 2,
-            pointEnd: samplerate / 2,
+            // pointStart: -samplerate / 2,
+            // pointEnd: samplerate / 2,
             data: [
                 0.8446, 0.8445, 0.8444, 0.8451, 0.8418, 0.8264, 0.8258, 0.8232, 0.8233, 0.8258
             ]

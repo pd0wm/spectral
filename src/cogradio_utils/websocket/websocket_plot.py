@@ -29,7 +29,7 @@ class ServerProtocolPlot(ServerProtocol):
             encode = json.dumps(data).encode('utf8')
             print(encode)
             self.sendMessage(encode)
-            yield sleep(1)
+            yield sleep(0.5)
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
