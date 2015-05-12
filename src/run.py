@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 import cogradio_utils as cg
-import numpy as np
 import matplotlib.pyplot as plt
+import Pyro4
 from multiprocessing import Process, Queue
-import logging
 
-
-# import matplotlib.pyplot as plt
-np.set_printoptions(linewidth=800, edgeitems=20, threshold=100)
-logging.basicConfig(level=logging.DEBUG)
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
 L = 10
 N = 14
@@ -28,7 +23,8 @@ reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 def signal_generation(signal, generator, mc_sampler, f_samp, window):
     while True:
         orig_signal = generator.generate(f_samp, window)
-        signal.put(mc_sampler.sample(orig_signal))
+        if signal.qsize() < 10:
+            signal.put(mc_sampler.sample(orig_signal))
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
@@ -36,11 +32,14 @@ def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
         inp = signal.get()
         if inp.any():
             out = reconstructor.reconstruct(inp)
-            plot_queue.put(out)
+
             try:
                 websocket_queue.put_nowait(out)
             except:
                 pass
+
+            if plot_queue.qsize() < 10:
+                plot_queue.put(out)
 
 
 def plotter(plot_queue):
@@ -71,47 +70,41 @@ def websocket(websocket_queue):
     reactor.run()
 
 
-signal = Queue()
-plot_queue = Queue()
-websocket_queue = Queue(1)
+def settings_server():
+    daemon = Pyro4.Daemon()
+    ns = Pyro4.locateNS()
+    settings = cg.Settings()
+    uri = daemon.register(settings)
+    ns.register("cg.settings", uri)
+    daemon.requestLoop()
 
-p1 = Process(target=signal_generation,
-             args=(signal, source, sampler, f_samp, window))
-p2 = Process(target=signal_reconstruction,
-             args=(signal, plot_queue, websocket_queue, reconstructor))
-p3 = Process(target=plotter, args=(plot_queue,))
-p4 = Process(target=websocket, args=(websocket_queue,))
 
-p1.start()
-p2.start()
-# p3.start()
-p4.start()
-p1.join()
-p2.join()
-# p3.join()
-p4.join()
+if __name__ == '__main__':
+    signal = Queue()
+    plot_queue = Queue()
+    websocket_queue = Queue(1)
 
-# Compressive sensing
-# nyq_signal = source.generate(f_samp, window)
-# mc_signal = sampler.sample(nyq_signal)
-# rx = reconstructor.reconstruct(mc_signal)
-# y_s = cg.fft(rx)
-#
-# # Axis generation
-# rx_len = (rx.shape[0])
-# f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
-#
-# # Detection
-# # detector = cg.detection.SPFL()
-# # detector.detect(rx)
-#
-# # Plotting
-# # Reconstruction
-# plt.figure(1)
-# plt.subplot(211)
-# plt.plot(f_axis_recon, y_s)
-#
-# # Original
-# plt.subplot(212)
-# plt.stem(np.linspace(-0.5, 0.5, nyq_signal.shape[0]), cg.psd(nyq_signal))
-# plt.show()
+    p1 = Process(target=signal_generation,
+                 args=(signal, source, sampler, f_samp, window))
+    p2 = Process(target=signal_reconstruction,
+                 args=(signal, plot_queue, reconstructor))
+    p3 = Process(target=plotter, args=(plot_queue,))
+    p4 = Process(target=settings_server)
+    p5 = Process(target=websocket, args=(websocket_queue))
+
+    try:
+        p1.start()
+        p2.start()
+        p3.start()
+        p4.start()
+        p5.start()
+        p1.join()
+        p2.join()
+        p3.join()
+        p4.join()
+    except KeyboardInterrupt:
+        p1.terminate()
+        p2.terminate()
+        p3.terminate()
+        p4.terminate()
+        p5.terminate()

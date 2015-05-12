@@ -1,4 +1,5 @@
 *.tmp
+*.tmp.npz
 
 # Created by https://www.gitignore.io
 
