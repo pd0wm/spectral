@@ -2,7 +2,6 @@ var socket;
 var output;
 var hostname;
 var toggleButton;
-var samplerate = 32000;
 var chart;
 
 $(document).ready(function() {
@@ -25,7 +24,7 @@ function onMessage (event) {
     if (typeof event.data == 'string' || event.data instanceof String) {
         var data = JSON.parse(event.data);
         chart = $('#container').highcharts();
-        chart.series[0].setData(JSON.parse(event.data));
+        chart.series[0].setData(data.data);
         socket.send(1);
 
         fixAxes(data);
@@ -96,34 +95,34 @@ $(function () {
                     ]
                 },
                 marker: {
-                    radius: 2
+                    enabled: false
                 },
                 lineWidth: 1,
-                states: {
-                    hover: {
-                        lineWidth: 1
-                    }
-                },
-                threshold: null
+                threshold: null,
+                enableMouseTracking: false
             }
         },
         series: [{
             type: 'area',
             name: 'FFT',
-            pointStart: -samplerate / 2,
-            data: []
-        }]
+        }],
+        tooltip: {
+            enabled: false
+        }
     });
 });
 
 function fixAxes(data) {
-    var interval = samplerate / data.length;
+    var interval = data.sample_freq / data.data.length;
 
     if (chart.series[0].pointInterval != interval) {
-        chart.series[0].update({pointInterval: interval});
+        chart.series[0].update({
+            pointInterval: interval,
+            pointStart: -data.sample_freq / 2
+        });
     }
 
-    var ymax = Math.max.apply(Math, data);
+    var ymax = Math.max.apply(Math, data.data);
     if (chart.yAxis[0].max < ymax) {
         chart.yAxis[0].update({max: ymax});
     }

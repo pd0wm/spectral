@@ -17,7 +17,7 @@ class ServerProtocolPlot(ServerProtocol):
 
     """WebSocket protocol for pushing plot data"""
 
-    data_buffer = "[]"
+    data_buffer = None
 
     def __init__(self):
         ServerProtocol.__init__(self)
@@ -25,11 +25,11 @@ class ServerProtocolPlot(ServerProtocol):
     @inlineCallbacks
     def pushData(self):
         if self.queue.empty() == False:
-            data = self.queue.get().tolist()
-            self.data_buffer = json.dumps(data).encode('utf8')
+            self.data_buffer = self.queue.get()
 
+        # Slow the loop down a bit.
         yield sleep(0.05)
-        self.sendMessage(self.data_buffer)
+        self.sendMessage(self.data_buffer.encode())
 
     def onOpen(self):
         print("WebSocket connection open.")
@@ -55,3 +55,15 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
         protocol.queue = self._queue
         protocol.factory = self
         return protocol
+
+
+class PlotDataContainer:
+
+    """Class containing the data that should be sent to client for plotting"""
+
+    def __init__(self, sample_freq, data):
+        self.sample_freq = sample_freq
+        self.data = data.tolist()
+
+    def encode(self):
+        return json.dumps(self.__dict__).encode('utf8')

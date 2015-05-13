@@ -24,6 +24,7 @@ sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 
+
 def signal_generation(signal, generator, mc_sampler, f_samp, window):
     while True:
         orig_signal = generator.generate(f_samp, window)
@@ -37,9 +38,10 @@ def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
         inp = signal.get()
         if inp.any():
             out = cg.fft(reconstructor.reconstruct(inp))
+            out_container = cg.websocket.PlotDataContainer(f_samp, out)
             if websocket_queue.full():
                 websocket_queue.get()
-            websocket_queue.put_nowait(out)
+            websocket_queue.put_nowait(out_container)
 
             if plot_queue.full():
                 plot_queue.get()
@@ -66,7 +68,10 @@ def websocket(websocket_queue):
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
-    reactor.run()
+    try:
+        reactor.run()
+    except KeyboardInterrupt:
+        reactor.stop()
 
 
 def settings_server():
@@ -103,5 +108,5 @@ if __name__ == '__main__':
         [p.join() for p in processes]
     except KeyboardInterrupt:
         [p.terminate() for p in processes]
-        print "Termination signals send"
+        print "Termination signals sent"
         sys.exit(1)
