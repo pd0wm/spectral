@@ -4,13 +4,14 @@
         <title>Highcharts Websocket Test</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
-        <script src="highcharts_test.js"></script>
+        <script src="../static/js/connection.js"></script>
+        <script src="../static/js/highcharts_test.js"></script>
     </head>
     <body>
         <textarea id="output" style="width:300px;height:150px;" readonly=true></textarea>
         <br>
         <input id="hostname" type="text" value="127.0.0.1"/>
-        <button id="toggleButton" onclick="toggleConnect()">Connect</button>
+        <button id="toggleButton" onclick="toggle()">Connect</button>
         <br>
         <div id="container" style="width:100%; height:400px;"></div>
     </body>

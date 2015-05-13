@@ -3,12 +3,7 @@ import cogradio_utils as cg
 import sys
 import matplotlib.pyplot as plt
 import Pyro4
-<<<<<<< HEAD
 from multiprocessing import Process, Queue, Pipe
-=======
-import cogradio_web as cgw
-from multiprocessing import Process, Queue
->>>>>>> f1cfea265841ae0e6025850096077318bdfceeec
 from twisted.python import log
 from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, \
@@ -72,10 +67,7 @@ def websocket(websocket_queue, opt):
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
-    try:
-        reactor.run()
-    except KeyboardInterrupt:
-        reactor.stop()
+    reactor.stop()
 
 
 def settings_server():
@@ -96,13 +88,12 @@ if __name__ == '__main__':
     parent_opt_rec, child_opt_rec = Pipe()
     parent_opt_web, child_opt_web = Pipe()
 
-
     processes = []
     p1 = Process(target=signal_generation,
                  args=(signal, source, sampler, f_samp, window, child_opt_src))
     p2 = Process(target=signal_reconstruction,
                  args=(signal, plot_queue, websocket_queue, reconstructor, child_opt_rec))
-    p3 = Process(target=settings_server, parent_opt_src, parent_opt_rec, parent_opt_web)
+    p3 = Process(target=settings_server)  # , args=(parent_opt_src, parent_opt_rec, parent_opt_web)
     p4 = Process(target=websocket, args=(websocket_queue, child_opt_web))
 
     processes.append(p1)

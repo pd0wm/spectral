@@ -1,4 +1,3 @@
-var socket;
 var output;
 var hostname;
 var toggleButton;
@@ -10,13 +9,9 @@ $(document).ready(function() {
     toggleButton = document.getElementById("toggleButton");
 });
 
-function onOpen (event) {
-    writeLine('Connected to: ' + socket.url);
-    toggleButton.innerHTML = "Disconnect";
-}
+document.addEventListener("socket_open", function(e){ subscribe(); })
 
 function onClose (event) {
-    writeLine('Closed connection');
     toggleButton.innerHTML = "Connect";
 }
 
@@ -25,45 +20,28 @@ function onMessage (event) {
         var data = JSON.parse(event.data);
         chart = $('#container').highcharts();
         chart.series[0].setData(data.data);
-        socket.send(1);
+        connection.send(1);
 
         fixAxes(data);
     }
-    else{
-        writeLine('Received binary message');
-    }
 }
 
-function onError (event) {
-    writeLine('Error: ', event.data);
-}
-
-function toggleConnect() {
-    if (socket instanceof WebSocket && socket.readyState == WebSocket.OPEN) {
-        disconnect();
+function toggle() {
+    if (connection.isOpen()) {
+        connection.close();
     }
     else {
-        connect();
+        connection.hostname = hostname.value;
+        connection.open();
     }
 }
 
-function connect() {
-    socket = new WebSocket("ws://" + hostname.value + ":9000");
-    socket.onopen = function(event) { onOpen(event) };
-    socket.onclose = function(event) { onClose(event) };
-    socket.onmessage = function(event) { onMessage(event) };
-    socket.onerror = function(event) { onError(event) };
+function subscribe() {
+    toggleButton.innerHTML = "Disconnect";
+    connection.socket().addEventListener("close", function(event) { onClose(event) });
+    connection.socket().addEventListener("message", function(event) { onMessage(event) });
+    connection.socket().addEventListener("error", function(event) { onError(event) });
 }
-
-function disconnect() {
-    socket.close(1000, 'User closed connection');
-}
-
-function writeLine(line) {
-    output.value += line + "\n";
-}
-
-window.addEventListener("load", "init()", false);
 
 $(function () {
     $('#container').highcharts({
