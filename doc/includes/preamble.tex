@@ -149,5 +149,11 @@
 %   \createmark{chapter}{left}{nonumber}{}{}
 % }
 % \pagestyle{headings} % Activate changes
+
 % Capitalise headers in a regular way
 \renewcommand*{\memUChead}[1]{\titlecap{#1}}
+
+% \hfill for math mode
+% Specify \pushrightwidth before align to align the text (best fix for now...)
+\newcommand{\pushrightwidth}{10cm}
+\newcommand{\pushright}[1]{\text{\makebox[\pushrightwidth]{\hfill$#1$}}}
