@@ -4,9 +4,13 @@ import sys
 import matplotlib.pyplot as plt
 import Pyro4
 from multiprocessing import Process, Queue
+from twisted.python import log
+from twisted.internet import reactor
+from autobahn.twisted.websocket import WebSocketServerFactory, \
+                                        WebSocketServerProtocol
 
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
-L = 10
+L = 20
 N = 14
 nyq_block_size = L * N
 f_samp = 1
@@ -33,7 +37,7 @@ def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
     while True:
         inp = signal.get()
         if inp.any():
-            out = reconstructor.reconstruct(inp)
+            out = cg.fft(reconstructor.reconstruct(inp))
             if websocket_queue.full():
                 websocket_queue.get()
             websocket_queue.put_nowait(out)
@@ -49,19 +53,13 @@ def plotter(plot_queue):
         to_plot = plot_queue.get()
         if to_plot.any():
             plt.cla()
-            plt.plot(cg.fft(to_plot))
+            plt.plot(to_plot)
             plt.draw()
             plt.show()
             plt.pause(0.01)
 
 
 def websocket(websocket_queue):
-    import sys
-
-    from twisted.python import log
-    from twisted.internet import reactor
-    from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
-
     log.startLogging(sys.stdout)
 
     factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000",
@@ -84,7 +82,7 @@ def settings_server():
 if __name__ == '__main__':
     signal = Queue(10)
     plot_queue = Queue(10)
-    websocket_queue = Queue(1)
+    websocket_queue = Queue(10)
     processes = []
 
     p1 = Process(target=signal_generation,
