@@ -48,7 +48,8 @@ def plotter(plot_queue):
     while True:
         to_plot = plot_queue.get()
         if to_plot.any():
-            plt.cla()
+            print "aight"
+        #    plt.cla()
             plt.plot(cg.fft(to_plot))
             plt.draw()
             plt.show()
@@ -105,6 +106,7 @@ if __name__ == '__main__':
         [p.start() for p in processes]
         [p.join() for p in processes]
     except KeyboardInterrupt:
+        print "Yolo polo"
         [p.terminate() for p in processes]
         print "Termination signals send"
         sys.exit(1)
