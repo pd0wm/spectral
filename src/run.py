@@ -20,7 +20,6 @@ sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 
-
 def signal_generation(signal, generator, mc_sampler, f_samp, window):
     while True:
         orig_signal = generator.generate(f_samp, window)
@@ -48,8 +47,7 @@ def plotter(plot_queue):
     while True:
         to_plot = plot_queue.get()
         if to_plot.any():
-            print "aight"
-        #    plt.cla()
+            plt.cla()
             plt.plot(cg.fft(to_plot))
             plt.draw()
             plt.show()
@@ -92,21 +90,20 @@ if __name__ == '__main__':
                  args=(signal, source, sampler, f_samp, window))
     p2 = Process(target=signal_reconstruction,
                  args=(signal, plot_queue, websocket_queue, reconstructor))
-    p3 = Process(target=plotter, args=(plot_queue,))
-    p4 = Process(target=settings_server)
-    p5 = Process(target=websocket, args=(websocket_queue,))
+    p3 = Process(target=settings_server)
+    p4 = Process(target=websocket, args=(websocket_queue,))
 
     processes.append(p1)
     processes.append(p2)
     processes.append(p3)
     processes.append(p4)
-    processes.append(p5)
 
     try:
         [p.start() for p in processes]
+        while True:
+            plotter(plot_queue)
         [p.join() for p in processes]
     except KeyboardInterrupt:
-        print "Yolo polo"
         [p.terminate() for p in processes]
         print "Termination signals send"
         sys.exit(1)
