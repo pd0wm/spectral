@@ -1,7 +1,12 @@
-from autobahn.asyncio.websocket import WebSocketServerProtocol
+from autobahn.twisted.websocket import WebSocketServerProtocol
 
 
 class ServerProtocol(WebSocketServerProtocol):
+
+    """Parent object for a WebSocket server protocol"""
+
+    def __init__(self):
+        WebSocketServerProtocol.__init__(self)
 
     def onMessage(self, payload, isBinary):
         if isBinary:

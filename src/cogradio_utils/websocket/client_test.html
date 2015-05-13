@@ -18,10 +18,12 @@
 
 			function onOpen (event) {
 				writeLine('Connected to: ' + socket.url);
+				toggleButton.innerHTML = "Disconnect";
 			}
 
 			function onClose (event) {
 				writeLine('Closed connection');
+				toggleButton.innerHTML = "Connect";
 			}
 
 			function onMessage (event) {
@@ -35,11 +37,9 @@
 			function toggleConnect() {
 				if (socket instanceof WebSocket && socket.readyState == WebSocket.OPEN) {
 					disconnect();
-					toggleButton.innerHTML = "Connect";
 				}
 				else {
 					connect();
-					toggleButton.innerHTML = "Disconnect";
 				}
 			}
 
@@ -73,4 +73,3 @@
 		</script>
 	</body>
 </html>
-
