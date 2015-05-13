@@ -23,8 +23,9 @@ reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 def signal_generation(signal, generator, mc_sampler, f_samp, window):
     while True:
         orig_signal = generator.generate(f_samp, window)
-        # if signal.qsize() < 10:
-        signal.put(mc_sampler.sample(orig_signal))
+        if signal.full():
+            signal.get()
+        signal.put_nowait(mc_sampler.sample(orig_signal))
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
@@ -32,14 +33,13 @@ def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
         inp = signal.get()
         if inp.any():
             out = reconstructor.reconstruct(inp)
+            if websocket_queue.full():
+                websocket_queue.get()
+            websocket_queue.put_nowait(out)
 
-            try:
-                websocket_queue.put_nowait(out)
-            except:
-                pass
-
-            # if plot_queue.qsize() < 10:
-            plot_queue.put(out)
+            if plot_queue.full():
+                plot_queue.get()
+            plot_queue.put_nowait(out)
 
 
 def plotter(plot_queue):
