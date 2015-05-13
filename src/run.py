@@ -23,8 +23,8 @@ reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 def signal_generation(signal, generator, mc_sampler, f_samp, window):
     while True:
         orig_signal = generator.generate(f_samp, window)
-        if signal.qsize() < 10:
-            signal.put(mc_sampler.sample(orig_signal))
+        # if signal.qsize() < 10:
+        signal.put(mc_sampler.sample(orig_signal))
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
@@ -38,8 +38,8 @@ def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
             except:
                 pass
 
-            if plot_queue.qsize() < 10:
-                plot_queue.put(out)
+            # if plot_queue.qsize() < 10:
+            plot_queue.put(out)
 
 
 def plotter(plot_queue):
@@ -80,9 +80,10 @@ def settings_server():
 
 
 if __name__ == '__main__':
-    signal = Queue()
-    plot_queue = Queue()
+    signal = Queue(10)
+    plot_queue = Queue(10)
     websocket_queue = Queue(1)
+    processes = []
 
     p1 = Process(target=signal_generation,
                  args=(signal, source, sampler, f_samp, window))
@@ -92,20 +93,14 @@ if __name__ == '__main__':
     p4 = Process(target=settings_server)
     p5 = Process(target=websocket, args=(websocket_queue,))
 
+    processes.append(p1)
+    processes.append(p2)
+    processes.append(p3)
+    processes.append(p4)
+    processes.append(p5)
+
     try:
-        p1.start()
-        p2.start()
-        p3.start()
-        p4.start()
-        p5.start()
-        p1.join()
-        p2.join()
-        p3.join()
-        p4.join()
-        p5.join()
+        [p.start() for p in processes]
+        [p.join() for p in processes]
     except KeyboardInterrupt:
-        p1.terminate()
-        p2.terminate()
-        p3.terminate()
-        p4.terminate()
-        p5.terminate()
+        [p.terminate for p in processes]
