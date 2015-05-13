@@ -9,19 +9,17 @@ class SPFL(Detector):
     def __init__(self):
         Detector.__init__(self)
 
-    def detect(self, rx):
+    def detect(self, rx, binwidth):
         rx_norm = rx/rx.size
         spectrum_norm = np.abs(np.fft.fftshift(np.fft.fft(rx_norm)))/rx.size
-        # TODO parameter in init?
-        width = 60;
+        width = binwidth;
         sstd = np.zeros((spectrum_norm.size,))
         for i in range(spectrum_norm.size):
             iBegin = max(0, int(i-width/2));
             iEnd = min(spectrum_norm.size, i+width/2-1)
             sstd[i] = np.std(spectrum_norm[iBegin:iEnd])
 
-        treshold = 1;
-        return  sstd*1E5 #(sstd > treshold)
+        return  sstd
 
         
         

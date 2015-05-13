@@ -21,7 +21,23 @@
 \tableofcontents
 
 \mainmatter
-\chapter{Preliminaries}
+
+\chapter{Reconstruction}
+\section{Preliminaries}
+Unless stated otherwise, a vector is always assumed to be a column vector.
+
+\begin{definition}[Vector Element]
+    Let $\vec{x} \in \mathbb{R}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ where $i = 1,\ldots,N$.
+\end{definition}
+
+\begin{definition}[Matrix Element]
+    Let $\mat{A}$ be an $M \times N$ matrix. Then $(\mat{A})_{i,j}$ denotes the $j$'th element of the $i$'th row of $\mat{A}$ where $i = 1,\ldots,M$ and $j=1,\ldots,N$.
+\end{definition}
+
+\begin{definition}[Subvector]
+    Let $\vec{x} \in \mathbb{R}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{R}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
+\end{definition}
+
 \begin{definition}[Convolution]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
@@ -32,7 +48,7 @@
 \begin{theorem}[Commutativity of Convolution] \label{th:conv-comm}
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
 \end{theorem}
-\begin{definition}[Correlation]
+\begin{definition}[Cross-correlation]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{M-i+k}
@@ -40,48 +56,51 @@
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{definition}
 \begin{theorem} \label{th:corr-unbiased}
-    The correlation operator is an unbiased estimator of the correlation of the signal.
+    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Then $\vec{x} \circ \vec{y}$ is an unbiased estimator of the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ windowed by
+    \begin{align*}
+        \begin{bmatrix}
+            1 & \cdots & K - 1 & K & \cdots & K - 1 & \cdots & 1
+        \end{bmatrix}^T
+    \end{align*}
+    where $K = \min\{N,M\}$.
 \end{theorem}
-
-\chapter{Reconstruction}
-Let the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$. Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
+\section{Main Analysis}
+Let $L \in \mathbb{N}$ and $N \in \mathbb{N}$ be parameters of the algorithm. Let then the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$. Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
 \begin{theorem} \label{th:conv-corr}
     \begin{align*}
-        \vec{y}_i \circ \vec{y}_j = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}).
+        (\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}).
     \end{align*}
 \end{theorem}
-We denote 
+Let $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$ and $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
 \begin{align*}
-    \vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
+    \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
-Using commutativity and the definition of the convolution operator, we can write this equation as (FIX halve notatie en afvallende matrix)
+Let $\hat{\vec{r}}_{y_i,y_j} = \vec{r}_{y_i,y_j}[0,2LN-1]$. Then commutativity and the definition of the convolution operator yield that
 \begin{align*}
-    \vec{r}_{y_i,y_j} &=  \vec{r}_{c_i,c_j} \ast \vec{r}_x \\
-    &= \vec{r}_x \ast \vec{r}_{c_i,c_j} \\
-    &= \begin{bmatrix}
-        (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & & &  0 \\
-        (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & & & 0 \\
-        \vdots &  & & \ddots & &  & \vdots\\
-        \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 \\
-        \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_3 & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 \\
-    \end{bmatrix} \begin{bmatrix}
+    \hat{\vec{r}}_{y_i,y_j}
+    &= \vec{r}_{y_i,y_j}[0,2LN-1] \\
+    &= (\vec{r}_{c_i,c_j} \ast \vec{r}_x)[0,2LN-1] \\
+    &= (\vec{r}_x \ast \vec{r}_{c_i,c_j})[0,2LN-1] \\
+    &= \hskip \textwidth minus \textwidth \\ % Fill line
+    \intertext{$\begin{bmatrix}
+        (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & &  0 \\
+        (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & & 0 \\
+        &  & & \vdots &  & \\
+        \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_1 & 0 \\
+        \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 \\
+    \end{bmatrix}
+    \begin{bmatrix}
         (\vec{r}_x)_1 \\
         (\vec{r}_x)_2 \\
         \vdots \\
         (\vec{r}_x)_{2LN-2} \\
         (\vec{r}_x)_{2LN-1}
-    \end{bmatrix} \\
+    \end{bmatrix}$}
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ for $i=1,\ldots,FIX$ and otherwise zero. Then let $\vec{r}_y$ and $\mat{R}$ be such that
+Let the $2L-1\times 2NL-1$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. Let $\vec{r}_{y'_i,y'_j} = \mat{D} \hat{\vec{r}}_{y_i,y_j}$. Then let $\mat{R}$ be such that
 \begin{align*}
-    \vec{r}_y
-    = \begin{bmatrix}
-        \mat{D}\vec{r}_{y_1,y_1} \\
-        \vdots \\
-        \mat{D}\vec{r}_{y_M,y_M}
-    \end{bmatrix}
-    = \begin{bmatrix}
+    \begin{bmatrix}
         \vec{r}_{y'_1,y'_1} \\
         \vdots \\
         \vec{r}_{y'_M,y'_M}
@@ -98,22 +117,59 @@ Let the $FIX\times NL$ decimation matrix be defined by $(\mat{D})_{i,Ni} = 1$ fo
     \end{bmatrix} \vec{r}_x
     = \mat{R} \vec{r}_x.
 \end{align*}
-Thus $\mat{R}$ relates $\vec{r}_x$ to $\vec{r}_x$. We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
+We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
 \begin{align*}
-    (\vec{r}_{y'_i,y'_j})_m = (\vec{r}_{y_i,y_j})_{mN}.
+    (\vec{r}_{y'_i,y'_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
-Thus $\vec{r}_{y'_i,y'_j}$ is a $N$-decimation of $\vec{r}_{y_i,y_j}$.
+Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$ for $i = 1, \ldots, M$.
 \begin{theorem} \label{th:deci-corr}
-   The correlation of the $N$-decimations of $\vec{y}_i$ and $\vec{y}_j$ is an unbiased estimator of the $N$-decimation of $\vec{r}_{y_i,y_j}$.
+    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N(\vec{y}'_i \circ \vec{y}'_j)$ is an unbiased estimator of $E(\vec{r}_{y'_i,y'_j})$.
 \end{theorem}
-Finally, since $\vec{c}_i \in \mathbb{R}^N$
+To this end, let
 \begin{align*}
-    (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \hat{\vec{c}}_i \cdot \vec{x}[mN-N+1,mN]
+    \vec{r}'_y = N \begin{bmatrix}
+        \vec{y}'_1 \circ \vec{y}'_1 \\
+        \vdots \\
+        \vec{y}'_M \circ \vec{y}'_M
+    \end{bmatrix}.
 \end{align*}
-where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ denotes the subvector consisting of $\vec{x}$'s elements $mN-N+1$ up to $mN$.
+Then
+\begin{align*}
+    E(\vec{r}'_y) &= \begin{bmatrix}
+        E[N(\vec{y}'_1 \circ \vec{y}'_1)] \\
+        \vdots \\
+        E[N(\vec{y}'_M \circ \vec{y}'_M)]
+    \end{bmatrix}
+    = E\left(\begin{bmatrix}
+        \vec{r}_{y'_1,y'_1} \\
+        \vdots \\
+        \vec{r}_{y'_M,y'_M} \\
+    \end{bmatrix}\right) = E(\mat{R} \vec{r}_x) = \mat{R} E(\vec{r}_x).
+\end{align*}
+So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\vec{r}_x)$, which we can use to determine or estimate $E(\vec{r}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Finally, note that
+\begin{align*}
+    (\vec{y}'_i)_m = (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \hat{\vec{c}}_i \cdot \vec{x}_m
+\end{align*}
+where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed. Accordingly, let
+\begin{align*}
+    \vec{w}_m = \begin{bmatrix}
+        (\vec{y}'_1)_m \\
+        \vdots \\
+        (\vec{y}'_M)_m
+    \end{bmatrix} = \begin{bmatrix}
+        \hat{\vec{c}}_1 \cdot \vec{x}_m \\
+        \vdots \\
+        \hat{\vec{c}}_M \cdot \vec{x}_m
+    \end{bmatrix} = \begin{bmatrix}
+        \hat{\vec{c}}_1^T\\
+        \vdots \\
+        \hat{\vec{c}}_M^T
+    \end{bmatrix} \vec{x}_m.
+\end{align*}
+This concludes the main analysis.
 
-\chapter{Proofs}
-\begin{proof}[Proof of Theorem \ref{th:conv-comm}]
+\section{Proofs of Main Analysis}
+\begin{proof}[Proof of \cref{th:conv-comm}]
     A change of index yields that
     \begin{align*}
         (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
@@ -123,10 +179,82 @@ where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ de
         &= (\vec{y} \ast \vec{x})_i.
     \end{align*}
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{th:corr-unbiased}]
-    FIX proof missing
+\begin{proof}[Proof of \cref{th:corr-unbiased}]
+    Without loss of generality, assume that $M \le N$. Suppose that $i \le M$, then
+    \begin{align*}
+        E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\vec{y})_{M-i+k}] \\
+        &= E[(\vec{x})_1 (\vec{y})_{M-i+1}] + \ldots + E[(\vec{x})_i (\vec{y})_{M}] \\
+        &= E(X[1] Y[M-i+1]) + \ldots + E(X[i] Y[M])  \\
+        &= i R_{X,Y}[i-M]
+    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. Now suppose that $M < i \le N$, then
+    \begin{align*}
+        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\vec{y})_{1}] + \ldots + E[(\vec{x})_i (\vec{y})_{M}] \\
+        &= E(X[i-M+1] Y[1]) + \ldots + E(X[i] Y[M]) \\  
+        &= M R_{X,Y}[i-M]
+    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. Finally suppose that $i > N$, then
+    \begin{align*}
+        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\vec{y})_{1}] + \ldots + E[(\vec{x})_N (\vec{y})_{M-i+N}] \\
+        &= E(X[i-M+1] Y[1]) + \ldots + E(X[N] Y[M-i+N]) \\
+        &= (N+M-i) R_{X,Y}[i-M)]
+    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So
+    \begin{align*}
+        E(\vec{x} \circ \vec{y}) &= \begin{bmatrix}
+            E[(\vec{x} \circ \vec{y})_1] \\
+            E[(\vec{x} \circ \vec{y})_2] \\
+            \vdots \\
+            E[(\vec{x} \circ \vec{y})_{M-1}] \\
+            E[(\vec{x} \circ \vec{y})_{M}] \\
+            \vdots \\
+            E[(\vec{x} \circ \vec{y})_N] \\
+            E[(\vec{x} \circ \vec{y})_{N+1}] \\
+            \vdots \\
+            E[(\vec{x} \circ \vec{y})_{N+M-2}] \\
+            E[(\vec{x} \circ \vec{y})_{N+M-1}]
+        \end{bmatrix} \\
+        &= \begin{bmatrix}
+            R_{X,Y}[1-M] \\
+            2 R_{X,Y}[2-M] \\
+            \vdots \\
+            (M-1) R_{X,Y}[-1] \\
+            M R_{X,Y}[0] \\
+            \vdots \\
+            M R_{X,Y}[N-M] \\
+            (M-1) R_{X,Y}[N+1-M] \\
+            \vdots \\
+            2 R_{X,Y}[N-2] \\
+            R_{X,Y}[N-1]
+        \end{bmatrix} \\
+        &= \begin{bmatrix}
+            1 \\
+            2 \\
+            \vdots \\
+            M-1 \\
+            M \\
+            \vdots \\
+            M \\
+            M-1 \\
+            \vdots \\
+            2 \\
+            1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            R_{X,Y}[1-M] \\
+            R_{X,Y}[2-M] \\
+            \vdots \\
+            R_{X,Y}[-1] \\
+            R_{X,Y}[0] \\
+            \vdots \\
+            R_{X,Y}[N-M] \\
+            R_{X,Y}[N+1-M] \\
+            \vdots \\
+            R_{X,Y}[N-2] \\
+            R_{X,Y}[N-1]
+        \end{bmatrix}.
+    \end{align*}
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{th:conv-corr}]
+\begin{proof}[Proof of \cref{th:conv-corr}]
     Note that
     \begin{align*}
         (\vec{y}_i \circ \vec{y}_j)_m
@@ -143,12 +271,145 @@ where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed and $\vec{x}[mN-N+1,mN]$ de
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
         &=\sum_{l''=1}^{2N-1}\sum_{k=1}^{N}(\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}\sum_{l'=1}^{LN}(\vec{x})_{l'}
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
-        % &=\sum_{k''=1}^{2N-1} \sum_{k=1}^{N} (\vec{c}_i)_k (\vec{c}_j)_{N-k''+k} \sum_{k'=1}^{LN} (\vec{x})_{k'} (\vec{x})_{LN-(m-k''+1)+k'} \\
         &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
     \end{align*}
 \end{proof}
-\begin{proof}[Proof of Theorem \ref{th:deci-corr}]
-    FIX proof missing
+\begin{proof}[Proof of \cref{th:deci-corr}]
+    Note that
+    \begin{align*}
+        R_{Y'_i,Y'_j}[m]
+        &= E(Y'_i[k]Y'_j[k+m]) \\
+        &= E[(\vec{y}'_i)_{k}(\vec{y}'_j)_{k+m}] \\
+        &= E[(\vec{y}_i)_{kN}(\vec{y}_j)_{kN+mN}] \\
+        &= E(Y_i[kN]Y_j[kN+mN]) \\
+        &= R_{Y_i,Y_j}[mN].
+    \end{align*}
+    Therefore
+    \begin{align*}
+        N E[(\vec{y}'_i \circ \vec{y}'_j)_m]
+        &= N\begin{bmatrix}
+            1 \\
+            \vdots \\
+            L \\
+            \vdots \\
+            1
+        \end{bmatrix} \cdot \begin{bmatrix}
+            R_{Y'_i,Y'_j}[1-L] \\
+            \vdots \\
+            R_{Y'_i,Y'_j}[0] \\
+            \vdots \\
+            R_{Y'_i,Y'_j}[L-1]
+        \end{bmatrix} \\
+        &= \begin{bmatrix}
+            N \\
+            \vdots \\
+            NL \\
+            \vdots \\
+            N
+        \end{bmatrix} \cdot \begin{bmatrix}
+            R_{Y_i,Y_j}[N(1-L)] \\
+            \vdots \\
+            R_{Y_i,Y_j}[0] \\
+            \vdots \\
+            R_{Y_i,Y_j}[N(L-1)]
+        \end{bmatrix} \\
+        &= E(\vec{r}_{y'_i,y'_j}).
+    \end{align*}
 \end{proof}
+\section{The Algorithm}
+This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given $\vec{c}_i$ for $i = 1,\ldots,M$. Proceed as follows:
+\begin{enumerate}
+    \item Construct $\mat{R}$.
+    \item Measure $y'_i$ for $i = 1,\ldots,M$.
+    \item Construct $\vec{r}'_y$.
+    \item Estimate $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
+\end{enumerate}
+
+\section{Exploring Further Possibilities}
+\subsection{Sample-Wide Autocorrelation}
+Is it possible to estimate $E(\vec{r}_x)$ by making use of $\vec{w}_m$. To this end,
+\begin{align*}
+    (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M (\vec{w}_m)_k (\vec{w}_m)_{M-i+k} \\
+    &= \sum_{k=1}^M (\hat{\vec{c}}_k^T \vec{x}_m)(\hat{\vec{c}}_{M-i+k}^T \vec{x}_m) \\
+    &= \sum_{k=1}^M (\vec{x}_m^T \hat{\vec{c}}_k)(\hat{\vec{c}}_{M-i+k}^T \vec{x}_m)
+\end{align*}
+where $\hat{\vec{c}}_i = \vec{0}$ for $i < 1$ and $i > M$. Furthermore,
+\begin{align*}
+    (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M \vec{x}_m^T (\hat{\vec{c}}_k \hat{\vec{c}}_{M-i+k}^T) \vec{x}_m \\
+    &= \vec{x}_m^T\left(\sum_{k=1}^M  \hat{\vec{c}}_k \hat{\vec{c}}_{M-i+k}^T\right) \vec{x}_m \\
+    &= \vec{x}_m^T \mat{C}_i \vec{x}_m \\
+    &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x}_m)_k (\vec{x}_m)_l (\mat{C}_i)_{k,l} \\
+    &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x})_{(m-1)N+k} (\vec{x})_{(m-1)N+l} (\mat{C}_i)_{k,l}.
+\end{align*}
+Now let $\vec{X} \in \mathbb{R}^{(LN)^2}$ such that $(\vec{X})_{(i-1)LN+j} = (\vec{x})_i (\vec{x})_j$ for $i = 1,\ldots,LN$ and $j = 1,\ldots,LN$. Then
+\begin{align*}
+    (\vec{w}_m \circ \vec{w}_m)_i = \vec{p}_{m,i}^T \vec{X}
+\end{align*}
+where $\vec{p}_{m,i} \in \mathbb{R}^{(LN)^2}$ such that
+\begin{align*}
+    (\vec{p}_{m,i})_{[(m-1)N+k-1]LN+(m-1)N+l} = (\mat{C}_i)_{k,l}
+\end{align*}
+for $k = 1,\ldots,M$ and $l = 1,\ldots,M$. Now let $\vec{r}_w$ and $\mat{P}$ be such that
+\begin{align*}
+    \vec{r}_w = \begin{bmatrix}
+        (\vec{w}_1 \circ \vec{w}_1)_1 \\
+        \vdots \\
+        (\vec{w}_L \circ \vec{w}_L)_M
+    \end{bmatrix} = \begin{bmatrix}
+        \vec{p}_{1,1}^T \vec{X} \\
+        \vdots \\
+        \vec{p}_{L,M}^T \vec{X}
+    \end{bmatrix} = \begin{bmatrix}
+        \vec{p}_{1,1}^T \\
+        \vdots \\
+        \vec{p}_{L,M}^T
+    \end{bmatrix} \vec{X} = \mat{P} \vec{X}.
+\end{align*}
+Similarly, we can relate
+\begin{align*}
+    (\vec{r}_x)_i &= \sum_{k=1}^{LN}(\vec{x})_k (\vec{x})_{LN-i+k} \\
+    &= \vec{b}_i^T \vec{X}
+\end{align*}
+where $\vec{b}_i \in \mathbb{R}^{(LN)^2}$ such that
+\begin{align*}
+    (\vec{b}_i)_{(k-1)LN+LN-i+k} = 1
+\end{align*}
+for $k = 1,\ldots,LN$ such that $1 \le LN-i+k \le LN$. Now let $\mat{B}$ be such that
+\begin{align*}
+    \vec{r}_x = \begin{bmatrix}
+        (\vec{r}_x)_1 \\
+        \vdots \\
+        (\vec{r}_x)_{2LN-1}
+    \end{bmatrix} = \begin{bmatrix}
+        \vec{b}_1^T \vec{X} \\
+        \vdots \\
+        \vec{b}_{2LN-1}^T \vec{X}
+    \end{bmatrix} = \begin{bmatrix}
+        \vec{b}_1^T \\
+        \vdots \\
+        \vec{b}_{2LN-1}^T
+    \end{bmatrix} \vec{X} = \mat{B} \vec{X}.
+\end{align*}
+This yields the system
+\begin{align*}
+    \vec{r}_w &= \mat{P} \vec{X}, \\
+    \vec{r}_x &= \mat{B} \vec{X}
+\end{align*}
+which can be used in a similar way to estimate $E(\vec{r}_x)$. However, since $\mat{C}_i$ is an $N \times N$ matrix, all elements in $\vec{p}_{m,i}$ relating to $(\vec{x})_k (\vec{x})_l$ where $|k - l| \ge N$ will be zero. Therefore using $\vec{r}_w$ to estimate $E(\vec{r}_x)$ yields that the estimation is limited in support from $-N+1$ to $N-1$. This can damage the estimation severely.
+
+\subsection{Discussion of \cref{th:corr-unbiased}}
+In this section we discuss \cref{th:corr-unbiased}. First, one could propose the inverse window
+\begin{align*}
+    \begin{bmatrix}
+        1 & \cdots & \frac{1}{K-1} & \frac{1}{K} & \cdots & \frac{1}{K} & \frac{1}{K-1} & \cdots & 1
+    \end{bmatrix}^T
+\end{align*}
+to estimate the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ without bias. However, \cite{percival1993univariate} shows that this usually increases the mean squared error.
+
+Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the window discussed in \cref{th:corr-unbiased} on the power spectral density. By the Wiener-Khintchine theorem, 
+
+\backmatter
+\pagenumbering{Roman}
+\printbibliography
 
 \end{document}
