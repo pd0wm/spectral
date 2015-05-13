@@ -22,42 +22,44 @@
 
 \mainmatter
 
-\newcommand{\DTFT}{\operatorname{DTFT}}
-
 \chapter{Reconstruction}
+
 \section{Preliminaries}
 Unless stated otherwise, a vector is always assumed to be a column vector.
 
-\begin{definition}[Vector Element]
+\begin{blockDefinition}[Vector Element]
     Let $\vec{x} \in \mathbb{R}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ for $i = 1,\ldots,N$.
-\end{definition}
+\end{blockDefinition}
 
-\begin{definition}[Matrix Element]
+\begin{blockDefinition}[Matrix Element]
     Let $\mat{A}$ be an $M \times N$ matrix. Then $(\mat{A})_{i,j}$ denotes the $j$'th element of the $i$'th row of $\mat{A}$ for $i = 1,\ldots,M$ and $j=1,\ldots,N$.
-\end{definition}
+\end{blockDefinition}
 
-\begin{definition}[Subvector]
+\begin{blockDefinition}[Subvector]
     Let $\vec{x} \in \mathbb{R}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{R}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
-\end{definition}
+\end{blockDefinition}
 
-\begin{definition}[Convolution]
+\begin{blockDefinition}[Convolution]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1}
     \end{align*}
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
-\end{definition}
-\begin{theorem}[Commutativity of Convolution] \label{th:conv-comm}
+\end{blockDefinition}
+
+\begin{blockTheorem}[Commutativity of Convolution] \label{th:conv-comm}
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
-\end{theorem}
-\begin{definition}[Cross-correlation]
+\end{blockTheorem}
+
+\begin{blockDefinition}[Cross-correlation]
     Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{R}^{N+M-1}$ such that
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{M-i+k}
     \end{align*}
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
-\end{definition}
-\begin{theorem} \label{th:corr-unbiased}
+\end{blockDefinition}
+
+\begin{blockTheorem} \label{th:corr-unbiased}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{R}^N$ and $\vec{y} \in \mathbb{R}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Then $\vec{x} \circ \vec{y}$ is an unbiased estimator of the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ windowed by
     \begin{align*}
         \begin{bmatrix}
@@ -65,14 +67,16 @@ Unless stated otherwise, a vector is always assumed to be a column vector.
         \end{bmatrix}^T
     \end{align*}
     where $K = \min\{N,M\}$.
-\end{theorem}
+\end{blockTheorem}
+
 \section{Main Analysis}
+
 Let $L \in \mathbb{N}$ and $N \in \mathbb{N}$ be parameters of the algorithm. Let then the input signal be denoted by $\vec{x} \in \mathbb{R}^{LN}$. Consider $\vec{c}_i \in \mathbb{R}^{N}$ for $i = 1,\ldots,M$. Let $\vec{y}_i = \vec{c}_i \ast \vec{x}$ for $i = 1,\ldots,M$.
-\begin{theorem} \label{th:conv-corr}
-    \begin{align*}
-        (\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}).
-    \end{align*}
-\end{theorem}
+
+\begin{blockTheorem} \label{th:conv-corr}
+    \makebox[\textwidth]{\centering $(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})$.}
+\end{blockTheorem}
+
 Let $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$ and $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
 \begin{align*}
     \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
@@ -124,9 +128,11 @@ We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
     (\vec{r}_{y'_i,y'_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
 Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$ for $i = 1, \ldots, M$.
-\begin{theorem} \label{th:deci-corr}
+
+\begin{blockTheorem} \label{th:deci-corr}
     Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N(\vec{y}'_i \circ \vec{y}'_j)$ is an unbiased estimator of $E(\vec{r}_{y'_i,y'_j})$.
-\end{theorem}
+\end{blockTheorem}
+
 To this end, let
 \begin{align*}
     \vec{r}'_y = N \begin{bmatrix}
@@ -171,7 +177,9 @@ where $\hat{\vec{c}}_i$ denotes $\vec{c}_i$ reversed. Accordingly, let
 This concludes the main analysis.
 
 \section{Proofs of Main Analysis}
-\begin{proof}[Proof of \cref{th:conv-comm}]
+This section will discuss the proofs of the main theorems.
+
+\begin{blockProofTheorem}{\ref{th:conv-comm}}
     A change of index yields that
     \begin{align*}
         (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
@@ -180,8 +188,9 @@ This concludes the main analysis.
         &= \sum_{k'=1}^{M} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
         &= (\vec{y} \ast \vec{x})_i.
     \end{align*}
-\end{proof}
-\begin{proof}[Proof of \cref{th:corr-unbiased}]
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:corr-unbiased}}
     Without loss of generality, assume that $M \le N$. Suppose that $i \le M$, then
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\vec{y})_{M-i+k}] \\
@@ -255,8 +264,9 @@ This concludes the main analysis.
             R_{X,Y}[N-1]
         \end{bmatrix}.
     \end{align*}
-\end{proof}
-\begin{proof}[Proof of \cref{th:conv-corr}]
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:conv-corr}}
     Note that
     \begin{align*}
         (\vec{y}_i \circ \vec{y}_j)_m
@@ -275,8 +285,9 @@ This concludes the main analysis.
         (\vec{x})_{LN-(m-l'' + 1)+l'} \\
         &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
     \end{align*}
-\end{proof}
-\begin{proof}[Proof of \cref{th:deci-corr}]
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:deci-corr}}
     Note that
     \begin{align*}
         R_{Y'_i,Y'_j}[m]
@@ -317,12 +328,13 @@ This concludes the main analysis.
         \end{bmatrix} \\
         &= E(\vec{r}_{y'_i,y'_j}).
     \end{align*}
-\end{proof}
+\end{blockProofTheorem}
+
 \section{The Algorithm}
 This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given $\vec{c}_i$ for $i = 1,\ldots,M$. Proceed as follows:
 \begin{enumerate}
     \item Construct $\mat{R}$.
-    \item Measure $y'_i$ for $i = 1,\ldots,M$.
+    \item Measure $\vec{y}'_i$ for $i = 1,\ldots,M$.
     \item Construct $\vec{r}'_y$.
     \item Estimate $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
 \end{enumerate}
