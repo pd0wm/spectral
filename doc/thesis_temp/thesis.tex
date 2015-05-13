@@ -22,16 +22,18 @@
 
 \mainmatter
 
+\newcommand{\DTFT}{\operatorname{DTFT}}
+
 \chapter{Reconstruction}
 \section{Preliminaries}
 Unless stated otherwise, a vector is always assumed to be a column vector.
 
 \begin{definition}[Vector Element]
-    Let $\vec{x} \in \mathbb{R}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ where $i = 1,\ldots,N$.
+    Let $\vec{x} \in \mathbb{R}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ for $i = 1,\ldots,N$.
 \end{definition}
 
 \begin{definition}[Matrix Element]
-    Let $\mat{A}$ be an $M \times N$ matrix. Then $(\mat{A})_{i,j}$ denotes the $j$'th element of the $i$'th row of $\mat{A}$ where $i = 1,\ldots,M$ and $j=1,\ldots,N$.
+    Let $\mat{A}$ be an $M \times N$ matrix. Then $(\mat{A})_{i,j}$ denotes the $j$'th element of the $i$'th row of $\mat{A}$ for $i = 1,\ldots,M$ and $j=1,\ldots,N$.
 \end{definition}
 
 \begin{definition}[Subvector]
@@ -197,7 +199,7 @@ This concludes the main analysis.
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\vec{y})_{1}] + \ldots + E[(\vec{x})_N (\vec{y})_{M-i+N}] \\
         &= E(X[i-M+1] Y[1]) + \ldots + E(X[N] Y[M-i+N]) \\
-        &= (N+M-i) R_{X,Y}[i-M)]
+        &= (N+M-i) R_{X,Y}[i-M]
     \end{align*}
     since $X[n]$ and $Y[n]$ are wide sense stationary. So
     \begin{align*}
@@ -406,7 +408,29 @@ In this section we discuss \cref{th:corr-unbiased}. First, one could propose the
 \end{align*}
 to estimate the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ without bias. However, \cite{percival1993univariate} shows that this usually increases the mean squared error.
 
-Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the window discussed in \cref{th:corr-unbiased} on the power spectral density. By the Wiener-Khintchine theorem, 
+Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the window discussed in \cref{th:corr-unbiased} on the power spectral density. Let $r[n]$ denote a discrete signal such that $r[i - LN] = (\vec{r}_x)_i$ for $i = 1,\ldots,2LN-1$. Then denote
+\begin{align*}
+    E(r[i])=E[(\vec{r}_x)_{i + LN}]=R_X[i] W[i]
+\end{align*}
+where
+\begin{align*}
+    W[i] = \begin{cases}
+        i+LN  & -LN+1 \le i \le 0, \\
+        LN-i& 0 < i \le LN-1, \\
+        0 & \text{elsewhere.}
+    \end{cases}
+\end{align*}
+
+Then by the Wiener-Khintchine theorem and the convolution theorem,
+\begin{align*}
+    \mathcal{P}(\omega)=\DTFT\{E(r[i])\} = \DTFT\{R_X[i]\} \circledast \DTFT\{W[i]\}
+\end{align*}
+where
+\begin{align*}
+    \DTFT\{W[i]\} = \sum_{k=-\infty}^{\infty}W[k]\exp(-j k \Omega)
+\end{align*}
+
+
 
 \backmatter
 \pagenumbering{Roman}

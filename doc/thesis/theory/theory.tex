@@ -10,8 +10,19 @@
 
 \raggedbottom
 
+% \usepackage{makebox}
+\usepackage{tikz}
+\usetikzlibrary{fit,calc}
+\usepackage{everypage}
 \begin{document}
 \chapter{Theoretical Framework}
-Test reference: \cite{mallat1999wavelet}.
+
+
+\makebox{\hspace{-\spinemargin}%
+\begin{tikzpicture}[overlay, remember picture]
+    \draw [thick] (0.05\paperwidth,0) -- (0.95\paperwidth,0);
+    \node at (0.05,0) {HEEEEY};
+\end{tikzpicture}
+}
 
 \end{document}
