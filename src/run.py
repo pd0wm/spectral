@@ -3,7 +3,12 @@ import cogradio_utils as cg
 import sys
 import matplotlib.pyplot as plt
 import Pyro4
+<<<<<<< HEAD
 from multiprocessing import Process, Queue, Pipe
+=======
+import cogradio_web as cgw
+from multiprocessing import Process, Queue
+>>>>>>> f1cfea265841ae0e6025850096077318bdfceeec
 from twisted.python import log
 from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, \
@@ -37,9 +42,10 @@ def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor, op
         inp = signal.get()
         if inp.any():
             out = cg.fft(reconstructor.reconstruct(inp))
+            out_container = cg.websocket.PlotDataContainer(f_samp, out)
             if websocket_queue.full():
                 websocket_queue.get()
-            websocket_queue.put_nowait(out)
+            websocket_queue.put_nowait(out_container)
 
             if plot_queue.full():
                 plot_queue.get()
@@ -66,7 +72,10 @@ def websocket(websocket_queue, opt):
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
-    reactor.run()
+    try:
+        reactor.run()
+    except KeyboardInterrupt:
+        reactor.stop()
 
 
 def settings_server():
@@ -103,10 +112,10 @@ if __name__ == '__main__':
 
     try:
         [p.start() for p in processes]
-        while True:
-            plotter(plot_queue)
+        # while True:
+        #     plotter(plot_queue)
         [p.join() for p in processes]
     except KeyboardInterrupt:
         [p.terminate() for p in processes]
-        print "Termination signals send"
+        print "Termination signals sent"
         sys.exit(1)
