@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import cogradio_utils as cg
+import sys
 import matplotlib.pyplot as plt
 import Pyro4
 from multiprocessing import Process, Queue
@@ -63,7 +64,8 @@ def websocket(websocket_queue):
 
     log.startLogging(sys.stdout)
 
-    factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000", websocket_queue)
+    factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000",
+                                                      websocket_queue)
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
@@ -103,4 +105,6 @@ if __name__ == '__main__':
         [p.start() for p in processes]
         [p.join() for p in processes]
     except KeyboardInterrupt:
-        [p.terminate for p in processes]
+        [p.terminate() for p in processes]
+        print "Termination signals send"
+        sys.exit(1)
