@@ -78,6 +78,9 @@ class CrossCorrelation(Reconstructor):
 
 
 def check_valid_pinv(Mat, Pinv):
+    if Mat.shape != Pinv.shape[::-1]:
+        print "shapes dont align"
+        return False
     Mat_accent = Mat.dot(Pinv.dot(Mat))
     return np.allclose(Mat_accent.toarray(), Mat.toarray())
 
