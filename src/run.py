@@ -3,6 +3,7 @@ import cogradio_utils as cg
 import sys
 import matplotlib.pyplot as plt
 import Pyro4
+import cogradio_web as cgw
 from multiprocessing import Process, Queue
 
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
@@ -100,8 +101,8 @@ if __name__ == '__main__':
 
     try:
         [p.start() for p in processes]
-        while True:
-            plotter(plot_queue)
+        # while True:
+        #     plotter(plot_queue)
         [p.join() for p in processes]
     except KeyboardInterrupt:
         [p.terminate() for p in processes]

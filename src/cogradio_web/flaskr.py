@@ -25,7 +25,6 @@ cnt.add(el2, (1, 0))
 cnt.add(el3, (2, 2))
 cnt.add(el4, (2, 1))
 
-    
 
 @app.route('/')
 def index():
@@ -44,6 +43,9 @@ def update(id, value):
     cnt.set_by_uuid(el1.uuid, value)
     settings.update(cnt.values)
     return jsonify({id: value})
+@app.route('/plot')
+def plot():
+    return render_template('plotting.html')
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
