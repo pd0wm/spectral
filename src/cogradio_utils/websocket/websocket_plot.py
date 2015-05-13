@@ -25,7 +25,10 @@ class ServerProtocolPlot(ServerProtocol):
         print("WebSocket connection open.")
 
         while self.state == self.STATE_OPEN:
-            data = self.queue.get_nowait().tolist()
+            try:
+                data = self.queue.get_nowait().tolist()
+            except:
+                continue
             encode = json.dumps(data).encode('utf8')
             print(encode)
             self.sendMessage(encode)
