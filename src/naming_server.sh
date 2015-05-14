@@ -1,1 +1,1 @@
-python2 -m Pyro4.naming & 
+python2 -m Pyro4.naming &
