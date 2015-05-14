@@ -16,7 +16,7 @@ numbbins = 15
 threshold = 2000
 
 # Init blocks
-source = cg.source.ComplexSinusoidal(frequencies, SNR=-5)
+source = cg.source.ComplexExponential(frequencies, SNR=-5)
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)

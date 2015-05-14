@@ -2,9 +2,9 @@ from .source import Source
 import numpy as np
 
 
-class ComplexSinusoidal(Source):
+class ComplexExponential(Source):
 
-    """Signal representing a couple of complex sinusoidal frequencies"""
+    """Signal representing a couple of complex exponential frequencies"""
 
     def __init__(self, frequencies, SNR=None):
         Source.__init__(self, frequencies, SNR)
