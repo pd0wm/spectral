@@ -1,12 +1,7 @@
 class Settings(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, web_opt):
+        self.web_opt = web_opt
 
     def update(self, update):
-        self.parameters = update
-        print "Updated", update
-
-    def get(self):
-        return self.parameters
-        print "I dun got"
+        self.web_opt.send(update)

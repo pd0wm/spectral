@@ -1,16 +1,15 @@
-var hostname;
-var toggleButton;
 var chart;
+var REQUEST_DATA = 0;
+
+document.addEventListener("socket_open", function(e){ subscribe(); });
 
 $(document).ready(function() {
-    hostname = document.getElementById("hostname");
-    toggleButton = document.getElementById("toggleButton");
+    connection.hostname = window.location.hostname;
+    connection.open();
 });
 
-document.addEventListener("socket_open", function(e){ subscribe(); })
-
 function onClose (event) {
-    toggleButton.innerHTML = "Connect";
+
 }
 
 function onMessage (event) {
@@ -18,39 +17,16 @@ function onMessage (event) {
         var data = JSON.parse(event.data);
         chart = $('#container').highcharts();
         chart.series[0].setData(data.data);
-        connection.send(JSON.stringify({type: 'fftdata'}));
+        connection.send(REQUEST_DATA);
 
         fixAxes(data);
     }
 }
 
-$(document).on("click", "#toggleButton", function () {
-    if (connection.isOpen()) {
-        connection.close();
-    }
-    else {
-        connection.hostname = hostname.value;
-        connection.open();
-    }
-});
-
-$(document).on("change", "#toggleAverage", function(){ toggleAverage(); });
-
-function toggleAverage () {
-    connection.send(
-        JSON.stringify({
-            type: "toggle_average",
-            value: $("#toggleAverage").is(":checked")
-        })
-    );
-}
-
 function subscribe() {
-    toggleButton.innerHTML = "Disconnect";
-    connection.socket().addEventListener("close", function(event) { onClose(event) });
-    connection.socket().addEventListener("message", function(event) { onMessage(event) });
-    connection.socket().addEventListener("error", function(event) { onError(event) });
-    toggleAverage();
+    connection.socket().addEventListener("close", function(event) { onClose(event); });
+    connection.socket().addEventListener("message", function(event) { onMessage(event); });
+    connection.socket().addEventListener("error", function(event) { onError(event); });
 }
 
 $(function () {

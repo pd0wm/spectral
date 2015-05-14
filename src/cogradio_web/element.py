@@ -61,7 +61,13 @@ class SliderElement(Element):
     def js_init(self):
         code = """$('#{0}').slider();
                   $('#{0}').slider().on('change', function(ev){{
-                      $.ajax({{url:'/update/{0}/' + ev.value.newValue}});
+                      $.ajax({{
+                        type: "POST",
+                        url:'/update',
+                        data: JSON.stringify({{id: "{0}",
+                                value: ev.value.newValue}}),
+                        contentType: 'application/json'
+                        }});
                       //worker();
                   }});""".format(self.uuid)
         return code
@@ -74,9 +80,50 @@ class SliderElement(Element):
           <h3 class="panel-title">{0}</h3>
         </div>
         <div class="panel-body">
-              <input id="{1}" type="text" style="width: 100%;"" value="" data-slider-min="{2}" data-slider-max="{3}" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+              <input id="{1}" type="text" style="width: 100%;" value="" data-slider-min="{2}" data-slider-max="{3}" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
         </div>
     </div>""".format(self.title, self.uuid, self.range[0], self.range[1])
+
+
+class CheckBoxElement(Element):
+
+    def __init__(self, key, title=None, label=None, value=False):
+        super(CheckBoxElement, self).__init__(key, title)
+        self.value = value
+        self.label = label
+
+    @property
+    def update_eval(self):
+        code = """$('#{0}').prop('checked', {1});""".format(
+            self.uuid, str(self.value).lower())
+        return code
+
+    @property
+    def js_init(self):
+        code = """$('#{0}').on('change', function(ev){{
+                    $.ajax({{
+                        type: "POST",
+                        url:'/update',
+                        data: JSON.stringify({{id: "{0}",
+                                value: this.checked}}),
+                        contentType: 'application/json'
+                        }});
+                  }});""".format(self.uuid)
+        return code
+
+    @property
+    def html(self):
+        return """
+        <div class="panel panel-default">
+            <div class="panel-heading">
+          <h3 class="panel-title">{0}</h3>
+        </div>
+        <div class="panel-body">
+            <label>{1}
+              <input id="{2}" type="checkbox">
+            </label>
+        </div>
+    </div>""".format(self.title, self.label, self.uuid)
 
 if __name__ == '__main__':
     print "Hello, World!"
