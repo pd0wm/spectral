@@ -6,6 +6,7 @@
 	"jquery": "*",
 	"bootstrap": "*",
 	"highcharts": "*",
+	"mathjs": "*",
 	"seiyria-bootstrap-slider": "*"
     }
 }
