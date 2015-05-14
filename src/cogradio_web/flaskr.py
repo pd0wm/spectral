@@ -1,6 +1,8 @@
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash, jsonify
 from flask.ext.bower import Bower
+from element import TextElement, SliderElement, CheckBoxElement
+from content import Content
 import random
 import Pyro4
 import socket
@@ -12,24 +14,18 @@ app.config.from_object(__name__)
 app.debug = True
 Bower(app)
 
-
-from element import TextElement, SliderElement, CheckBoxElement
-from content import Content
-
 el1 = TextElement(key="uptime", title="Uptime", value=123)
 el2 = TextElement(key="system_status", title="System Status", value="Critical")
 el3 = SliderElement(
     key="slider", title="Test slider", value=42, range=(0, 100))
 el4 = SliderElement(
     key="je_moeder", title="Je moeder", value=10, range=(0, 100000))
-el5 = CheckBoxElement(key="average", title="Average", label="Average: ", value=False)
 
 cnt = Content()
 cnt.add(el1, (0, 1))
 cnt.add(el2, (1, 0))
 cnt.add(el3, (2, 2))
 cnt.add(el4, (2, 1))
-cnt.add(el5, (0, 0))
 
 
 @app.route('/')
@@ -55,11 +51,6 @@ def update():
     settings.update(cnt.values)
 
     return jsonify({uuid: value})
-
-
-@app.route('/plot')
-def plot():
-    return render_template('plotting.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

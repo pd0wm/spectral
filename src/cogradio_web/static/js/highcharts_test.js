@@ -1,11 +1,23 @@
 var chart;
+var length;
+var current_fft;
 var REQUEST_DATA = 0;
+var N;
+var buffer;
+var filter;
 
 document.addEventListener("socket_open", function(e){ subscribe(); });
 
 $(document).ready(function() {
     connection.hostname = window.location.hostname;
     connection.open();
+    $('#slider-N').slider();
+    N = parseInt(document.getElementById("slider-N").value);
+});
+
+$(document).on("change", "#slider-N", function() {
+    N = parseInt(this.value);
+    initBuffer(current_fft);
 });
 
 function onClose (event) {
@@ -15,11 +27,17 @@ function onClose (event) {
 function onMessage (event) {
     if (typeof event.data == 'string' || event.data instanceof String) {
         var data = JSON.parse(event.data);
+        fft = data.data;
+        length = fft.length;
+        var sample_freq = data.sample_freq;
+
         chart = $('#container').highcharts();
-        chart.series[0].setData(data.data);
+        current_fft = getAverage(fft);
+
+        chart.series[0].setData(current_fft);
         connection.send(REQUEST_DATA);
 
-        fixAxes(data);
+        fixAxes(current_fft, sample_freq);
     }
 }
 
@@ -36,15 +54,16 @@ $(function () {
             animation: false,
         },
         title: {
-            text: 'FFT test plot'
+            text: 'Real-time FFT'
         },
         xAxis: {
             type: 'linear',
             title: { text: 'Frequency [Hz]' }
         },
         yAxis: {
-            max: 1000,
-            min: 0
+            max: 0,
+            min: 0,
+            title: { text: '' }
         },
         legend: {
             enabled: false
@@ -76,18 +95,39 @@ $(function () {
     });
 });
 
-function fixAxes(data) {
-    var interval = data.sample_freq / data.data.length;
+function fixAxes(data, sample_freq) {
+    var interval = sample_freq / data.length;
 
     if (chart.series[0].pointInterval != interval) {
         chart.series[0].update({
             pointInterval: interval,
-            pointStart: -data.sample_freq / 2
+            pointStart: -sample_freq / 2
         });
     }
 
-    var ymax = Math.max.apply(Math, data.data);
+    var ymax = Math.max.apply(Math, data);
     if (chart.yAxis[0].max < ymax) {
         chart.yAxis[0].update({max: ymax});
     }
+}
+
+function initBuffer(data) {
+    buffer = math.zeros(N, length);
+
+    for (var i = 0; i < N; i++){
+        buffer._data[i] = data;
+    }
+
+    filter = math.multiply(math.ones(N), 1 / N);
+}
+
+function getAverage(data) {
+    if (!buffer) {
+        initBuffer(data);
+    }
+
+    buffer._data.shift();
+    buffer._data.push(data);
+
+    return math.multiply(filter, buffer)._data;
 }

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Theme Template for Bootstrap</title>
+    <title>JAMM Dashboard</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"></link>
@@ -40,25 +40,12 @@
 	    <span class="icon-bar"></span>
 	    <span class="icon-bar"></span>
 	  </button>
-	  <a class="navbar-brand" href="#">Bootstrap theme</a>
+	  <a class="navbar-brand" href="#">Dashboard</a>
 	</div>
 	<div id="navbar" class="navbar-collapse collapse">
 	  <ul class="nav navbar-nav">
 	    <li class="active"><a href="#">Home</a></li>
-	    <li><a href="/plot">Plotter</a></li>
 	    <li><a href="#contact">Contact</a></li>
-	    <li class="dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-	      <ul class="dropdown-menu" role="menu">
-		<li><a href="#">Action</a></li>
-		<li><a href="#">Another action</a></li>
-		<li><a href="#">Something else here</a></li>
-		<li class="divider"></li>
-		<li class="dropdown-header">Nav header</li>
-		<li><a href="#">Separated link</a></li>
-		<li><a href="#">One more separated link</a></li>
-	      </ul>
-	    </li>
 	  </ul>
 	</div><!--/.nav-collapse -->
       </div>
@@ -68,7 +55,11 @@
     <div class="container theme-showcase" role="main">
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <div id="container" style="width:100%; height:400px;"></div>
+        <div id="container" style="width:100%; height:400px; margin-bottom:1em;"></div>
+        <div>
+          <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3>
+          <input id="slider-N" type="text" style="width: 100%;" value=5 data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+        </div>
       </div>
 
       <div class="page-header">

@@ -19,24 +19,17 @@ class ServerProtocolPlot(ServerProtocol):
     """WebSocket protocol for pushing plot data"""
 
     queue = None
-    data_buffer = None
-    average = False
     delay = 0.05
-    N = 10
 
     REQUEST_DATA = 0
 
     def __init__(self):
-        self.series = deque(maxlen=self.N)
         ServerProtocol.__init__(self)
 
     @inlineCallbacks
     def pushData(self):
         if self.queue.empty() == False:
             self.data_buffer = self.queue.get()
-
-        if self.average:
-            self.makeAverage()
 
         # Slow the loop down a bit.
         yield sleep(0.05)
@@ -51,9 +44,6 @@ class ServerProtocolPlot(ServerProtocol):
         while self.opt.poll():
             last_options = self.opt.recv()
 
-        if last_options is not None:
-            self.average = last_options['average']
-
         if int(payload) == self.REQUEST_DATA:
             self.pushData()
         else:
@@ -61,16 +51,6 @@ class ServerProtocolPlot(ServerProtocol):
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
-
-    def makeAverage(self):
-        if len(self.series) == self.N:
-            self.series.popleft()
-
-        self.series.append(self.data_buffer.data)
-
-        if len(self.series) == self.N:
-            a = np.asarray(list(self.series))
-            self.data_buffer.data = np.average(a, axis=0).tolist()
 
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
