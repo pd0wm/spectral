@@ -16,7 +16,7 @@ numbbins = 15
 threshold = 2000
 
 # Init blocks
-source = cg.source.Sinusoidal(frequencies)
+source = cg.source.ComplexSinusoidal(frequencies, SNR=-5)
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
@@ -31,7 +31,7 @@ y_s = cg.fft(rx)
 rx_len = (rx.shape[0])
 f_axis_recon = np.linspace(-0.5, 0.5, rx_len)
 
-# Detection 
+# Detection
 # detector = cg.detection.SPFL()
 # detector.detect(rx)
 
