@@ -2,10 +2,11 @@
 <html>
     <head>
         <title>Highcharts Websocket Test</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script src="http://code.highcharts.com/highcharts.js"></script>
-        <script src="../static/js/connection.js"></script>
-        <script src="../static/js/highcharts_test.js"></script>
+        <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.js') }}"></script>
+        <script src="{{ url_for('bower.static', filename='highcharts/highcharts.js') }}"></script>
+        <script src="{{ url_for('bower.static', filename='mathjs/dist/math.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/connection.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/highcharts_test.js') }}"></script>
     </head>
     <body>
         <input id="hostname" type="text" value="127.0.0.1"/>
