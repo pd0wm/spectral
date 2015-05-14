@@ -10,7 +10,6 @@
 \usepackage{mathtools}
 \usepackage{xcolor}
 \usepackage[separate-uncertainty=true, per-mode=symbol]{siunitx}
-\usepackage[noabbrev, capitalize]{cleveref}
 \usepackage{listings}
 \usepackage[american inductor, european resistor]{circuitikz}
 \usepackage{amsmath}
@@ -31,6 +30,11 @@
     \usepackage[T1]{fontenc}
     \usepackage[utf8]{inputenc}
 \fi
+\usepackage[noabbrev, capitalize]{cleveref}
+\usepackage{ifthen}
+\usepackage{titlesec}
+\usepackage{titlecaps}
+
 \newcommand{\references}[1]{\begin{flushright}{#1}\end{flushright}}
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 \newcommand{\uvec}[1]{\boldsymbol{\hat{\vec{#1}}}}
@@ -45,8 +49,9 @@
 \newcommand{\col}{\operatorname{col}}
 \newcommand{\rect}{\operatorname{rect}}
 \newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\IT}{\operatorname{IT}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\DTFT}{\mathcal{F}_*}
+\newcommand{\conj}[1]{\bar{#1}}
 
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
@@ -80,3 +85,76 @@
 
 \setlength{\parindent}{0pt}
 \nonzeroparskip
+
+% Block environment configuration
+\newcommand{\BlockLeftMargin}{20pt}
+\newcommand{\BlockLeftMarginText}{25pt}
+\newcommand{\BlockLeftMarginTextSpacing}{10pt}
+
+% Own colours
+\definecolor{gray75}{gray}{0.75}
+
+% Block environment
+\newenvironment{block}[3]{%
+\makebox{\hspace{-\spinemargin}%
+\begin{tikzpicture}[overlay]
+    \draw [thick,color=gray75] (\BlockLeftMargin, 0) -- (\paperwidth - \spinemargin, 0);
+    \node at (\BlockLeftMarginText, -0.9) [align=left, text width=\spinemargin - \BlockLeftMarginText - \BlockLeftMarginTextSpacing, anchor=west, text depth=1cm] {\textbf{\textsc{#1}}\newline\textit{#3}};
+\end{tikzpicture}}%
+\\[0.25em]\ifthenelse{
+    \equal{#2}{}
+}{}{(\textit{#2}.)} \nolinebreak}
+{\\[-0.25em]
+\makebox{\hspace{-\spinemargin}%
+\begin{tikzpicture}[overlay, remember picture]
+    \draw [thick,color=gray75] (\spinemargin,0) -- (\paperwidth - \spinemargin,0);
+\end{tikzpicture}} \vspace{0.5em}}
+
+% Theorem
+\newcounter{blockTheoremCounter}
+\crefname{blockTheoremCounter}{Theorem}{Theorems}
+\Crefname{blockTheoremCounter}{Theorem}{Theorems}
+
+\newenvironment{blockTheorem}[1][]{%
+\refstepcounter{blockTheoremCounter}%
+\begin{block}{theorem \theblockTheoremCounter}{#1}{}}
+{\end{block}}
+
+% Definition
+\newcounter{blockDefinitionCounter}
+\crefname{blockDefinitionCounter}{Definition}{Definitions}
+\Crefname{blockDefinitionCounter}{Definition}{Definitions}
+
+\newenvironment{blockDefinition}[1][]{%
+\refstepcounter{blockDefinitionCounter}%
+\begin{block}{definition \theblockDefinitionCounter}{#1}{}}
+{\end{block}}
+
+% Proof
+\newcounter{blockProofTheoremCounter}
+\crefname{blockProofTheoremCounter}{Proof}{Proofs}
+\Crefname{blockProofTheoremCounter}{Proof}{Proofs}
+
+\newenvironment{blockProofTheorem}[1]{%
+\refstepcounter{blockProofTheoremCounter}%
+\begin{block}{proof of \\ theorem #1}{}{}}
+{\qed\end{block}}
+
+% Redesign chapter headings
+\newcommand{\chapternumber}{\thechapter}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\chapternumber\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+% Remove headers
+% \addtopsmarks{headings}{}{
+%   \createmark{chapter}{left}{nonumber}{}{}
+% }
+% \pagestyle{headings} % Activate changes
+
+% Capitalise headers in a regular way
+\renewcommand*{\memUChead}[1]{\titlecap{#1}}
+
+% \hfill for math mode
+% Specify \pushrightwidth before align to align the text (best fix for now...)
+\newcommand{\pushrightwidth}{10cm}
+\newcommand{\pushright}[1]{\text{\makebox[\pushrightwidth]{\hfill$#1$}}}

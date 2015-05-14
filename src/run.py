@@ -6,8 +6,6 @@ import Pyro4
 from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
-from autobahn.twisted.websocket import WebSocketServerFactory, \
-                                        WebSocketServerProtocol
 
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
 L = 20
@@ -24,6 +22,7 @@ sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 
+
 def signal_generation(signal, generator, mc_sampler, f_samp, window, opt):
     while True:
         orig_signal = generator.generate(f_samp, window)
@@ -32,12 +31,14 @@ def signal_generation(signal, generator, mc_sampler, f_samp, window, opt):
         signal.put_nowait(mc_sampler.sample(orig_signal))
 
 
-def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor, opt):
+def signal_reconstruction(signal, plot_queue, websocket_queue,
+                          reconstructor, opt):
     while True:
         inp = signal.get()
         if inp.any():
             out = cg.fft(reconstructor.reconstruct(inp))
             out_container = cg.websocket.PlotDataContainer(f_samp, out)
+
             if websocket_queue.full():
                 websocket_queue.get()
             websocket_queue.put_nowait(out_container)
@@ -61,19 +62,19 @@ def plotter(plot_queue):
 
 def websocket(websocket_queue, opt):
     log.startLogging(sys.stdout)
-
     factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000",
-                                                      websocket_queue)
+                                                      websocket_queue,
+                                                      opt)
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
-    reactor.stop()
+    reactor.run()
 
 
-def settings_server():
+def settings_server(src_opt, rec_opt, web_opt):
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = cg.Settings()
+    settings = cg.Settings(web_opt)
     uri = daemon.register(settings)
     ns.register("cg.settings", uri)
     daemon.requestLoop()
@@ -92,8 +93,10 @@ if __name__ == '__main__':
     p1 = Process(target=signal_generation,
                  args=(signal, source, sampler, f_samp, window, child_opt_src))
     p2 = Process(target=signal_reconstruction,
-                 args=(signal, plot_queue, websocket_queue, reconstructor, child_opt_rec))
-    p3 = Process(target=settings_server)  # , args=(parent_opt_src, parent_opt_rec, parent_opt_web)
+                 args=(signal, plot_queue, websocket_queue,
+                       reconstructor, child_opt_rec))
+    p3 = Process(target=settings_server, args=(parent_opt_src, parent_opt_rec,
+                                               parent_opt_web))
     p4 = Process(target=websocket, args=(websocket_queue, child_opt_web))
 
     processes.append(p1)
@@ -103,8 +106,6 @@ if __name__ == '__main__':
 
     try:
         [p.start() for p in processes]
-        # while True:
-        #     plotter(plot_queue)
         [p.join() for p in processes]
     except KeyboardInterrupt:
         [p.terminate() for p in processes]
