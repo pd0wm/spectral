@@ -1,6 +1,7 @@
 import json
 import numpy as np
 from .websocket import ServerProtocol
+from collections import deque
 from multiprocessing import Queue
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred, inlineCallbacks, returnValue
@@ -17,15 +18,23 @@ class ServerProtocolPlot(ServerProtocol):
 
     """WebSocket protocol for pushing plot data"""
 
+    queue = None
     data_buffer = None
+    average = False
+    delay = 0.05
 
     def __init__(self):
+        self.N = 1 / 0.05 * 0.5
+        self.series = deque(maxlen=self.N)
         ServerProtocol.__init__(self)
 
     @inlineCallbacks
     def pushData(self):
         if self.queue.empty() == False:
             self.data_buffer = self.queue.get()
+
+        if self.average:
+            self.makeAverage()
 
         # Slow the loop down a bit.
         yield sleep(0.05)
@@ -36,10 +45,33 @@ class ServerProtocolPlot(ServerProtocol):
         self.pushData()
 
     def onMessage(self, payload, isBinary):
-        self.pushData()
+        if isBinary:
+            print("Unsupported message type.")
+            return
+
+        try:
+            request = json.loads(payload)
+        except ValueError:
+            print("Could not parse json.")
+            return
+
+        if request['type'] == "fftdata":
+            self.pushData()
+        elif request['type'] == "toggle_average":
+            self.average = request['value']
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
+
+    def makeAverage(self):
+        if len(self.series) == self.N:
+            self.series.popleft()
+
+        self.series.append(self.data_buffer.data)
+
+        if len(self.series) == self.N:
+            a = np.array([self.series[0], self.series[1], self.series[2]])
+            self.data_buffer.data = np.average(a, axis=0).tolist()
 
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
@@ -66,4 +98,5 @@ class PlotDataContainer:
         self.data = data.tolist()
 
     def encode(self):
-        return json.dumps(self.__dict__).encode('utf8')
+        obj = dict(sample_freq=self.sample_freq, data=self.data)
+        return json.dumps(obj).encode('utf8')

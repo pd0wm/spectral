@@ -24,6 +24,7 @@ sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 
+
 def signal_generation(signal, generator, mc_sampler, f_samp, window, opt):
     while True:
         orig_signal = generator.generate(f_samp, window)
@@ -67,7 +68,7 @@ def websocket(websocket_queue, opt):
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
-    reactor.stop()
+    reactor.run()
 
 
 def settings_server():

@@ -1,11 +1,9 @@
-var output;
 var hostname;
 var toggleButton;
 var chart;
 
 $(document).ready(function() {
     hostname = document.getElementById("hostname");
-    output = document.getElementById("output");
     toggleButton = document.getElementById("toggleButton");
 });
 
@@ -20,13 +18,13 @@ function onMessage (event) {
         var data = JSON.parse(event.data);
         chart = $('#container').highcharts();
         chart.series[0].setData(data.data);
-        connection.send(1);
+        connection.send(JSON.stringify({type: 'fftdata'}));
 
         fixAxes(data);
     }
 }
 
-function toggle() {
+$(document).on("click", "#toggleButton", function () {
     if (connection.isOpen()) {
         connection.close();
     }
@@ -34,6 +32,17 @@ function toggle() {
         connection.hostname = hostname.value;
         connection.open();
     }
+});
+
+$(document).on("change", "#toggleAverage", function(){ toggleAverage(); });
+
+function toggleAverage () {
+    connection.send(
+        JSON.stringify({
+            type: "toggle_average",
+            value: $("#toggleAverage").is(":checked")
+        })
+    );
 }
 
 function subscribe() {
@@ -41,6 +50,7 @@ function subscribe() {
     connection.socket().addEventListener("close", function(event) { onClose(event) });
     connection.socket().addEventListener("message", function(event) { onMessage(event) });
     connection.socket().addEventListener("error", function(event) { onError(event) });
+    toggleAverage();
 }
 
 $(function () {
