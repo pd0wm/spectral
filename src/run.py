@@ -3,8 +3,7 @@ import cogradio_utils as cg
 import sys
 import matplotlib.pyplot as plt
 import Pyro4
-import cogradio_web as cgw
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, \
@@ -25,8 +24,7 @@ sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
 
-
-def signal_generation(signal, generator, mc_sampler, f_samp, window):
+def signal_generation(signal, generator, mc_sampler, f_samp, window, opt):
     while True:
         orig_signal = generator.generate(f_samp, window)
         if signal.full():
@@ -34,7 +32,7 @@ def signal_generation(signal, generator, mc_sampler, f_samp, window):
         signal.put_nowait(mc_sampler.sample(orig_signal))
 
 
-def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor):
+def signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor, opt):
     while True:
         inp = signal.get()
         if inp.any():
@@ -61,7 +59,7 @@ def plotter(plot_queue):
             plt.pause(0.01)
 
 
-def websocket(websocket_queue):
+def websocket(websocket_queue, opt):
     log.startLogging(sys.stdout)
 
     factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000",
@@ -69,10 +67,7 @@ def websocket(websocket_queue):
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
-    try:
-        reactor.run()
-    except KeyboardInterrupt:
-        reactor.stop()
+    reactor.stop()
 
 
 def settings_server():
@@ -88,14 +83,18 @@ if __name__ == '__main__':
     signal = Queue(10)
     plot_queue = Queue(10)
     websocket_queue = Queue(10)
-    processes = []
 
+    parent_opt_src, child_opt_src = Pipe()
+    parent_opt_rec, child_opt_rec = Pipe()
+    parent_opt_web, child_opt_web = Pipe()
+
+    processes = []
     p1 = Process(target=signal_generation,
-                 args=(signal, source, sampler, f_samp, window))
+                 args=(signal, source, sampler, f_samp, window, child_opt_src))
     p2 = Process(target=signal_reconstruction,
-                 args=(signal, plot_queue, websocket_queue, reconstructor))
-    p3 = Process(target=settings_server)
-    p4 = Process(target=websocket, args=(websocket_queue,))
+                 args=(signal, plot_queue, websocket_queue, reconstructor, child_opt_rec))
+    p3 = Process(target=settings_server)  # , args=(parent_opt_src, parent_opt_rec, parent_opt_web)
+    p4 = Process(target=websocket, args=(websocket_queue, child_opt_web))
 
     processes.append(p1)
     processes.append(p2)
