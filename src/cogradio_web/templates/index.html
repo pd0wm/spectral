@@ -55,10 +55,10 @@
     <div class="container theme-showcase" role="main">
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <div id="container" style="width:100%; height:400px; margin-bottom:1em;"></div>
+        <div id="fftplot" style="width:100%; height:400px; margin-bottom:1em;"></div>
         <div>
           <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3>
-          <input id="slider-N" type="text" style="width: 100%;" value=5 data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+          <input id="fftplot-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
         </div>
       </div>
 
@@ -81,7 +81,10 @@
     <script src="{{ url_for('bower.static', filename='highcharts/highcharts.js') }}"></script>
     <script src="{{ url_for('bower.static', filename='mathjs/dist/math.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connection.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/highcharts_test.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fftplot.js') }}"></script>
+    <script type="text/javascript">
+      var fftplot = new FFTplot("fftplot");
+    </script>
 
     <script type="text/javascript">
       {{ js_init|safe }}
