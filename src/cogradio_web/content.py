@@ -36,10 +36,12 @@ class Content(object):
         for y in range(0, self.max_y + 1):
             r += """<div class="row">\n"""
             for x in range(0, 3):
-                r += """<div class="col-sm-4">\n"""
                 if (x, y) in self._by_position:
                     element = self._by_position[(x, y)]
+                    r += """<div class="col-sm-{0}">\n""".format(element.width * 4)
                     r += element.html + "\n"
+                else:
+                     r += """<div class="col-sm-4">\n"""
                 r += """</div>\n"""
             r += """</div>\n"""
         return r

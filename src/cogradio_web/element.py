@@ -7,6 +7,8 @@ class Element(object):
         self.uuid = uuid.uuid4().hex
         self.key = key
         self.title = title
+        self.width = 1
+
 
     @property
     def update_eval(self):
@@ -46,10 +48,11 @@ class TextElement(Element):
 
 class SliderElement(Element):
 
-    def __init__(self, key, title=None, value=None, range=(0, 1000)):
+    def __init__(self, key, title=None, value=None, width=1, range=(0, 1000)):
         super(SliderElement, self).__init__(key, title)
         self.value = value
         self.range = range
+        self.width = width
 
     @property
     def update_eval(self):
