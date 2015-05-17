@@ -8,10 +8,8 @@ var SpectroGram = function(container_id) {
     }
     Connection.socket().addEventListener("message", function(e) { that.onMessage(e); });
 
-    this.colormap = chroma.scale(
-        ['#FFF', Highcharts.getOptions().colors[0], "#1981E6", "#043361"]
-    ).mode('rgb');
-}
+    this.colormap = chroma.scale(['#FFF', Highcharts.getOptions().colors[0], "#1981E6", "#043361"]);
+};
 
 SpectroGram.prototype.onMessage = function(event) {
     if (typeof event.data == 'string' || event.data instanceof String) {
@@ -37,13 +35,15 @@ SpectroGram.prototype.draw = function(fft_data) {
     var temp_canvas = this.ctx.canvas;
     this.ctx.translate(0, -1);
     this.ctx.drawImage(temp_canvas, 0, 0);
-    this.ctx.resetTransform();
+
+    // Reset transform not supported by safari, so manual reset
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     var max = math.max(fft_data);
-    var fft_data_scaled = this.rescale(fft_data, this.canvas.width)
+    var fft_data_scaled = this.rescale(fft_data, this.canvas.width);
 
     for (var i = 0; i < this.canvas.width; i++) {
-        this.ctx.fillStyle = this.colormap(fft_data_scaled[i] / max);
+        this.ctx.fillStyle = this.colormap(fft_data_scaled[i] / max).hex();
         this.ctx.fillRect(i, this.canvas.height - 1, 1, 1);
     }
 };
