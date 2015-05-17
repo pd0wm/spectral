@@ -1,30 +1,31 @@
-var Connection = function(hostname){
+/**
+ * Handles everything related to the WebSocket connection.
+ */
+
+var Connection = function(){
     var _socket = null;
-    var openEvent = new Event("socket_open");
+    var REQUEST_DATA = 0;
 
     return {
         socket : function(){
-            return _socket;
-        },
-        open : function(){
-            if (_socket === null){
-                if (!this.hostname) {
-                    return null;
-                }
+            if (_socket === null) {
+                _socket = new WebSocket("ws://" + window.location.hostname + ":9000");
 
-                _socket = new WebSocket("ws://" + this.hostname + ":9000");
-
-                _socket.addEventListener("open", function(event) {
+                _socket.addEventListener("open", function() {
                     console.log("Connected to " + _socket.url);
-                    document.dispatchEvent(openEvent);
                 });
-                _socket.addEventListener("close", function(event) {
+                _socket.addEventListener("message", function(event) {
+                    Connection.send(REQUEST_DATA);
+                });
+                _socket.addEventListener("close", function() {
                     console.log("Connection closed");
                 });
-                _socket.addEventListener("error", function(event) {
-                    console.log("Error: " + event.data);
+                _socket.addEventListener("error", function() {
+                    console.log("An error occurred");
                 });
             }
+
+            return _socket;
         },
         close : function(){
             if (_socket !== null) {
@@ -34,6 +35,7 @@ var Connection = function(hostname){
         },
         send : function(data){
             if (_socket === null) {
+                console.error("Tried to send message when not connected.")
                 return;
             }
 
