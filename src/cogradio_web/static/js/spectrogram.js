@@ -36,7 +36,7 @@ SpectroGram.prototype.draw = function(fft_data) {
     this.ctx.translate(0, -1);
     this.ctx.drawImage(temp_canvas, 0, 0);
 
-    // Reset transform not supported by safari, so manual reset
+    // Reset transform not supported by safari, so manual reset with identity matrix
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     var max = math.max(fft_data);
