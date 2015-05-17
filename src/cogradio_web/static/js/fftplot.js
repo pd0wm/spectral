@@ -6,8 +6,8 @@ var FFTplot = function(container_id){
         Connection.hostname = window.location.hostname;
         Connection.open();
         var that = this;
-        document.addEventListener("socket_open", function(e){ that.subscribe(); });
     }
+    Connection.socket().addEventListener("message", function(e) { that.onMessage(e); });
 
     this.container_id = container_id;
     this.chart = new Highcharts.Chart(this.getPlotSettings());
@@ -123,9 +123,4 @@ FFTplot.prototype.getPlotSettings = function() {
             enabled: false
         }
     };
-};
-
-FFTplot.prototype.subscribe = function() {
-    var that = this;
-    Connection.socket().addEventListener("message", function(event) { that.onMessage(event); });
 };

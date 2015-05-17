@@ -33,21 +33,18 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
-	<div class="navbar-header">
-	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	    <span class="sr-only">Toggle navigation</span>
-	    <span class="icon-bar"></span>
-	    <span class="icon-bar"></span>
-	    <span class="icon-bar"></span>
-	  </button>
-	  <a class="navbar-brand" href="#">Dashboard</a>
-	</div>
-	<div id="navbar" class="navbar-collapse collapse">
-	  <ul class="nav navbar-nav">
-	    <li class="active"><a href="#">Home</a></li>
-	    <li><a href="#contact">Contact</a></li>
-	  </ul>
-	</div><!--/.nav-collapse -->
+      	<div class="navbar-header">
+      	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      	    <span class="sr-only">Toggle navigation</span>
+      	  </button>
+      	  <a class="navbar-brand" href="#">Dashboard</a>
+      	</div>
+      	<div id="navbar" class="navbar-collapse collapse">
+      	  <ul class="nav navbar-nav">
+      	    <li class="active"><a href="#">Home</a></li>
+      	    <li><a href="#contact">Contact</a></li>
+      	  </ul>
+      	</div><!--/.nav-collapse -->
       </div>
     </nav>
 
@@ -55,15 +52,21 @@
     <div class="container theme-showcase" role="main">
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <div id="fftplot" style="width:100%; height:400px; margin-bottom:1em;"></div>
-        <div>
-          <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3>
-          <input id="fftplot-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+        <div style="margin-bottom:2em;">
+          <div id="fftplot" style="width:100%; height:400px; margin-bottom:1em;"></div>
+          <div>
+            <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3>
+            <input id="fftplot-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+          </div>
+        </div>
+        <div style="background-color: white; padding: 1em; padding-top: 0.2em;">
+          <h4 style="text-align: center;">Real-time spectrogram</h4>
+          <canvas id="spectrogram" style="width:100%; height:400px;"></canvas>
         </div>
       </div>
 
       <div class="page-header">
-	<h1>System Status</h1>
+	      <h1>System Status</h1>
       </div>
       {{ content|safe }}
     </div> <!-- /container -->
@@ -80,10 +83,13 @@
     <script src="{{ url_for('static', filename='js/worker.js') }}"></script>
     <script src="{{ url_for('bower.static', filename='highcharts/highcharts.js') }}"></script>
     <script src="{{ url_for('bower.static', filename='mathjs/dist/math.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='chroma-js/chroma.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connection.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fftplot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/spectrogram.js') }}"></script>
     <script type="text/javascript">
       var fftplot = new FFTplot("fftplot");
+      var spectrogram = new SpectroGram("spectrogram");
     </script>
 
     <script type="text/javascript">
