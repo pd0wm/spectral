@@ -101,10 +101,10 @@
     \draw [thick,color=gray75] (\BlockLeftMargin, 0) -- (\paperwidth - \spinemargin, 0);
     \node at (\BlockLeftMarginText, -0.9) [align=left, text width=\spinemargin - \BlockLeftMarginText - \BlockLeftMarginTextSpacing, anchor=west, text depth=1cm] {\textbf{\textsc{#1}}\newline\textit{#3}};
 \end{tikzpicture}}%
-\\[0.25em]\ifthenelse{
+\nopagebreak \\[0.25em] \ifthenelse{
     \equal{#2}{}
-}{}{(\textit{#2}.)} \nolinebreak}
-{\\[-0.25em]
+}{}{(\textit{#2}.)} \nopagebreak \nolinebreak}
+{\nopagebreak \\[-0.25em]
 \makebox{\hspace{-\spinemargin}%
 \begin{tikzpicture}[overlay, remember picture]
     \draw [thick,color=gray75] (\spinemargin,0) -- (\paperwidth - \spinemargin,0);

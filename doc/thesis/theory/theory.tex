@@ -119,7 +119,7 @@ Finally, let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ denotes
 Let $L$, $N$ and $M$ be parameters. $M$ cosets will provide $L$ samples downsampled by a factor $N$. Thus $LN$ samples of the input signal are required. Let the input signal be denoted by $\vec{x} \in \mathbb{C}^{LN}$. Let for coset $i$ the sampling vector be given by $\vec{c}_i \in \mathbb{C}^{N}$. The sampling vector determines the output of a coset. The exact relationship has yet to be derived. Let for coset $i$ the pseudo output be given by $\vec{y}_i = \vec{c}_i \ast \vec{x}$. The pseudo output will be used to derive the output of a coset.
 
 \begin{blockTheorem} \label{th:conv-corr}
-    \makebox[\textwidth]{\centering $(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})$.}
+    \makebox[\textwidth]{\centering $(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})$.} \nolinebreak
 \end{blockTheorem}
 
 Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$. Let the correlation of sampling vectors of cosets $i$ and $j$ be given by $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
@@ -172,7 +172,7 @@ We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
 \begin{align*}
     (\vec{r}_{y'_i,y'_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
-Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. $\vec{y}'_i$ corresponds to the output of coset $i$.
+Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$.
 
 \begin{blockTheorem} \label{th:deci-corr}
     Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N(\vec{y}'_i \circ \vec{y}'_j)$ is an unbiased estimator of $E(\vec{r}_{y'_i,y'_j})$.
@@ -311,7 +311,7 @@ In this section the theorems of the main analysis will be proven.
         \end{bmatrix}.
     \end{align*}
 \end{blockProofTheorem}
-
+\newpage
 \begin{blockProofTheorem}{\ref{th:conv-corr}}
     Note that
     \begin{align*}
@@ -401,7 +401,7 @@ where $\vec{d}_i = \vec{0}$ for $i < 1$ and $i > M$. Furthermore,
     &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x}_m)_k (\conj{\vec{x}}_m)_l (\mat{A}_i)_{k,l} \\
     &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x})_{(m-1)N+k} (\conj{\vec{x}})_{(m-1)N+l} (\mat{A}_i)_{k,l}.
 \end{align*}
-Now let $\vec{X} \in \mathbb{C}^{(LN)^2}$ such that $(\vec{X})_{(i-1)LN+j} = (\vec{x})_i (\conj{\vec{x}})_j$ for $i = 1,\ldots,LN$ and $j = 1,\ldots,LN$. Then
+Now let $\vec{X} \in \mathbb{C}^{(LN)^2}$ be such that $(\vec{X})_{(i-1)LN+j} = (\vec{x})_i (\conj{\vec{x}})_j$ for $i = 1,\ldots,LN$ and $j = 1,\ldots,LN$. Then
 \begin{align*}
     (\vec{w}_m \circ \vec{w}_m)_i = \vec{p}_{m,i}^T \vec{X}
 \end{align*}
@@ -430,7 +430,7 @@ Similarly, we can relate
     (\vec{r}_x)_i &= \sum_{k=1}^{LN}(\vec{x})_k (\conj{\vec{x}})_{LN-i+k} \\
     &= \vec{b}_i^T \vec{X}
 \end{align*}
-where $\vec{b}_i \in \mathbb{C}^{(LN)^2}$ such that
+where $\vec{b}_i \in \mathbb{C}^{(LN)^2}$ is such that
 \begin{align*}
     (\vec{b}_i)_{(k-1)LN+LN-i+k} = 1
 \end{align*}
