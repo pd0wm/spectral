@@ -75,10 +75,11 @@ class PlotDataContainer:
 
     """Class containing the data that should be sent to client for plotting"""
 
-    def __init__(self, sample_freq, data):
+    def __init__(self, sample_freq, center_freq, data):
         self.sample_freq = sample_freq
+        self.center_freq = center_freq
         self.data = data.tolist()
 
     def encode(self):
-        obj = dict(sample_freq=self.sample_freq, data=self.data)
+        obj = dict(self.__dict__)
         return json.dumps(obj).encode('utf8')
