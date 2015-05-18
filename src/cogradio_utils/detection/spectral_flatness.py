@@ -1,9 +1,9 @@
 from .detector import Detector
 import numpy as np
-import cogradio_utils as cg
-import matplotlib.pyplot as plt
+
 
 class SPFL(Detector):
+
     """Detection using spectrall flatness Method"""
 
     def __init__(self):
@@ -11,13 +11,12 @@ class SPFL(Detector):
 
     def detect(self, rx, binwidth, treshold):
         normalized_rx = rx/rx.size
-        normalized_spectrum= np.abs(np.fft.fftshift(np.fft.fft(normalized_rx)))/rx.size
-        
+        normalized_spectrum = np.abs(np.fft.fftshift(np.fft.fft(normalized_rx))) / rx.size
         standard_deviation = np.zeros((normalized_spectrum.size))
 
         for i in range(normalized_spectrum.size):
-            begin = max(0, int(i-binwidth/2));
+            begin = max(0, int(i-binwidth/2))
             end = min(normalized_spectrum.size, i+binwidth/2-1)
             standard_deviation[i] = np.std(normalized_spectrum[begin:end])
 
-        return  standard_deviation > treshold
+        return standard_deviation > treshold
