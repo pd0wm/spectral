@@ -63,7 +63,8 @@ def plotter(plot_queue):
 def websocket(websocket_queue, opt):
     log.startLogging(sys.stdout)
     factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000",
-                                                      websocket_queue)
+                                                      websocket_queue,
+                                                      opt)
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
@@ -73,7 +74,7 @@ def websocket(websocket_queue, opt):
 def settings_server(src_opt, rec_opt, web_opt):
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = cg.Settings()
+    settings = cg.Settings(web_opt)
     uri = daemon.register(settings)
     ns.register("cg.settings", uri)
     daemon.requestLoop()
