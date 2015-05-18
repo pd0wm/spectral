@@ -19,6 +19,7 @@ class ServerProtocolPlot(ServerProtocol):
     """WebSocket protocol for pushing plot data"""
 
     queue = None
+    data_buffer = None
     delay = 0.05
 
     REQUEST_DATA = 0

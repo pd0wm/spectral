@@ -6,13 +6,14 @@ import Pyro4
 from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
+from scipy import signal
 
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
-L = 20
+L = 40
 N = 14
 nyq_block_size = L * N
 f_samp = 25e6
-window = L * N
+window_length = L * N
 numbbins = 15
 threshold = 2000
 
@@ -21,25 +22,25 @@ source = cg.source.UsrpN210(addr="192.168.20.2", center_freq=2.41e9)
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
+window = signal.blackmanharris(window_length)
 
 
-def signal_generation(signal, generator, mc_sampler, f_samp, window, opt):
+def signal_generation(signal, generator, mc_sampler, f_samp, window_length, opt):
     while True:
-        orig_signal = generator.generate(f_samp, window)
+        orig_signal = generator.generate(f_samp, window_length) * window
         if signal.full():
             signal.get()
-        signal.put_nowait(orig_signal)
-        # signal.put_nowait(mc_sampler.sample(orig_signal))
+        # signal.put_nowait(orig_signal)
+        signal.put_nowait(mc_sampler.sample(orig_signal))
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue,
                           reconstructor, opt):
     while True:
         inp = signal.get()
-        # if inp.any():
-        if inp:
-            # out = cg.fft(reconstructor.reconstruct(inp))
-            out = cg.fft(inp)
+        if inp.any():
+            out = cg.fft(reconstructor.reconstruct(inp))
+            # out = cg.fft(inp)
             out_container = cg.websocket.PlotDataContainer(f_samp, out)
 
             if websocket_queue.full():
@@ -94,7 +95,7 @@ if __name__ == '__main__':
 
     processes = []
     p1 = Process(target=signal_generation,
-                 args=(signal, source, sampler, f_samp, window, child_opt_src))
+                 args=(signal, source, sampler, f_samp, window_length, child_opt_src))
     p2 = Process(target=signal_reconstruction,
                  args=(signal, plot_queue, websocket_queue,
                        reconstructor, child_opt_rec))

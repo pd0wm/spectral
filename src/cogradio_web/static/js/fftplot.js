@@ -4,7 +4,6 @@
 
 var FFTplot = function(container_id){
     this.N = 10;
-    this.logplot = false;
     var that = this; // Because JS is retarded.
 
     // Add message listener.
@@ -20,13 +19,6 @@ var FFTplot = function(container_id){
     $(document).on("change", "#" + container_id + "-averaging-slider", function() {
         that.N = parseInt(this.value);
     });
-
-    $(document).on("change", "#" + container_id + "-logplot-checkbox", function() {
-        that.logplot = $(this).is(":checked");
-        // Reset axes.
-        that.chart.yAxis[0].update({max: 0});
-        that.chart.yAxis[0].update({min: 0});
-    });
 };
 
 FFTplot.prototype.onMessage = function(event) {
@@ -39,11 +31,11 @@ FFTplot.prototype.onMessage = function(event) {
         // Update the chart
         this.averaged_fft = this.getAverage(fft_data);
 
-        fft_data = this.logplot ? math.log10(this.averaged_fft) : this.averaged_fft;
+        fft_data = math.log10(this.averaged_fft);
         this.chart.series[0].setData(fft_data);
         this.fixAxes(fft_data, sample_freq);
     } else {
-        console.logplot("Received unsupported message type.");
+        console.log("Received unsupported message type.");
     }
 };
 
@@ -138,6 +130,7 @@ FFTplot.prototype.getPlotSettings = function() {
         series: [{
             type: 'area',
             name: 'FFT',
+            turboThreshold: 2048
         }],
         tooltip: {
             enabled: false
