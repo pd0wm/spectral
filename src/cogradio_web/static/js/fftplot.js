@@ -26,6 +26,7 @@ FFTplot.prototype.onMessage = function(event) {
         // Parse the message content.
         var response = JSON.parse(event.data);
         var sample_freq = response.sample_freq;
+        var center_freq = response.center_freq;
         var fft_data = response.data;
 
         // Update the chart
@@ -33,7 +34,7 @@ FFTplot.prototype.onMessage = function(event) {
 
         fft_data = math.log10(this.averaged_fft);
         this.chart.series[0].setData(fft_data);
-        this.fixAxes(fft_data, sample_freq);
+        this.fixAxes(fft_data, sample_freq, center_freq);
     } else {
         console.log("Received unsupported message type.");
     }
@@ -66,14 +67,14 @@ FFTplot.prototype.initBuffer = function(length) {
     this.filter = math.multiply(math.ones(this.N), 1 / this.N);
 };
 
-FFTplot.prototype.fixAxes = function(fft_data, sample_freq) {
+FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
     // Fix horizontal scale when needed.
     var interval = sample_freq / fft_data.length;
 
     if (this.chart.series[0].pointInterval != interval) {
         this.chart.series[0].update({
             pointInterval: interval,
-            pointStart: -sample_freq / 2
+            pointStart: -sample_freq / 2 + center_freq
         });
     }
 
@@ -133,6 +134,9 @@ FFTplot.prototype.getPlotSettings = function() {
             turboThreshold: 2048
         }],
         tooltip: {
+            enabled: false
+        },
+        credits: {
             enabled: false
         }
     };

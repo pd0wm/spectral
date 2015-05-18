@@ -18,12 +18,15 @@ parser.add_argument('L', metavar='L', type=int, default=40)
 args = parser.parse_args()
 
 
-frequencies = [2e3, 4e3, 5e3, 8e3]
+frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 ip = args.ip
 L = args.L
 N = args.N
 f_samp = args.f_samp
+sample_freq = f_samp
+center_freq = 2.41e9
+
 nyq_block_size = L * N
 window_length = L * N
 numbbins = 15
@@ -31,16 +34,16 @@ threshold = 2000
 
 # Init blocks
 try:
-    source = cg.source.UsrpN210(addr=ip, samp_freq=f_samp, center_freq=2.41e9)
+    source = cg.source.UsrpN210(addr=ip, samp_freq=f_samp, center_freq=center_freq)
 except RuntimeError:
     source = cg.source.Rect(frequencies, widths, f_samp)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
-reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
+reconstructor = cg.reconstruction.Wessel(N, L)
 
 
-def signal_generation(signal, generator, mc_sampler, f_samp, window_length, opt):
+def signal_generation(signal, generator, mc_sampler, sample_freq, window_length, opt):
     while True:
         orig_signal = generator.generate(window_length)
         if signal.full():
@@ -63,7 +66,8 @@ def signal_reconstruction(signal, plot_queue, websocket_queue,
         if inp.any():
             out = cg.fft(reconstructor.reconstruct(inp))
             # out = cg.fft(inp)
-            out_container = cg.websocket.PlotDataContainer(f_samp, out)
+            out_container = cg.websocket.PlotDataContainer(
+                sample_freq=sample_freq, center_freq=center_freq, data=out)
 
             if websocket_queue.full():
                 websocket_queue.get()
@@ -117,7 +121,7 @@ if __name__ == '__main__':
 
     processes = []
     p1 = Process(target=signal_generation,
-                 args=(signal, source, sampler, f_samp, window_length, child_opt_src))
+                 args=(signal, source, sampler, sample_freq, window_length, child_opt_src))
     p2 = Process(target=signal_reconstruction,
                  args=(signal, plot_queue, websocket_queue,
                        reconstructor, child_opt_rec))
