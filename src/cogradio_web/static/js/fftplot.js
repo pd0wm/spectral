@@ -1,18 +1,20 @@
+/**
+ * Logic for rendering an FFT plot using highcharts.
+ */
+
 var FFTplot = function(container_id){
     this.N = 10;
     this.logplot = false;
-    this.REQUEST_DATA = 0;
+    var that = this; // Because JS is retarded.
 
-    if (!Connection.isOpen()) {
-        Connection.hostname = window.location.hostname;
-        Connection.open();
-        var that = this;
-    }
+    // Add message listener.
     Connection.socket().addEventListener("message", function(e) { that.onMessage(e); });
 
+    // Set up the chart.
     this.container_id = container_id;
     this.chart = new Highcharts.Chart(this.getPlotSettings());
 
+    // Set up the averaging slider.
     this.averaging_slider = $("#" + container_id + "-averaging-slider").slider();
     this.averaging_slider.slider("setValue", this.N);
     $(document).on("change", "#" + container_id + "-averaging-slider", function() {
@@ -29,22 +31,24 @@ var FFTplot = function(container_id){
 
 FFTplot.prototype.onMessage = function(event) {
     if (typeof event.data == 'string' || event.data instanceof String) {
+        // Parse the message content.
         var response = JSON.parse(event.data);
         var sample_freq = response.sample_freq;
         var fft_data = response.data;
 
+        // Update the chart
         this.averaged_fft = this.getAverage(fft_data);
+
         fft_data = this.logplot ? math.log10(this.averaged_fft) : this.averaged_fft;
         this.chart.series[0].setData(fft_data);
         this.fixAxes(fft_data, sample_freq);
-
-        Connection.send(this.REQUEST_DATA);
     } else {
         console.logplot("Received unsupported message type.");
     }
 };
 
 FFTplot.prototype.getAverage = function(fft_data) {
+    // If buffer does not exist or is of the wrong size, initialise.
     if (!this.buffer || this.buffer.size()[0] != this.N) {
         if (!this.averaged_fft) {
             this.averaged_fft = fft_data;
@@ -53,6 +57,7 @@ FFTplot.prototype.getAverage = function(fft_data) {
         this.initBuffer(fft_data.length);
     }
 
+    // Put in the new data, return the new average.
     this.buffer._data.shift();
     this.buffer._data.push(fft_data);
 
@@ -70,6 +75,7 @@ FFTplot.prototype.initBuffer = function(length) {
 };
 
 FFTplot.prototype.fixAxes = function(fft_data, sample_freq) {
+    // Fix horizontal scale when needed.
     var interval = sample_freq / fft_data.length;
 
     if (this.chart.series[0].pointInterval != interval) {
