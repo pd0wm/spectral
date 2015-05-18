@@ -8,7 +8,8 @@ from twisted.python import log
 from twisted.internet import reactor
 import numpy as np
 
-frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
+frequencies = [2e3, 4e3, 5e3, 8e3]
+widths = [1000, 1000, 1000, 1000]
 L = 40
 N = 14
 nyq_block_size = L * N
@@ -21,7 +22,8 @@ threshold = 2000
 try:
     source = cg.source.UsrpN210(addr="192.168.20.2", samp_freq=f_samp, center_freq=2.41e9)
 except RuntimeError:
-    source = cg.source.ComplexExponential(frequencies, f_samp)
+    source = cg.source.Rect(frequencies, widths, f_samp)
+    # source = cg.source.ComplexExponential(frequencies, f_samp)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()

@@ -12,6 +12,7 @@ class UsrpN210(object):
                                        cpu_format=sample_format,
                                        channels=range(1),
                                    ))
+        self.samp_freq = samp_freq
         self.uhd.set_samp_rate(self.samp_freq)
         self.uhd.set_gain(10, 0)
         self.uhd.set_antenna("TX/RX", 0)
