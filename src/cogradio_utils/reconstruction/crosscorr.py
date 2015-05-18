@@ -1,8 +1,6 @@
 from .reconstructor import Reconstructor
 import cogradio_utils as cg
 import numpy as np
-import scipy.linalg
-import scipy.sparse
 import scipy as sp
 
 
