@@ -18,7 +18,6 @@ class MultiCoset(Sampler):
     def generateC(self):
         return self.C
 
-
     def sample(self, signal):
         if self.mode == "msr":
             return self.__msr_sample(signal)
