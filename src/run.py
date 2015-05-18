@@ -6,7 +6,6 @@ import Pyro4
 from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
-from scipy import signal
 import numpy as np
 
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
@@ -19,18 +18,19 @@ numbbins = 15
 threshold = 2000
 
 # Init blocks
-source = cg.source.UsrpN210(addr="192.168.20.2", center_freq=2.41e9)
+try:
+    source = cg.source.UsrpN210(addr="192.168.20.2", samp_freq=f_samp, center_freq=2.41e9)
+except RuntimeError:
+    source = cg.source.ComplexExponential(frequencies, f_samp)
+
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
-window = signal.blackmanharris(window_length)
 
 
 def signal_generation(signal, generator, mc_sampler, f_samp, window_length, opt):
     while True:
-        orig_signal = generator.generate(f_samp, window_length)
-        orig_signal *= window
-        # orig_signal -= np.mean(orig_signal)
+        orig_signal = generator.generate(window_length)
         if signal.full():
             signal.get()
         # signal.put_nowait(orig_signal)
