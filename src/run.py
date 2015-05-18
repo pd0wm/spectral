@@ -7,6 +7,7 @@ from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
 from scipy import signal
+import numpy as np
 
 frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
 L = 40
@@ -27,7 +28,9 @@ window = signal.blackmanharris(window_length)
 
 def signal_generation(signal, generator, mc_sampler, f_samp, window_length, opt):
     while True:
-        orig_signal = generator.generate(f_samp, window_length) * window
+        orig_signal = generator.generate(f_samp, window_length)
+        orig_signal *= window
+        # orig_signal -= np.mean(orig_signal)
         if signal.full():
             signal.get()
         # signal.put_nowait(orig_signal)
