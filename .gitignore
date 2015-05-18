@@ -1,4 +1,8 @@
 *.tmp
+*.tmp.npz
+
+# tern autocompletion
+.tern*
 
 # Created by https://www.gitignore.io
 
@@ -149,4 +153,3 @@ Session.vim
 ### IPythonNotebook ###
 # Temporary data
 .ipynb_checkpoints/
-
