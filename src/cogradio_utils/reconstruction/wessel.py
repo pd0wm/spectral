@@ -37,21 +37,22 @@ class Wessel(Reconstructor):
     def constructR(self):
         # Construct "Decimation" matrix
         D = np.zeros((2*self.L-1, 2*self.N*self.L-1),dtype=np.complex64)
-        for i in range(self.N):
-            D[i, i*self.N] = 1
+        for i in range(0, 2*self.L-1):
+            D[i, i*self.N] = 1       
 
         # Calculate filter cross correlations
         rcc = np.zeros((self.M**2, 2*self.N-1), dtype=np.complex64)
         for i in range(0, self.M):
             for j in range(0, self.M):
-                rcc[i*self.M+j] = np.correlate(self.C[i,:], self.C[j,:], mode='full')
+                rcc[i*self.M+j] = np.correlate(self.C[i,:], self.C[j,:], mode='full')        
         # Build Rcc toeplitz jetschers
         Rcc = np.zeros((self.N*self.L*2-1, self.N*self.L*2-1), dtype=np.complex64)
         R = np.zeros((self.M**2*(2*self.L-1), 2*self.N*self.L-1), dtype=np.complex64)
 
         for i in range(0, self.M**2):
-            column = np.concatenate((rcc[i,:], np.zeros(2*self.N*self.L - 2*self.N)))
-            Rcc = sp.linalg.toeplitz(column)
-            R[i*(2*self.L-1):((i+1)*(2*self.L-1)), :] = np.dot(D,Rcc)
+            column = np.concatenate((rcc[i,:], np.zeros(2*self.N*self.L - 2*self.N, dtype=np.complex64)))
+            row = np.insert(np.zeros(self.N*self.L*2-2, dtype=np.complex64), 0, rcc[i,0])
 
+            Rcc = sp.linalg.toeplitz(column, row)
+            R[i*(2*self.L-1):((i+1)*(2*self.L-1)), :] = np.dot(D,Rcc)                    
         return R

@@ -20,4 +20,4 @@ class SPFL(Detector):
             iEnd = min(spectrum_norm.size, i+width/2-1)
             sstd[i] = np.std(spectrum_norm[iBegin:iEnd])
 
-        return  sstd
+        return  sstd > treshold
