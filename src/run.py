@@ -22,13 +22,13 @@ threshold = 2000
 try:
     source = cg.source.UsrpN210(addr="192.168.20.2", samp_freq=f_samp, center_freq=2.41e9)
 except RuntimeError:
+
     #source = cg.source.Rect(frequencies, widths, f_samp)
     source = cg.source.ComplexExponential(frequencies, f_samp)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.Wessel(N, L)
-
 
 def signal_generation(signal, generator, mc_sampler, f_samp, window_length, opt):
     while True:
