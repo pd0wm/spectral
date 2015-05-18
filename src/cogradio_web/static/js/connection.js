@@ -9,10 +9,12 @@ var Connection = function(hostname){
         open : function(){
             if (_socket === null){
                 if (!this.hostname) {
-                    return null;
+                    console.log("Help! Geen hostname.");
+                    return;
                 }
 
                 _socket = new WebSocket("ws://" + this.hostname + ":9000");
+                console.log(this.hostname);
 
                 _socket.addEventListener("open", function(event) {
                     console.log("Connected to " + _socket.url);

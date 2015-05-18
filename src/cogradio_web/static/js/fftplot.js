@@ -47,7 +47,7 @@ FFTplot.prototype.getAverage = function(fft_data) {
     this.buffer._data.shift();
     this.buffer._data.push(fft_data);
 
-    return math.multiply(this.filter, this.buffer)._data;
+    return math.log10(math.multiply(this.filter, this.buffer)._data);
 };
 
 FFTplot.prototype.initBuffer = function(length) {

@@ -17,7 +17,7 @@ numbbins = 15
 threshold = 2000
 
 # Init blocks
-source = cg.source.UsrpN210(addr="192.168.20.2")
+source = cg.source.UsrpN210(addr="192.168.20.2", center_freq=4.10e9)
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
