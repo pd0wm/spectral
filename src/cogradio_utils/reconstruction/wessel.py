@@ -22,11 +22,12 @@ class Wessel(Reconstructor):
 
         # Use caching if available
 
-        pinv = load_pseudoinverse(self)
+        pinv = self.load_pseudoinverse()
         if pinv is not None:
-            print("Cached")
+            print("Loaded reconstruction inversion matrix from file cache")
             self.Rinv = pinv
         else:
+            print("Could not load from cache, rebuilding reconstruction inversion matrix")
             self.R = self.constructR()
             self.Rinv = sp.sparse.csr_matrix(sp.linalg.pinv(self.R))
             cache_pseudoinverse(self, self.Rinv)
@@ -80,20 +81,18 @@ class Wessel(Reconstructor):
             R[i*(2*self.L-1):((i+1)*(2*self.L-1)), :] = np.dot(D, Rcc)
         return R
 
+    def get_filename(self):
+        return (cg.CACHE_DIR + "wessel_cache_" + str(self.N) + str(self.L) + str(self.M))
 
-def get_filename(self):
-    return ("wessel_cache" + str(self.N) + str(self.L) + str(self.M))
+    def cache_pseudoinverse(self, sparse):
+        np.savez(self.get_filename(), data=sparse.data, indices=sparse.indices,
+                 indptr=sparse.indptr, shape=sparse.shape)
 
+    def load_pseudoinverse(self):
+        try:
+            loader = np.load(self.get_filename() + ".npz")
+        except IOError:
+            return None
 
-def cache_pseudoinverse(self, sparse):
-    np.savez(get_filename(self), data=sparse.data, indices=sparse.indices,
-             indptr=sparse.indptr, shape=sparse.shape)
-
-
-def load_pseudoinverse(self):
-    try:
-        loader = np.load(get_filename(self) + ".npz")
-    except IOError:
-        return None
-    return sp.sparse.csr_matrix((loader['data'], loader['indices'],
-                                 loader['indptr']), shape=loader['shape'])
+        return sp.sparse.csr_matrix((loader['data'], loader['indices'],
+                                     loader['indptr']), shape=loader['shape'])

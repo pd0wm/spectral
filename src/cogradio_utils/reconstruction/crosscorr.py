@@ -22,12 +22,14 @@ class CrossCorrelation(Reconstructor):
         Rc = self.cross_correlation_filters()
 
         # Caching mechanism
-        pinv = load_pseudoinverse(pinv_filename)
-        if pinv is not None and check_valid_pinv(sp.sparse.csr_matrix(Rc), pinv):
+        pinv = self.load_pseudoinverse()
+        if pinv is not None:
+            print("Loaded reconstruction inversion matrix from file cache")
             self.Rc_Pinv = pinv
         else:
+            print("Could not load from cache, rebuilding reconstruction inversion matrix")
             self.Rc_Pinv = sp.sparse.csr_matrix(sp.linalg.pinv(Rc))
-            cache_pseudoinverse(self.Rc_Pinv, pinv_filename)
+            cache_pseudoinverse(self.Rc_Pinv)
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
@@ -74,24 +76,18 @@ class CrossCorrelation(Reconstructor):
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
 
+    def get_filename(self):
+        return (cg.CACHE_DIR + "crosscorr_cache_" + str(self.N) + str(self.L) + str(self.M))
 
-def check_valid_pinv(Mat, Pinv):
-    if Mat.shape != Pinv.shape[::-1]:
-        print "shapes dont align"
-        return False
-    Mat_accent = Mat.dot(Pinv.dot(Mat))
-    return np.allclose(Mat_accent.toarray(), Mat.toarray())
+    def cache_pseudoinverse(self, sparse):
+        np.savez(self.get_filename(), data=sparse.data, indices=sparse.indices,
+                 indptr=sparse.indptr, shape=sparse.shape)
 
+    def load_pseudoinverse(self):
+        try:
+            loader = np.load(self.get_filename() + ".npz")
+        except IOError:
+            return None
 
-def cache_pseudoinverse(sparse, pinv_filename):
-    np.savez(pinv_filename, data=sparse.data, indices=sparse.indices,
-             indptr=sparse.indptr, shape=sparse.shape)
-
-
-def load_pseudoinverse(pinv_filename):
-    try:
-        loader = np.load(pinv_filename + ".npz")
-    except IOError:
-        return None
-    return sp.sparse.csr_matrix((loader['data'], loader['indices'],
-                                loader['indptr']), shape=loader['shape'])
+        return sp.sparse.csr_matrix((loader['data'], loader['indices'],
+                                    loader['indptr']), shape=loader['shape'])
