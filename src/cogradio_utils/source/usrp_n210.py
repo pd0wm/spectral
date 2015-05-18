@@ -26,3 +26,10 @@ class UsrpN210(object):
 
         orig_signal = self.uhd.finite_acquisition(num_samples)
         return orig_signal * self.window
+
+    def parse_options(self, options):
+        for key, opt in options.items():
+            if key == 'antenna_gain':
+                self.uhd.set_antenna(opt)
+            if key == 'center_freq':
+                self.uhd.set_antenna(opt)
