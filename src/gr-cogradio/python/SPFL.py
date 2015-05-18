@@ -27,8 +27,11 @@ class SPFL(gr.sync_block):
     """
     docstring for block SPFL
     """
-    def __init__(self, length):
+    def __init__(self, length, multiplier, treshold, binwidth):
         self.length = length
+        self.multiplier = multiplier
+        self.binwidth = binwidth
+        self.treshold = treshold
         self.detector = cg.detection.SPFL()
         gr.sync_block.__init__(self,
             name="SPFL",
@@ -39,11 +42,13 @@ class SPFL(gr.sync_block):
     def work(self, input_items, output_items):
         # select first vector for rx
         in0 = input_items[0][0]
-        print(in0.shape)
         out = output_items[0]
-        out[:] = self.detector.detect(in0)
-        print(out[:])
-        print(out.shape)
+        out[:] = self.detector.detect(in0, self.binwidth) * self.multiplier
+        print(self.multiplier)
+ #       print(self.treshold)
+ #       print(self.binwidth)
+ #       print("--------")
+        out[:] = out[:] > self.treshold
         return len(output_items[0])
 
 

@@ -3,10 +3,11 @@
     "description": "A web frontend for our cognitive radio",
     "version": "0.0.1",
     "dependencies": {
-	"jquery": "*",
-	"bootstrap": "*",
-	"highcharts": "*",
-	"mathjs": "*",
-	"seiyria-bootstrap-slider": "*"
+	      "jquery": "*",
+	      "bootstrap": "*",
+	      "highcharts": "*",
+	      "mathjs": "*",
+	      "seiyria-bootstrap-slider": "*",
+        "chroma-js": "*"
     }
 }

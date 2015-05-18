@@ -19,22 +19,17 @@ class ServerProtocolPlot(ServerProtocol):
     """WebSocket protocol for pushing plot data"""
 
     queue = None
-    data_buffer = None
-    average = False
     delay = 0.05
 
+    REQUEST_DATA = 0
+
     def __init__(self):
-        self.N = 1 / 0.05 * 0.5
-        self.series = deque(maxlen=self.N)
         ServerProtocol.__init__(self)
 
     @inlineCallbacks
     def pushData(self):
         if self.queue.empty() == False:
             self.data_buffer = self.queue.get()
-
-        if self.average:
-            self.makeAverage()
 
         # Slow the loop down a bit.
         yield sleep(0.05)
@@ -45,46 +40,32 @@ class ServerProtocolPlot(ServerProtocol):
         self.pushData()
 
     def onMessage(self, payload, isBinary):
-        if isBinary:
-            print("Unsupported message type.")
-            return
+        last_options = None
+        while self.opt.poll():
+            last_options = self.opt.recv()
 
-        try:
-            request = json.loads(payload)
-        except ValueError:
-            print("Could not parse json.")
-            return
-
-        if request['type'] == "fftdata":
+        if int(payload) == self.REQUEST_DATA:
             self.pushData()
-        elif request['type'] == "toggle_average":
-            self.average = request['value']
+        else:
+            print("Unsupported message.")
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
-
-    def makeAverage(self):
-        if len(self.series) == self.N:
-            self.series.popleft()
-
-        self.series.append(self.data_buffer.data)
-
-        if len(self.series) == self.N:
-            a = np.array([self.series[0], self.series[1], self.series[2]])
-            self.data_buffer.data = np.average(a, axis=0).tolist()
 
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
 
     """Factory for creating ServerProtocolPlot instances"""
 
-    def __init__(self, url, queue):
+    def __init__(self, url, queue, opt):
         self._queue = queue
+        self._opt = opt
         WebSocketServerFactory.__init__(self, url)
 
     def buildProtocol(self, addr):
         protocol = self.protocol()
         protocol.queue = self._queue
+        protocol.opt = self._opt
         protocol.factory = self
         return protocol
 
