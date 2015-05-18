@@ -4,5 +4,7 @@ from . import source
 from . import reconstruction
 from . import plotter
 from . import forms
+from . import websocket
+from .settings import *
 from .helperfunctions import *
 from .sparseruler import *

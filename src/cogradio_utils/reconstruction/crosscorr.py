@@ -1,8 +1,6 @@
 from .reconstructor import Reconstructor
 import cogradio_utils as cg
 import numpy as np
-import scipy.linalg
-import scipy.sparse
 import scipy as sp
 
 
@@ -11,6 +9,7 @@ class CrossCorrelation(Reconstructor):
     """Implementation of ariananda2012 algorithm"""
 
     def __init__(self, N, L, C=None, svthresh=None):
+        pinv_filename = "pinv.tmp"
         Reconstructor.__init__(self)
         self.N = N              # Decimation factor
         sparseruler = cg.sparseruler(N)
@@ -20,9 +19,15 @@ class CrossCorrelation(Reconstructor):
             self.C = C
         self.M = self.C.shape[0]
         self.L = L            # Length of input vector
-        Rc_Pinv = sp.linalg.pinv(self.cross_correlation_filters(),
-                                 rcond=svthresh)
-        self.Rc_Pinv = sp.sparse.csr_matrix(Rc_Pinv)
+        Rc = self.cross_correlation_filters()
+
+        # Caching mechanism
+        pinv = load_pseudoinverse(pinv_filename)
+        if pinv is not None and check_valid_pinv(sp.sparse.csr_matrix(Rc), pinv):
+            self.Rc_Pinv = pinv
+        else:
+            self.Rc_Pinv = sp.sparse.csr_matrix(sp.linalg.pinv(Rc))
+            cache_pseudoinverse(self.Rc_Pinv, pinv_filename)
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
@@ -68,3 +73,25 @@ class CrossCorrelation(Reconstructor):
                 elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
+
+
+def check_valid_pinv(Mat, Pinv):
+    if Mat.shape != Pinv.shape[::-1]:
+        print "shapes dont align"
+        return False
+    Mat_accent = Mat.dot(Pinv.dot(Mat))
+    return np.allclose(Mat_accent.toarray(), Mat.toarray())
+
+
+def cache_pseudoinverse(sparse, pinv_filename):
+    np.savez(pinv_filename, data=sparse.data, indices=sparse.indices,
+             indptr=sparse.indptr, shape=sparse.shape)
+
+
+def load_pseudoinverse(pinv_filename):
+    try:
+        loader = np.load(pinv_filename + ".npz")
+    except IOError:
+        return None
+    return sp.sparse.csr_matrix((loader['data'], loader['indices'],
+                                loader['indptr']), shape=loader['shape'])
