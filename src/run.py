@@ -7,6 +7,7 @@ from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
 import argparse
+import time
 
 
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
@@ -46,6 +47,13 @@ def signal_generation(signal, generator, mc_sampler, f_samp, window_length, opt)
             signal.get()
         # signal.put_nowait(orig_signal)
         signal.put_nowait(mc_sampler.sample(orig_signal))
+
+        options = None
+        while opt.poll():
+            options = opt.recv()
+        if options:
+            print options
+            source.parse_options(options)
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue,
@@ -92,7 +100,7 @@ def websocket(websocket_queue, opt):
 def settings_server(src_opt, rec_opt, web_opt):
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = cg.Settings(web_opt)
+    settings = cg.Settings(web_opt, src_opt)
     uri = daemon.register(settings)
     ns.register("cg.settings", uri)
     daemon.requestLoop()
@@ -134,4 +142,6 @@ if __name__ == '__main__':
                     flag = True
                     p.terminate()
                     print p, "termination sent"
+            time.sleep(1)
+    finally:
         sys.exit(1)

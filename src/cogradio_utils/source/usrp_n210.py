@@ -30,6 +30,6 @@ class UsrpN210(object):
     def parse_options(self, options):
         for key, opt in options.items():
             if key == 'antenna_gain':
-                self.uhd.set_antenna(opt)
+                self.uhd.set_gain(opt, 0)
             if key == 'center_freq':
-                self.uhd.set_antenna(opt)
+                self.uhd.set_center_freq(opt * 1e6, 0)
