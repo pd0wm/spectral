@@ -1,5 +1,6 @@
 var FFTplot = function(container_id){
     this.N = 10;
+    this.logplot = false;
     this.REQUEST_DATA = 0;
 
     if (!Connection.isOpen()) {
@@ -17,6 +18,13 @@ var FFTplot = function(container_id){
     $(document).on("change", "#" + container_id + "-averaging-slider", function() {
         that.N = parseInt(this.value);
     });
+
+    $(document).on("change", "#" + container_id + "-logplot-checkbox", function() {
+        that.logplot = $(this).is(":checked");
+        // Reset axes.
+        that.chart.yAxis[0].update({max: 0});
+        that.chart.yAxis[0].update({min: 0});
+    });
 };
 
 FFTplot.prototype.onMessage = function(event) {
@@ -26,12 +34,13 @@ FFTplot.prototype.onMessage = function(event) {
         var fft_data = response.data;
 
         this.averaged_fft = this.getAverage(fft_data);
-        this.chart.series[0].setData(this.averaged_fft);
-        this.fixAxes(this.averaged_fft, sample_freq);
+        fft_data = this.logplot ? math.log10(this.averaged_fft) : this.averaged_fft;
+        this.chart.series[0].setData(fft_data);
+        this.fixAxes(fft_data, sample_freq);
 
         Connection.send(this.REQUEST_DATA);
     } else {
-        console.log("Received unsupported message type.");
+        console.logplot("Received unsupported message type.");
     }
 };
 
@@ -47,7 +56,7 @@ FFTplot.prototype.getAverage = function(fft_data) {
     this.buffer._data.shift();
     this.buffer._data.push(fft_data);
 
-    return math.log10(math.multiply(this.filter, this.buffer)._data);
+    return math.multiply(this.filter, this.buffer)._data;
 };
 
 FFTplot.prototype.initBuffer = function(length) {
@@ -70,9 +79,14 @@ FFTplot.prototype.fixAxes = function(fft_data, sample_freq) {
         });
     }
 
-    var ymax = Math.max.apply(Math, fft_data);
+    var ymax = math.max(fft_data);
     if (this.chart.yAxis[0].max < ymax) {
         this.chart.yAxis[0].update({max: ymax});
+    }
+
+    var ymin = math.min(fft_data);
+    if (this.chart.yAxis[0].min > ymin) {
+        this.chart.yAxis[0].update({min: ymin});
     }
 };
 

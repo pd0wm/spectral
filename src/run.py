@@ -11,13 +11,13 @@ frequencies = [0.3421, 0.3962, 0.1743, 0.1250]
 L = 20
 N = 14
 nyq_block_size = L * N
-f_samp = 1
+f_samp = 25e6
 window = L * N
 numbbins = 15
 threshold = 2000
 
 # Init blocks
-source = cg.source.UsrpN210(addr="192.168.20.2", center_freq=4.10e9)
+source = cg.source.UsrpN210(addr="192.168.20.2", center_freq=2.41e9)
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
 reconstructor = cg.reconstruction.CrossCorrelation(N, L, C)
@@ -28,15 +28,18 @@ def signal_generation(signal, generator, mc_sampler, f_samp, window, opt):
         orig_signal = generator.generate(f_samp, window)
         if signal.full():
             signal.get()
-        signal.put_nowait(mc_sampler.sample(orig_signal))
+        signal.put_nowait(orig_signal)
+        # signal.put_nowait(mc_sampler.sample(orig_signal))
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue,
                           reconstructor, opt):
     while True:
         inp = signal.get()
-        if inp.any():
-            out = cg.fft(reconstructor.reconstruct(inp))
+        # if inp.any():
+        if inp:
+            # out = cg.fft(reconstructor.reconstruct(inp))
+            out = cg.fft(inp)
             out_container = cg.websocket.PlotDataContainer(f_samp, out)
 
             if websocket_queue.full():

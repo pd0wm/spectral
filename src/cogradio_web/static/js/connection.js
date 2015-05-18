@@ -9,7 +9,7 @@ var Connection = function(hostname){
         open : function(){
             if (_socket === null){
                 if (!this.hostname) {
-                    console.log("Help! Geen hostname.");
+                    console.log("Hostname is undefined");
                     return;
                 }
 
