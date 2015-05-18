@@ -6,24 +6,33 @@ import Pyro4
 from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
-import numpy as np
+import argparse
+
+
+parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
+parser.add_argument('ip', metavar='ip')
+parser.add_argument('f_samp', metavar='f_samp', type=int, default=25e6)
+parser.add_argument('N', metavar='N', type=int, default=14)
+parser.add_argument('L', metavar='L', type=int, default=40)
+args = parser.parse_args()
+
 
 frequencies = [2e3, 4e3, 5e3, 8e3]
 widths = [1000, 1000, 1000, 1000]
-L = 40
-N = 14
+ip = args.ip
+L = args.L
+N = args.N
+f_samp = args.f_samp
 nyq_block_size = L * N
-f_samp = 25e6
 window_length = L * N
 numbbins = 15
 threshold = 2000
 
 # Init blocks
 try:
-    source = cg.source.UsrpN210(addr="192.168.20.2", samp_freq=f_samp, center_freq=2.41e9)
+    source = cg.source.UsrpN210(addr=ip, samp_freq=f_samp, center_freq=2.41e9)
 except RuntimeError:
     source = cg.source.Rect(frequencies, widths, f_samp)
-    # source = cg.source.ComplexExponential(frequencies, f_samp)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
