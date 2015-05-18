@@ -1,17 +1,17 @@
-from .source import Source
+from .simulatedsource import SimulatedSource
 import numpy as np
 
 
-class ComplexExponential(Source):
+class ComplexExponential(SimulatedSource):
 
     """Signal representing a couple of complex exponential frequencies"""
 
-    def __init__(self, frequencies, SNR=None):
-        Source.__init__(self, frequencies, SNR)
+    def __init__(self, frequencies, samp_freq, SNR=None):
+        super(ComplexExponential, self).__init__(frequencies, samp_freq, SNR=SNR)
 
-    def generate(self, samp_freq, duration):
-        signal = 0
-        t = np.arange(0, np.ceil(duration * samp_freq)) / samp_freq
+    def generate(self, no_samples):
+        signal = np.zeros(no_samples)
+        t = np.arange(0, no_samples) / float(self.samp_freq)
 
         for f in self.frequencies:
             signal += np.exp(2 * 1j * np.pi * f * t)
