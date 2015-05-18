@@ -32,9 +32,11 @@ class ServerProtocolPlot(ServerProtocol):
         if self.queue.empty() == False:
             self.data_buffer = self.queue.get()
 
+        if isinstance(self.data_buffer, PlotDataContainer):
+            self.sendMessage(self.data_buffer.encode())
+
         # Slow the loop down a bit.
         yield sleep(0.05)
-        self.sendMessage(self.data_buffer.encode())
 
     def onOpen(self):
         print("WebSocket connection open.")
