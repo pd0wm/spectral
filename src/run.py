@@ -126,8 +126,12 @@ if __name__ == '__main__':
         [p.start() for p in processes]
         [p.join() for p in processes]
     except KeyboardInterrupt:
-        for p in processes:
-            if p.is_alive():
-                p.terminate()
-                print p, "termination sent"
+        flag = True
+        while flag:
+            flag = False
+            for p in processes:
+                if p.is_alive():
+                    flag = True
+                    p.terminate()
+                    print p, "termination sent"
         sys.exit(1)
