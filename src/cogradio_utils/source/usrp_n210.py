@@ -19,7 +19,8 @@ class UsrpN210(object):
         self.uhd.set_bandwidth(self.samp_freq / 2, 0)
         self.uhd.set_center_freq(center_freq, 0)
         self.window = [0]
-        self.filter = signal.firwin(25, 200e3, pass_zero=False, nyq=200e3*4)
+        cutoff = 1e3
+        self.filter = signal.firwin(101, cutoff, pass_zero=False, nyq=cutoff*4)
 
     def generate(self, num_samples):
         if len(self.window) != num_samples:
