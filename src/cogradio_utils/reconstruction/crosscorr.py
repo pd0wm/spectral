@@ -32,9 +32,9 @@ class CrossCorrelation(Reconstructor):
         Ry = np.zeros((self.M ** 2, 2 * self.L - 1), dtype=np.complex64)
         for i in range(self.M):
             for j in range(self.M):
-                Ry[i * self.M + j] = np.correlate(signal[i, :],
-                                                  signal[j, :],
-                                                  mode='full')
+                Ry[i * self.M + j] = cg.cross_correlate(signal[i, :],
+                                                        signal[j, :],
+                                                        maxlag=self.L - 1)
         return Ry
 
     def cross_correlation_filters(self):
