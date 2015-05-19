@@ -14,18 +14,12 @@ app.config.from_object(__name__)
 app.debug = True
 Bower(app)
 
-el1 = TextElement(key="uptime", title="Uptime", value=123)
-el2 = TextElement(key="system_status", title="System Status", value="Critical")
-el3 = SliderElement(
-    key="slider", title="Test slider", value=42, range=(0, 100))
-el4 = SliderElement(
-    key="gain", title="Wide Slider", value=10, width=2, range=(0, 100000))
+gain_slider = SliderElement(key="antenna_gain", title="Antenna gain", value=10, width=3, range=(0, 50))
+freq_slider = SliderElement(key="center_freq", title="Center Frequency", value=2400, width=3, range=(2.4e3, 2.5e3))
 
 cnt = Content()
-cnt.add(el1, (0, 1))
-cnt.add(el2, (1, 0))
-cnt.add(el3, (2, 2))
-cnt.add(el4, (1, 3))
+cnt.add(gain_slider, (0, 0))
+cnt.add(freq_slider, (0, 1))
 
 
 @app.route('/')
