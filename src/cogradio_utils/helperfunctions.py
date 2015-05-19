@@ -40,3 +40,5 @@ def build_C(sparseruler, N):
     for i in range(0, M):
         C[i, sparseruler[i]] = 1
     return C
+
+CACHE_DIR = "cache/"
