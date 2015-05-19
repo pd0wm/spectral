@@ -21,21 +21,13 @@ class Wessel(Reconstructor):
         self.M = self.C.shape[0]
 
         # Use caching if available
-
-        pinv = self.load_pseudoinverse()
-        if pinv is not None:
-            print("Loaded reconstruction inversion matrix from file cache")
-            self.Rinv = pinv
-        else:
-            print("Could not load from cache, rebuilding reconstruction inversion matrix")
-            self.R = self.constructR()
-            self.Rinv = sp.sparse.csr_matrix(sp.linalg.pinv(self.R))
-            cache_pseudoinverse(self, self.Rinv)
+        self.R = self.constructR()
+        self.R_pinv = self.calc_pseudoinverse(self.R)
 
     # Given M decimated channels, try to estimate the PSD
     def reconstruct(self, signal):
         ry = self.cross_correlation_signals(signal)
-        rx = self.Rinv.dot(ry)
+        rx = self.R_pinv.dot(ry)
         return rx
 
     def cross_correlation_signals(self, signal):
@@ -51,9 +43,10 @@ class Wessel(Reconstructor):
     def constructR(self):
         # Construct "decimation" matrix
         D = np.zeros((2*self.L-1, 2*self.N*self.L-1), dtype=np.complex64)
-        for i in range(0, 2*self.L-1):
-            D[i, i*self.N] = 1
+        for i in range(1, 2*self.L):
+            D[i - 1, i * self.N - 1] = 1
 
+        D = sp.sparse.csr_matrix(D)
         # Calculate M^2 filter cross correlations
         cross_correlations = np.zeros(
             (self.M**2, 2*self.N-1), dtype=np.complex64)
@@ -77,6 +70,9 @@ class Wessel(Reconstructor):
         for i in range(0, self.M**2):
             column = np.concatenate((cross_correlations[i, :], column_padding))
             row = np.insert(row_padding, 0, cross_correlations[i, 0])
-            Rcc = sp.linalg.toeplitz(column, row)
-            R[i*(2*self.L-1):((i+1)*(2*self.L-1)), :] = np.dot(D, Rcc)
+            Rcc = sp.sparse.csr_matrix(sp.linalg.toeplitz(column, row))
+            R[i*(2*self.L-1):((i+1)*(2*self.L-1)), :] = D.dot(Rcc).toarray()
         return R
+
+    def get_filename(self):
+        return (cg.CACHE_DIR + "wessel_cache_" + str(self.N) + str(self.L) + str(self.M))

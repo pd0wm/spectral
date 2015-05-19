@@ -11,7 +11,7 @@ class ComplexExponential(SimulatedSource):
         super(ComplexExponential, self).__init__(frequencies, samp_freq, SNR=SNR)
 
     def generate(self, no_samples):
-        signal = np.zeros(no_samples)
+        signal = np.zeros(no_samples, dtype=np.complex64)
         t = np.arange(0, no_samples) / float(self.samp_freq)
 
         for f in self.frequencies:
@@ -21,5 +21,4 @@ class ComplexExponential(SimulatedSource):
         signal = self.cmplx_white_gaussian_noise(self.SNR, signal)
         window = sp.hamming(no_samples)
         signal *= window
-        
         return signal

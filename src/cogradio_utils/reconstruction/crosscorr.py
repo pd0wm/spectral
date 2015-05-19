@@ -1,7 +1,6 @@
 from .reconstructor import Reconstructor
 import cogradio_utils as cg
 import numpy as np
-import scipy as sp
 
 
 class CrossCorrelation(Reconstructor):
@@ -9,7 +8,6 @@ class CrossCorrelation(Reconstructor):
     """Implementation of ariananda2012 algorithm"""
 
     def __init__(self, N, L, C=None, svthresh=None):
-        pinv_filename = "pinv.tmp"
         Reconstructor.__init__(self)
         self.N = N              # Decimation factor
         sparseruler = cg.sparseruler(N)
@@ -19,22 +17,15 @@ class CrossCorrelation(Reconstructor):
             self.C = C
         self.M = self.C.shape[0]
         self.L = L            # Length of input vector
-        Rc = self.cross_correlation_filters()
+        R = self.cross_correlation_filters()
+        self.R_pinv = self.calc_pseudoinverse(R)
 
         # Caching mechanism
-        pinv = self.load_pseudoinverse()
-        if pinv is not None:
-            print("Loaded reconstruction inversion matrix from file cache")
-            self.Rc_Pinv = pinv
-        else:
-            print("Could not load from cache, rebuilding reconstruction inversion matrix")
-            self.Rc_Pinv = sp.sparse.csr_matrix(sp.linalg.pinv(Rc))
-            cache_pseudoinverse(self.Rc_Pinv)
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
         y_stacked = cross_corr_mat.ravel(order='F')
-        rx = self.Rc_Pinv.dot(y_stacked)  # Ravel reforms to 1 column
+        rx = self.R_pinv.dot(y_stacked)  # Ravel reforms to 1 column
         return rx
 
     def cross_correlation_signals(self, signal):
@@ -75,3 +66,6 @@ class CrossCorrelation(Reconstructor):
                 elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
+
+    def get_filename(self):
+        return (cg.CACHE_DIR + "crosscorr_cache_" + str(self.N) + str(self.L) + str(self.M))
