@@ -1,9 +1,6 @@
 from .reconstructor import Reconstructor
 import cogradio_utils as cg
 import numpy as np
-import scipy.linalg
-import scipy.sparse
-import scipy as sp
 
 
 class CrossCorrelation(Reconstructor):
@@ -20,24 +17,17 @@ class CrossCorrelation(Reconstructor):
             self.C = C
         self.M = self.C.shape[0]
         self.L = L            # Length of input vector
-        Rc_Pinv = sp.linalg.pinv(self.cross_correlation_filters(),
-                                 rcond=svthresh)
-        self.Rc_Pinv = sp.sparse.csr_matrix(Rc_Pinv)
+        R = self.cross_correlation_filters()
+        self.R_pinv = self.calc_pseudoinverse(R)
+
+        # Caching mechanism
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
         y_stacked = cross_corr_mat.ravel(order='F')
-        rx = self.Rc_Pinv.dot(y_stacked)  # Ravel reforms to 1 column
+        rx = self.R_pinv.dot(y_stacked)  # Ravel reforms to 1 column
         return rx
 
-    def cross_correlation_signals(self, signal):
-        Ry = np.zeros((self.M ** 2, 2 * self.L - 1), dtype=np.complex64)
-        for i in range(self.M):
-            for j in range(self.M):
-                Ry[i * self.M + j] = np.correlate(signal[i, :],
-                                                  signal[j, :],
-                                                  mode='full')
-        return Ry
 
     def cross_correlation_filters(self):
         Rc0 = np.zeros((self.M ** 2, self.N))
@@ -68,3 +58,6 @@ class CrossCorrelation(Reconstructor):
                 elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
+
+    def get_filename(self):
+        return (cg.CACHE_DIR + "crosscorr_cache_" + str(self.N) + str(self.L) + str(self.M))

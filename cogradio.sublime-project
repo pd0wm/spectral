@@ -1,0 +1,66 @@
+{
+	"binary_file_patterns":
+	[
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.swf",
+		"*.jar",
+		"*.zip"
+	],
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "python -u \"$file\""
+		}
+	],
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
+		"*.aux",
+		"*.synctex.gz",
+		"*-blx.bib",
+		"*.blg",
+		"*.out",
+		"*.fdb_latexmk",
+		"*.log",
+		"*.toc",
+		"*.run.xml"
+	],
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"tab_size": 4,
+	"translate_tabs_to_spaces": true
+}
