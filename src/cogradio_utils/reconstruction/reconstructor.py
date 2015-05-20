@@ -48,9 +48,7 @@ class Reconstructor(object):
 
     def check_valid_pinv(self, Mat, Pinv):
         if Mat.shape != Pinv.shape[::-1]:
-            print "shapes dont align"
             return False
         Mat_accent = Mat.dot(Pinv.dot(Mat))
         check = np.allclose(Mat_accent.toarray(), Mat.toarray(), atol=1e-5)
-        print "Matrix inv correct", check
         return check

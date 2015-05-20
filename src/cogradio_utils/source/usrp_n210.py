@@ -6,7 +6,8 @@ class UsrpN210(object):
 
     """Implementation of UsrpN210 driver"""
 
-    def __init__(self, addr, samp_freq=5e6, center_freq=2.412e9, sample_format='fc32'):
+    def __init__(self, addr, samp_freq=5e6,
+                 center_freq=2.412e9, sample_format='fc32'):
         self.uhd = uhd.usrp_source("addr=" + addr,
                                    uhd.stream_args(
                                        cpu_format=sample_format,
