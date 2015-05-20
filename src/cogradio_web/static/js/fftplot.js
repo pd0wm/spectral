@@ -34,6 +34,7 @@ FFTplot.prototype.onMessage = function(event) {
         this.averaged_fft = this.getAverage(fft_data);
 
         fft_data = math.log10(this.averaged_fft);
+        fft_data = math.multiply(fft_data, 20);
         this.chart.series[0].setData(fft_data);
         this.fixAxes(fft_data, sample_freq, center_freq);
     } else {
