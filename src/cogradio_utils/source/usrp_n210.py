@@ -25,8 +25,8 @@ class UsrpN210(object):
         if len(self.window) != num_samples:
             self.window = signal.blackmanharris(num_samples)
 
-        orig_signal = self.uhd.finite_acquisition(num_samples)
-        return orig_signal * self.window
+        orig_signal = self.uhd.finite_acquisition(num_samples * 100)
+        return orig_signal[:num_samples] * self.window
 
     def parse_options(self, options):
         for key, opt in options.items():

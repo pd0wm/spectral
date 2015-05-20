@@ -27,7 +27,6 @@ class ServerProtocolPlot(ServerProtocol):
     def __init__(self):
         ServerProtocol.__init__(self)
 
-    @inlineCallbacks
     def pushData(self):
         if self.queue.empty() == False:
             self.data_buffer = self.queue.get()
@@ -36,7 +35,6 @@ class ServerProtocolPlot(ServerProtocol):
             self.sendMessage(self.data_buffer.encode())
 
         # Slow the loop down a bit.
-        yield sleep(0.05)
 
     def onOpen(self):
         print("WebSocket connection open.")

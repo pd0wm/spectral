@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import cogradio_utils as cg
-import sys
+import sys 
 import matplotlib.pyplot as plt
 import Pyro4
 from multiprocessing import Process, Queue, Pipe
@@ -27,7 +27,9 @@ f_samp = args.f_samp
 sample_freq = f_samp
 center_freq = 2.41e9
 
-nyq_block_size = L * N * 10
+MEERSAMPLESG = 1000
+
+nyq_block_size = L * N * MEERSAMPLESG
 window_length = nyq_block_size
 numbbins = 15
 threshold = 2000
@@ -48,6 +50,7 @@ def signal_generation(signal, generator, mc_sampler, sample_freq, window_length,
         orig_signal = generator.generate(window_length)
         if signal.full():
             signal.get()
+            print "LELLLLELELEL YOLO SWAG GENERATOR"
         # signal.put_nowait(orig_signal)
         signal.put_nowait(mc_sampler.sample(orig_signal))
 
@@ -57,6 +60,22 @@ def signal_generation(signal, generator, mc_sampler, sample_freq, window_length,
         if options:
             print options
             source.parse_options(options)
+
+
+def signal_reconstruction_profiler(signal, plot_queue, websocket_queue,
+                                   reconstructor, opt):
+
+    import cProfile, pstats, StringIO
+    pr = cProfile.Profile()
+    pr.enable()
+    signal_reconstruction(signal, plot_queue, websocket_queue, reconstructor, opt)
+    pr.disable()
+    s = StringIO.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print s.getvalue()
+    pr.dump_stats("Reconstruction_profiling.dmp")
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue,
@@ -70,6 +89,7 @@ def signal_reconstruction(signal, plot_queue, websocket_queue,
                 sample_freq=sample_freq, center_freq=center_freq, data=out)
 
             if websocket_queue.full():
+                print "Websocket queue vol lulzcopter gg mate"
                 websocket_queue.get()
             websocket_queue.put_nowait(out_container)
 
@@ -125,6 +145,9 @@ if __name__ == '__main__':
     p2 = Process(target=signal_reconstruction,
                  args=(signal, plot_queue, websocket_queue,
                        reconstructor, child_opt_rec))
+    #p2 = Process(target=signal_reconstruction_profiler,
+   #              args=(signal, plot_queue, websocket_queue,
+   #                    reconstructor, child_opt_rec))
     p3 = Process(target=settings_server, args=(parent_opt_src, parent_opt_rec,
                                                parent_opt_web))
     p4 = Process(target=websocket, args=(websocket_queue, child_opt_web))

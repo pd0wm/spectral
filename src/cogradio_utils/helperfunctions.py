@@ -1,5 +1,5 @@
 import numpy as np
-
+import scipy as sp
 
 def signal_power(signal):
     return np.linalg.norm(signal) ** 2 / len(signal)
@@ -36,7 +36,7 @@ def cross_correlate(a, b, maxlag=None):
     size = len(a)
     if not(1 < maxlag < (size + 1)):
         raise ValueError("maglag needs to be none or strictly positive and smaller then {}".format(size))
-    cross_corr = np.correlate(a, b, mode='full')
+    cross_corr = sp.signal.fftconvolve(a, np.conj(b[::-1]), mode='full') # Corr propert FFT Conj rev.
     if maxlag is not None:
         return cross_corr[size - maxlag - 1:size + maxlag]
     else:
