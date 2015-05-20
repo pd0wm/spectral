@@ -27,6 +27,7 @@ FFTplot.prototype.onMessage = function(event) {
         var response = JSON.parse(event.data);
         var sample_freq = response.sample_freq;
         var center_freq = response.center_freq;
+        console.log(center_freq);
         var fft_data = response.data;
 
         // Update the chart
@@ -70,11 +71,14 @@ FFTplot.prototype.initBuffer = function(length) {
 FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
     // Fix horizontal scale when needed.
     var interval = sample_freq / fft_data.length;
+    var prev_interval = this.chart.series[0].pointInterval;
+    var point_start = -sample_freq / 2 + center_freq;
+    var prev_point_start = this.chart.series[0].pointStart;
 
-    if (this.chart.series[0].pointInterval != interval) {
+    if (prev_interval != interval || prev_point_start != point_start) {
         this.chart.series[0].update({
             pointInterval: interval,
-            pointStart: -sample_freq / 2 + center_freq
+            pointStart: point_start
         });
     }
 

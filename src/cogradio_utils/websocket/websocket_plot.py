@@ -41,10 +41,6 @@ class ServerProtocolPlot(ServerProtocol):
         self.pushData()
 
     def onMessage(self, payload, isBinary):
-        last_options = None
-        while self.opt.poll():
-            last_options = self.opt.recv()
-
         if int(payload) == self.REQUEST_DATA:
             self.pushData()
         else:
