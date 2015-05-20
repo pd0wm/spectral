@@ -12,6 +12,11 @@ settings = Pyro4.Proxy("PYRONAME:cg.settings")
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.debug = True
+
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 Bower(app)
 
 gain_slider = SliderElement(key="antenna_gain", title="Antenna gain", value=10, width=3, range=(0, 50))

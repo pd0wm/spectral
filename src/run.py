@@ -59,11 +59,10 @@ def signal_generation(signal, generator, mc_sampler, sample_freq, window_length,
         while opt.poll():
             options = opt.recv()
         if options:
-            print options
             source.parse_options(options)
 
 
-def signal_reconstruction_profiler(signal, plot_queue, websocket_queue,
+def signal_reconstruction_profiler(signal, websocket_queue,
                                    reconstructor, opt):
 
     import cProfile
@@ -72,7 +71,7 @@ def signal_reconstruction_profiler(signal, plot_queue, websocket_queue,
     pr = cProfile.Profile()
     pr.enable()
     signal_reconstruction(
-        signal, plot_queue, websocket_queue, reconstructor, opt)
+        signal, websocket_queue, reconstructor, opt)
     pr.disable()
     s = StringIO.StringIO()
     sortby = 'cumulative'
@@ -82,18 +81,18 @@ def signal_reconstruction_profiler(signal, plot_queue, websocket_queue,
     pr.dump_stats("Reconstruction_profiling.dmp")
 
 
-def signal_reconstruction(signal, plot_queue, websocket_queue,
+def signal_reconstruction(signal, websocket_queue,
                           reconstructor, opt):
     while True:
         options = None
         set_center_freq = center_freq
+
         while opt.poll():
             options = opt.recv()
         if options:
-            print options
-            for key, opt in options.items():
+            for key, value in options.items():
                 if key == 'center_freq':
-                    set_center_freq = opt * 1e6
+                    set_center_freq = value * 1e6
 
         inp = signal.get()
         if inp.any():
@@ -104,22 +103,6 @@ def signal_reconstruction(signal, plot_queue, websocket_queue,
             if websocket_queue.full():
                 websocket_queue.get()
             websocket_queue.put_nowait(out_container)
-
-            if plot_queue.full():
-                plot_queue.get()
-            plot_queue.put_nowait(out)
-
-
-def plotter(plot_queue):
-    plt.ion()
-    while True:
-        to_plot = plot_queue.get()
-        if to_plot.any():
-            plt.cla()
-            plt.plot(to_plot)
-            plt.draw()
-            plt.show()
-            plt.pause(0.01)
 
 
 def websocket(websocket_queue, opt):
@@ -144,7 +127,6 @@ def settings_server(src_opt, rec_opt, web_opt):
 
 if __name__ == '__main__':
     signal = Queue(10)
-    plot_queue = Queue(10)
     websocket_queue = Queue(10)
 
     parent_opt_src, child_opt_src = Pipe()
@@ -155,11 +137,8 @@ if __name__ == '__main__':
     p1 = Process(target=signal_generation,
                  args=(signal, source, sampler, sample_freq, window_length, child_opt_src))
     p2 = Process(target=signal_reconstruction,
-                 args=(signal, plot_queue, websocket_queue,
+                 args=(signal, websocket_queue,
                        reconstructor, child_opt_rec))
-    # p2 = Process(target=signal_reconstruction_profiler,
-    #              args=(signal, plot_queue, websocket_queue,
-    #                    reconstructor, child_opt_rec))
     p3 = Process(target=settings_server, args=(parent_opt_src, parent_opt_rec,
                                                parent_opt_web))
     p4 = Process(target=websocket, args=(websocket_queue, child_opt_web))
