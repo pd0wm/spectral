@@ -6,7 +6,7 @@ class UsrpN210(object):
 
     """Implementation of UsrpN210 driver"""
 
-    def __init__(self, addr, samp_freq=25e6, center_freq=2.412e9, sample_format='fc32'):
+    def __init__(self, addr, samp_freq=5e6, center_freq=2.412e9, sample_format='fc32'):
         self.uhd = uhd.usrp_source("addr=" + addr,
                                    uhd.stream_args(
                                        cpu_format=sample_format,
@@ -17,18 +17,16 @@ class UsrpN210(object):
         self.uhd.set_gain(10, 0)
         self.uhd.set_antenna("TX/RX", 0)
         self.uhd.set_bandwidth(self.samp_freq / 2, 0)
-        self.uhd.set_center_freq(center_freq, 0)
+        lo_offset = 12e6
+        self.uhd.set_center_freq(uhd.tune_request(center_freq, lo_offset), 0)
         self.window = [0]
-        cutoff = 1e3
-        self.filter = signal.firwin(101, cutoff, pass_zero=False, nyq=cutoff*4)
 
     def generate(self, num_samples):
         if len(self.window) != num_samples:
             self.window = signal.blackmanharris(num_samples)
 
         orig_signal = self.uhd.finite_acquisition(num_samples)
-
-        return signal.lfilter(self.filter, 1.0, orig_signal * self.window)
+        return orig_signal * self.window
 
     def parse_options(self, options):
         for key, opt in options.items():
