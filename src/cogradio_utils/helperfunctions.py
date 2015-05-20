@@ -1,5 +1,5 @@
 import numpy as np
-
+import scipy as sp
 
 def signal_power(signal):
     return np.linalg.norm(signal) ** 2 / len(signal)
@@ -30,6 +30,19 @@ def psd(signal):
     return fft(auto_correlation(signal))
 
 
+def cross_correlate(a, b, maxlag=None):
+    if len(a) != len(b):
+        raise ValueError("a and b must be of same size.")
+    size = len(a)
+    if not(1 < maxlag < (size + 1)):
+        raise ValueError("maglag needs to be none or strictly positive and smaller then {}".format(size))
+    cross_corr = sp.signal.fftconvolve(a, np.conj(b[::-1]), mode='full') # Corr propert FFT Conj rev.
+    if maxlag is not None:
+        return cross_corr[size - maxlag - 1:size + maxlag]
+    else:
+        return cross_corr
+
+
 def auto_correlation(signal):
     return np.correlate(signal, signal, mode='same')
 
@@ -40,3 +53,5 @@ def build_C(sparseruler, N):
     for i in range(0, M):
         C[i, sparseruler[i]] = 1
     return C
+
+CACHE_DIR = "cache/"
