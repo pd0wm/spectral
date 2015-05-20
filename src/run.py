@@ -18,7 +18,7 @@ parser.add_argument('-L', metavar='L', type=int, default=40)
 args = parser.parse_args()
 
 
-frequencies = [2e3, 4e3, 5e6, 8e6]
+frequencies = [2e6, 4e6, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 ip = args.ip
 L = args.L
@@ -40,7 +40,7 @@ try:
         addr=ip, samp_freq=f_samp, center_freq=center_freq)
 except RuntimeError:
     print "Could not find USRP, falling back to artificial source"
-    source = cg.source.Rect(frequencies, widths, f_samp)
+    source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
