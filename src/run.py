@@ -27,8 +27,8 @@ f_samp = args.f_samp
 sample_freq = f_samp
 center_freq = 2.41e9
 
-nyq_block_size = L * N
-window_length = L * N
+nyq_block_size = L * N * 10
+window_length = nyq_block_size
 numbbins = 15
 threshold = 2000
 
