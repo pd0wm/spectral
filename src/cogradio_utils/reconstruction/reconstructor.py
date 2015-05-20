@@ -1,4 +1,5 @@
 import numpy as np
+import cogradio_utils as cg
 import scipy as sp
 
 
@@ -24,6 +25,15 @@ class Reconstructor(object):
 
         return sp.sparse.csr_matrix((loader['data'], loader['indices'],
                                      loader['indptr']), shape=loader['shape'])
+
+    def cross_correlation_signals(self, signal):
+        Ry = np.zeros((self.M ** 2, 2 * self.L - 1), dtype=np.complex64)
+        for i in range(self.M):
+            for j in range(self.M):
+                Ry[i * self.M + j] = cg.cross_correlate(signal[i, :],
+                                                        signal[j, :],
+                                                        maxlag=self.L - 1)
+        return Ry
 
     def calc_pseudoinverse(self, R):
         R_pinv_accent = self.load_pseudoinverse()

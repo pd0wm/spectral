@@ -6,27 +6,37 @@ import Pyro4
 from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
-import numpy as np
+import argparse
+import time
+
+
+parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
+parser.add_argument('ip', metavar='ip')
+parser.add_argument('f_samp', metavar='f_samp', type=int, default=25e6)
+parser.add_argument('N', metavar='N', type=int, default=14)
+parser.add_argument('L', metavar='L', type=int, default=40)
+args = parser.parse_args()
+
 
 frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
-L = 40
-N = 14
-nyq_block_size = L * N
-sample_freq = 25e6
+ip = args.ip
+L = args.L
+N = args.N
+f_samp = args.f_samp
+sample_freq = f_samp
 center_freq = 2.41e9
-window_length = L * N
+
+nyq_block_size = L * N * 10
+window_length = nyq_block_size
 numbbins = 15
 threshold = 2000
 
 # Init blocks
 try:
-    source = cg.source.UsrpN210(
-        addr="192.168.20.2", samp_freq=sample_freq, center_freq=center_freq)
+    source = cg.source.UsrpN210(addr=ip, samp_freq=f_samp, center_freq=center_freq)
 except RuntimeError:
-
-    # source = cg.source.Rect(frequencies, widths, sample_freq)
-    source = cg.source.ComplexExponential(frequencies, sample_freq)
+    source = cg.source.Rect(frequencies, widths, f_samp)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
@@ -40,6 +50,13 @@ def signal_generation(signal, generator, mc_sampler, sample_freq, window_length,
             signal.get()
         # signal.put_nowait(orig_signal)
         signal.put_nowait(mc_sampler.sample(orig_signal))
+
+        options = None
+        while opt.poll():
+            options = opt.recv()
+        if options:
+            print options
+            source.parse_options(options)
 
 
 def signal_reconstruction(signal, plot_queue, websocket_queue,
@@ -87,7 +104,7 @@ def websocket(websocket_queue, opt):
 def settings_server(src_opt, rec_opt, web_opt):
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = cg.Settings(web_opt)
+    settings = cg.Settings(web_opt, src_opt)
     uri = daemon.register(settings)
     ns.register("cg.settings", uri)
     daemon.requestLoop()
@@ -121,6 +138,14 @@ if __name__ == '__main__':
         [p.start() for p in processes]
         [p.join() for p in processes]
     except KeyboardInterrupt:
-        [p.terminate() for p in processes]
-        print "Termination signals sent"
+        flag = True
+        while flag:
+            flag = False
+            for p in processes:
+                if p.is_alive():
+                    flag = True
+                    p.terminate()
+                    print p, "termination sent"
+            time.sleep(1)
+    finally:
         sys.exit(1)

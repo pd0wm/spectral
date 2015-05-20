@@ -30,6 +30,19 @@ def psd(signal):
     return fft(auto_correlation(signal))
 
 
+def cross_correlate(a, b, maxlag=None):
+    if len(a) != len(b):
+        raise ValueError("a and b must be of same size.")
+    size = len(a)
+    if not(1 < maxlag < (size + 1)):
+        raise ValueError("maglag needs to be none or strictly positive and smaller then {}".format(size))
+    cross_corr = np.correlate(a, b, mode='full')
+    if maxlag is not None:
+        return cross_corr[size - maxlag - 1:size + maxlag]
+    else:
+        return cross_corr
+
+
 def auto_correlation(signal):
     return np.correlate(signal, signal, mode='same')
 
