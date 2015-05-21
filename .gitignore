@@ -3,6 +3,7 @@
 
 # tern autocompletion
 .tern*
+*.dmp
 
 # Created by https://www.gitignore.io
 
