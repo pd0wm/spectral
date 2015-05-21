@@ -1,6 +1,5 @@
 from .simulatedsource import SimulatedSource
 import numpy as np
-import scipy.signal as sp
 
 
 class Rect(SimulatedSource):
@@ -22,7 +21,4 @@ class Rect(SimulatedSource):
             signals.append(component * carrier)
 
         signal = reduce(np.add, signals)
-
-        window = sp.hamming(no_samples)
-        signal = self.white_gaussian_noise(self.SNR, signal)
-        return signal * window
+        return self.white_gaussian_noise(self.SNR, signal)
