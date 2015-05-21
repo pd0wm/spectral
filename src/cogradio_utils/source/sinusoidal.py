@@ -1,19 +1,18 @@
-from .source import Source
+from .simulatedsource import SimulatedSource
 import numpy as np
-import cogradio_utils as cg
 
 
-class Sinusoidal(Source):
+class Sinusoidal(SimulatedSource):
 
     """Signal representing a couple of sinusoidal frequencies"""
 
-    def __init__(self, frequencies, SNR=None):
-        Source.__init__(self, frequencies, SNR)
+    def __init__(self, frequencies, samp_freq, SNR=None):
+        super(Sinusoidal, self).__init__(frequencies, samp_freq, SNR=SNR)
 
-    def generate(self, samp_freq, duration):
+    def generate(self, no_samples):
         signal = 0
-        t = np.arange(0, np.ceil(duration * samp_freq)) / samp_freq
-        
+        t = np.arange(0, no_samples) / float(self.samp_freq)
+
         for f in self.frequencies:
             signal += np.cos(2 * np.pi * f * t)
 
