@@ -1,4 +1,4 @@
-import cogradio_utils as cg
+import cogradio as cg
 import sys
 import Pyro4
 from multiprocessing import Queue, Pipe

@@ -1,5 +1,5 @@
 import numpy as np
-import scipy as sp
+import scipy.signal
 
 
 def signal_power(signal):
@@ -35,7 +35,7 @@ def cross_correlate(a, b, maxlag=None):
         raise ValueError("a and b must be of same size.")
 
     size = len(a)
-    cross_corr = sp.signal.fftconvolve(a, np.conj(b[::-1]), mode='full')
+    cross_corr = scipy.signal.fftconvolve(a, np.conj(b[::-1]), mode='full')
 
     if maxlag is not None:
         if not(1 < maxlag < (size + 1)):

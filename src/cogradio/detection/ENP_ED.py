@@ -1,6 +1,6 @@
 from .detector import Detector
 import numpy as np
-import cogradio_utils as cg
+import cogradio as cg
 import scipy.stats as stats
 
 

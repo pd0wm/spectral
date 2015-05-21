@@ -1,6 +1,6 @@
 from .source import Source
 import numpy as np
-import cogradio_utils as cg
+import cogradio as cg
 
 
 class SimulatedSource(Source):

@@ -1,5 +1,3 @@
-from scipy import signal
-
 try:
     from gnuradio import uhd
 except ImportError:

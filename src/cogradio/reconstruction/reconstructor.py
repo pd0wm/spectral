@@ -1,5 +1,5 @@
 import numpy as np
-import cogradio_utils as cg
+import cogradio as cg
 import scipy as sp
 
 
