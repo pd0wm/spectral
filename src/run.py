@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 import cogradio_utils as cg
-import sys
-import matplotlib.pyplot as plt
-import Pyro4
-from multiprocessing import Process, Queue, Pipe
-from twisted.python import log
-from twisted.internet import reactor
 import argparse
 import time
+from processes import *
+from multiprocessing import Process, Queue, Pipe
 
 
+# Set up initial parameters
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
@@ -17,135 +14,50 @@ parser.add_argument('-N', metavar='N', type=int, default=14)
 parser.add_argument('-L', metavar='L', type=int, default=40)
 args = parser.parse_args()
 
-
-frequencies = [2e6, 4e6, 5e6, 8e6]
-widths = [1000, 1000, 1000, 1000]
 ip = args.ip
 L = args.L
 N = args.N
-f_samp = args.f_samp
-sample_freq = f_samp
+sample_freq = args.f_samp
+
+frequencies = [2e3, 4e3, 5e6, 8e6]
+widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
-
-MEERSAMPLESG = 100
-
-nyq_block_size = L * N * MEERSAMPLESG
+multiplier = 100  # Warning: greatly diminishes perfomance
+nyq_block_size = L * N * multiplier
 window_length = nyq_block_size
-numbbins = 15
 threshold = 2000
 
 # Init blocks
 try:
-    source = cg.source.UsrpN210(
-        addr=ip, samp_freq=f_samp, center_freq=center_freq)
+    source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
 except RuntimeError:
     print "Could not find USRP, falling back to artificial source"
-    source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
+    # source = cg.source.Sinusoidal(frequencies, f_samp, SNR=5)
+    source = cg.source.Rect(frequencies, widths, f_samp, SNR=5)
+    # source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
 
 sampler = cg.sampling.MultiCoset(N)
-C = sampler.generateC()
 reconstructor = cg.reconstruction.Wessel(N, L)
 
+# Init processes
+signal_queue = Queue(10)
+websocket_queue = Queue(10)
 
-def signal_generation(signal, generator, mc_sampler, sample_freq, window_length, opt):
-    while True:
-        orig_signal = generator.generate(window_length)
-        if signal.full():
-            signal.get()
-        signal.put_nowait(mc_sampler.sample(orig_signal))
-
-        options = None
-        while opt.poll():
-            options = opt.recv()
-        if options:
-            source.parse_options(options)
-
-
-def signal_reconstruction_profiler(signal, websocket_queue,
-                                   reconstructor, opt):
-
-    import cProfile
-    import pstats
-    import StringIO
-    pr = cProfile.Profile()
-    pr.enable()
-    signal_reconstruction(
-        signal, websocket_queue, reconstructor, opt)
-    pr.disable()
-    s = StringIO.StringIO()
-    sortby = 'cumulative'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    ps.print_stats()
-    print s.getvalue()
-    pr.dump_stats("Reconstruction_profiling.dmp")
-
-
-def signal_reconstruction(signal, websocket_queue,
-                          reconstructor, opt):
-    while True:
-        options = None
-        set_center_freq = center_freq
-
-        while opt.poll():
-            options = opt.recv()
-        if options:
-            for key, value in options.items():
-                if key == 'center_freq':
-                    set_center_freq = value * 1e6
-
-        inp = signal.get()
-        if inp.any():
-            out = cg.fft(reconstructor.reconstruct(inp))
-            out_container = cg.websocket.PlotDataContainer(
-                sample_freq=sample_freq, center_freq=set_center_freq, data=out)
-
-            if websocket_queue.full():
-                websocket_queue.get()
-            websocket_queue.put_nowait(out_container)
-
-
-def websocket(websocket_queue, opt):
-    log.startLogging(sys.stdout)
-    factory = cg.websocket.WebSocketServerPlotFactory("ws://localhost:9000",
-                                                      websocket_queue,
-                                                      opt)
-    factory.protocol = cg.websocket.ServerProtocolPlot
-
-    reactor.listenTCP(9000, factory)
-    reactor.run()
-
-
-def settings_server(src_opt, rec_opt, web_opt):
-    daemon = Pyro4.Daemon()
-    ns = Pyro4.locateNS()
-    settings = cg.Settings(web_opt, src_opt, rec_opt)
-    uri = daemon.register(settings)
-    ns.register("cg.settings", uri)
-    daemon.requestLoop()
-
+parent_opt_src, child_opt_src = Pipe()
+parent_opt_rec, child_opt_rec = Pipe()
+parent_opt_web, child_opt_web = Pipe()
 
 if __name__ == '__main__':
-    signal = Queue(10)
-    websocket_queue = Queue(10)
 
-    parent_opt_src, child_opt_src = Pipe()
-    parent_opt_rec, child_opt_rec = Pipe()
-    parent_opt_web, child_opt_web = Pipe()
-
-    processes = []
-    p1 = Process(target=signal_generation,
-                 args=(signal, source, sampler, sample_freq, window_length, child_opt_src))
-    p2 = Process(target=signal_reconstruction,
-                 args=(signal, websocket_queue,
-                       reconstructor, child_opt_rec))
-    p3 = Process(target=settings_server, args=(parent_opt_src, parent_opt_rec,
-                                               parent_opt_web))
-    p4 = Process(target=websocket, args=(websocket_queue, child_opt_web))
-
-    processes.append(p1)
-    processes.append(p2)
-    processes.append(p3)
-    processes.append(p4)
+    p1 = Process(target=run_generator,
+                 args=(signal_queue, source, sampler, sample_freq, window_length, child_opt_src))
+    p2 = Process(target=run_reconstructor,
+                 args=(signal_queue, websocket_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
+    p3 = Process(target=run_websocket_server,
+                 args=(websocket_queue, sample_freq, center_freq, child_opt_web))
+    p4 = Process(target=run_settings_server,
+                 args=(parent_opt_web, parent_opt_src, parent_opt_rec))
+    processes = [p1, p2, p3, p4]
 
     try:
         [p.start() for p in processes]

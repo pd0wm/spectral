@@ -16,15 +16,17 @@ class SimulatedSource(Source):
         if not SNR:
             return signal
 
+        if type(signal[0]) is np.complex64:
+            return self.cmplx_white_gaussian_noise(SNR, signal)
+        else:
+            return self.real_white_gaussian_noise(SNR, signal)
+
+    def real_white_gaussian_noise(self, SNR, signal):
         noise = np.random.normal(0, 1, len(signal))
         scaled_signal = signal / np.std(signal) * np.sqrt(cg.invert_db(SNR))
         return scaled_signal + noise
 
     def cmplx_white_gaussian_noise(self, SNR, signal):
-        print type(signal)
-        if not SNR:
-            return signal
-
         noise_r = np.random.normal(0, 0.5, len(signal))
         noise_i = 1j * np.random.normal(0, 0.5, len(signal))
 
