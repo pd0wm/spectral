@@ -4,6 +4,8 @@ import os
 
 class File(object):
 
+    """Signal coming from a file"""
+
     def __init__(self, filename, offset=0, dtype=np.complex64):
         self.data_type = dtype
         self.item_size = np.dtype(dtype).itemsize

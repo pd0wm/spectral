@@ -10,7 +10,7 @@ class Sinusoidal(SimulatedSource):
         super(Sinusoidal, self).__init__(frequencies, samp_freq, SNR=SNR)
 
     def generate(self, no_samples):
-        t = np.arange(0, no_samples) / float(self.samp_freq)
+        t = np.arange(0, no_samples) / self.samp_freq
         signals = [np.cos(2 * np.pi * f * t) for f in self.frequencies]
         signal = reduce(np.add, signals)
 

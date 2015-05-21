@@ -14,7 +14,7 @@ class Wessel(Reconstructor):
         self.L = L
         sparseruler = cg.sparseruler(N)
         if C is None:
-            self.C = cg.build_C(sparseruler, N)
+            self.C = cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
         # get length of C
         self.M = self.C.shape[0]
 

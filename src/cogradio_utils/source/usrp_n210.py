@@ -36,11 +36,7 @@ class UsrpN210(object):
         self.uhd.set_gain(gain, 0)
 
     def generate(self, num_samples):
-        if len(self.window) != num_samples:
-            self.window = signal.blackmanharris(num_samples)
-
-        sampled_signal = self.uhd.finite_acquisition(num_samples)
-        return sampled_signal * self.window
+        return self.uhd.finite_acquisition(num_samples)
 
     def parse_options(self, options):
         for key, opt in options.items():

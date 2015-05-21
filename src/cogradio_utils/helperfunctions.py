@@ -1,12 +1,15 @@
 import numpy as np
 import scipy as sp
 
+
 def signal_power(signal):
     return np.linalg.norm(signal) ** 2 / len(signal)
 
 
 def fft(signal):
-    fft = np.abs(np.fft.fftshift(np.fft.fft(signal)))
+    length = len(signal)
+    window = sp.signal.blackmanharris(length)
+    fft = np.abs(np.fft.fftshift(np.fft.fft(signal * window)))
     return fft
 
 
@@ -49,7 +52,7 @@ def auto_correlation(signal):
     return np.correlate(signal, signal, mode='same')
 
 
-def build_C(sparseruler, N):
+def build_sparse_ruler_sampling_matrix(sparseruler, N):
     M = len(sparseruler)
     C = np.zeros((M, N))
     for i in range(0, M):

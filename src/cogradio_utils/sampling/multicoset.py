@@ -7,24 +7,16 @@ class MultiCoset(Sampler):
 
     """Multi coset sampler implementation"""
 
-    def __init__(self, N, mode="msr"):
-        Sampler.__init__(self)
-        self.N = N
-        self.mode = mode
-        sparseruler = cg.sparseruler(N)
-        self.C = cg.build_C(sparseruler, N)
-        self.M = len(sparseruler)
+    def __init__(self, N):
+        super(MultiCoset, self).__init__()
 
-    def generateC(self):
-        return self.C
+        sparseruler = cg.sparseruler(N)
+
+        self.N = N
+        self.M = len(sparseruler)
+        self.C = cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
 
     def sample(self, signal):
-        if self.mode == "msr":
-            return self.__msr_sample(signal)
-        else:
-            raise NotImplementedError("Unsupported mode: " + self.mode)
-
-    def __msr_sample(self, signal):
         length = int(np.floor(len(signal) / self.N))
         tmp = length * self.N
         y = np.zeros((self.M, length), dtype=np.complex64)
