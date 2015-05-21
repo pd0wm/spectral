@@ -36,7 +36,11 @@ class UsrpN210(object):
         self.uhd.set_gain(gain, 0)
 
     def generate(self, num_samples):
-        return self.uhd.finite_acquisition(num_samples)
+        samples = self.uhd.finite_acquisition(num_samples)
+        if len(samples) != num_samples:
+            raise RuntimeError("Number of samples from USRP incorrect")
+
+        return samples
 
     def parse_options(self, options):
         for key, opt in options.items():
