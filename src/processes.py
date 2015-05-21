@@ -22,12 +22,6 @@ def run_generator(signal_queue, source, sampler, sample_freq, window_length, opt
 
 def run_reconstructor(signal_queue, websocket_queue, reconstructor, sample_freq, center_freq, opt):
     while True:
-        options = {}
-        while opt.poll():
-            options = opt.recv()
-        if 'center_freq' in options:
-            center_freq = options['center_freq'] * 1e6
-
         inp = signal_queue.get()
         if inp.any():
             signal = cg.fft(reconstructor.reconstruct(inp))

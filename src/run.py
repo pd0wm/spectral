@@ -32,8 +32,9 @@ try:
     source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
 except RuntimeError:
     print "Could not find USRP, falling back to artificial source"
+    source = cg.source.File("/Users/Willem/Desktop/ofdm.dmp")
     # source = cg.source.Sinusoidal(frequencies, f_samp, SNR=5)
-    source = cg.source.Rect(frequencies, widths, f_samp, SNR=5)
+    # source = cg.source.Rect(frequencies, widths, f_samp, SNR=5)
     # source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
 
 sampler = cg.sampling.MultiCoset(N)

@@ -22,6 +22,6 @@ def sparseruler(i):
         23: (0, 1, 2, 11, 15, 18, 21, 23),
         29: (0, 1, 2, 14, 18, 21, 24, 27, 29)
     }
-    if (i - 1) > 19:
-        raise NotImplementedError("Values higher than 19 not supported")
+    if (i - 1) not in sparseruler:
+        raise NotImplementedError("Values other than " + str(sparseruler.keys()) + " not implemented.")
     return sparseruler[i - 1]
