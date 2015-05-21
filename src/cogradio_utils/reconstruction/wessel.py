@@ -22,6 +22,8 @@ class Wessel(Reconstructor):
 
         # Use caching if available
         self.R = self.constructR()
+        print "Rank R", np.linalg.matrix_rank(self.R)
+        print "Full?", self.R.shape
         self.R_pinv = self.calc_pseudoinverse(self.R)
 
     # Given M decimated channels, try to estimate the PSD
@@ -63,7 +65,7 @@ class Wessel(Reconstructor):
             row = np.insert(row_padding, 0, cross_correlations[i, 0])
             Rcc = sp.sparse.csr_matrix(sp.linalg.toeplitz(column, row))
             R[i*(2*self.L-1):((i+1)*(2*self.L-1)), :] = D.dot(Rcc).toarray()
-        return R
+        return R[:, self.N - 1:-(self.N)]
 
     def get_filename(self):
         return (cg.CACHE_DIR + "wessel_cache_" + str(self.N) + str(self.L) + str(self.M))

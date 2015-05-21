@@ -1,4 +1,3 @@
-from gnuradio import uhd
 from scipy import signal
 
 
@@ -8,19 +7,26 @@ class UsrpN210(object):
 
     def __init__(self, addr, samp_freq=5e6,
                  center_freq=2.412e9, sample_format='fc32'):
-        self.uhd = uhd.usrp_source("addr=" + addr,
-                                   uhd.stream_args(
-                                       cpu_format=sample_format,
-                                       channels=range(1),
-                                   ))
         self.samp_freq = samp_freq
-        self.uhd.set_samp_rate(self.samp_freq)
-        self.uhd.set_gain(10, 0)
-        self.uhd.set_antenna("TX/RX", 0)
-        self.uhd.set_bandwidth(self.samp_freq / 2, 0)
         self.lo_offset = 12e6
-        self.set_frequency(center_freq)
         self.window = [0]
+
+        try: # Lekijke hack voor geen gnuradio installatie
+            from gnuradio import uhd
+            self.uhd = uhd.usrp_source("addr=" + addr,
+                                       uhd.stream_args(
+                                           cpu_format=sample_format,
+                                           channels=range(1),
+                                       ))
+
+            self.set_frequency(center_freq)
+            self.uhd.set_samp_rate(self.samp_freq)
+            self.uhd.set_gain(10, 0)
+            self.uhd.set_antenna("TX/RX", 0)
+            self.uhd.set_bandwidth(self.samp_freq / 2, 0)
+        except ImportError:
+            raise RuntimeError("Uhd module not installed")
+
 
     def set_frequency(self, frequency):
         print "Tuning to", frequency / 1e9, "GHz"
@@ -39,3 +45,5 @@ class UsrpN210(object):
                 self.uhd.set_gain(opt, 0)
             if key == 'center_freq':
                 self.set_frequency(opt * 1e6)
+
+
