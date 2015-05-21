@@ -21,6 +21,7 @@ class SimulatedSource(Source):
         return scaled_signal + noise
 
     def cmplx_white_gaussian_noise(self, SNR, signal):
+        print type(signal)
         if not SNR:
             return signal
 
