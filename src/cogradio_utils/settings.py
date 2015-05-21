@@ -6,6 +6,6 @@ class Settings(object):
         self.rec_opt = rec_opt
 
     def update(self, update):
-        # self.web_opt.send(update)
+        self.web_opt.send(update)
         self.src_opt.send(update)
         self.rec_opt.send(update)

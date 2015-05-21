@@ -27,7 +27,6 @@ FFTplot.prototype.onMessage = function(event) {
         var response = JSON.parse(event.data);
         var sample_freq = response.sample_freq;
         var center_freq = response.center_freq;
-        console.log(center_freq);
         var fft_data = response.data;
 
         // Update the chart

@@ -22,6 +22,9 @@ class ServerProtocolPlot(ServerProtocol):
     data_buffer = None
     delay = 0.05
 
+    sample_freq = 10e6
+    center_freq = 2.41e9
+
     REQUEST_DATA = 0
 
     def __init__(self):
@@ -31,10 +34,14 @@ class ServerProtocolPlot(ServerProtocol):
         if self.queue.empty() == False:
             self.data_buffer = self.queue.get()
 
-        if isinstance(self.data_buffer, PlotDataContainer):
-            self.sendMessage(self.data_buffer.encode())
+        options = None
+        while self.opt.poll():
+            options = self.opt.recv()
+        if options:
+            self.parse_options(options)
 
-        # Slow the loop down a bit.
+        message = PlotDataContainer(self.sample_freq, self.center_freq, self.data_buffer)
+        self.sendMessage(message.encode())
 
     def onOpen(self):
         print("WebSocket connection open.")
@@ -49,20 +56,28 @@ class ServerProtocolPlot(ServerProtocol):
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
 
+    def parse_options(self, options):
+        print options
+        for key, value in options.items():
+            if key == 'center_freq':
+                self.center_freq = value * 1e6
+            elif hasattr(self, key):
+                setattr(self, key, value)
+
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
 
     """Factory for creating ServerProtocolPlot instances"""
 
-    def __init__(self, url, queue, opt):
-        self._queue = queue
-        self._opt = opt
+    def __init__(self, **kwargs):
+        url = kwargs.pop('url')
+        self.protocol_params = kwargs
         WebSocketServerFactory.__init__(self, url)
 
     def buildProtocol(self, addr):
         protocol = self.protocol()
-        protocol.queue = self._queue
-        protocol.opt = self._opt
+        for key, value in self.protocol_params.items():
+            setattr(protocol, key, value)
         protocol.factory = self
         return protocol
 
