@@ -12,12 +12,18 @@ parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-N', metavar='N', type=int, default=14)
 parser.add_argument('-L', metavar='L', type=int, default=40)
+parser.add_argument('-source', metavar='source', type=str, default='dump')
+parser.add_argument('-snr', metavar='snr', type=str, default=None)
+parser.add_argument('-dump', metavar='file', type=str, default='/Users/Willem/Desktop/twotone.dmp')
 args = parser.parse_args()
 
 ip = args.ip
 L = args.L
 N = args.N
 sample_freq = args.f_samp
+dump_file_path = args.dump
+source_type = args.source.lower()
+source_snr = args.snr
 
 frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
@@ -27,15 +33,13 @@ nyq_block_size = L * N * multiplier
 window_length = nyq_block_size
 threshold = 2000
 
-# Init blocks
-try:
+if source_type == "usrp":
     source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
-except RuntimeError:
-    print "Could not find USRP, falling back to artificial source"
-    source = cg.source.File("/Users/Willem/Desktop/ofdm.dmp")
-    # source = cg.source.Sinusoidal(frequencies, f_samp, SNR=5)
-    # source = cg.source.Rect(frequencies, widths, f_samp, SNR=5)
-    # source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
+elif source_type == "dump":
+    source = cg.source.File(dump_file_path)
+elif source_type == "complex":
+    source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
+
 
 sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.Wessel(N, L)
