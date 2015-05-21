@@ -17,13 +17,13 @@ log.setLevel(logging.ERROR)
 Bower(app)
 
 gain_slider = SliderElement(key="antenna_gain", title="Antenna gain",
-                            value=10, width=3, range=(0, 50))
+                            value=10, width=1, range=(0, 50))
 freq_slider = SliderElement(key="center_freq", title="Center Frequency",
-                            value=2400, width=3, range=(2.4e3, 2.5e3))
+                            value=2400, width=2, range=(2.4e3, 2.5e3))
 
 cnt = Content()
 cnt.add(gain_slider, position=(0, 0))
-cnt.add(freq_slider, position=(0, 1))
+cnt.add(freq_slider, position=(1, 0))
 
 
 @app.route('/')

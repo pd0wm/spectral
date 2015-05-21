@@ -15,7 +15,7 @@ var Connection = function(){
                     console.log("Connected to " + _socket.url);
                 });
                 _socket.addEventListener("message", function(event) {
-                    Connection.send(REQUEST_DATA);
+                    setTimeout(function() { Connection.send(REQUEST_DATA); }, 50);
                 });
                 _socket.addEventListener("close", function() {
                     console.log("Connection closed");
@@ -35,7 +35,7 @@ var Connection = function(){
         },
         send : function(data){
             if (_socket === null) {
-                console.error("Tried to send message when not connected.")
+                console.error("Tried to send message when not connected.");
                 return;
             }
 

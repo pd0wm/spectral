@@ -57,7 +57,6 @@ class ServerProtocolPlot(ServerProtocol):
         print("WebSocket connection closed: {}".format(reason))
 
     def parse_options(self, options):
-        print options
         for key, value in options.items():
             if key == 'center_freq':
                 self.center_freq = value * 1e6
@@ -79,8 +78,6 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
         for key, value in self.protocol_params.items():
             setattr(protocol, key, value)
         protocol.factory = self
-        print protocol
-        print protocol.__dict__
         return protocol
 
 

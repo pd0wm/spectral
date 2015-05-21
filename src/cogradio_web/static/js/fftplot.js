@@ -42,6 +42,10 @@ FFTplot.prototype.onMessage = function(event) {
 };
 
 FFTplot.prototype.getAverage = function(fft_data) {
+    if (this.N == 1) {
+        return fft_data;
+    }
+
     // If buffer does not exist or is of the wrong size, initialise.
     if (!this.buffer || this.buffer.size()[0] != this.N) {
         if (!this.averaged_fft) {
@@ -135,6 +139,7 @@ FFTplot.prototype.getPlotSettings = function() {
         series: [{
             type: 'area',
             name: 'FFT',
+            animation: false,
             turboThreshold: 2048
         }],
         tooltip: {
