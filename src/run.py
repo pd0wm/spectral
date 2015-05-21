@@ -12,7 +12,7 @@ import time
 
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
-parser.add_argument('-f_samp', metavar='f_samp', type=int, default=25e6)
+parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-N', metavar='N', type=int, default=14)
 parser.add_argument('-L', metavar='L', type=int, default=40)
 args = parser.parse_args()
