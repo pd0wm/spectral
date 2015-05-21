@@ -1,4 +1,5 @@
 import numpy as np
+import scipy as sp
 
 
 def signal_power(signal):
@@ -6,8 +7,7 @@ def signal_power(signal):
 
 
 def fft(signal):
-    fft = np.abs(np.fft.fftshift(np.fft.fft(signal)))
-    return fft
+    return np.abs(np.fft.fftshift(np.fft.fft(signal)))
 
 
 def freq_axis(samp_freq, duration):
