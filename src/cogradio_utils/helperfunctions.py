@@ -1,5 +1,4 @@
 import numpy as np
-import scipy as sp
 
 
 def signal_power(signal):
@@ -7,9 +6,7 @@ def signal_power(signal):
 
 
 def fft(signal):
-    length = len(signal)
-    window = sp.signal.blackmanharris(length)
-    fft = np.abs(np.fft.fftshift(np.fft.fft(signal * window)))
+    fft = np.abs(np.fft.fftshift(np.fft.fft(signal)))
     return fft
 
 
