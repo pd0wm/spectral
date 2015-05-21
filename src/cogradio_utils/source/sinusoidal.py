@@ -10,12 +10,8 @@ class Sinusoidal(SimulatedSource):
         super(Sinusoidal, self).__init__(frequencies, samp_freq, SNR=SNR)
 
     def generate(self, no_samples):
-        signal = 0
         t = np.arange(0, no_samples) / float(self.samp_freq)
+        signals = [np.cos(2 * np.pi * f * t) for f in self.frequencies]
+        signal = reduce(np.add, signals)
 
-        for f in self.frequencies:
-            signal += np.cos(2 * np.pi * f * t)
-
-        signal = self.white_gaussian_noise(self.SNR, signal)
-
-        return signal
+        return self.white_gaussian_noise(self.SNR, signal)

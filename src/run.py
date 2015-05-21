@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import cogradio_utils as cg
 import sys
-import matplotlib.pyplot as plt
 import Pyro4
 from multiprocessing import Process, Queue, Pipe
 from twisted.python import log
@@ -40,7 +39,9 @@ try:
         addr=ip, samp_freq=f_samp, center_freq=center_freq)
 except RuntimeError:
     print "Could not find USRP, falling back to artificial source"
-    source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
+    # source = cg.source.Sinusoidal(frequencies, f_samp, SNR=5)
+    source = cg.source.Rect(frequencies, widths, f_samp, SNR=5)
+    # source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
 
 sampler = cg.sampling.MultiCoset(N)
 C = sampler.generateC()
