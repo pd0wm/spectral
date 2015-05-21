@@ -15,9 +15,8 @@ class ComplexExponential(SimulatedSource):
         t = np.arange(0, no_samples) / float(self.samp_freq)
 
         for f in self.frequencies:
-            signal += np.exp(2 * 1j * np.pi * f * t)
+            signal += np.exp(2j * np.pi * f * t)
 
         signal = self.cmplx_white_gaussian_noise(self.SNR, signal)
         window = sp.hamming(no_samples)
-        signal *= window
-        return signal
+        return signal * window

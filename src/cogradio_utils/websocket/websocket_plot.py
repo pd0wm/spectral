@@ -79,6 +79,8 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
         for key, value in self.protocol_params.items():
             setattr(protocol, key, value)
         protocol.factory = self
+        print protocol
+        print protocol.__dict__
         return protocol
 
 

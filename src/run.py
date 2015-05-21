@@ -8,10 +8,10 @@ from multiprocessing import Process, Queue, Pipe
 
 # Set up initial parameters
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
-parser.add_argument('ip', metavar='ip')
-parser.add_argument('f_samp', metavar='f_samp', type=int, default=25e6)
-parser.add_argument('N', metavar='N', type=int, default=14)
-parser.add_argument('L', metavar='L', type=int, default=40)
+parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
+parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
+parser.add_argument('-N', metavar='N', type=int, default=14)
+parser.add_argument('-L', metavar='L', type=int, default=40)
 args = parser.parse_args()
 
 ip = args.ip
@@ -32,7 +32,7 @@ try:
     source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
 except RuntimeError:
     print "Could not find USRP, falling back to artificial source"
-    source = cg.source.Rect(frequencies, widths, sample_freq)
+    source = cg.source.ComplexExponential(frequencies, f_samp, SNR=5)
 
 sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.Wessel(N, L)

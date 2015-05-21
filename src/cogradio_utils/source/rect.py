@@ -18,13 +18,9 @@ class Rect(SimulatedSource):
         for f, width in zip(self.frequencies, self.widths):
             component = 2 * width * np.sinc(2 * width * (t - duration / 2))
             carrier = np.sin(2 * np.pi * f * t)
-
-            component *= carrier
-            signal += component
+            signal += component * carrier
 
         window = sp.hamming(no_samples)
-        signal *= window
-
         signal = self.white_gaussian_noise(self.SNR, signal)
 
-        return signal
+        return signal * window
