@@ -17,3 +17,11 @@ body {
     width: auto;
 }
 
+.visualisation td {
+	padding-right: 1em;
+}
+
+.visualisation input[type=radio] {
+	margin-right: 1em;
+	vertical-align: top;
+}

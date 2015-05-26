@@ -1,8 +1,10 @@
+auto/
 *.tmp
 *.tmp.npz
 
 # tern autocompletion
 .tern*
+*.dmp
 
 # Created by https://www.gitignore.io
 
