@@ -1,0 +1,66 @@
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+
+\title{Coprime sampling\\Constant C-matrix derivation}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+\raggedbottom{}
+
+\begin{document}
+
+
+\begin{titlingpage}
+  \pagestyle{empty}
+  \maketitle
+\end{titlingpage}
+\chapter{Overview of variables}
+\begin{center}
+    \begin{tabular}{llr}
+        \toprule
+         & Variabele & vorm \\
+        \midrule
+        M & downsample factor of one of the coprime sampler & scalar \\
+        N & downsample factor of the other coprime sampler & scalar \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+\chapter{Analysis}
+The goal of this chapter will be to deduce a constant $C$-matrix that describes the sampling process of a coprime sampler.
+
+\begin{blockDefinition}[Coprime integers]
+\label{def:coprime}
+    Two numbers are called coprime if the only positive integer that evenly divides both is $1$. This can be formulated as two numbers are coprime if and only if $\gcd(a,b) = 1$.
+\end{blockDefinition}
+
+\begin{blockTheorem}[Least common multiple of coprime numbers]\label{th:cplcm}
+    For coprime numbers $a$ and $b$ the least common multiple is $ab$.
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:cplcm}}
+    It is trivial to show that the least common multiple problem can be rewritten as \begin{equation*}
+        \lcm(a,b) = \frac{\abs{a \cdot b}}{\gcd(a,b)}.
+    \end{equation*}
+    Coprime numbers greatest common divider is $1$ by definition as seen in \cref{def:coprime}. From this we can conclude that for $a$, $b$ coprime, their least common multiple is $ab$.
+\end{blockProofTheorem}
+
+\begin{blockDefinition}[Coprime sampling]
+\label{def:coprimesampling}
+    Two samplers are coprime sampling if their sampling rates can be expressed as
+    \begin{equation*}
+        \frac{F_{s,1}}{F_{s,2}} = \frac{a}{b},
+        \end{equation*}
+        with $a/b$ reduced and $a$, $b$ coprime.
+    \end{blockDefinition}
+
+    \begin{blockTheorem}[Downsample factor of coprime sampler]\label{th:downsample}
+    For a pair coprime samplers, a common period can be found. Let $F_{s,1}$ and $F_{s,2}$ be the sample factors of the samplers respectively. Let $a$ and $b$ be the factors found in \cref{def:coprimesampling}. The total frequency is equal to $b \cdot F_{s,1} = a \cdot F_{s,2}$, because $a$ and $b$ are coprime (\cref{th:cplcm}). In this context $a$ and $b$ are called the downsampling factor with respect to the total period of the coprime samplers.
+\end{blockTheorem}
+
+Let $S_1$ and $S_2$ denote two coprime samplers with downsample factors $a$ and $b$ and input signals $\vec{y_1}$ and $\vec{y_2}$ respectively. As can be seen from \cref{th:downsample} the samplers can be seen as two downsamplers from a sampler at the total frequency of the coprime samplers with downsample factors $a, b$. Let the input of the total sampler be $\vec{x}$. It is known that with regard to the total sampling frequency the coprime samplers are repeated every $n\cdot ab$ samples with $n$ in $\mathbb{N}_0$
+
+Let $A$ be the set that contains union of $na$ with $n a < ab, n \in \mathbb{N}_0$ and $n b$ with $n b < ab, n \in \mathbb{N}_0$. Let $a_i$ denote the elements of $A$ with $a_i \leq a_{i+1}$. We can define the matrix $C$, the coprime sample matrix, as the matrix with elements $(C)_{i,a_i} = 1$, otherwise $0$.
+
+
+\end{document}
+
