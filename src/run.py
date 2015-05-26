@@ -11,8 +11,7 @@ parser = argparse.ArgumentParser(description='Cognitive radio compressive sensin
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-N', metavar='N', type=int, default=14)
-parser.add_argument('-L', metavar='L', type
-                    =int, default=40)
+parser.add_argument('-L', metavar='L', type=int, default=40)
 parser.add_argument('-source', metavar='source', type=str, default='dump')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
 parser.add_argument('-dump', metavar='file', type=str, default='twotone.dmp')
@@ -46,7 +45,9 @@ reconstructor = cg.reconstruction.Wessel(N, L)
 
 # Init processes
 signal_queue = Queue(10)
-websocket_queue = Queue(10)
+websocket_src_queue = Queue(10)
+websocket_rec_queue = Queue(10)
+websocket_det_queue = Queue(10)
 
 parent_opt_src, child_opt_src = Pipe()
 parent_opt_rec, child_opt_rec = Pipe()
@@ -55,11 +56,11 @@ parent_opt_web, child_opt_web = Pipe()
 if __name__ == '__main__':
 
     p1 = Process(target=run_generator,
-                 args=(signal_queue, source, sampler, sample_freq, window_length, child_opt_src))
+                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, child_opt_src))
     p2 = Process(target=run_reconstructor,
-                 args=(signal_queue, websocket_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
+                 args=(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
     p3 = Process(target=run_websocket_server,
-                 args=(websocket_queue, sample_freq, center_freq, child_opt_web))
+                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, child_opt_web))
     p4 = Process(target=run_settings_server,
                  args=(parent_opt_web, parent_opt_src, parent_opt_rec))
     processes = [p1, p2, p3, p4]

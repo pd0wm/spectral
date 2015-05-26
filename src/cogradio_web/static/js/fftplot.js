@@ -2,16 +2,16 @@
  * Logic for rendering an FFT plot using highcharts.
  */
 
-var FFTplot = function(container_id){
+var FFTplot = function(container_id, data_type){
     this.N = 10;
-    var that = this; // Because JS is retarded.
-
-    // Add message listener.
-    Connection.socket().addEventListener("message", function(e) { that.onMessage(e); });
+    this.container_id = container_id;
+    this.data_type = data_type;
 
     // Set up the chart.
     this.container_id = container_id;
     this.chart = new Highcharts.Chart(this.getPlotSettings());
+
+    $("#" + container_id).append(this.getSliderHtml());
 
     // Set up the averaging slider.
     this.averaging_slider = $("#" + container_id + "-averaging-slider").slider();
@@ -21,24 +21,19 @@ var FFTplot = function(container_id){
     });
 };
 
-FFTplot.prototype.onMessage = function(event) {
-    if (typeof event.data == 'string' || event.data instanceof String) {
-        // Parse the message content.
-        var response = JSON.parse(event.data);
-        var sample_freq = response.sample_freq;
-        var center_freq = response.center_freq;
-        var fft_data = response.data;
+FFTplot.prototype.update = function() {
+    // Parse the message content.
+    var sample_freq = Connection[this.data_type].sample_freq;
+    var center_freq = Connection[this.data_type].center_freq;
+    var fft_data = Connection[this.data_type].data;
 
-        // Update the chart
-        this.averaged_fft = this.getAverage(fft_data);
+    // Update the chart
+    this.averaged_fft = this.getAverage(fft_data);
 
-        fft_data = math.log10(this.averaged_fft);
-        fft_data = math.multiply(fft_data, 10);
-        this.chart.series[0].setData(fft_data);
-        this.fixAxes(fft_data, sample_freq, center_freq);
-    } else {
-        console.log("Received unsupported message type.");
-    }
+    fft_data = math.log10(this.averaged_fft);
+    fft_data = math.multiply(fft_data, 10);
+    this.chart.series[0].setData(fft_data);
+    this.fixAxes(fft_data, sample_freq, center_freq);
 };
 
 FFTplot.prototype.getAverage = function(fft_data) {
@@ -105,7 +100,7 @@ FFTplot.prototype.getPlotSettings = function() {
             renderTo: this.container_id
         },
         title: {
-            text: 'Real-time FFT'
+            text: null
         },
         xAxis: {
             type: 'linear',
@@ -149,4 +144,16 @@ FFTplot.prototype.getPlotSettings = function() {
             enabled: false
         }
     };
+};
+
+FFTplot.prototype.getSliderHtml = function() {
+    return '<div> \
+        <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3> \
+        <input id="' + this.container_id + '-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show"> \
+    </div>';
+
+}
+
+FFTplot.prototype.destroy = function() {
+    this.chart.destroy();
 };

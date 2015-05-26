@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 from flask.ext.bower import Bower
-from element import TextElement, SliderElement, CheckBoxElement
+from element import TextElement, SliderElement, CheckBoxElement, VisualisationElement
 from content import Content
 import Pyro4
 import logging
@@ -20,10 +20,14 @@ gain_slider = SliderElement(key="antenna_gain", title="Antenna gain",
                             value=10, width=1, range=(0, 50))
 freq_slider = SliderElement(key="center_freq", title="Center Frequency",
                             value=2400, width=2, range=(2.4e3, 2.5e3))
+vis1 = VisualisationElement(key="vis1", title="Test 1")
+vis2 = VisualisationElement(key="vis2", title="Test 2")
 
 cnt = Content()
 cnt.add(gain_slider, position=(0, 0))
 cnt.add(freq_slider, position=(1, 0))
+cnt.add(vis1, position=(0, 1))
+cnt.add(vis2, position=(1, 1))
 
 
 @app.route('/')

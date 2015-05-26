@@ -7,7 +7,7 @@ class Content(object):
         self.max_y = 0
 
     def add(self, element, position):
-        if not 0 <= position[0] <= 3:
+        if not 0 <= position[0] <= 6:
             raise Exception('x position out of bounds')
         if not position[1] >= 0:
             raise Exception('y position out of bounds')
@@ -35,13 +35,13 @@ class Content(object):
         r = ""
         for y in range(0, self.max_y + 1):
             r += """<div class="row">\n"""
-            for x in range(0, 3):
+            for x in range(0, 5):
                 if (x, y) in self._by_position:
                     element = self._by_position[(x, y)]
-                    r += """<div class="col-sm-{0}">\n""".format(element.width * 4)
+                    r += """<div class="col-sm-{0}">\n""".format(element.width * 2)
                     r += element.html + "\n"
                 else:
-                     r += """<div class="col-sm-4">\n"""
+                    r += """<div class="col-sm-2">\n"""
                 r += """</div>\n"""
             r += """</div>\n"""
         return r

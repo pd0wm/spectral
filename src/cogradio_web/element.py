@@ -9,7 +9,6 @@ class Element(object):
         self.title = title
         self.width = 1
 
-
     @property
     def update_eval(self):
         raise NotImplementedError
@@ -127,6 +126,52 @@ class CheckBoxElement(Element):
             </label>
         </div>
     </div>""".format(self.title, self.label, self.uuid)
+
+
+class VisualisationElement(Element):
+
+    def __init__(self, key, title=None, width=3):
+        super(VisualisationElement, self).__init__(key, title)
+        self.width = width
+
+    @property
+    def update_eval(self):
+        # code = """$('#{0}').prop('checked', {1});""".format(
+        #     self.uuid, str(self.value).lower())
+        # return code
+        pass
+
+    @property
+    def js_init(self):
+        code = """
+        Visualisation.init("{0}");
+        $("#{0}").on("change", ".visualisation-data", function() {{
+            Visualisation.init("{0}");
+        }});
+        $("#{0}").on("change", ".visualisation-type", function() {{
+            Visualisation.init("{0}");
+        }});""".format(self.uuid)
+        return code
+
+    @property
+    def html(self):
+        return """
+        <div class="visualisation" id="{0}">
+            <h3 style="float:left;"></h3>
+            <table class="visualisation-control" style="float:right;">
+                <tr class="visualisation-type">
+                  <td><label><input type="radio" name="{0}-type" value="fft"/>FFT Plot</label></td>
+                  <td><label><input type="radio" name="{0}-type" value="spectrogram" checked />Spectrogram</label></td>
+                  <td><label><input type="radio" name="{0}-type" value="none"/>None</label></td>
+                </tr>
+                <tr class="visualisation-data">
+                  <td><label><input type="radio" name="{0}-data" value="src_data"/>Original</label></td>
+                  <td><label><input type="radio" name="{0}-data" value="rec_data" checked />Reconstructed</label></td>
+                  <td><label><input type="radio" name="{0}-data" value="det_data" />Detection</label></td>
+                </tr>
+            </table>
+            <div class="visualisation-container" id="{0}-container" ></div>
+        </div>""".format(self.uuid)
 
 if __name__ == '__main__':
     print "Hello, World!"

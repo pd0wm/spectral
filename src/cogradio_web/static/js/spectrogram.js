@@ -2,31 +2,25 @@
  * Logic for rendering a spectrogram using an HTML5 canvas.
  */
 
-var SpectroGram = function(container_id) {
-    this.initCanvas(container_id);
-
-    var that = this;
-    Connection.socket().addEventListener("message", function(e) { that.onMessage(e); });
+var SpectroGram = function(container_id, data_type) {
+    this.container_id = container_id;
+    this.initCanvas(this.container_id);
+    this.data_type = data_type;
 
     this.colormap = chroma.scale(['#FFF', '#CCC', Highcharts.getOptions().colors[0]]);
     // this.colormap = chroma.scale(["#000", "#F00", "#FF0", "#FFF"]);
 };
 
-SpectroGram.prototype.onMessage = function(event) {
-    if (typeof event.data == 'string' || event.data instanceof String) {
-        var response = JSON.parse(event.data);
-        var sample_freq = response.sample_freq;
-        var fft_data = response.data;
+SpectroGram.prototype.update = function() {
+    var sample_freq = Connection[this.data_type].sample_freq;
+    var fft_data = Connection[this.data_type].data;
 
-        this.draw(fft_data);
-    }
-    else {
-        console.log("Received unsupported message type.");
-    }
+    this.draw(fft_data);
 };
 
 SpectroGram.prototype.initCanvas = function(container_id) {
-    this.canvas = document.getElementById(container_id);
+    $("#" + container_id).append('<canvas id="' + container_id +'-spectrogram" style="width:100%; height:400px;"></canvas>');
+    this.canvas = document.getElementById(container_id +'-spectrogram');
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext("2d");
@@ -109,4 +103,8 @@ SpectroGram.prototype.downscale = function(fft_data, length) {
     }
 
     return fft_data_scaled;
+};
+
+SpectroGram.prototype.destroy = function() {
+
 };
