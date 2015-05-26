@@ -11,12 +11,20 @@
 \raggedbottom
 
 \usepackage{float}
+\usepackage{tabularx}
+\usepackage{relsize}
+\newcommand{\leftrightharpoonup}{%
+  \mathrel{\mathpalette\lrhup\relax}%
+}
+\newcommand{\lrhup}[2]{%
+  \ooalign{$#1\leftharpoonup$\cr$#1\rightharpoonup$\cr}%
+}
 \begin{document}
 
 \chapter{Reconstruction}
 
 \section{Preliminaries}
-Unless stated otherwise, a vector is always assumed to be a column vector. We introduce notation to denote elements of vectors and matrices.
+Vectors and matrices are denoted by bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We introduce notation to denote elements of vectors and matrices.
 
 \begin{blockDefinition}[Vector Element]
     Let $\vec{x} \in \mathbb{C}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ for $i = 1,\ldots,N$.
@@ -52,7 +60,7 @@ We now define the convolution operator as a closed binary operation on vectors. 
 
 We also define correlation as a closed binary operation on vectors. The definition is similar to the definition of correlation for discrete signals.
 
-\begin{blockDefinition}[Cross-correlation]
+\begin{blockDefinition}[Deterministic Cross-correlation]
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^{N+M-1}$ such that
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\conj{\vec{y}})_{M-i+k}
@@ -60,16 +68,16 @@ We also define correlation as a closed binary operation on vectors. The definiti
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{blockDefinition}
 
-Furthermore, we define the window function in terms of vectors. The definition is again similar to the definition of a window function for discrete signals.
+Furthermore, we define the Hadamard product in terms of vectors.
 
-\begin{blockDefinition}[Window Vector]
-    Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x}$ windowed by $\vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
+\begin{blockDefinition}[Hadamard Product]
+    Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
 \end{blockDefinition}
 
-The following theorem identifies the expectation value of the correlation operator.
+Note that the notation of the inner product $\cdot$ is similar to the notation of the Hadamard product $\odot$. The following theorem identifies the expectation value of the correlation operator.
 
 \begin{blockTheorem} \label{th:corr-unbiased}
-    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Then $\vec{x} \circ \vec{y}$ is an unbiased estimator of the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ windowed by
+    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Then $\vec{x} \circ \vec{y}$ is an unbiased estimator of the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ weighted by the elements of the vector
     \begin{align*}
         \begin{bmatrix}
             1 & \cdots & K - 1 & K & \cdots &K & K - 1 & \cdots & 1
@@ -78,17 +86,22 @@ The following theorem identifies the expectation value of the correlation operat
     where $K = \min\{N,M\}$.
 \end{blockTheorem}
 
-Finally, let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ denotes
-\begin{align*}
-    (1,1),\ldots,(1,N),(2,1),\ldots,(2,N),\ldots,(N,N).
-\end{align*}
+Finally, we extend the use of dots to denote finite sequences.
+
+\begin{blockDefinition}
+    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ denotes
+
+    \makebox[\textwidth]{\centering
+        $(1,1),\ldots,(1,N),(2,1),\ldots,(2,N),(3,1),\ldots,(N,N).$
+    } \nolinebreak
+\end{blockDefinition}
 
 \section{Overview of Variables}
-\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis.
+\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The use of the name of each variable will become clear in the main analysis.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{p{5cm}ll}
+    \begin{tabularx}{\textwidth}{Xll}
         \textbf{Name} & \textbf{Notation} & \textbf{Size} \\ \hline
         Number of samples & $L$ & $1$ \\
         Downsampling factor & $N$ & $1$ \\
@@ -96,19 +109,19 @@ Finally, let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ denotes
         Input signal & $\vec{x}$ & $LN$ \\
         Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
         Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
-        Correlation of input & $\vec{r}_x$ & $2LN - 1$ \\
-        Correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2(2 LN + N - 1) - 1$ \\
-        Correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
-        Truncated correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}_{y_i,y_j}$  & $2LN - 1$ \\
+        Deterministic correlation of input & $\vec{r}_x$ & $2LN - 1$ \\
+        Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2LN + 2N - 3$ \\
+        Decimated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}_{y_i,y_j}$  & $2L-1$ \\
+        Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
         Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN-1 \times 2LN-1$ \\
         Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN - 1$ \\
         Stacked convolution matrices of cosets & $\vec{R}$ & $M^2 (2L - 1) \times (2LN - 1)$ \\
-        Correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
-        Stacked correlation of outputs of cosets & $\vec{r}'_y$ & $M^2(2L-1)$ \\
+        Deterministic correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
+        Stacked deterministic correlation of outputs of cosets & $\vec{r}'_y$ & $M^2(2L-1)$ \\
         Interval $m$ of the input signal & $\vec{x}_m$ & $N$ \\
         Sampling vector of coset $i$ reversed & $\vec{d}_i$ & $N$ \\
-        Output of all costest in interval $m$ & $\vec{w}_m$ & $M^2$
-    \end{tabular}
+        Output of all cosets in interval $m$ & $\vec{w}_m$ & $M^2$
+    \end{tabularx}
     \caption{Overview of the variables used in the main analysis}
     \label{tab:overview-vars-main-analysis}
 \end{table}
@@ -126,35 +139,34 @@ Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\ve
 \begin{align*}
     \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
-Let the truncated correlation of pseudo output of cosets $i$ and $j$ by given by $\hat{\vec{r}}_{y_i,y_j} = \vec{r}_{y_i,y_j}[1,2LN-1]$. Then commutativity and the definition of the convolution operator yield that
+Commutativity and the definition of the convolution operator yield that
 \begin{align*}
-    \hat{\vec{r}}_{y_i,y_j}
-    &= \vec{r}_{y_i,y_j}[1,2LN-1] \\
-    &= (\vec{r}_{c_i,c_j} \ast \vec{r}_x)[1,2LN-1] \\
-    &= (\vec{r}_x \ast \vec{r}_{c_i,c_j})[1,2LN-1] \\
+    \vec{r}_{y_i,y_j}
+    &= \vec{r}_{c_i,c_j} \ast \vec{r}_x\\
+    &= \vec{r}_x \ast \vec{r}_{c_i,c_j} \\
     &= \hskip \textwidth minus \textwidth \\ % Fill line
     \intertext{$\begin{bmatrix}
-        (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & &  0 \\
-        (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & & 0 \\
-        &  & & \vdots &  & \\
-        \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_1 & 0 \\
-        \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 \\
+        (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & 0 \\
+        (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & 0 \\
+        &  & \ddots &  & \\
+        0 &  \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} \\
+        0 &  \cdots & 0& 0 & (\vec{r}_{c_i,c_j})_{2N - 1} \\
     \end{bmatrix}
     \begin{bmatrix}
         (\vec{r}_x)_1 \\
         (\vec{r}_x)_2 \\
         \vdots \\
-        (\vec{r}_x)_{2LN-2} \\
-        (\vec{r}_x)_{2LN-1}
+        (\vec{r}_x)_{2LN-2N-4} \\
+        (\vec{r}_x)_{2LN-2N-3}
     \end{bmatrix}$}
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $2L-1\times 2LN-1$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the correlation of the outputs of cosets $i$ and $j$ by given by $\vec{r}_{y'_i,y'_j} = \mat{D} \hat{\vec{r}}_{y_i,y_j}$. Then let $\mat{R}$ be such that
+Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\hat{\vec{r}}_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
 \begin{align*}
     \begin{bmatrix}
-        \vec{r}_{y'_1,y'_1} \\
+        \hat{\vec{r}}_{y_1,y_1} \\
         \vdots \\
-        \vec{r}_{y'_M,y'_M}
+        \hat{\vec{r}}_{y_M,y_M}
     \end{bmatrix}
     = \begin{bmatrix}
         \mat{D}\mat{R}_{c_1,c_1} \vec{r}_x \\
@@ -170,12 +182,12 @@ Let the $2L-1\times 2LN-1$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1
 \end{align*}
 We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
 \begin{align*}
-    (\vec{r}_{y'_i,y'_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
+    (\hat{\vec{r}}_{y_i,y_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
-Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$.
+Thus $\hat{\vec{r}}_{y_i,y_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$. Now let $\vec{r}_{y'_i,y'_j} = \vec{y}'_i \circ \vec{y}'_j$.
 
 \begin{blockTheorem} \label{th:deci-corr}
-    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N(\vec{y}'_i \circ \vec{y}'_j)$ is an unbiased estimator of $E(\vec{r}_{y'_i,y'_j})$.
+    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N \hat{\vec{r}}_{y_i,y_j}$ is an unbiased estimator of $E(\vec{r}_{y'_i,y'_j})$.
 \end{blockTheorem}
 
 \Cref{th:deci-corr} shows that the correlation of the outputs of cosets $i$ and $j$ can be used to estimate the $N$-decimation of the correlation of the pseudo outputs of cosets $i$ and $j$. To this end, let
@@ -189,9 +201,9 @@ Thus $\vec{r}_{y'_i,y'_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\v
 Then
 \begin{align*}
     E(\vec{r}'_y) &= \begin{bmatrix}
-        E[N(\vec{y}'_1 \circ \vec{y}'_1)] \\
+        E[N\hat{\vec{r}}_{y_1,y_1}] \\
         \vdots \\
-        E[N(\vec{y}'_M \circ \vec{y}'_M)]
+        E[N\hat{\vec{r}}_{y_M,y_M}]
     \end{bmatrix}
     = E\left(\begin{bmatrix}
         \vec{r}_{y'_1,y'_1} \\
@@ -199,7 +211,7 @@ Then
         \vec{r}_{y'_M,y'_M} \\
     \end{bmatrix}\right) = E(\mat{R} \vec{r}_x) = \mat{R} E(\vec{r}_x).
 \end{align*}
-So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\vec{r}_x)$, which we can use to determine or estimate $E(\vec{r}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Thus $\vec{x}_m$ corresponds to the samples of $\vec{x}$ in the $m$'th interval of $N$ samples. Finally, note that
+So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\vec{r}_x)$, which we can use to determine $E(\vec{r}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Thus $\vec{x}_m$ corresponds to the samples of $\vec{x}$ in the $m$'th interval of $N$ samples. Finally, note that
 \begin{align*}
     (\vec{y}'_i)_m = (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \vec{d}_i \cdot \vec{x}_m
 \end{align*}
@@ -296,7 +308,7 @@ In this section the theorems of the main analysis will be proven.
             \vdots \\
             2 \\
             1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \odot \begin{bmatrix}
             R_{X,Y}[1-M] \\
             R_{X,Y}[2-M] \\
             \vdots \\
@@ -345,14 +357,15 @@ In this section the theorems of the main analysis will be proven.
     \end{align*}
     Therefore
     \begin{align*}
-        N E[(\vec{y}'_i \circ \vec{y}'_j)_m]
+        E(N\vec{r}_{y'_i,y'_j})
+        &= N E(\vec{y}'_i \circ \vec{y}'_j) \\
         &= N\begin{bmatrix}
             1 \\
             \vdots \\
             L \\
             \vdots \\
             1
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \odot \begin{bmatrix}
             R_{Y'_i,Y'_j}[1-L] \\
             \vdots \\
             R_{Y'_i,Y'_j}[0] \\
@@ -365,14 +378,14 @@ In this section the theorems of the main analysis will be proven.
             NL \\
             \vdots \\
             N
-        \end{bmatrix} \cdot \begin{bmatrix}
+        \end{bmatrix} \odot \begin{bmatrix}
             R_{Y_i,Y_j}[N(1-L)] \\
             \vdots \\
             R_{Y_i,Y_j}[0] \\
             \vdots \\
             R_{Y_i,Y_j}[N(L-1)]
         \end{bmatrix} \\
-        &= E(\vec{r}_{y'_i,y'_j}).
+        &= E(\hat{\vec{r}}_{y_i,y_j}).
     \end{align*}
 \end{blockProofTheorem}
 
@@ -382,7 +395,7 @@ This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the corr
     \item Construct $\mat{R}$.
     \item Measure $\vec{y}'_i$ for $i = 1,\ldots,M$.
     \item Construct $\vec{r}'_y$.
-    \item Estimate $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
+    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
 \end{enumerate}
 
 \section{Exploring Further Possibilities}
