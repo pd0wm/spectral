@@ -98,7 +98,8 @@ FFTplot.prototype.getPlotSettings = function() {
         chart: {
             zoomType: 'x',
             animation: false,
-            renderTo: this.container_id
+            renderTo: this.container_id,
+            height: 400
         },
         title: {
             text: null
@@ -152,7 +153,6 @@ FFTplot.prototype.getSliderHtml = function() {
         <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3> \
         <input id="' + this.container_id + '-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show"> \
     </div>';
-
 }
 
 FFTplot.prototype.destroy = function() {

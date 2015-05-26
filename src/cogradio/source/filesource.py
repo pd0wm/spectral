@@ -1,8 +1,9 @@
+from .source import Source
 import numpy as np
 import os
 
 
-class File(object):
+class File(Source):
 
     """Signal coming from a file"""
 

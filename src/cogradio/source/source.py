@@ -7,3 +7,6 @@ class Source(object):
 
     def generate(self, no_samples):
         raise NotImplementedError("Implement this method.")
+
+    def parse_options(self, options):
+        pass

@@ -1,3 +1,4 @@
+from .source import Source
 try:
     from gnuradio import uhd
 except ImportError:
@@ -6,7 +7,7 @@ except ImportError:
             raise RuntimeError("UHD lib not installed")
 
 
-class UsrpN210(object):
+class UsrpN210(Source):
 
     """Implementation of UsrpN210 driver"""
 

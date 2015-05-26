@@ -47,11 +47,13 @@ class TextElement(Element):
 
 class SliderElement(Element):
 
-    def __init__(self, key, title=None, value=None, width=1, range=(0, 1000)):
+    def __init__(self, key, title=None, value=None, width=1, range=(0, 1000), step=1, scale='linear'):
         super(SliderElement, self).__init__(key, title)
         self.value = value
         self.range = range
         self.width = width
+        self.step = step
+        self.scale = scale
 
     @property
     def update_eval(self):
@@ -82,9 +84,9 @@ class SliderElement(Element):
           <h3 class="panel-title">{0}</h3>
         </div>
         <div class="panel-body">
-              <input id="{1}" type="text" style="width: 100%;" value="" data-slider-min="{2}" data-slider-max="{3}" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+              <input id="{1}" type="text" style="width: 100%;" value="" data-slider-min="{2}" data-slider-max="{3}" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" data-slider-scale="{4}" data-slider-step="{5}">
         </div>
-    </div>""".format(self.title, self.uuid, self.range[0], self.range[1])
+    </div>""".format(self.title, self.uuid, self.range[0], self.range[1], self.scale, self.step)
 
 
 class CheckBoxElement(Element):
@@ -130,9 +132,10 @@ class CheckBoxElement(Element):
 
 class VisualisationElement(Element):
 
-    def __init__(self, key, title=None, width=3):
+    def __init__(self, key, title=None, value=None, width=3):
         super(VisualisationElement, self).__init__(key, title)
         self.width = width
+        self.value = value
 
     @property
     def update_eval(self):
