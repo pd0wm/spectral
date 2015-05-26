@@ -1,53 +1,111 @@
-\documentclass[oneside, a4paper, openany]{article}
+\documentclass[oneside, a4paper, openany]{memoir}
 \input{../includes/preamble.tex}
 \title{Achtergrondinformatie \textit{Slimme Stoorzender}}
 \author{Wessel Bruinsma \and Robin Hes \and Kees Kroep \and Dorus Leliveld \and Willem Melching \and Tom aan de Wiel}
+\usepackage{fullpage}
+
+
+
+\newlength\drop \newcommand*{\titleGM}{%
+  \thispagestyle{empty}
+  \begingroup% Gentle Madness
+  \drop = 0.1\textheight \vspace*{\baselineskip} \vfill \hbox{%
+    \hspace*{0.2\textwidth}%
+    \rule{1pt}{\dimexpr\textheight-28pt\relax}%
+    \hspace*{0.05\textwidth}%
+    \parbox[b]{0.75\textwidth}{ \vbox{%
+        \vspace{\drop}
+        {\noindent\HUGE\bfseries Achtergrondinformatie \\[0.5\baselineskip]
+          \textit{Slimme Stoorzender}}\\[2\baselineskip]
+        {\Large Prof. G.J.T. Leus (Begeleider TU Delft)}\\[1.5\baselineskip]
+        {\itshape W.P. Bruinsma}\\[.37\baselineskip]
+        {\itshape R.P. Hes}\\[.37\baselineskip]
+        {\itshape H.J.C. Kroep}\\[.37\baselineskip]
+        {\itshape T.C. Leliveld}\\[.37\baselineskip]
+        {\itshape W.M. Melching}\\[.37\baselineskip]
+        {\itshape T.A. aan de Wiel}\\[.37\baselineskip]
+        \par
+        \vspace{0.4\textheight}
+        {\noindent \today}\\[\baselineskip]
+      }% end of vbox
+    }% end of parbox
+  }% end of hbox
+  \vfill \null
+  \endgroup}
+
+
 
 \begin{document}
-\maketitle
 
-\clearpage
+\selectlanguage{dutch}
+
+
+\frontmatter
+\setcounter{page}{5}
+\begin{titlingpage}
+  \pagestyle{empty}
+  \titleGM
+\end{titlingpage}
 
 \tableofcontents
 
 \clearpage
+\mainmatter
 
-\section{Inleiding}
-Wij zijn een groep studenten Electrical Engineering van de Technische Universiteit Delft. Op het moment houden wij ons bezig met ons Bachelor afstudeerproject, de laatste horde tot ons Bachelor-diploma. Onze groep bestaat uit zes studenten, van wie iedereen zijn Propedeuse cum laude behaald heeft en verscheidene het honoursprogramma hebben afgerond.
+\chapter{Inleiding}
+Wij zijn een groep studenten Electrical Engineering van de Technische Universiteit Delft. Op het moment houden wij ons bezig met ons Bachelor Afstudeerproject, de laatste horde tot ons Bachelor-diploma. Onze groep bestaat uit zes studenten, van wie iedereen zijn Propedeuse cum laude behaald heeft en verscheidene het honoursprogramma hebben afgerond.
 
-In dit document zullen we kort uiteenzetten...
-
-\section{Bachelor afstudeerproject}
-Het Bachelor afstudeerproject geeft ons de kans om de kennis die we tijdens onze studie hebben opgedaan toe te passen in het ontwerp van een product. We krijgen hierbij de mogelijkheid om onderzoek te doen naar state-of-the-art technologie. Dit maakt het mogelijk om bepaalde technologische grenzen te verleggen.
+In dit document zullen wij nog achtergrondinformatie geven, zodat u zich goed kan voorbereiden op de aankomende meeting. Allereerst zullen we nog wat meer informatie geven over ons Bachelor Afstudeerproject, daarna geven we een introductie op wat wij denken dat de huidige problematiek vormt en onze oplossing presenteren. Tot slot sluiten we af met een discussie, met vragen waarbij denken dat ze interessant zijn voor tijdens de meeting.
 
 
-% Tijdspanne
+\section{Bachelor Afstudeerproject}
+Het Bachelor Afstudeerproject geeft ons de kans om de kennis die we tijdens onze studie hebben opgedaan toe te passen in het ontwerp van een product. We krijgen hierbij de mogelijkheid om onderzoek te doen naar state-of-the-art technologie. Dit maakt het mogelijk om bepaalde technologische grenzen te verleggen.
 
-\subsection{Begeleider}
-% Geert Leus, awesome gast!
+Het Bachelor Afstudeerproject vindt plaats gedurende tien weken, beginnend vanaf 20 april 2015 en durend tot en met 29 juni 2015.
 
-\section{Huidige problemen met stoorzenders}
-\subsection{Eigen communicatie}
-\subsection{Makkelijk te detecteren}
-\subsection{Lastig groot deel spectrum te storen}
-\subsection{Kost veel vermogen}
+Binnen dit project is het de bedoeling dat wij een literatuuronderzoek doen en hier onze eigen analyse op toepassen. Daarna moeten wij met een concreet idee voor een product komen, en kijken hoe we dit in de markt kunnen zetten. Tevens is het ook de bedoeling dat we een prototype ontwikkelen van dit product.
 
+Aangezien wij een zeer enthousiaste groep zijn, hebben wij besloten gebruik te maken van state-of-the-art papers op het gebied van het waarnemen van het radio-spectrum. Vervolgens hebben we de theorieën uit meerdere papers geanalyseerd, en zijn we met een eigen overkoepelende theorie gekomen. Deze theorie hebben we vervolgens omgezet in een computer-algoritme.
 
-\section{Onze oplossing}
-\subsection{Methode}
-\subsubsection{Smart sensing}
+\section{Begeleider}
+In dit project worden wij begeleid door professor Geert Leus. Hij is professor aan de faculteit voor Elektrotechniek, Wiskunde en Informatica aan de TU Delft. Zijn specialisaties liggen in de gebieden communicatie en netwerken. Op dit moment doet hij onder andere onderzoek naar samenwerking tussen verschillende modules bij het verwerken van signalen. Dit heeft toepassingen voor slimme radio's, iets wat nauw samenhangt met het onderwerp van ons Bachelor Afstudeerproject en ons potentiële product.
+
+\chapter{Huidige problemen met stoorzenders}
+Stoorzenders worden op dit moment ingezet als vorm van elektronische oorlogsvoering. Er zijn zeer veel situaties denkbaar waarbij het gebruik van een stoorzender een tactisch voordeel kan bieden. Dit kan zowel op kleine als op grote schaal nuttig zijn. Volgens onze informatie worden jammers daarom nu al veelvuldig ingezet binnen defensie.
+
+Op kleine schaal kan het nuttig zijn om bijvoorbeeld de communicatie van een groep gijzelaars plat te leggen, bijvoorbeeld vlak voordat er een inval plaats gaat vinden. Dit kan er voor zorgen dat de gijzelaars door het plotselinge gebrek aan elektronische communicatie gedesoriënteerd raken, en de inval dus soepeler kan verlopen. Ook kan er worden uitgesloten dat er externe hulp ingeschakeld wordt of andere mensen gewaarschuwd worden.
+
+Ook op grotere schaal kunnen stoorzenders effectief ingezet worden, bijvoorbeeld om de communicatie van een complete stad plat te leggen. Bijvoorbeeld voor een aanval, maar dit kan ook onderdeel van een belegering zijn.
+
+In dit hoofdstuk zullen we de problematiek bespreken die naar onze mening speelt rondom het gebruik van stoorzenders. Deze gestelde problemen komen voort uit een theoretische analyse van de huidige stoorzenders, en berust dus niet op ervaring van mensen die daadwerkelijk gebruik maken van deze apparaten. Wij zijn benieuwd in hoeverre u zich kunt vinden in de door ons gesteld problemen.
+
+\section{Eigen communicatie}
+Op dit moment maken de huidige stoorzenders geen onderscheid tussen vijandige en vriendelijke communicatie. Als er gekozen wordt om een bepaalde frequentie-band plat te leggen, is het niet mogelijk om hier zelf nog door heen te komen. Dit zorgt er voor dat er voor eigen communicatie uitgeweken moet worden, en je dus eigenlijk jezelf limiteert in je communicatie-middelen. Als bijvoorbeeld alleen GSM netwerken plat gelegd worden vormt dit nog geen probleem, maar als er gekozen wordt om zo veel mogelijk communicatie te storen begint dit wel een rol te spelen.
+
+\section{Lastig groot deel spectrum te storen}
+Met de huidige methoden is het lastig om een groot deel van het spectrum tegelijk plat te leggen. Dit maakt het bijvoorbeeld bijna onmogelijk om communicatie plat te leggen als niet van tevoren bekend is van welke frequenties de vijand gebruik maakt.
+
+\section{Makkelijk te detecteren}
+Met huidige vormen van het storen van signalen wordt er over een brede band veel energie de ether in gestuurd. Dit maakt het natuurlijk voor een vijand erg makkelijk om de bron van de storende signalen te vinden, en deze proberen uit te schakelen.
+
+\section{Kost veel energie}
+Doordat niet bekend is welk deel van het spectrum op elk moment in gebruik is, is de enige mogelijkheid om te storen om op elk moment in de tijd elke frequentie te blokkeren. Op het moment dat de te blokkeren frequentieband groter wordt, loopt het energieverbruik al snel uit klauwen.
+
+\chapter{Onze oplossing}
+\section{Methode}
+\subsection{Smart sensing}
 Hier wat zeggen over compressive sensing
-\subsubsection{Detectie van signalen}
-\subsubsection{Transmissie}
+\subsection{Detectie van signalen}
+\subsection{Transmissie}
 
-\subsection{Waarom nu?}
+\section{Waarom nu?}
 
 
-\section{Ons product}
-\subsection{Toepassingen}
-\subsection{Vergelijkbare producten}
+\chapter{Ons product}
+\section{Toepassingen}
+\section{Vergelijkbare producten}
 
-\section{Discussie}
+\chapter{Discussie}
 % Hoe nuttig is ons product?
 %     Komen de problemen die wij schetsen overeen met bestaande problemen?
 %     Welke problemen ziet defensie graag opgelost?
@@ -61,28 +119,28 @@ Hier wat zeggen over compressive sensing
 
 
 \clearpage
-\section{Oude meuk}
+\chapter{Oude meuk}
 Als onderdeel van onze Bachelor Electrical Engineering worden we opgedeeld in groepen van zes studenten. Samen moeten we een klein bedrijf starten en werken aan een product met commerciele mogelijkheden. onze begeleider is prof. Geert Leus. Hij doet onderzoek in het gebied van Cognitive Radio.
 
-\subsection{Cognitive Radio}
+\section{Cognitive Radio}
 Het spectrum is dan wel opgekocht en verdeeld, het wordt wel schaars gebruikt. Grote delen van het spectrum worden niet vaak benut. Uit deze observatie komt het idee van Cognitive Radio voort. Het idee is om het spectrum te scannen en vast te leggen welke bandjes er in gebruik zijn en welke niet. Vervolgens kiest de cognitive radio een ongebruikte band uit en gaat daar op communiceren. Mocht de eigenaar van de betreffende band beginnen met zenden, dan zoekt de Cognitive Radio een nieuw leeg stuk spectrum uit en gaat daar communiceren.
 
-\subsection{Cognitive Jammer}
+\section{Cognitive Jammer}
 Het concept van Cognitive Radio kan je ook omdraaien. Je kan juist gaan uitzenden en dus storen op de schaarse hoeveelheid bandjes die in gebruik is. Daarmee kan je dus met een minimale hoeveelheid energie de communicatie op een groot stuk spectrum plat leggen. Dit concept vormt de basis van ons product.
 
-\subsection{Vergelijking Conventionele Jammer}
+\section{Vergelijking Conventionele Jammer}
 Conventionele jammers hebben een andere aanpak. Van te voren wordt een band bepaald waarop communicatie gestoord moet worden. Vervolgens wordt een grote hoeveelheid vermogen in die band gestopt zodat er geen communicatire meer mogelijk is. Ons product zou een aantal voordelen kunnen bieden ten opzichte van de conventionele jammer.
 
-\subsection{Weinig vermogen}
+\section{Weinig vermogen}
 Omdat de cognitive jammer slechts een minimaal deel van het spectrum hoeft te storen verbruikt het veel minder energie. Dit opent deuren voor meer en kleinere toepassingen. Een dronre met cognitive jamming ingebouwd zou hierdoor meer re\"eel worden.
 
-\subsection{Moeilijk te detecteren}
+\section{Moeilijk te detecteren}
 Waar een conventionele jammer zeer makkelijk te detecteren is, omdat het vanuit \'e\'en punt een grote hoeveelheid vermogen uitzend, is een cognitive jammer veel moeilijker te detecteren. Omdat de cognitive jammer schaars jamt is het moeilijk te onderscheiden van normale communicatie.
 
-\subsection{Eigen communicatie mogelijk}
+\section{Eigen communicatie mogelijk}
 Als er gegevens van eigen communicatie bekend zijn kunnen deze uitgefilterd worden als er gescant wordt naar vijandelijke communicatie. Hierdoor blijft eigen communicatie nog steeds mogelijk.
 
-\subsection{State-of-the-Art Technologie}
+\section{State-of-the-Art Technologie}
 Recent zijn er veel vorderingen gemaakt op het gebied van spectrum scannen. Hierdoor is het mogelijk om spectrum scanners substantieel goedkoper te kunnen produceren door toepassing van een aantal moderne algoritmes. Wij implementeren deze algoritmes in onze producten. Hierbij wordt gebruik gemaakt van het feit dat we niet de inhoud willen weten van de communicatie, maar slechts of er wordt gecommuniceerd of niet.
 
 \end{document}
