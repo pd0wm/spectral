@@ -36,6 +36,20 @@ def run_reconstructor(signal_queue, websocket_rec_queue, reconstructor, sample_f
             container.enqueue(websocket_rec_queue)
 
 
+def run_detector(detector, detection_queue, websocket_queue, opt):
+    while True:
+        inp = detection_queue.get()
+        if inp.any():
+            detect = detector.detect(inp)
+            if websocket_queue.full():
+                websocket_queue.get()
+            websocket_queue.put_nowait(detect)
+        while opt.poll():
+            options = opt.recv()
+        if options:
+            detect.parse_options(options)
+
+
 def run_reconstructor_profiled(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, opt):
     import cProfile
     import pstats
@@ -67,10 +81,10 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
     reactor.run()
 
 
-def run_settings_server(web_opt, src_opt, rec_opt):
+def run_settings_server(web_opt, src_opt, rec_opt, det_opt):
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = cg.Settings(web_opt, src_opt, rec_opt)
+    settings = cg.Settings(web_opt, src_opt, rec_opt, det_opt)
     uri = daemon.register(settings)
     ns.register("cg.settings", uri)
     daemon.requestLoop()

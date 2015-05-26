@@ -32,6 +32,9 @@ multiplier = 100  # Warning: greatly diminishes perfomance
 nyq_block_size = L * N * multiplier
 window_length = nyq_block_size
 threshold = 2000
+numbbins = 20
+win_length = 50
+Pfa = 0.1  # Doet niks sur le moment
 
 if source_type == "usrp":
     source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
@@ -42,9 +45,11 @@ elif source_type == "complex":
 
 sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.Wessel(N, L)
+detector = cg.detection.ENP_ED(threshold, Pfa, win_length, numbbins)
 
 # Init processes
 signal_queue = Queue(10)
+detection_queue = Queue(10)
 websocket_src_queue = Queue(10)
 websocket_rec_queue = Queue(10)
 websocket_det_queue = Queue(10)
@@ -52,6 +57,7 @@ websocket_det_queue = Queue(10)
 parent_opt_src, child_opt_src = Pipe()
 parent_opt_rec, child_opt_rec = Pipe()
 parent_opt_web, child_opt_web = Pipe()
+parent_opt_det, child_opt_det = Pipe()
 
 if __name__ == '__main__':
 
@@ -62,8 +68,10 @@ if __name__ == '__main__':
     p3 = Process(target=run_websocket_server,
                  args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, child_opt_web))
     p4 = Process(target=run_settings_server,
-                 args=(parent_opt_web, parent_opt_src, parent_opt_rec))
-    processes = [p1, p2, p3, p4]
+                 args=(parent_opt_web, parent_opt_src, parent_opt_rec, parent_opt_det))
+    p5 = Process(target=run_detector,
+                 args=(detector, detection_queue, websocket_det_queue, child_opt_det))
+    processes = [p1, p2, p3, p4, p5]
 
     try:
         [p.start() for p in processes]
