@@ -7,7 +7,7 @@ from twisted.python import log
 from twisted.internet import reactor
 
 
-def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, opt):
+def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, opt, upscale_factor):
     while True:
         orig_signal = source.generate(window_length)
         sampled = sampler.sample(orig_signal)
@@ -16,7 +16,7 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
             signal_queue.get()
         signal_queue.put_nowait(sampled)
 
-        container = WebsocketDataContainer(ServerProtocolPlot.SRC_DATA, cg.fft(orig_signal))
+        container = WebsocketDataContainer(ServerProtocolPlot.SRC_DATA, cg.fft(orig_signal[::upscale_factor]))
         container.enqueue(websocket_src_queue)
 
         options = None

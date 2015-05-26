@@ -28,7 +28,7 @@ source_snr = args.snr
 frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
-multiplier = 100  # Warning: greatly diminishes perfomance
+upscale_factor = 100  # Warning: greatly diminishes perfomance
 nyq_block_size = L * N * multiplier
 window_length = nyq_block_size
 threshold = 2000
@@ -62,7 +62,7 @@ parent_opt_det, child_opt_det = Pipe()
 if __name__ == '__main__':
 
     p1 = Process(target=run_generator,
-                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, child_opt_src))
+                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, child_opt_src, upscale_factor))
     p2 = Process(target=run_reconstructor,
                  args=(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
     p3 = Process(target=run_websocket_server,
