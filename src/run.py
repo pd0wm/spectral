@@ -14,7 +14,7 @@ parser.add_argument('-N', metavar='N', type=int, default=14)
 parser.add_argument('-L', metavar='L', type=int, default=40)
 parser.add_argument('-source', metavar='source', type=str, default='dump')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
-parser.add_argument('-dump', metavar='file', type=str, default='twotone.dmp')
+parser.add_argument('-dump', metavar='file', type=str, default='dumps/twotone.dmp')
 args = parser.parse_args()
 
 ip = args.ip
