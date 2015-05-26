@@ -16,6 +16,7 @@ var FFTplot = function(container_id, data_type){
     // Set up the averaging slider.
     this.averaging_slider = $("#" + container_id + "-averaging-slider").slider();
     this.averaging_slider.slider("setValue", this.N);
+    that = this;
     $(document).on("change", "#" + container_id + "-averaging-slider", function() {
         that.N = parseInt(this.value);
     });
