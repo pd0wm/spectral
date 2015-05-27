@@ -17,7 +17,7 @@
 \chapter{Reconstruction}
 
 \section{Preliminaries}
-Vectors and matrices are denoted by bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We introduce notation to denote elements of vectors and matrices.
+Vectors are denoted by lower-case bold-faced letters and matrices are denoted by upper-case bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We introduce notation to denote elements of vectors and matrices.
 
 \begin{blockDefinition}[Vector Element]
     Let $\vec{x} \in \mathbb{C}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ for $i = 1,\ldots,N$.
@@ -32,6 +32,8 @@ We will need notation to denote two uncommon vector operations.
 \begin{blockDefinition}[Subvector]
     Let $\vec{x} \in \mathbb{C}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{C}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
 \end{blockDefinition}
+
+Note that a subvector includes both boundary elements.
 
 \begin{blockDefinition}[Reverse of Vector]
     Let $\vec{x} \in \mathbb{C}^N$. Then the reverse of $\vec{x}$ denotes a vector $\vec{y} \in \mathbb{C}^N$ such that $(\vec{y})_i = (\vec{x})_{N-i+1}$ for $i = 1,\ldots,N$.
@@ -51,7 +53,7 @@ We now define the convolution operator as a closed binary operation on vectors. 
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
 \end{blockTheorem}
 
-We also define correlation as a closed binary operation on vectors. The definition is again similar to the definition of correlation for discrete signals.
+The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also define correlation as a closed binary operation on vectors. The definition is again similar to the definition of correlation for discrete signals.
 
 \begin{blockDefinition}[Deterministic Cross-correlation]
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^{N+M-1}$ such that
@@ -67,32 +69,33 @@ Furthermore, we define the Hadamard product as a closed binary operation on vect
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
 \end{blockDefinition}
 
-Note that the notation $\cdot$ of the inner product is similar to the notation $\odot$ of the Hadamard product. The following theorem identifies the expectation value of the correlation operator.
+Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related. The following theorem identifies the expected value of the correlation operator.
 
 \begin{blockTheorem} \lab{th:corr-unbiased}
-    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Then $\vec{x} \circ \vec{y}$ is an unbiased estimator of the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ weighted by the elements of the vector
+    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Furthermore, let $r[n]$ be a discrete signal such that $r[i] = (\vec{x} \circ \vec{y})_{i+M}$ for $i = -M+1,\ldots,N-1$. Then $r[i]$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where
     \begin{align*}
-        \begin{bmatrix}
-            1 & \cdots & K - 1 & K & \cdots &K & K - 1 & \cdots & 1
-        \end{bmatrix}^T
+        W[i] = \begin{cases}
+            i + M & -M + 1 \le i < -M + K, \\
+            K & -M + K \le i < N - K, \\
+            N - i & N - k < i \le N - 1, \\
+            0 & \text{elsewhere,}
+        \end{cases}
+        % \begin{bmatrix}
+        %     1 & \cdots & K - 1 & K & \cdots &K & K - 1 & \cdots & 1
+        % \end{bmatrix}^T
     \end{align*}
     where $K = \min\{N,M\}$.
 \end{blockTheorem}
 
 Finally, we extend the use of dots to denote finite sequences.
 
-\begin{blockDefinition}
-    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ denotes
-
-    \makebox[\textwidth]{\centering
-        $(1,1),\ldots,(1,N),(2,1),\ldots,(2,N),(3,1),\ldots,(N,N).$
-    } \nolinebreak
+\begin{blockDefinition} \lab{def:dots-extended}
+    Let $N \in \mathbb{N}$ and let $S=\{(a,b) \in \mathbb{N} \times \mathbb{N} : a \le b \le N\}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence of all elements in $S$ such that $(a,b) \in S$ comes before $(c,d) \in S$ when $a < c$, or when $a = c$ and $b < d$. 
 \end{blockDefinition}
 
-Note that the sequence $(1,1),\ldots,(N,N)$ has length
-\begin{align*}
-    1 + 2 + \ldots + N = \frac{1}{2} N(N+1).
-\end{align*}
+\begin{blockTheorem} \lab{th:dots-extended}
+    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ is finite and has length $\frac{1}{2}N(N+1)$.
+\end{blockTheorem}
 
 \section{Overview of Variables}
 \Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis.
@@ -232,8 +235,9 @@ where $\vec{d}_i$ denotes $\vec{c}_i$ reversed. Therefore, the reverse of the of
 \end{align*}
 Thus $\vec{w}_m$ aggregates the output of all cosets in the $m$'th interval of $N$ samples of $\vec{x}$. This concludes the main analysis.
 
-\section{Proofs of Main Analysis}
-In this section the theorems of the main analysis will be proven.
+\section{Proofs}
+\label{sec:proofs}
+In this section the stated theorems will be proven.
 
 \begin{blockProofTheorem}{\ref{th:conv-comm}}
     A change of index yields that
@@ -320,6 +324,22 @@ In this section the theorems of the main analysis will be proven.
             R_{X,Y}[N-2] \\
             R_{X,Y}[N-1]
         \end{bmatrix}.
+    \end{align*}
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:dots-extended}}
+    Consider \cref{def:dots-extended}. Then note that $S$ is bounded. Therefore $(1,1),\ldots,(N,N)$ is finite. Now note that
+    \begin{align*}
+        (1,1),\ldots,(N,N) =
+        \underbrace{(1,1)}_{\text{length } 1},
+        \underbrace{(2,1),(2,2)}_{\text{length } 2},
+        \underbrace{(3,1),\ldots,(3,3)}_{\text{length } 3},
+        \ldots,
+        \underbrace{(N,1),\ldots,(N,N)}_{\text{length } N}.
+    \end{align*}
+    So $(1,1),\ldots,(N,N)$ has length
+    \begin{align*}
+        1+2+3+\ldots+N = \frac{1}{2}N(N+1).
     \end{align*}
 \end{blockProofTheorem}
 
