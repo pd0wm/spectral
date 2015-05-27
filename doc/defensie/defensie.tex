@@ -1,3 +1,4 @@
+%!TEX program = xelatex
 \documentclass[oneside, a4paper, openany]{memoir}
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
@@ -17,13 +18,13 @@
         \vspace{\drop}
         {\noindent\HUGE\bfseries Achtergrondinformatie \\[0.5\baselineskip]
           \textit{Slimme Stoorzender}}\\[2\baselineskip]
-        {\Large Prof. G.J.T. Leus (Begeleider TU Delft)}\\[1.5\baselineskip]
         {\itshape W.P. Bruinsma}\\[.37\baselineskip]
         {\itshape R.P. Hes}\\[.37\baselineskip]
         {\itshape H.J.C. Kroep}\\[.37\baselineskip]
         {\itshape T.C. Leliveld}\\[.37\baselineskip]
         {\itshape W.M. Melching}\\[.37\baselineskip]
-        {\itshape T.A. aan de Wiel}\\[.37\baselineskip]
+        {\itshape T.A. aan de Wiel}\\[2\baselineskip]
+        {\Large Prof. G.J.T. Leus (Begeleider TU Delft)}\\[1\baselineskip]
         \par
         \vspace{0.4\textheight}
         {\noindent \today}\\[\baselineskip]
@@ -53,43 +54,48 @@
 \mainmatter
 
 \chapter{Inleiding}
-Wij zijn een groep studenten Electrical Engineering van de Technische Universiteit Delft. Op het moment houden wij ons bezig met ons Bachelor Afstudeerproject, de laatste horde tot ons Bachelor-diploma. Onze groep bestaat uit zes studenten, van wie iedereen zijn Propedeuse cum laude behaald heeft en verscheidene het honoursprogramma hebben afgerond.
+Wij zijn een groep studenten Electrical Engineering van de Technische Universiteit Delft. Op het moment houden wij ons bezig met ons Bachelor Afstudeerproject, de laatste horde tot ons Bachelor-diploma. Onze groep bestaat uit zes studenten, van wie iedereen zijn Propedeuse met lof heeft gehaald en verscheidene het honoursprogramma hebben afgerond.
 
-In dit document zullen wij nog achtergrondinformatie geven, zodat u zich goed kan voorbereiden op de aankomende meeting. Allereerst zullen we nog wat meer informatie geven over ons Bachelor Afstudeerproject, daarna geven we een introductie op wat wij denken dat de huidige problematiek vormt en onze oplossing presenteren. Tot slot sluiten we af met een discussie, met vragen waarbij denken dat ze interessant zijn voor tijdens de meeting.
+In dit document zullen wij achtergrondinformatie geven, zodat u zich goed kan voorbereiden op de aankomende meeting. Allereerst zullen  we u wat informatie geven over ons Bachelor Afstudeerproject. Vervolgens geven we een introductie over wat wij denken dat de huidige problematiek vormt en presenteren we onze oplossing. Tot slot sluiten we af met een discussie. Hierbij hebben wij een aantal vragen waarvan we denken dat ze interessant zijn voor tijdens de meeting.
 
+Door het stuk heen zullen er stukjes met meer technische details over een bepaald onderwerp te vinden zijn. Deze zullen duidelijk aangegeven worden met \textsc{detail}. Deze informatie is voor de technisch aangelegde, en is niet nodig om de rest van het verhaal te begrijpen.
 
-\section{Bachelor Afstudeerproject}
+\chapter{Bachelor Afstudeerproject}
 Het Bachelor Afstudeerproject geeft ons de kans om de kennis die we tijdens onze studie hebben opgedaan toe te passen in het ontwerp van een product. We krijgen hierbij de mogelijkheid om onderzoek te doen naar state-of-the-art technologie. Dit maakt het mogelijk om bepaalde technologische grenzen te verleggen.
 
-Het Bachelor Afstudeerproject vindt plaats gedurende tien weken, beginnend vanaf 20 april 2015 en durend tot en met 29 juni 2015.
+Het Bachelor Afstudeerproject duurt tien weken en vindt plaats vanaf 20 april 2015 tot en met 29 juni 2015.
 
-Binnen dit project is het de bedoeling dat wij een literatuuronderzoek doen en hier onze eigen analyse op toepassen. Daarna moeten wij met een concreet idee voor een product komen, en kijken hoe we dit in de markt kunnen zetten. Tevens is het ook de bedoeling dat we een prototype ontwikkelen van dit product.
+Binnen dit project is het de bedoeling dat wij een literatuuronderzoek doen en hierop onze eigen analyse toepassen. Daarna moeten wij met een concreet idee voor een product komen, en kijken hoe we dit in de markt kunnen zetten. Tevens is het de bedoeling dat we een prototype ontwikkelen van dit product.
 
-Aangezien wij een zeer enthousiaste groep zijn, hebben wij besloten gebruik te maken van state-of-the-art papers op het gebied van het waarnemen van het radio-spectrum. Vervolgens hebben we de theorieën uit meerdere papers geanalyseerd, en zijn we met een eigen overkoepelende theorie gekomen. Deze theorie hebben we vervolgens omgezet in een computer-algoritme.
+Aangezien wij een zeer enthousiaste groep zijn, hebben wij besloten gebruik te maken van de state-of-the-art op het gebied van het waarnemen van het spectrum. Vervolgens hebben we de theorieën uit meerdere papers geanalyseerd, en zijn we met een eigen overkoepelende theorie gekomen. Deze theorie hebben we vervolgens omgezet in een computeralgoritme.
 
 \section{Begeleider}
-In dit project worden wij begeleid door professor Geert Leus. Hij is professor aan de faculteit voor Elektrotechniek, Wiskunde en Informatica aan de TU Delft. Zijn specialisaties liggen in de gebieden communicatie en netwerken. Op dit moment doet hij onder andere onderzoek naar samenwerking tussen verschillende modules bij het verwerken van signalen. Dit heeft toepassingen voor slimme radio's, iets wat nauw samenhangt met het onderwerp van ons Bachelor Afstudeerproject en ons potentiële product.
+In dit project worden wij begeleid door professor Geert Leus. Hij is professor aan de faculteit voor Elektrotechniek, Wiskunde en Informatica van de TU Delft. Zijn specialisaties liggen in de gebieden communicatie en netwerken. Op dit moment doet hij onder andere onderzoek naar samenwerking tussen verschillende modules bij het verwerken van signalen. Dit heeft toepassingen voor slimme radio's, iets wat nauw samenhangt met het onderwerp van ons Bachelor Afstudeerproject en ons potentiële product.
 
 \chapter{Huidige problemen}
-Stoorzenders worden op dit moment ingezet als vorm van elektronische oorlogsvoering. Er zijn zeer veel situaties denkbaar waarbij het gebruik van een stoorzender een tactisch voordeel kan bieden. Dit kan zowel op kleine als op grote schaal nuttig zijn. Volgens onze informatie worden jammers daarom nu al veelvuldig ingezet binnen defensie.
-
-Op kleine schaal kan het nuttig zijn om bijvoorbeeld de communicatie van een groep gijzelaars plat te leggen, bijvoorbeeld vlak voordat er een inval plaats gaat vinden. Dit kan er voor zorgen dat de gijzelaars door het plotselinge gebrek aan elektronische communicatie gedesoriënteerd raken, en de inval dus soepeler kan verlopen. Ook kan er worden uitgesloten dat er externe hulp ingeschakeld wordt of andere mensen gewaarschuwd worden.
-
-Ook op grotere schaal kunnen stoorzenders effectief ingezet worden, bijvoorbeeld om de communicatie van een complete stad plat te leggen. Bijvoorbeeld voor een aanval, maar dit kan ook onderdeel van een belegering zijn.
-
 In dit hoofdstuk zullen we de problematiek bespreken die naar onze mening speelt rondom het gebruik van stoorzenders. Deze gestelde problemen komen voort uit een theoretische analyse van de huidige stoorzenders, en berust dus niet op ervaring van mensen die daadwerkelijk gebruik maken van deze apparaten. Wij zijn benieuwd in hoeverre u zich kunt vinden in de door ons gesteld problemen.
 
-\section{Eigen communicatie}
-Op dit moment maken de huidige stoorzenders geen onderscheid tussen vijandige en vriendelijke communicatie. Als er gekozen wordt om een bepaalde frequentie-band plat te leggen, is het niet mogelijk om hier zelf nog door heen te komen. Dit zorgt er voor dat er voor eigen communicatie uitgeweken moet worden, en je dus eigenlijk jezelf limiteert in je communicatie-middelen. Als bijvoorbeeld alleen GSM netwerken plat gelegd worden vormt dit nog geen probleem, maar als er gekozen wordt om zo veel mogelijk communicatie te storen begint dit wel een rol te spelen.
+Stoorzenders worden op dit moment ingezet als vorm van elektronische oorlogsvoering. Er zijn zeer veel situaties denkbaar waarbij het gebruik van een stoorzender een tactisch voordeel kan bieden. Dit kan zowel op kleine als op grote schaal nuttig zijn. Volgens onze informatie worden jammers daarom nu al veelvuldig ingezet binnen defensie.
 
-\section{Lastig groot deel spectrum te storen}
-Met de huidige methoden is het lastig om een groot deel van het spectrum tegelijk plat te leggen. Dit maakt het bijvoorbeeld bijna onmogelijk om communicatie plat te leggen als niet van tevoren bekend is van welke frequenties de vijand gebruik maakt.
+Op kleine schaal kan het nuttig zijn om de communicatie van een groep gijzelaars plat te leggen, bijvoorbeeld vlak voordat er een inval plaats gaat vinden. Dit kan ervoor zorgen dat de gijzelaars door het plotselinge gebrek aan elektronische communicatie gedesoriënteerd raken, en de inval dus soepeler kan verlopen. Ook kan er worden uitgesloten dat er externe hulp ingeschakeld wordt of andere mensen gewaarschuwd worden.
+
+Ook op grotere schaal kunnen stoorzenders effectief ingezet worden, bijvoorbeeld om de communicatie van een complete stad plat te leggen. Dit kan gebruikt worden tijdens een aanval, maar ook tijdens een belegering zijn.
+
+\section{Eigen communicatie}
+Op dit moment maken de huidige stoorzenders geen onderscheid tussen vijandige en vriendelijke communicatie. Als er gekozen wordt om een bepaalde frequentieband plat te leggen, dan is het niet mogelijk om zelf nog gebruikt te maken van deze frequentieband. Dit zorgt ervoor dat eigen communicatie een andere frequentieband moet zoeken, en je dus eigenlijk jezelf limiteert in je communicatiemiddelen. Als bijvoorbeeld alleen GSM netwerken plat gelegd worden vormt dit nog geen probleem, maar als er gekozen wordt om zo veel mogelijk communicatie te storen begint dit wel degelijk een rol te spelen.
+
+\section{Lastig om groot deel spectrum te storen}
+Met de huidige methoden is het lastig om een groot deel van het spectrum tegelijk plat te leggen. Dit maakt het bijna onmogelijk om communicatie plat te leggen als niet van tevoren bekend is van welke frequenties de vijand gebruik maakt.
 
 \section{Makkelijk te detecteren}
-Met huidige vormen van het storen van signalen wordt er over een brede band veel energie de ether in gestuurd. Dit maakt het natuurlijk voor een vijand erg makkelijk om de bron van de storende signalen te vinden, en deze proberen uit te schakelen.
+Met huidige vormen van het storen van signalen wordt er over een brede band veel energie de ether in gestuurd. Dit maakt het natuurlijk voor een vijand erg makkelijk om de bron van de storende signalen te vinden en deze vervolgens uit te schakelen.
 
 \section{Kost veel energie}
-Doordat niet bekend is welk deel van het spectrum op elk moment in gebruik is, is de enige mogelijkheid om te storen om op elk moment in de tijd elke frequentie te blokkeren. Op het moment dat de te blokkeren frequentieband groter wordt, loopt het energieverbruik al snel uit klauwen.
+Omdat niet bekend is welk deel van het spectrum op elk moment in gebruik is, is de enige mogelijkheid om te storen om op elk moment in de tijd elke frequentie te blokkeren. Als er wordt gekozen om een grote frequentieband te storen, dan loopt het energieverbruik al snel uit de hand.
+
+\begin{blockDetail}
+    Als er witte ruis wordt gebruikt om signaal te storen, dan is het benodigde vermogen evenredig met de grootte van het spectrum dat gestoord moet worden. In het geval van de klassieke stoorzender wordt het hele spectrum waar de stoorzender op is ingesteld gestoord, en schaalt het benodigde vermogen dus met de grootte van het spectrum dat moet worden gestoord. Echter, met de slimme stoorzender wordt alleen het spectrum waarop wordt uitgezonden gestoord, en schaalt het benodigde vermogen dus enkel met de grootte van het spectrum waarop wordt uitgezonden. Dit kan een significant voordeel opleveren.
+\end{blockDetail}
 
 \chapter{Oplossing}
 Wij hebben theoretisch onderzoek gedaan naar state-of-the-art methoden om het spectrum te scannen. Hierdoor hebben wij onze eigen methode ontwikkeld waarop een slimmere jammer zou kunnen functioneren.
@@ -97,39 +103,48 @@ Wij hebben theoretisch onderzoek gedaan naar state-of-the-art methoden om het sp
 
 \section{Methode}
 \subsection{Smart sensing}
-Door gebruik te maken van nieuwe methoden kunnen we veel efficiënter `zien' welke frequenties wel en niet in gebruik zijn. Met deze methode is het mogelijk om grenzen van signaal-bemonstering te verleggen. Door genoegen te nemen met minder informatie (die echter voor ons nog voldoende informatie biedt) over de aanwezige signalen in de ether, kunnen we dus efficiënter gebruik maken van de bemonsterde data. Deze methode wordt ook wel \textit{Compressive Sensing} genoemd.
+Door gebruik te maken van nieuwe methoden kunnen we veel efficiënter waarnemen welke frequenties wel en welke frequenties niet in gebruik zijn. Met deze methode is het mogelijk om grenzen van signaalbemonstering te verleggen. Namelijk, door heel precies enkel de juiste informatie waar te nemen over de aanwezige signalen in de ether, kunnen we efficiënter gebruik maken van de bemonsterde data. Deze methode wordt ook wel \textit{compressive sensing} genoemd.
 
 \begin{blockDetail}
-Door gebruik te maken van compressive sensing is het mogelijk om te sampelen op een frequentie die lager ligt dan de Nyquist-frequentie. Dit wordt ook wel sub-Nyquist sampling genoemd. Aangezien wij alleen geïnteresseerd zijn in de reconstructie van het vermogensspectrum en niet in de reconstructie van de signalen kunnen wij met minder informatie toe. Door gebruik te maken van meerdere devices en gebruik te maken \textit{multi-coset sampling} kunnen we nog verder onder de Nyquist-frequentie gaan zitten. Als we gebruik maken van 8 devices kunnen we per device tot wel 24 keer onder de Nyquist-frequentie zitten, en met het complete systeem een factor drie winst boeken.\cite{ariananda2011multicoset}\cite{ariananda2012compressive}
+Door gebruik te maken van compressive sensing is het mogelijk om te samplen op een frequentie die lager ligt dan de Nyquist-frequentie. Dit wordt ook wel sub-Nyquist sampling genoemd. Aangezien wij alleen geïnteresseerd zijn in de reconstructie van het vermogensspectrum en niet in de reconstructie van de signalen, kunnen wij met minder informatie toe. Door gebruik te maken van meerdere devices, dit wordt ook wel \textit{multi-coset sampling} genoemd, kunnen we nog verder onder de Nyquist-frequentie gaan zitten. Als we bijvoorbeeld gebruik maken van acht devices, dan kunnen we per device tot 24 keer onder de Nyquist-frequentie gaan zitten, en met het complete systeem een factor drie winst boeken. \cite{ariananda2011multicoset} \cite{ariananda2012compressive}
 \end{blockDetail}
 
 \subsection{Detectie van signalen}
-Nadat de informatie over aanwezige signalen in de ether gereconstrueerd is, moet deze nog onderscheiden worden van de aanwezige ruis. Hier kunnen we weer gebruik maken van andere algoritmes en theorieën, bijvoorbeeld door gebruik te maken over vooraf bekende informatie over de verwachte signalen. In deze stap maken kijken we er welke delen van het frequentiespectrum er effectief in gebruik zijn.
+Nadat de informatie over signalen in de ether verkregen is, moeten signalen nog van ruis onderscheiden worden. Hier kunnen we weer gebruik maken van andere algoritmes en theorieën, bijvoorbeeld door gebruik te maken van vooraf bekende informatie over de verwachte signalen. In deze stap stellen we dus vast welke delen van het frequentiespectrum in gebruik zijn.
 
 \subsection{Transmissie}
-In de vorige stap is bepaald welke signalen er op dat moment in gebruik zijn. In deze stap kan er onderscheid gemaakt worden tussen vriendelijke en vijandige signalen. Als de vijandige signalen geïdentificeerd zijn kunnen deze signalen specifiek geblokkeerd worden door zeer efficiënte mini stoorzenders.
+In de vorige stap is bepaald welke signalen er op dat moment in gebruik zijn. Er kan nu onderscheid gemaakt worden tussen vriendelijke en vijandige signalen. Als de vijandige signalen geïdentificeerd zijn, kunnen deze signalen specifiek geblokkeerd worden door zeer efficiënte mini-stoorzenders.
 
-\section{Waarom nu?}
-De technologie die nodig is voor deze methoden zijn pas vrij recent ontwikkeld.
-\excl{Dit moet nog aangevuld worden}
+\section{Ons product}
+Onze oplossing voor de gestelde problemen is een slimme jammer. Door alleen de stukjes van de band te blokkeren waar daadwerkelijk uitgezonden wordt, is het mogelijk om met minder energie een groter deel van het spectrum selectief plat te leggen. Een ander voordeel is dat er ook nog onderscheid gemaakt kan worden tussen vriendelijke en vijandige communicatie. Doordat het stroomverbruik lager ligt dan bij conventionele stoorzenders, is het mogelijk om de stoorzender draagbaar te maken, of op een drone te plaatsen.
 
+\section{Nadelen}
+Er bestaat op dit moment een techniek dat gebruik maakt van signalen die gebruik maken zeer breedbandige signalen. Deze techniek heet \textit{ultra-wideband communication}. Doordat de energie van het signaal over een zeer grote bandbreedte verspreid is, is het zeer lastig tot onmogelijk om deze signalen te detecteren. De ontvangers voor deze soort signalen maken gebruik van filters die speciaal afgestemd zijn de `code' die op dat moment in gebruik is. Als je de code die op dat moment in gebruik is niet kent is het op dit moment niet mogelijk om deze signalen te detecteren.
 
-\chapter{Ons product}
-\section{Toepassingen}
-\section{Vergelijkbare producten}
+\begin{blockDetail}
+De signalen die gebruikt worden voor deze ultra-wideband signalen zijn gedefinieerd als pulsen in het tijdsdomein, deze nemen dus een zeer grote bandbreedte (meer dan \SI{500}{\mega\hertz}) in in het frequentiedomein. Hierdoor is de hoeveelheid vermogen per \si{\hertz} dus zeer laag. De signalen worden gegenereerd aan de hand van een geheime code. De ontvangers voor deze ultra-wideband signalen maken gebruik van een matched filter dat gegenereerd wordt aan de hand van deze geheime code. Voor een derde partij is het dus zeer lastig om alleen al de aanwezigheid van deze signalen te detecteren als je niet het juiste matched filter kan genereren.
+\end{blockDetail}
+
+Tevens is het storen van deze signalen ook bijna onmogelijk aangezien je zeer veel vermogen over een zeer grote bandbreedte moet kunnen uitzenden. Dit maakt dat zowel de huidige stoorzenders, als onze slimme stoorzender deze signalen niet kan storen.
 
 \chapter{Discussie}
-% Hoe nuttig is ons product?
-%     Komen de problemen die wij schetsen overeen met bestaande problemen?
-%     Welke problemen ziet defensie graag opgelost?
-%     In welke gebieden van defensie zou ons product interessant zijn?
-% Wat zijn vergelijkbare producten?
-%    Wordt hier binnen defensie al onderzoek naar gedaan? Wat gebeurt er precies?
-%    Price range? Wat is nog interessant?
-% Hoe ziet de bedrijfskolom er uit?
-%     Wat is de markt binnen defensie
-% Regelgeving?
+Aangezien een groot deel van onze analyse op theorie gebaseerd is, zijn we benieuwd naar uw ervaringen uit de praktijk. Om de discussie tijdens onze meeting soepel te laten verlopen, hebben wij alvast een aantal mogelijke discussiepunten op een rijtje gezet.
 
+\section{Wat is de staat van ons product?}
+Hierboven hebben wij een aantal problemen geschetst waarvan wij denken dat ze in de spelen in de praktijk. Wij zijn benieuwd of deze problemen herkenbaar zijn. Ook zijn we ook benieuwd naar problemen in het gebruik van stoorzenders waar wij nog niet aan gedacht hebben, maar die wij wel mee zouden kunnen nemen in de ontwikkeling van ons product.
+
+Wij hebben al een aantal situatieschetsen gegeven waarbij ons product ingezet zou kunnen worden. Aangezien defensie een ontzettend brede organisatie is, zijn er ongetwijfeld nog veel meer toepassingen te vinden voor onze techniek.
+
+\section{Vergelijkbare producten}
+Uiteraard zijn we ons ervan bewust dat we waarschijnlijk niet de enige zijn die met de ontwikkeling van een dergelijke slimme stoorzender bezig zijn. Sluit dit misschien aan bij ontwikkelingen en onderzoek wat momenteel binnen defensie gedaan wordt? Zijn er misschien al vergelijkbare producten op de markt waar wij niet vanaf weten?
+
+Wat zou een interessante price-range zijn voor ons product? Welke factoren zouden bepalen of het voor defensie interessant is om een bepaald product aan te schaffen, of te investeren in de ontwikkeling van een nieuw product?
+
+\section{Bedrijfskolom}
+De bedrijfskolom is de opeenvolging van stappen die een product doormaakt van producent tot eindgebruiker. Hoe ziet deze bedrijfskolom er binnen defensie uit? Werkt defensie direct met start-ups, of zal hier altijd een grote speler zoals  Thales tussen zitten?
+
+\section{Regelgeving}
+Hoe zit het binnen defensie met de regelgeving omtrent het gebruik van stoorzenders? Hoe zit het met regelgeving als defensie gebruik maakt nieuwe en misschien geheime technologieën?
 
 \backmatter
 \printbibliography
