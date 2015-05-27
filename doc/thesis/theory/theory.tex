@@ -10,15 +10,10 @@
 
 \raggedbottom
 
+\allowdisplaybreaks
 \usepackage{float}
 \usepackage{tabularx}
-\usepackage{relsize}
-\newcommand{\leftrightharpoonup}{%
-  \mathrel{\mathpalette\lrhup\relax}%
-}
-\newcommand{\lrhup}[2]{%
-  \ooalign{$#1\leftharpoonup$\cr$#1\rightharpoonup$\cr}%
-}
+\newcommand{\lab}[1]{\label{#1}\nolinebreak}
 \begin{document}
 
 \chapter{Reconstruction}
@@ -58,7 +53,7 @@ We now define the convolution operator as a closed binary operation on vectors. 
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$. Then $\vec{x} \ast \vec{y} = \vec{y} \ast \vec{x}$.
 \end{blockTheorem}
 
-We also define correlation as a closed binary operation on vectors. The definition is similar to the definition of correlation for discrete signals.
+We also define correlation as a closed binary operation on vectors. The definition is again similar to the definition of correlation for discrete signals.
 
 \begin{blockDefinition}[Deterministic Cross-correlation]
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$. Then $\vec{x} \circ \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^{N+M-1}$ such that
@@ -68,15 +63,15 @@ We also define correlation as a closed binary operation on vectors. The definiti
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{blockDefinition}
 
-Furthermore, we define the Hadamard product in terms of vectors.
+Furthermore, we define the Hadamard product as a closed binary operation on vector.
 
 \begin{blockDefinition}[Hadamard Product]
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
 \end{blockDefinition}
 
-Note that the notation of the inner product $\cdot$ is similar to the notation of the Hadamard product $\odot$. The following theorem identifies the expectation value of the correlation operator.
+Note that the notation $\cdot$ of the inner product is similar to the notation $\odot$ of the Hadamard product. The following theorem identifies the expectation value of the correlation operator.
 
-\begin{blockTheorem} \label{th:corr-unbiased}
+\begin{blockTheorem} \lab{th:corr-unbiased}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Then $\vec{x} \circ \vec{y}$ is an unbiased estimator of the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ weighted by the elements of the vector
     \begin{align*}
         \begin{bmatrix}
@@ -96,31 +91,37 @@ Finally, we extend the use of dots to denote finite sequences.
     } \nolinebreak
 \end{blockDefinition}
 
+Note that the sequence $(1,1),\ldots,(N,N)$ has length
+\begin{align*}
+    1 + 2 + \ldots + N = \frac{1}{2} N(N+1).
+\end{align*}
+
 \section{Overview of Variables}
-\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The use of the name of each variable will become clear in the main analysis.
+\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis.
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{Xll}
+    \begin{tabularx}{\textwidth}{Xlp{3cm}}
         \textbf{Name} & \textbf{Notation} & \textbf{Size} \\ \hline
         Number of samples & $L$ & $1$ \\
         Downsampling factor & $N$ & $1$ \\
         Number of cosets & $M$ & $1$ \\
         Input signal & $\vec{x}$ & $LN$ \\
-        Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
-        Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
+        $m$'th interval of $N$ samples of the input signal & $\vec{x}_m$ & $N$ \\
         Deterministic correlation of input & $\vec{r}_x$ & $2LN - 1$ \\
-        Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2LN + 2N - 3$ \\
-        Decimated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}_{y_i,y_j}$  & $2L-1$ \\
-        Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
-        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN-1 \times 2LN-1$ \\
-        Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN - 1$ \\
-        Stacked convolution matrices of cosets & $\vec{R}$ & $M^2 (2L - 1) \times (2LN - 1)$ \\
-        Deterministic correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
-        Stacked deterministic correlation of outputs of cosets & $\vec{r}'_y$ & $M^2(2L-1)$ \\
-        Interval $m$ of the input signal & $\vec{x}_m$ & $N$ \\
+        Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
         Sampling vector of coset $i$ reversed & $\vec{d}_i$ & $N$ \\
-        Output of all cosets in interval $m$ & $\vec{w}_m$ & $M^2$
+        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN-2N-3 \times 2LN-1$ \\
+        Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
+        Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
+        Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2LN + 2N - 3$ \\
+        Decimated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}'_{y_i,y_j}$  & $2L-1$ \\
+        Output of coset $i$ & $\vec{y}'_i$ & $L$ \\
+        Deterministic correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
+        Stacked convolution matrices of cosets & $\vec{R}$ & $\frac{1}{2}M(M+1) (2L - 1) \times (2LN - 1)$ \\
+        Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN + 2N - 3$ \\
+        Stacked deterministic correlation of outputs of cosets & $\vec{r}'_y$ & $\frac{1}{2}M(M+1)(2L-1)$ \\
+        Output of all cosets in interval $m$ & $\vec{w}_m$ & $\frac{1}{2}M(M+1)$
     \end{tabularx}
     \caption{Overview of the variables used in the main analysis}
     \label{tab:overview-vars-main-analysis}
@@ -156,17 +157,17 @@ Commutativity and the definition of the convolution operator yield that
         (\vec{r}_x)_1 \\
         (\vec{r}_x)_2 \\
         \vdots \\
-        (\vec{r}_x)_{2LN-2N-4} \\
-        (\vec{r}_x)_{2LN-2N-3}
+        (\vec{r}_x)_{2LN-2} \\
+        (\vec{r}_x)_{2LN-1}
     \end{bmatrix}$}
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\hat{\vec{r}}_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
+Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\vec{r}'_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
 \begin{align*}
     \begin{bmatrix}
-        \hat{\vec{r}}_{y_1,y_1} \\
+        \vec{r}'_{y_1,y_1} \\
         \vdots \\
-        \hat{\vec{r}}_{y_M,y_M}
+        \vec{r}'_{y_M,y_M}
     \end{bmatrix}
     = \begin{bmatrix}
         \mat{D}\mat{R}_{c_1,c_1} \vec{r}_x \\
@@ -180,14 +181,14 @@ Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} 
     \end{bmatrix} \vec{r}_x
     = \mat{R} \vec{r}_x.
 \end{align*}
-We now investigate $\vec{r}_{y'_i,y'_j}$'s structure. Notice that
+We now investigate $\vec{r}'_{y_i,y_j}$'s structure. Notice that
 \begin{align*}
-    (\hat{\vec{r}}_{y_i,y_j})_m = (\mat{D} \hat{\vec{r}}_{y_i,y_j})_{m} = (\hat{\vec{r}}_{y_i,y_j})_{mN} = (\vec{r}_{y_i,y_j})_{mN}.
+    (\vec{r}'_{y_i,y_j})_m = (\mat{D} \vec{r}_{y_i,y_j})_{m} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
-Thus $\hat{\vec{r}}_{y_i,y_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$. Now let $\vec{r}_{y'_i,y'_j} = \vec{y}'_i \circ \vec{y}'_j$.
+Thus $\vec{r}'_{y_i,y_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$. Now let $\vec{r}_{y'_i,y'_j} = \vec{y}'_i \circ \vec{y}'_j$.
 
-\begin{blockTheorem} \label{th:deci-corr}
-    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N \hat{\vec{r}}_{y_i,y_j}$ is an unbiased estimator of $E(\vec{r}_{y'_i,y'_j})$.
+\begin{blockTheorem} \lab{th:deci-corr}
+    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N\vec{r}_{y'_i,y'_j}$ is an unbiased estimator of $E( \vec{r}'_{y_i,y_j})$.
 \end{blockTheorem}
 
 \Cref{th:deci-corr} shows that the correlation of the outputs of cosets $i$ and $j$ can be used to estimate the $N$-decimation of the correlation of the pseudo outputs of cosets $i$ and $j$. To this end, let
@@ -201,17 +202,17 @@ Thus $\hat{\vec{r}}_{y_i,y_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let
 Then
 \begin{align*}
     E(\vec{r}'_y) &= \begin{bmatrix}
-        E[N\hat{\vec{r}}_{y_1,y_1}] \\
+        E(N\vec{r}_{y'_1,y'_1}) \\
         \vdots \\
-        E[N\hat{\vec{r}}_{y_M,y_M}]
+        E(N\vec{r}_{y'_M,y'_M})
     \end{bmatrix}
     = E\left(\begin{bmatrix}
-        \vec{r}_{y'_1,y'_1} \\
+        \vec{r}'_{y_1,y_1} \\
         \vdots \\
-        \vec{r}_{y'_M,y'_M} \\
+        \vec{r}'_{y_M,y_M} \\
     \end{bmatrix}\right) = E(\mat{R} \vec{r}_x) = \mat{R} E(\vec{r}_x).
 \end{align*}
-So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\vec{r}_x)$, which we can use to determine $E(\vec{r}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Thus $\vec{x}_m$ corresponds to the samples of $\vec{x}$ in the $m$'th interval of $N$ samples. Finally, note that
+So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\vec{r}_x)$, which we can use to determine $E(\vec{r}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Thus $\vec{x}_m$ corresponds to the $m$'th interval of $N$ samples of $\vec{x}$. Finally, note that
 \begin{align*}
     (\vec{y}'_i)_m = (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \vec{d}_i \cdot \vec{x}_m
 \end{align*}
@@ -231,7 +232,7 @@ where $\vec{d}_i$ denotes $\vec{c}_i$ reversed. Therefore, the reverse of the of
         \vec{d}_M^T
     \end{bmatrix} \vec{x}_m.
 \end{align*}
-Thus $\vec{w}_m$ aggregates the output of all cosets in the $m$'th interval of $N$ samples. This concludes the main analysis.
+Thus $\vec{w}_m$ aggregates the output of all cosets in the $m$'th interval of $N$ samples of $\vec{x}$. This concludes the main analysis.
 
 \section{Proofs of Main Analysis}
 In this section the theorems of the main analysis will be proven.
@@ -323,7 +324,7 @@ In this section the theorems of the main analysis will be proven.
         \end{bmatrix}.
     \end{align*}
 \end{blockProofTheorem}
-\newpage
+
 \begin{blockProofTheorem}{\ref{th:conv-corr}}
     Note that
     \begin{align*}
@@ -385,18 +386,27 @@ In this section the theorems of the main analysis will be proven.
             \vdots \\
             R_{Y_i,Y_j}[N(L-1)]
         \end{bmatrix} \\
-        &= E(\hat{\vec{r}}_{y_i,y_j}).
+        &= E(\vec{r}'_{y_i,y_j}).
     \end{align*}
 \end{blockProofTheorem}
 
 \section{The Algorithm}
-This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets. Proceed as follows:
+This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets.
+
+\subsection{Unicity of Solution}
+rank, min sparse ruler
+
+\subsection{Algorithm}
+Proceed as follows:
 \begin{enumerate}
     \item Construct $\mat{R}$.
-    \item Measure $\vec{y}'_i$ for $i = 1,\ldots,M$.
+    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
     \item Construct $\vec{r}'_y$.
     \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
 \end{enumerate}
+
+\subsection{Oversampling}
+Tikzplaatje
 
 \section{Exploring Further Possibilities}
 \subsection{Sample-Wide Autocorrelation}
@@ -406,7 +416,11 @@ Is it possible to estimate $E(\vec{r}_x)$ by making use of $\vec{w}_m$. To this 
     &= \sum_{k=1}^M (\vec{d}_k^T \vec{x}_m)(\conj{\vec{d}}_{M-i+k}^T \conj{\vec{x}}_m) \\
     &= \sum_{k=1}^M (\vec{x}_m^T \vec{d}_k)(\conj{\vec{d}}_{M-i+k}^T \conj{\vec{x}}_m)
 \end{align*}
-where $\vec{d}_i = \vec{0}$ for $i < 1$ and $i > M$. Furthermore,
+where $\vec{d}_i = \vec{0}$ for $i < 1$ and $i > M$. Let
+\begin{align*}
+     \mat{A}_i = \sum_{k=1}^M  \vec{d}_k \conj{\vec{d}}_{M-i+k}^T
+\end{align*}
+for $i = 1,\ldots,2M-1$. Then
 \begin{align*}
     (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M \vec{x}_m^T (\vec{d}_k \conj{\vec{d}}_{M-i+k}^T) \conj{\vec{x}}_m \\
     &= \vec{x}_m^T\left(\sum_{k=1}^M  \vec{d}_k \conj{\vec{d}}_{M-i+k}^T\right) \conj{\vec{x}}_m \\
@@ -414,34 +428,34 @@ where $\vec{d}_i = \vec{0}$ for $i < 1$ and $i > M$. Furthermore,
     &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x}_m)_k (\conj{\vec{x}}_m)_l (\mat{A}_i)_{k,l} \\
     &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x})_{(m-1)N+k} (\conj{\vec{x}})_{(m-1)N+l} (\mat{A}_i)_{k,l}.
 \end{align*}
-Now let $\vec{X} \in \mathbb{C}^{(LN)^2}$ be such that $(\vec{X})_{(i-1)LN+j} = (\vec{x})_i (\conj{\vec{x}})_j$ for $i = 1,\ldots,LN$ and $j = 1,\ldots,LN$. Then
+Now let $\vec{\mathfrak{x}} \in \mathbb{C}^{(LN)^2}$ be such that $(\vec{\mathfrak{x}})_{(i-1)LN+j} = (\vec{x})_i (\conj{\vec{x}})_j$ for $i = 1,\ldots,LN$ and $j = 1,\ldots,LN$. Then
 \begin{align*}
-    (\vec{w}_m \circ \vec{w}_m)_i = \vec{p}_{m,i}^T \vec{X}
+    (\vec{w}_m \circ \vec{w}_m)_i = \vec{p}_{m,i}^T \vec{\mathfrak{x}}
 \end{align*}
 where $\vec{p}_{m,i} \in \mathbb{C}^{(LN)^2}$ such that
 \begin{align*}
     (\vec{p}_{m,i})_{[(m-1)N+k-1]LN+(m-1)N+l} = (\mat{A}_i)_{k,l}
 \end{align*}
-for $k = 1,\ldots,M$ and $l = 1,\ldots,M$. Now let $\vec{r}_w$ and $\mat{P}$ be such that
+for $k = 1,\ldots,N$ and $l = 1,\ldots,N$. Now let $\vec{r}_w$ and $\mat{P}$ be such that
 \begin{align*}
     \vec{r}_w = \begin{bmatrix}
         (\vec{w}_1 \circ \vec{w}_1)_1 \\
         \vdots \\
-        (\vec{w}_L \circ \vec{w}_L)_M
+        (\vec{w}_L \circ \vec{w}_L)_{2M-1}
     \end{bmatrix} = \begin{bmatrix}
-        \vec{p}_{1,1}^T \vec{X} \\
+        \vec{p}_{1,1}^T \vec{\mathfrak{x}} \\
         \vdots \\
-        \vec{p}_{L,M}^T \vec{X}
+        \vec{p}_{L,2M-1}^T \vec{\mathfrak{x}}
     \end{bmatrix} = \begin{bmatrix}
         \vec{p}_{1,1}^T \\
         \vdots \\
-        \vec{p}_{L,M}^T
-    \end{bmatrix} \vec{X} = \mat{P} \vec{X}.
+        \vec{p}_{L,2M-1}^T
+    \end{bmatrix} \vec{\mathfrak{x}} = \mat{P} \vec{\mathfrak{x}}.
 \end{align*}
 Similarly, we can relate
 \begin{align*}
     (\vec{r}_x)_i &= \sum_{k=1}^{LN}(\vec{x})_k (\conj{\vec{x}})_{LN-i+k} \\
-    &= \vec{b}_i^T \vec{X}
+    &= \vec{b}_i^T \vec{\mathfrak{x}}
 \end{align*}
 where $\vec{b}_i \in \mathbb{C}^{(LN)^2}$ is such that
 \begin{align*}
@@ -454,24 +468,24 @@ for $k = 1,\ldots,LN$ such that $1 \le LN-i+k \le LN$. Now let $\mat{B}$ be such
         \vdots \\
         (\vec{r}_x)_{2LN-1}
     \end{bmatrix} = \begin{bmatrix}
-        \vec{b}_1^T \vec{X} \\
+        \vec{b}_1^T \vec{\mathfrak{x}} \\
         \vdots \\
-        \vec{b}_{2LN-1}^T \vec{X}
+        \vec{b}_{2LN-1}^T \vec{\mathfrak{x}}
     \end{bmatrix} = \begin{bmatrix}
         \vec{b}_1^T \\
         \vdots \\
         \vec{b}_{2LN-1}^T
-    \end{bmatrix} \vec{X} = \mat{B} \vec{X}.
+    \end{bmatrix} \vec{\mathfrak{x}} = \mat{B} \vec{\mathfrak{x}}.
 \end{align*}
 This yields the system
 \begin{align*}
-    \vec{r}_w &= \mat{P} \vec{X}, \\
-    \vec{r}_x &= \mat{B} \vec{X}
+    \vec{r}_w &= \mat{P} \vec{\mathfrak{x}}, \\
+    \vec{r}_x &= \mat{B} \vec{\mathfrak{x}}
 \end{align*}
-which can be used in a similar way to estimate $E(\vec{r}_x)$. However, since $\mat{A}_i$ is an $N \times N$ matrix, all elements in $\vec{p}_{m,i}$ relating to $(\vec{x})_k (\conj{\vec{x}})_l$ where $|k - l| \ge N$ will be zero. Therefore using $\vec{r}_w$ to estimate $E(\vec{r}_x)$ yields that the estimation is limited in support from $-N+1$ to $N-1$. This damages the estimation severely.
+which can be used in a similar way to estimate $E(\vec{r}_x)$. However, since $\mat{A}_i$ is an $N \times N$ matrix, all elements in $\vec{p}_{m,i}$ relating to $(\vec{x})_k (\conj{\vec{x}})_l$ where $|k - l| \ge N$ will be zero. Therefore using $\vec{r}_w$ to estimate $E(\vec{r}_x)$ yields that the estimation is limited in support from $-N+1$ to $N-1$. This damages the resolution severely.
 
 \subsection{Discussion of \cref{th:corr-unbiased}}
-In this section we discuss \cref{th:corr-unbiased}. First, one could propose the inverse window
+In this section we discuss \cref{th:corr-unbiased}. First, one could propose the weights
 \begin{align*}
     \begin{bmatrix}
         1 & \cdots & \frac{1}{K-1} & \frac{1}{K} & \cdots & \frac{1}{K} & \frac{1}{K-1} & \cdots & 1
@@ -479,7 +493,7 @@ In this section we discuss \cref{th:corr-unbiased}. First, one could propose the
 \end{align*}
 to estimate the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ without bias. However, \cite{percival1993univariate} shows that this usually increases the mean squared error.
 
-Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the window discussed in \cref{th:corr-unbiased} on the power spectral density. Let $r[n]$ denote a discrete signal such that $r[i - LN] = (\vec{r}_x)_i$ for $i = 1,\ldots,2LN-1$. Then denote
+Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the weights discussed in \cref{th:corr-unbiased} on the power spectral density. Let $r[n]$ denote a discrete signal such that $r[i] = (\vec{r}_x)_{i+LN}$ for $i = -LN+1,\ldots,LN-1$. Then denote
 \begin{align*}
     E(r[i])=E[(\vec{r}_x)_{i + LN}]=R_X[i] W[i]
 \end{align*}
@@ -494,10 +508,9 @@ where
 
 Thus by the Wiener-Khintchine theorem and the convolution theorem,
 \begin{align*}
-    \mathcal{P}(\omega)=\DTFT\{E(r[i])\} = \frac{1}{2 \pi}\DTFT\{R_X[i]\} \circledast \DTFT\{W[i]\}
+    \DTFT\{E(r[i])\} = \frac{1}{2 \pi}\DTFT\{R_X[i]\} \circledast \DTFT\{W[i]\} = \frac{1}{2 \pi}\mathcal{P}(\omega) \circledast \DTFT\{W[i]\}
 \end{align*}
-where
-
+where $\mathcal{P}(\omega)$ denotes the power spectral density of $X[n]$. Note that
 \renewcommand{\pushrightwidth}{10cm}
 \begin{align*}
     \DTFT\{W[i]\} &= \sum_{k=-\infty}^{\infty}W[k]\exp(-j \omega k) \\
@@ -514,7 +527,7 @@ Further algebraic simplification yields that
 \begin{align*}
     \DTFT\{W[i]\} = \frac{\cos(LN \omega) - 1}{\cos(\omega) - 1}.
 \end{align*}
-The resolution of the obtained power spectral density will be determined by the first zero of $\DTFT\{W[i]\}$. Thus the resolution is given by
+Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\DTFT\{W[i]\}$, $\DTFT\{E(r[i])\}$ respresents $\mathcal{P}(\omega)$ with finite accuracy. The resolution of the obtained power spectral density will be determined by the first zero of $\DTFT\{W[i]\}$. Therefore the resolution is given by
 \begin{align*}
     \Delta \omega = \frac{\pi}{2LN}.
 \end{align*}
@@ -545,18 +558,18 @@ Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random vari
 \end{blockDefinition}
 
 \begin{blockDefinition}[Neyman-Pearson Test]
-Given a continous random vector $\vec{X}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that $\mathbf{x}$ has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$ when
+Given a continous random vector $\vec{\mathfrak{x}}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that $\mathbf{x}$ has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$ when
 
 \begin{align*}
-    \Lambda (\mathbf{x}) &= \frac{f_{\vec{X} | \mathcal{H}_0} (\mathbf{x})}{f_{(\vec{X} | \mathcal{H}_1}(\mathbf{x})} < \eta 
+    \Lambda (\mathbf{x}) &= \frac{f_{\vec{\mathfrak{x}} | \mathcal{H}_0} (\mathbf{x})}{f_{(\vec{\mathfrak{x}} | \mathcal{H}_1}(\mathbf{x})} < \eta 
 \end{align*}
 
-The decision threshold $\eta$ is chosen such that $P(\Lambda(\vec{X}) < \eta) = \alpha$.
+The decision threshold $\eta$ is chosen such that $P(\Lambda(\vec{\mathfrak{x}}) < \eta) = \alpha$.
 \end{blockDefinition}
 
 \section{Main analysis}
 
-Let $\vec{x} \in \mathbb{C}^{N}$ denote the received signal. %The input of the algorithm consists of an estimate of $E(\vec{r}_x)$), which we will denote by $\hat{\vec{r}}_x$. 
+Let $\vec{x} \in \mathbb{C}^{N}$ denote the received signal. %The input of the algorithm consists of an estimate of $E(\vec{r}_x)$), which we will denote by $\vec{r}'_x$. 
 
 The algorithm must decide between to hypotheses:
 
