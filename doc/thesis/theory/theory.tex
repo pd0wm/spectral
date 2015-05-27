@@ -17,7 +17,7 @@
 \chapter{Reconstruction}
 
 \section{Preliminaries}
-Vectors are denoted by lower-case bold-faced letters and matrices are denoted by upper-case bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We introduce notation to denote elements of vectors and matrices.
+Vectors are denoted by lower-case bold-faced letters and matrices are denoted by upper-case bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We now introduce notation to denote elements of vectors and matrices.
 
 \begin{blockDefinition}[Vector Element]
     Let $\vec{x} \in \mathbb{C}^N$. Then $(\vec{x})_i$ denotes the $i$'th element of $\vec{x}$ for $i = 1,\ldots,N$.
@@ -63,26 +63,24 @@ The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also def
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{blockDefinition}
 
-Furthermore, we define the Hadamard product as a closed binary operation on vector.
+% Furthermore, we define the Hadamard product as a closed binary operation on vector.
 
-\begin{blockDefinition}[Hadamard Product]
-    Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
-\end{blockDefinition}
+% \begin{blockDefinition}[Hadamard Product]
+%     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
+% \end{blockDefinition}
 
-Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related. The following theorem identifies the expected value of the correlation operator.
+% Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related.
+The following theorem identifies the expected value of the correlation operator.
 
 \begin{blockTheorem} \lab{th:corr-unbiased}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Furthermore, let $r[n]$ be a discrete signal such that $r[i] = (\vec{x} \circ \vec{y})_{i+M}$ for $i = -M+1,\ldots,N-1$. Then $r[i]$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where
     \begin{align*}
         W[i] = \begin{cases}
-            i + M & -M + 1 \le i < -M + K, \\
-            K & -M + K \le i < N - K, \\
-            N - i & N - k < i \le N - 1, \\
+            i + M & -M + 1 \le i \le -M + K, \\
+            K & -M + K < i < N - K, \\
+            N - i & N - K \le i \le N - 1, \\
             0 & \text{elsewhere,}
         \end{cases}
-        % \begin{bmatrix}
-        %     1 & \cdots & K - 1 & K & \cdots &K & K - 1 & \cdots & 1
-        % \end{bmatrix}^T
     \end{align*}
     where $K = \min\{N,M\}$.
 \end{blockTheorem}
@@ -90,11 +88,53 @@ Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard pr
 Finally, we extend the use of dots to denote finite sequences.
 
 \begin{blockDefinition} \lab{def:dots-extended}
-    Let $N \in \mathbb{N}$ and let $S=\{(a,b) \in \mathbb{N} \times \mathbb{N} : a \le b \le N\}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence of all elements in $S$ such that $(a,b) \in S$ comes before $(c,d) \in S$ when $a < c$, or when $a = c$ and $b < d$. 
+    Let $N \in \mathbb{N}$ and let $S=\{(a,b) \in \mathbb{N} \times \mathbb{N} : a < b \le N\}\cup \{(1,1)\}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence of all elements in $S$ such that $(1,1)$ is first and $(a,b) \in S$ comes before $(c,d) \in S$ when $a < c$, or when $a = c$ and $b < d$.
 \end{blockDefinition}
 
+Note that $(1,1),\ldots,(N,N)$ represents in an $N \times N$ grid a corner point and the dots below the diagonal. This is pictured in \cref{fig:dots-extended}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \draw [black, fill=black] (0,0) circle [radius=0.05];
+        \draw [black, fill=black] (0,0.5) circle [radius=0.05];
+        \draw [black, fill=black] (0,1) circle [radius=0.05];
+        \draw [black, fill=black] (0,1.5) circle [radius=0.05];
+        \draw [black, fill=black] (0,2) circle [radius=0.05];
+
+        \draw [black, fill=black] (0.5,0) circle [radius=0.05];
+        \draw [black, fill=black] (0.5,0.5) circle [radius=0.05];
+        \draw [black, fill=black] (0.5,1) circle [radius=0.05];
+        \draw [black, fill=black] (0.5,1.5) circle [radius=0.05];
+        \draw [black, fill=black] (0.5,2) circle [radius=0.05];
+
+        \draw [black, fill=black] (1,0) circle [radius=0.05];
+        \draw [black, fill=black] (1,0.5) circle [radius=0.05];
+        \draw [black, fill=black] (1,1) circle [radius=0.05];
+        \draw [black, fill=black] (1,1.5) circle [radius=0.05];
+        \draw [black, fill=black] (1,2) circle [radius=0.05];
+
+        \draw [black, fill=black] (1.5,0) circle [radius=0.05];
+        \draw [black, fill=black] (1.5,0.5) circle [radius=0.05];
+        \draw [black, fill=black] (1.5,1) circle [radius=0.05];
+        \draw [black, fill=black] (1.5,1.5) circle [radius=0.05];
+        \draw [black, fill=black] (1.5,2) circle [radius=0.05];
+
+        \draw [black, fill=black] (2,0) circle [radius=0.05];
+        \draw [black, fill=black] (2,0.5) circle [radius=0.05];
+        \draw [black, fill=black] (2,1) circle [radius=0.05];
+        \draw [black, fill=black] (2,1.5) circle [radius=0.05];
+        \draw [black, fill=black] (2,2) circle [radius=0.05];
+
+        \draw [red, thick] (-.25, 2) -- (-0.25, -0.25) -- (2.25, -0.25) -- (2.25, 0.25) -- (1.5, 0.25) -- (-.25, 2);
+    \end{tikzpicture}
+    \caption{Visualisation of $(1,1),\ldots,(N,N)$}
+    \label{fig:dots-extended}
+\end{figure}
+
+
 \begin{blockTheorem} \lab{th:dots-extended}
-    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ is finite and has length $\frac{1}{2}N(N+1)$.
+    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ is finite and has length $\frac{1}{2}N(N-1)+1$.
 \end{blockTheorem}
 
 \section{Overview of Variables}
@@ -102,7 +142,7 @@ Finally, we extend the use of dots to denote finite sequences.
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{Xlp{3cm}}
+    \begin{tabularx}{\textwidth}{Xlp{4cm}}
         \textbf{Name} & \textbf{Notation} & \textbf{Size} \\ \hline
         Number of samples & $L$ & $1$ \\
         Downsampling factor & $N$ & $1$ \\
@@ -119,10 +159,10 @@ Finally, we extend the use of dots to denote finite sequences.
         Decimated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}'_{y_i,y_j}$  & $2L-1$ \\
         Output of coset $i$ & $\vec{y}'_i$ & $L$ \\
         Deterministic correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
-        Stacked convolution matrices of cosets & $\vec{R}$ & $\frac{1}{2}M(M+1) (2L - 1) \times (2LN - 1)$ \\
+        Stacked convolution matrices of cosets & $\vec{R}$ & $[\frac{1}{2}M(M-1)+1](2L - 1) \times (2LN - 1)$ \\
         Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN + 2N - 3$ \\
-        Stacked deterministic correlation of outputs of cosets & $\vec{r}'_y$ & $\frac{1}{2}M(M+1)(2L-1)$ \\
-        Output of all cosets in interval $m$ & $\vec{w}_m$ & $\frac{1}{2}M(M+1)$
+        Stacked deterministic correlation of outputs of cosets & $\vec{r}'_y$ & $[\frac{1}{2}M(M-1)+1](2L-1)$ \\
+        Output of all cosets in interval $m$ & $\vec{w}_m$ & $\frac{1}{2}M(M-1)+1$
     \end{tabularx}
     \caption{Overview of the variables used in the main analysis}
     \label{tab:overview-vars-main-analysis}
@@ -137,7 +177,7 @@ Let $L$, $N$ and $M$ be parameters. $M$ cosets will provide $L$ samples downsamp
     \makebox[\textwidth]{\centering $(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})$.} \nolinebreak
 \end{blockTheorem}
 
-Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$. Let the correlation of sampling vectors of cosets $i$ and $j$ be given by $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
+Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$ and let the correlation of sampling vectors of cosets $i$ and $j$ be given by $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
 \begin{align*}
     \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
@@ -146,8 +186,8 @@ Commutativity and the definition of the convolution operator yield that
     \vec{r}_{y_i,y_j}
     &= \vec{r}_{c_i,c_j} \ast \vec{r}_x\\
     &= \vec{r}_x \ast \vec{r}_{c_i,c_j} \\
-    &= \hskip \textwidth minus \textwidth \\ % Fill line
-    \intertext{$\begin{bmatrix}
+    &= %\hskip \textwidth minus \textwidth \\ % Fill line \intertext{\hfill$ $}
+    \begin{bmatrix}
         (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & 0 \\
         (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & 0 \\
         &  & \ddots &  & \\
@@ -160,7 +200,7 @@ Commutativity and the definition of the convolution operator yield that
         \vdots \\
         (\vec{r}_x)_{2LN-2} \\
         (\vec{r}_x)_{2LN-1}
-    \end{bmatrix}$}
+    \end{bmatrix}\\
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
 Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\vec{r}'_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
@@ -182,7 +222,7 @@ Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} 
     \end{bmatrix} \vec{r}_x
     = \mat{R} \vec{r}_x.
 \end{align*}
-We now investigate $\vec{r}'_{y_i,y_j}$'s structure. Notice that
+Note that we used \cref{def:dots-extended} here. We now investigate $\vec{r}'_{y_i,y_j}$'s structure. Notice that
 \begin{align*}
     (\vec{r}'_{y_i,y_j})_m = (\mat{D} \vec{r}_{y_i,y_j})_{m} = (\vec{r}_{y_i,y_j})_{mN}.
 \end{align*}
@@ -259,72 +299,19 @@ In this section the stated theorems will be proven.
         &= E(X[1] \conj{Y}[M-i+1]) + \ldots + E(X[i] \conj{Y}[M])  \\
         &= i R_{X,Y}[i-M]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. Now suppose that $M < i \le N$, then
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(i+M)R_{X,Y}[i]$ for $-M + 1\le i \le -M+M$. Now suppose that $M < i < N$, then
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
         &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[i] \conj{Y}[M]) \\  
         &= M R_{X,Y}[i-M]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. Finally suppose that $i > N$, then
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $i \ge N$, then
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}] \\
         &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[N] \conj{Y}[M-i+N]) \\
         &= (N+M-i) R_{X,Y}[i-M]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So
-    \begin{align*}
-        E(\vec{x} \circ \vec{y}) &= \begin{bmatrix}
-            E[(\vec{x} \circ \vec{y})_1] \\
-            E[(\vec{x} \circ \vec{y})_2] \\
-            \vdots \\
-            E[(\vec{x} \circ \vec{y})_{M-1}] \\
-            E[(\vec{x} \circ \vec{y})_{M}] \\
-            \vdots \\
-            E[(\vec{x} \circ \vec{y})_N] \\
-            E[(\vec{x} \circ \vec{y})_{N+1}] \\
-            \vdots \\
-            E[(\vec{x} \circ \vec{y})_{N+M-2}] \\
-            E[(\vec{x} \circ \vec{y})_{N+M-1}]
-        \end{bmatrix} \\
-        &= \begin{bmatrix}
-            R_{X,Y}[1-M] \\
-            2 R_{X,Y}[2-M] \\
-            \vdots \\
-            (M-1) R_{X,Y}[-1] \\
-            M R_{X,Y}[0] \\
-            \vdots \\
-            M R_{X,Y}[N-M] \\
-            (M-1) R_{X,Y}[N+1-M] \\
-            \vdots \\
-            2 R_{X,Y}[N-2] \\
-            R_{X,Y}[N-1]
-        \end{bmatrix} \\
-        &= \begin{bmatrix}
-            1 \\
-            2 \\
-            \vdots \\
-            M-1 \\
-            M \\
-            \vdots \\
-            M \\
-            M-1 \\
-            \vdots \\
-            2 \\
-            1
-        \end{bmatrix} \odot \begin{bmatrix}
-            R_{X,Y}[1-M] \\
-            R_{X,Y}[2-M] \\
-            \vdots \\
-            R_{X,Y}[-1] \\
-            R_{X,Y}[0] \\
-            \vdots \\
-            R_{X,Y}[N-M] \\
-            R_{X,Y}[N+1-M] \\
-            \vdots \\
-            R_{X,Y}[N-2] \\
-            R_{X,Y}[N-1]
-        \end{bmatrix}.
-    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(N-i)R_{X,Y}[i]$ for $N-M<i\le N-1$.
 \end{blockProofTheorem}
 
 \begin{blockProofTheorem}{\ref{th:dots-extended}}
@@ -332,14 +319,14 @@ In this section the stated theorems will be proven.
     \begin{align*}
         (1,1),\ldots,(N,N) =
         \underbrace{(1,1)}_{\text{length } 1},
-        \underbrace{(2,1),(2,2)}_{\text{length } 2},
-        \underbrace{(3,1),\ldots,(3,3)}_{\text{length } 3},
+        \underbrace{(1,2)}_{\text{length } 1},
+        \underbrace{(1,3),(2,3)}_{\text{length } 2},
         \ldots,
-        \underbrace{(N,1),\ldots,(N,N)}_{\text{length } N}.
+        \underbrace{(1,N),\ldots,(N-1,N)}_{\text{length } N-1}
     \end{align*}
-    So $(1,1),\ldots,(N,N)$ has length
+    has length
     \begin{align*}
-        1+2+3+\ldots+N = \frac{1}{2}N(N+1).
+        1+1+2+\ldots+N-1 = \frac{1}{2}N(N-1)+1.
     \end{align*}
 \end{blockProofTheorem}
 
@@ -376,35 +363,32 @@ In this section the stated theorems will be proven.
     \end{align*}
     Therefore
     \begin{align*}
-        E(N\vec{r}_{y'_i,y'_j})
-        &= N E(\vec{y}'_i \circ \vec{y}'_j) \\
-        &= N\begin{bmatrix}
-            1 \\
-            \vdots \\
-            L \\
-            \vdots \\
-            1
-        \end{bmatrix} \odot \begin{bmatrix}
-            R_{Y'_i,Y'_j}[1-L] \\
-            \vdots \\
-            R_{Y'_i,Y'_j}[0] \\
-            \vdots \\
-            R_{Y'_i,Y'_j}[L-1]
-        \end{bmatrix} \\
-        &= \begin{bmatrix}
-            N \\
-            \vdots \\
-            NL \\
-            \vdots \\
-            N
-        \end{bmatrix} \odot \begin{bmatrix}
-            R_{Y_i,Y_j}[N(1-L)] \\
-            \vdots \\
-            R_{Y_i,Y_j}[0] \\
-            \vdots \\
-            R_{Y_i,Y_j}[N(L-1)]
-        \end{bmatrix} \\
-        &= E(\vec{r}'_{y_i,y_j}).
+        [E(N\vec{r}_{y'_i,y'_j})]_m
+        &= N W[m-L] R_{Y'_i,Y'_j}[m-L] \\
+        &= N W[m-L] R_{Y_i,Y_j}[mN-LN]
+        % &= E(\vec{r}'_{y_i,y_j}).
+    \end{align*}
+    where
+    \begin{align*}
+        NW[m-L] &= N\begin{cases}
+            m & 1 \le i \le L, \\
+            2L-m & L \le i \le 2L - 1, \\
+            0 & \text{elsewhere}
+        \end{cases} \\
+        &= \begin{cases}
+            mN & N \le iN \le LN, \\
+            2LN-mN & LN \le iN \le 2LN - N,\\
+            0 & \text{elsewhere}
+        \end{cases} \\
+        &= \begin{cases}
+            mN & 1 \le iN \le LN, \\
+            2LN-mN & LN \le iN \le 2LN - 1, \\
+            0 & \text{elsewhere}.
+        \end{cases}
+    \end{align*}
+    We now recognise that
+    \begin{align*}
+        [E(N\vec{r}_{y'_i,y'_j})]_m &= [E(\vec{r}_{y_i,y_j})]_{mN} = [E(\vec{r}'_{y_i,y_j})]_m.
     \end{align*}
 \end{blockProofTheorem}
 
@@ -412,7 +396,7 @@ In this section the stated theorems will be proven.
 This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets.
 
 \subsection{Unicity of Solution}
-rank, min sparse ruler
+rank => circ min sparse ruler
 
 \subsection{Algorithm}
 Proceed as follows:
@@ -503,28 +487,22 @@ This yields the system
 which can be used in a similar way to estimate $E(\vec{r}_x)$. However, since $\mat{A}_i$ is an $N \times N$ matrix, all elements in $\vec{p}_{m,i}$ relating to $(\vec{x})_k (\conj{\vec{x}})_l$ where $|k - l| \ge N$ will be zero. Therefore using $\vec{r}_w$ to estimate $E(\vec{r}_x)$ yields that the estimation is limited in support from $-N+1$ to $N-1$. This damages the resolution severely.
 
 \subsection{Discussion of \cref{th:corr-unbiased}}
-In this section we discuss \cref{th:corr-unbiased}. First, one could propose the weights
+In this section we discuss the applicability of \cref{th:corr-unbiased} on the algorithm. Let $r[n]$ be a discrete signal such that $r[i] = (\vec{r}_x)_{i+LN}$ for $i = -LN+1,\ldots,LN-1$. Then
 \begin{align*}
-    \begin{bmatrix}
-        1 & \cdots & \frac{1}{K-1} & \frac{1}{K} & \cdots & \frac{1}{K} & \frac{1}{K-1} & \cdots & 1
-    \end{bmatrix}^T
-\end{align*}
-to estimate the cross-correlation of $X[n]$ and $Y[n]$ from $-M+1$ to $N-1$ without bias. However, \cite{percival1993univariate} shows that this usually increases the mean squared error.
-
-Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the weights discussed in \cref{th:corr-unbiased} on the power spectral density. Let $r[n]$ denote a discrete signal such that $r[i] = (\vec{r}_x)_{i+LN}$ for $i = -LN+1,\ldots,LN-1$. Then denote
-\begin{align*}
-    E(r[i])=E[(\vec{r}_x)_{i + LN}]=R_X[i] W[i]
+    E(r[i])=E[(\vec{r}_x)_{i + LN}]=W[i]R_X[i]
 \end{align*}
 where
 \begin{align*}
     W[i] = \begin{cases}
         i+LN  & -LN+1 \le i \le 0, \\
-        LN-i& 0 < i \le LN-1, \\
+        LN-i& 0 \le i \le LN-1, \\
         0 & \text{elsewhere.}
     \end{cases}
 \end{align*}
 
-Thus by the Wiener-Khintchine theorem and the convolution theorem,
+First, one could propose to use $(W[i])^{-1}E(r[i])$ as an unbiased estimator of $R_X[i]$ for $i=-LN+1,\ldots,LN-1$. However, \cite{percival1993univariate} shows that this usually increases the mean squared error.
+
+Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the weights discussed in \cref{th:corr-unbiased} on the power spectral density. By the Wiener-Khintchine theorem and the convolution theorem,
 \begin{align*}
     \DTFT\{E(r[i])\} = \frac{1}{2 \pi}\DTFT\{R_X[i]\} \circledast \DTFT\{W[i]\} = \frac{1}{2 \pi}\mathcal{P}(\omega) \circledast \DTFT\{W[i]\}
 \end{align*}
@@ -545,7 +523,7 @@ Further algebraic simplification yields that
 \begin{align*}
     \DTFT\{W[i]\} = \frac{\cos(LN \omega) - 1}{\cos(\omega) - 1}.
 \end{align*}
-Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\DTFT\{W[i]\}$, $\DTFT\{E(r[i])\}$ respresents $\mathcal{P}(\omega)$ with finite accuracy. The resolution of the obtained power spectral density will be determined by the first zero of $\DTFT\{W[i]\}$. Therefore the resolution is given by
+Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\DTFT\{W[i]\}$, $\DTFT\{E(r[i])\}$ respresents a distorted version of $\mathcal{P}(\omega)$. Suppose $LN \to \infty$. Then, since $W[i]/LN \to 1$, we are tempted to say that $\DTFT\{W[i]/LN\} \to 2 \pi \delta(w)$. This yields that the resolution of the obtained power spectral density is approximately determined by the first zero of $\DTFT\{W[i]\}$. Therefore the resolution is given by
 \begin{align*}
     \Delta \omega = \frac{\pi}{2LN}.
 \end{align*}
