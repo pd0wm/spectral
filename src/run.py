@@ -29,11 +29,10 @@ frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
 upscale_factor = 100  # Warning: greatly diminishes perfomance
-nyq_block_size = L * N * upscale_factor
-window_length = nyq_block_size
+block_size = L * N * upscale_factor
 threshold = 2000
-numbbins = 20
-win_length = 50
+num_bins = 20
+window_length = 50
 Pfa = 0.1  # Doet niks sur le moment
 
 if source_type == "usrp":
@@ -45,7 +44,7 @@ elif source_type == "complex":
 
 sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.Wessel(N, L)
-detector = cg.detection.ENP_ED(threshold, Pfa, win_length, numbbins)
+detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
 
 # Init processes
 signal_queue = Queue(10)
@@ -61,8 +60,8 @@ parent_opt_det, child_opt_det = Pipe()
 
 if __name__ == '__main__':
 
-    p1 = Process(target=run_generator,
-                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, child_opt_src, upscale_factor))
+    p1 = Process(target=run_generator_profiler,
+                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, child_opt_src))
     p2 = Process(target=run_reconstructor,
                  args=(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
     p3 = Process(target=run_websocket_server,

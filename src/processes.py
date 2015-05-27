@@ -5,19 +5,22 @@ from cogradio.websocket import ServerProtocolPlot, WebsocketDataContainer
 from multiprocessing import Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
+import numpy as np
 
 
-def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, window_length, opt, upscale_factor):
+def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt):
     while True:
-        orig_signal = source.generate(window_length)
+        orig_signal = source.generate(block_size)
         sampled = sampler.sample(orig_signal)
 
         if signal_queue.full():
             signal_queue.get()
         signal_queue.put_nowait(sampled)
-
-        container = WebsocketDataContainer(ServerProtocolPlot.SRC_DATA, cg.fft(orig_signal[::upscale_factor]))
-        container.enqueue(websocket_src_queue)
+        act_length = len(orig_signal)
+        offset = int(block_size / upscale_factor)
+        if len(orig_signal) == block_size:
+            container = WebsocketDataContainer(ServerProtocolPlot.SRC_DATA, cg.fft(orig_signal[act_length - offset:act_length + offset]))
+            container.enqueue(websocket_src_queue)
 
         options = None
         while opt.poll():
@@ -36,27 +39,13 @@ def run_reconstructor(signal_queue, websocket_rec_queue, reconstructor, sample_f
             container.enqueue(websocket_rec_queue)
 
 
-def run_detector(detector, detection_queue, websocket_queue, opt):
-    while True:
-        inp = detection_queue.get()
-        if inp.any():
-            detect = detector.detect(inp)
-            if websocket_queue.full():
-                websocket_queue.get()
-            websocket_queue.put_nowait(detect)
-        while opt.poll():
-            options = opt.recv()
-        if options:
-            detect.parse_options(options)
-
-
-def run_reconstructor_profiled(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, opt):
+def run_generator_profiler(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt):
     import cProfile
     import pstats
     import StringIO
     pr = cProfile.Profile()
     pr.enable()
-    run_reconstructor(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, opt)
+    run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt)
     pr.disable()
     s = StringIO.StringIO()
     sortby = 'cumulative'
@@ -64,6 +53,20 @@ def run_reconstructor_profiled(signal_queue, websocket_rec_queue, reconstructor,
     ps.print_stats()
     print s.getvalue()
     pr.dump_stats("Reconstruction_profiling.dmp")
+
+
+def run_detector(detector, detection_queue, websocket_det_queue, opt):
+    while True:
+        inp = detection_queue.get()
+        if inp.any():
+            detect = detector.detect(inp)
+            if websocket_det_queue.full():
+                websocket_det_queue.get()
+            websocket_det_queue.put_nowait(detect)
+        while opt.poll():
+            options = opt.recv()
+        if options:
+            detect.parse_options(options)
 
 
 def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt):

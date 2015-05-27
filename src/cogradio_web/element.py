@@ -63,8 +63,7 @@ class SliderElement(Element):
 
     @property
     def js_init(self):
-        code = """$('#{0}').slider();
-                  $('#{0}').slider().on('change', function(ev){{
+        code = """$('#{0}').slider().on('change', function(ev){{
                       $.ajax({{
                         type: "POST",
                         url:'/update',

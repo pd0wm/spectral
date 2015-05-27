@@ -1,4 +1,4 @@
 from .detector import Detector
-from .ENP_ED import ENP_ED
+from .noise_power import noise_power
 from .cav import CAV
 from .spectral_flatness import SPFL

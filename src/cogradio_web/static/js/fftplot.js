@@ -16,9 +16,8 @@ var FFTplot = function(container_id, data_type){
     // Set up the averaging slider.
     this.averaging_slider = $("#" + container_id + "-averaging-slider").slider();
     this.averaging_slider.slider("setValue", this.N);
-    that = this;
-    $(document).on("change", "#" + container_id + "-averaging-slider", function() {
-        that.N = parseInt(this.value);
+    $(document).on("change", "#" + container_id + "-averaging-slider", {plotter: this}, function(e) {
+        e.data.plotter.N = parseInt(this.value);
     });
 };
 
@@ -33,8 +32,9 @@ FFTplot.prototype.update = function() {
 
     fft_data = math.log10(this.averaged_fft);
     fft_data = math.multiply(fft_data, 10);
-    this.chart.series[0].setData(fft_data);
+    this.chart.series[0].setData(fft_data, false, false, true);
     this.fixAxes(fft_data, sample_freq, center_freq);
+    this.chart.redraw();
 };
 
 FFTplot.prototype.getAverage = function(fft_data) {
@@ -137,7 +137,7 @@ FFTplot.prototype.getPlotSettings = function() {
             type: 'area',
             name: 'FFT',
             animation: false,
-            turboThreshold: 2048
+            turboThreshold: 1200
         }],
         tooltip: {
             enabled: false

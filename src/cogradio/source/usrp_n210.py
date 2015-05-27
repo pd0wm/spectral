@@ -1,4 +1,5 @@
 from .source import Source
+import numpy as np
 try:
     from gnuradio import uhd
 except ImportError:
@@ -39,7 +40,7 @@ class UsrpN210(Source):
         if len(samples) != num_samples:
             raise RuntimeError("Number of samples from USRP incorrect")
 
-        return samples
+        return np.array(samples)
 
     def parse_options(self, options):
         for key, opt in options.items():

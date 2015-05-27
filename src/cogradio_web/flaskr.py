@@ -22,7 +22,7 @@ freq_slider = SliderElement(key="center_freq", title="Center Frequency",
                             value=2400, width=2, range=(2.4e3, 2.5e3))
 thresh_slider = SliderElement(key="threshold", title="Detector Threshold",
                               value=0.001, width=2, range=(1e-10, 1e-7), scale='logarithmic', step=1e-10)
-bin_slider = SliderElement(key="bin", title="Number of Bins",
+bin_slider = SliderElement(key="num_bins", title="Number of Bins",
                            value=500, width=1, range=(1, 1000))
 vis1 = VisualisationElement(key="vis1", title="Test 1")
 vis2 = VisualisationElement(key="vis2", title="Test 2")

@@ -62,19 +62,20 @@ SpectroGram.prototype.upscale = function(fft_data, length) {
     // Create a new, longer array from the data in the given array,
     // using a method derived from Bresenham's line algorithm.
     var fft_data_scaled = new Array(length);
-    var binsize = Math.round(length / fft_data.length);
-    var delta_err = binsize * fft_data.length / length;
-    var err = 0;
+    var D = 2 * fft_data.length - length;
+    fft_data_scaled[0] = fft_data[0];
     var j = 0;
 
-    for (var i = 0; i < length; i++) {
-        fft_data_scaled[i++] = fft_data[j];
-        err += delta_err;
-
-        while (err >= 0.5) {
-            fft_data_scaled[i] = fft_data[j++];
-            err--;
+    for (var i = 1; i < length; i++) {
+        if (D > 0) {
+            j++;
+            D += (2*fft_data.length - 2*length);
         }
+        else {
+            D += (2*fft_data.length);
+        }
+
+        fft_data_scaled[i] = fft_data[j];
     }
 
     return fft_data_scaled;
