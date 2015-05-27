@@ -22,6 +22,11 @@
 \usepackage{import}
 \usepackage{standalone}
 \usepackage{hyperref}
+\usepackage{xcolor,mdframed}
+\usepackage{tikz}
+\usepackage{framed}
+
+
 \ifxetex{} % Fonts laden in het geval dat je met Xetex compiled
     \usepackage{fontspec}
     \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
@@ -142,6 +147,16 @@
 \begin{block}{proof of \\ theorem #1}{}{}}
 {\qed\end{block}}
 
+% Detail
+\newcounter{blockDetailCounter}
+\crefname{blockDetailCounter}{Detail}{Details}
+\Crefname{blockDetailCounter}{Detail}{Details}
+
+\newenvironment{blockDetail}[1][]{%
+\refstepcounter{blockDetailCounter}%
+\begin{block}{detail \theblockDetailCounter}{#1}{}}
+{\end{block}}
+
 % Redesign chapter headings
 \newcommand{\chapternumber}{\thechapter}
 \newcommand{\hsp}{\hspace{20pt}}
@@ -160,3 +175,25 @@
 % Specify \pushrightwidth before align to align the text (best fix for now...)
 \newcommand{\pushrightwidth}{10cm}
 \newcommand{\pushright}[1]{\text{\makebox[\pushrightwidth]{\hfill$#1$}}}
+
+% Setup actiepunten
+\newenvironment{important}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={red!15}, hidealllines=true,
+      skipabove=0.7\baselineskip, skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt, splittopskip=4pt, #1]%
+   \makebox[0pt]{% ignore the withd of !
+      \smash{% ignor the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{red!70!black}\sffamily\bfseries !}% type the bold red !
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+\newcommand{\excl}[1]{
+\begin{important}
+  \textbf{#1}
+\end{important}
+}
