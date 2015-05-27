@@ -7,41 +7,29 @@ class Coprime(Sampler):
 
     """Coprime coset sampler implementation"""
 
-    def __init__(self, N, mode="cps"):
+    def __init__(self, a, b, mode="cps"):
         Sampler.__init__(self)
-        self.N = N
-        self.mode = mode
-        self.D1 = 4; # sample rate of device 1
-        self.D2 = 5; # sample rate of device 2
-        self.C = self.generateC_Coprime()
-        self.M = self.C.shape[0]
-
+        self.a = a
+        self.b = b
+        self.C = self.generate_C()
 
     def sample(self, signal):
-        if self.mode == "cps":
-            return self.__cps_sample(signal)
-        else:
-            raise NotImplementedError("Unsupported mode: " + self.mode)
+        chunk_size = self.a * self.b
+        output_chunk_size = self.a + self.b - 1
+        chunks = int(np.floor(len(signal) / chunk_size))
+        output = np.zeros((output_chunk_size  * chunks))
+        for i, j in zip(range(0, chunks*output_chunk_size, output_chunk_size), (range(0, chunks * chunk_size, chunk_size))):
+             output[i:i + output_chunk_size] = np.dot(signal[j:j + chunk_size], self.C)
+        return output
 
-    def generateC(self):
-        return(self.C)
+    def generate_C(self):
+        n = range(max(self.a, self.b))  # max number of multiples in the coprime solution
+        C = np.zeros((self.a * self.b, self.a + self.b - 1))
 
-    def generateC_Coprime(self):
-        C = np.zeros((self.D1+self.D2, self.D1*self.D2))
-        for i in range(self.D1):
-            C[i,i*self.D2] = 1
-        for i in range(self.D2):
-             C[i+self.D1,i*self.D1] = 1
-        print(C)
-        return(C)
+        a_indices = {i * self.a for i in n if i * self.a < self.a * self.b}
+        b_indices = {i * self.b for i in n if i * self.b < self.a * self.b}
+        indices = list(a_indices.union(b_indices))
 
-
-
-    def __cps_sample(self, signal):
-        length = int(np.floor(len(signal) / self.N))
-        tmp = length * self.N
-        y = np.zeros((self.M, length))
-        for i in np.arange(0, tmp, self.N):
-            y[:, i / self.N] = np.dot(np.fliplr(self.C),
-                                      signal[i:(i + self.N)])
-        return y
+        for j, i in enumerate(indices):
+            C[i, j] = 1
+        return C
