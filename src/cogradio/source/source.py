@@ -1,0 +1,12 @@
+class Source(object):
+
+    """Source parent object for spectrum sensing"""
+
+    def __init__(self, samp_freq):
+        self.samp_freq = float(samp_freq)
+
+    def generate(self, no_samples):
+        raise NotImplementedError("Implement this method.")
+
+    def parse_options(self, options):
+        pass

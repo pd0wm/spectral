@@ -48,28 +48,9 @@
       </div>
     </nav>
 
-    {{ content|safe }}
-
-    <div class="container theme-showcase" role="main">
-        <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="jumbotron">
-            <div style="margin-bottom:2em;">
-                <div id="fftplot" style="width:100%; height:400px; margin-bottom:1em;"></div>
-                <div>
-                    <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3>
-                    <input id="fftplot-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
-                </div>
-            </div>
-            <div style="background-color: white; padding: 1em; padding-top: 0.2em;">
-                <h4 style="text-align: center;">Real-time spectrogram</h4>
-                <canvas id="spectrogram" style="width:100%; height:400px;"></canvas>
-            </div>
-        </div
+    <div class="container-fluid" role="main">
+        {{ content|safe }}
     </div> <!-- /container -->
-
-
-
-
 
     <!-- Bootstrap core JavaScript
 	  ================================================== -->
@@ -82,15 +63,12 @@
     <script src="{{ url_for('bower.static', filename='mathjs/dist/math.js') }}"></script>
     <script src="{{ url_for('bower.static', filename='chroma-js/chroma.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connection.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/visualisation.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fftplot.js') }}"></script>
     <script src="{{ url_for('static', filename='js/spectrogram.js') }}"></script>
-    <script type="text/javascript">
-     var fftplot = new FFTplot("fftplot");
-     var spectrogram = new SpectroGram("spectrogram");
-    </script>
 
     <script type="text/javascript">
-     {{ js_init|safe }}
+      {{ js_init|safe }}
     </script>
   </body>
 </html>
