@@ -25,7 +25,8 @@
 \usepackage{xcolor,mdframed}
 \usepackage{tikz}
 \usepackage{framed}
-
+\usepackage{float}
+\usepackage{tabularx}
 
 \ifxetex{} % Fonts laden in het geval dat je met Xetex compiled
     \usepackage{fontspec}
@@ -61,6 +62,9 @@
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\DTFT}{\mathcal{F}_*}
 \newcommand{\conj}[1]{\bar{#1}}
+
+% Label without linebreak breaker
+\newcommand{\lab}[1]{\label{#1}\nolinebreak}
 
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
