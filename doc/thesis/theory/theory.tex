@@ -15,6 +15,7 @@
 \begin{document}
 
 \chapter{Reconstruction}
+TODO: appropriate referencing
 
 \section{Preliminaries}
 Vectors are denoted by lower-case bold-faced letters and matrices are denoted by upper-case bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We now introduce notation to denote elements of vectors and matrices.
@@ -63,22 +64,22 @@ The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also def
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{blockDefinition}
 
-% Furthermore, we define the Hadamard product as a closed binary operation on vector.
+Furthermore, we define the Hadamard product as a closed binary operation on vector.
 
-% \begin{blockDefinition}[Hadamard Product]
-%     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
-% \end{blockDefinition}
+\begin{blockDefinition}[Hadamard Product]
+    Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
+\end{blockDefinition}
 
-% Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related.
+Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related.
 The following theorem identifies the expected value of the correlation operator.
 
 \begin{blockTheorem} \lab{th:corr-unbiased}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Furthermore, let $r[n]$ be a discrete signal such that $r[i] = (\vec{x} \circ \vec{y})_{i+M}$ for $i = -M+1,\ldots,N-1$. Then $r[i]$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where
     \begin{align*}
         W[i] = \begin{cases}
-            i + M & -M + 1 \le i \le -M + K, \\
-            K & -M + K < i < N - K, \\
-            N - i & N - K \le i \le N - 1, \\
+            i + M & \text{if } -M + 1 \le i \le -M + K, \\
+            K & \text{if } -M + K < i < N - K, \\
+            N - i & \text{if } N - K \le i \le N - 1, \\
             0 & \text{elsewhere,}
         \end{cases}
     \end{align*}
@@ -88,7 +89,7 @@ The following theorem identifies the expected value of the correlation operator.
 Finally, we extend the use of dots to denote finite sequences.
 
 \begin{blockDefinition} \lab{def:dots-extended}
-    Let $N \in \mathbb{N}$ and let $S=\{(a,b) \in \mathbb{N} \times \mathbb{N} : a < b \le N\}\cup \{(1,1)\}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence of all elements in $S$ such that $(1,1)$ is first and $(a,b) \in S$ comes before $(c,d) \in S$ when $a < c$, or when $a = c$ and $b < d$.
+    Let $N \in \mathbb{N}$ and let $S=\{(a,b) \in \mathbb{N} \times \mathbb{N} : a < b \le N\}\cup \{(1,1)\}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence of all elements in $S$ such that $(1,1)$ is first and $(a,b) \in S$ comes before $(c,d) \in S$ when $a < c$, or when $b < d$ if $a = c$.
 \end{blockDefinition}
 
 Note that $(1,1),\ldots,(N,N)$ represents in an $N \times N$ grid a corner point and the dots below the diagonal. This is pictured in \cref{fig:dots-extended}.
@@ -186,7 +187,7 @@ Commutativity and the definition of the convolution operator yield that
     \vec{r}_{y_i,y_j}
     &= \vec{r}_{c_i,c_j} \ast \vec{r}_x\\
     &= \vec{r}_x \ast \vec{r}_{c_i,c_j} \\
-    &= %\hskip \textwidth minus \textwidth \\ % Fill line \intertext{\hfill$ $}
+    &=
     \begin{bmatrix}
         (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & 0 \\
         (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & 0 \\
@@ -229,7 +230,7 @@ Note that we used \cref{def:dots-extended} here. We now investigate $\vec{r}'_{y
 Thus $\vec{r}'_{y_i,y_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$. Now let $\vec{r}_{y'_i,y'_j} = \vec{y}'_i \circ \vec{y}'_j$.
 
 \begin{blockTheorem} \lab{th:deci-corr}
-    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=-LN+1,\ldots,LN-1$. Further let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=-L+1,\ldots,L-1$. Then $N\vec{r}_{y'_i,y'_j}$ is an unbiased estimator of $E( \vec{r}'_{y_i,y_j})$.
+    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=1,\ldots,LN+N-1$. Furthermore, let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=1,\ldots,L$. Then $N\vec{r}_{y'_i,y'_j}$ is an unbiased estimator of $E( \vec{r}'_{y_i,y_j})$.
 \end{blockTheorem}
 
 \Cref{th:deci-corr} shows that the correlation of the outputs of cosets $i$ and $j$ can be used to estimate the $N$-decimation of the correlation of the pseudo outputs of cosets $i$ and $j$. To this end, let
@@ -255,9 +256,9 @@ Then
 \end{align*}
 So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\vec{r}_x)$, which we can use to determine $E(\vec{r}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Thus $\vec{x}_m$ corresponds to the $m$'th interval of $N$ samples of $\vec{x}$. Finally, note that
 \begin{align*}
-    (\vec{y}'_i)_m = (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \vec{d}_i \cdot \vec{x}_m
+    (\vec{y}'_i)_m = (\vec{y}_i)_{mN} = (\vec{c}_i \ast \vec{x})_{mN} = \sum_{k=1}^N (\vec{c}_i)_k (\vec{x})_{mN - k + 1} = \vec{d}_i \cdot \vec{x}_m
 \end{align*}
-where $\vec{d}_i$ denotes $\vec{c}_i$ reversed. Therefore, the reverse of the of the sampling vector for a coset determines the output of the coset for every interval of $N$ samples of $\vec{x}$. Accordingly, let
+where $\vec{d}_i$ denotes $\vec{c}_i$ reversed. Therefore, the reverse of the sampling vector for a coset determines the output of the coset for every interval of $N$ samples of $\vec{x}$. Accordingly, let
 \begin{align*}
     \vec{w}_m = \begin{bmatrix}
         (\vec{y}'_1)_m \\
@@ -291,7 +292,7 @@ In this section the stated theorems will be proven.
 \end{blockProofTheorem}
 
 \begin{blockProofTheorem}{\ref{th:corr-unbiased}}
-    Without loss of generality, assume that $M \le N$. Suppose that $i \le M$, then
+    Without loss of generality, assume that $M \le N$. Suppose that $1 \le i \le M$, then
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}
         })_{M-i+k}] \\
@@ -305,7 +306,7 @@ In this section the stated theorems will be proven.
         &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[i] \conj{Y}[M]) \\  
         &= M R_{X,Y}[i-M]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $i \ge N$, then
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $N \le i \le N +M - 1$, then
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}] \\
         &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[N] \conj{Y}[M-i+N]) \\
@@ -363,37 +364,40 @@ In this section the stated theorems will be proven.
     \end{align*}
     Therefore
     \begin{align*}
-        [E(N\vec{r}_{y'_i,y'_j})]_m
-        &= N W[m-L] R_{Y'_i,Y'_j}[m-L] \\
-        &= N W[m-L] R_{Y_i,Y_j}[mN-LN]
+        [E(N\vec{r}_{y'_i,y'_j})]_{m+L}
+        &= N W[m] R_{Y'_i,Y'_j}[m]
+        = N W[m] R_{Y_i,Y_j}[mN]
         % &= E(\vec{r}'_{y_i,y_j}).
     \end{align*}
     where
     \begin{align*}
-        NW[m-L] &= N\begin{cases}
-            m & 1 \le i \le L, \\
-            2L-m & L \le i \le 2L - 1, \\
+        NW[m] &= N\begin{cases}
+            m+L & \text{if } -L+1 \le i \le 0, \\
+            L-m & \text{if } 0 \le i \le L - 1, \\
             0 & \text{elsewhere}
         \end{cases} \\
         &= \begin{cases}
-            mN & N \le iN \le LN, \\
-            2LN-mN & LN \le iN \le 2LN - N,\\
+            mN+LN & \text{if } -LN+N \le iN \le 0, \\
+            LN-mN & \text{if } 0 \le iN \le LN - N,\\
             0 & \text{elsewhere}
         \end{cases} \\
         &= \begin{cases}
-            mN & 1 \le iN \le LN, \\
-            2LN-mN & LN \le iN \le 2LN - 1, \\
+            mN+LN & \text{if } -LN+1 \le iN \le 0, \\
+            LN-mN & \text{if } 0 \le iN \le LN - 1, \\
             0 & \text{elsewhere}.
         \end{cases}
     \end{align*}
     We now recognise that
     \begin{align*}
-        [E(N\vec{r}_{y'_i,y'_j})]_m &= [E(\vec{r}_{y_i,y_j})]_{mN} = [E(\vec{r}'_{y_i,y_j})]_m.
+        [E(N\vec{r}_{y'_i,y'_j})]_{m+L} &= [E(\vec{r}_{y_i,y_j})]_{mN+LN} = [E(\vec{r}'_{y_i,y_j})]_{m+L} .
     \end{align*}
 \end{blockProofTheorem}
 
 \section{The Algorithm}
 This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets.
+
+\subsection{Support of Solution}
+Argue that last and first $N-1$ samples are zero.
 
 \subsection{Unicity of Solution}
 rank => circ min sparse ruler
@@ -408,8 +412,112 @@ Proceed as follows:
 \end{enumerate}
 
 \subsection{Oversampling}
-Tikzplaatje
+Let $K \in \mathbb{N}$ denote the oversampling factor. Instead of obtaining $L$ samples from each coset to estimate all correlations from $-L+1$ to $L-1$, we could use $KL$ samples to estimate all correlations from $-L+1$ to $L-1$.
 
+Consider \cref{th:deci-corr}. Let $\vec{z}'_i, \vec{z}'_j \in \mathbb{C}^{KL}$ denote the samples obtained by cosets $i$ and $j$ such that $(\vec{z}'_i)_m = Y'_i[m]$ and $(\vec{z}'_j)_m=Y'_j[m]$ for $m = 1,\ldots,KL$. Then note that $\vec{z}'_i[1,L]=\vec{y}'_i$ and $\vec{z}'_j[1,L]=\vec{y}'_j$. Let $\vec{r}_{z'_i,z'_j} = \vec{z}'_i \circ \vec{z}'_j$. Furthermore, let $r_z[n]$ denote a discrete signal such that $r_z[m] = (\vec{r}_{z'_i,z'_j})_{m+KL}$ for $m = -KL+1,\ldots,KL-1$. Then
+\begin{align*}
+    E(r_z[m]) = W_z[m]R_{Y'_i,Y'_j}[m]
+\end{align*}
+where
+\begin{align*}
+    W_z[m] = \begin{cases}
+        m + KL & \text{if } -KL + 1 \le m \le 0, \\
+        KL - m & \text{if } 0 \le m \le KL - 1, \\
+        0 & \text{elsewhere.}
+    \end{cases}
+\end{align*}
+Also, let $r_y[n]$ denote a discrete signal such that $r_y[m] = (\vec{r}_{y'_i,y'_j})_{m+L}$ for $m = -L+1,\ldots,L-1$. Then
+\begin{align*}
+    E(r_y[m]) = W_y[m]R_{Y'_i,Y'_j}[m]
+\end{align*}
+where
+\begin{align*}
+    W_y[m] = \begin{cases}
+        m + L & \text{if } -L+1 \le m \le 0, \\
+        L - m & \text{if } 0 \le m \le L - 1, \\
+        0 & \text{elsewhere.}
+    \end{cases}
+\end{align*}
+Ideally, we would want to use $r_z[m]$ to estimate $E(r_y[m])$ for $m = -L+1,\ldots,L-1$. This can be done by introducing
+\begin{align*}
+    W_{z \to y}[m] = \begin{cases}
+        (m + L)/(m + KL) & \text{if } -L+1 \le m \le 0, \\
+        (L - m)/(KL - m) & \text{if } 0 \le m \le L - 1, \\
+        0 & \text{elsewhere.}
+    \end{cases}
+\end{align*}
+$W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by $r_z[m]$ to prevent biasing. This is pictured by the green arcs in \cref{fig:window}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \draw [red, thick] (-5, 0) -- (0, 3) -- (5, 0);
+        \draw [blue, thick] (-2, 0) -- (0, 2) -- (2, 0);
+        \draw [blue, dashed] (0, 2) -- (5, 2);
+        \draw (5,2) node[black, xshift=0.5cm] {$L$};
+        \draw (5,3) node[black, xshift=0.5cm] {$KL$};
+        \draw [red, dashed] (0, 3) -- (5, 3);
+        \draw [black, thick] (-5, 0) -- (5, 0);
+        \draw [black, thick] (-5, -0.2) -- (-5, 0.2);
+        \draw [black, thick] (-2, -0.2) -- (-2, 0.2);
+        \draw [black, thick] (5, -0.2) -- (5, 0.2);
+        \draw [black, thick] (2, -0.2) -- (2, 0.2);
+        \draw (-5, 0) node[black, yshift=-0.5cm] {$-KL+1$};
+        \draw (-2, 0) node[black, yshift=-0.5cm] {$-L+1$};
+        \draw (5, 0) node[black, yshift=-0.5cm] {$-KL+1$};
+        \draw (2, 0) node[black, yshift=-0.5cm] {$-L+1$};
+        \draw [>=latex, ->, green, thick] (0, 3) to (0, 2);
+        \draw [green, fill=green] (0, 3) circle [radius=0.05];
+        \draw [green, fill=green] (0, 2) circle [radius=0.05];
+        \draw [>=latex, ->, green, thick] (2, 1.8) to (2, 0);
+        \draw [green, fill=green] (-2, 1.8) circle [radius=0.05];
+        \draw [green, fill=green] (2, 1.8) circle [radius=0.05];
+        \draw [green, fill=green] (-2, 0) circle [radius=0.05];
+        \draw [>=latex, ->, green, thick] (-2, 1.8) to (-2, 0);
+        \draw [green, fill=green] (-2, 0) circle [radius=0.05];
+
+        \draw [red, thick] (-5,3) -- (-4.5,3);
+        \draw (-4.5,3) node[black, xshift=0.7cm] {$W_z[m]$};
+        \draw [blue, thick] (-5,2.5) -- (-4.5,2.5);
+        \draw (-4.5,2.5) node[black, xshift=0.7cm] {$W_y[m]$};
+        \draw [green, thick] (-5,2) -- (-4.5,2);
+        \draw (-4.5,2) node[black, xshift=0.9cm] {$W_{z \to y}[m]$};
+    \end{tikzpicture}
+    \caption{Transformation of the window applied by $r_y[m]$}
+    \label{fig:window}
+\end{figure}
+
+Then
+\begin{align*}
+    E(W_{z \to y}[m]r_z[m]) &= W_{z \to y}[m] W_z[m] R_{Y'_i,Y'_j}[m] \\
+    &= W_y[m] R_{Y'_i,Y'_j}[m] \\
+    &= E(r_y[m]).
+\end{align*}
+To this end, let $\vec{w}_{z \to y} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w}_{z \to y})_{i+L} = W_{z \to y}[i]$ for $i = -L+1,\ldots,L-1$. Then
+\begin{align*}
+    \vec{w}_{z \to y} = \pushline  \pushright{\begin{bmatrix}
+        \frac{1}{KL - L + 1} & \frac{2}{KL - L + 2} & \cdots & \frac{L- 1}{KL - 1} & K & \frac{L- 1}{KL - 1} & \cdots & \frac{2}{KL - L + 2} & \frac{1}{KL - L + 1}
+    \end{bmatrix}^T.}
+\end{align*} 
+We can now state that
+\begin{align*}
+    E(N \vec{r}_{z'_i,z'_j}[KL-L+1,KL+L-1] \odot \vec{w}_{z \to y}) = E(N \vec{r}_{y'_i,y'_j}) = E(\vec{r}'_{y_i,y_j}).
+\end{align*}
+Thus
+\begin{align*}
+    \vec{r}'_y = N\begin{bmatrix}
+        \vec{r}_{z'_1,z'_1}[KL-L+1,KL+L-1] \\
+        \vdots \\
+        \vec{r}_{z'_M,z'_M}[KL-L+1,KL+L-1]
+    \end{bmatrix} \odot \begin{bmatrix}
+        \vec{w}_{z \to y} \\
+        \vdots \\
+        \vec{w}_{z \to y} 
+    \end{bmatrix}
+\end{align*}
+could be used instead.
+
+TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already showed).
 \section{Exploring Further Possibilities}
 \subsection{Sample-Wide Autocorrelation}
 Is it possible to estimate $E(\vec{r}_x)$ by making use of $\vec{w}_m$. To this end,
@@ -494,38 +602,37 @@ In this section we discuss the applicability of \cref{th:corr-unbiased} on the a
 where
 \begin{align*}
     W[i] = \begin{cases}
-        i+LN  & -LN+1 \le i \le 0, \\
-        LN-i& 0 \le i \le LN-1, \\
+        i+LN  &\text{if } -LN+1 \le i \le 0, \\
+        LN-i&\text{if } 0 \le i \le LN-1, \\
         0 & \text{elsewhere.}
     \end{cases}
 \end{align*}
 
 First, one could propose to use $(W[i])^{-1}E(r[i])$ as an unbiased estimator of $R_X[i]$ for $i=-LN+1,\ldots,LN-1$. However, \cite{percival1993univariate} shows that this usually increases the mean squared error.
 
-Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of the weights discussed in \cref{th:corr-unbiased} on the power spectral density. By the Wiener-Khintchine theorem and the convolution theorem,
+Second, $E(\vec{r}_x)$ is usually estimated to estimate the power spectral density of $X[n]$. Therefore, we study the effect of $W[n]$ on the power spectral density. By the convolution theorem and the Wiener-Khintchine theorem,
 \begin{align*}
     \DTFT\{E(r[i])\} = \frac{1}{2 \pi}\DTFT\{R_X[i]\} \circledast \DTFT\{W[i]\} = \frac{1}{2 \pi}\mathcal{P}(\omega) \circledast \DTFT\{W[i]\}
 \end{align*}
 where $\mathcal{P}(\omega)$ denotes the power spectral density of $X[n]$. Note that
-\renewcommand{\pushrightwidth}{10cm}
 \begin{align*}
     \DTFT\{W[i]\} &= \sum_{k=-\infty}^{\infty}W[k]\exp(-j \omega k) \\
     &= \sum_{k=-LN+1}^{0}(k +LN)\exp(-j \omega k) + \sum_{k=1}^{LN-1}(LN-k) \exp(-j \omega k) \\
     &= \sum_{k=0}^{LN-1} \left[(LN-k) \exp(j \omega k) + (LN-k) \exp(-j \omega k) \right] - LN \\
-    &= \sum_{k=0}^{LN-1} \left[\left(LN+j\frac{d}{d \omega}\right) \exp(j \omega k) \right.
-    \\& \pushright{\left. + \left(LN-j \frac{d}{d \omega}\right) \exp(-j \omega k) \right] - LN} \\
-    &= \left(LN+j\frac{d}{d \omega}\right) \sum_{k=0}^{LN-1}\exp(j \omega k)
-    \\& \pushright{+ \left(LN-j \frac{d}{d \omega}\right) \sum_{k=0}^{LN-1} \exp(-j \omega k) - LN} \\
+    &= \sum_{k=0}^{LN-1} \left[\left(LN+j\frac{d}{d \omega}\right) \exp(j \omega k) \right. \\
+    \pushright{\left. + \left(LN-j \frac{d}{d \omega}\right) \exp(-j \omega k) \right] - LN} 
+    &= \left(LN+j\frac{d}{d \omega}\right) \sum_{k=0}^{LN-1}\exp(j \omega k) \\
+    \pushright{+ \left(LN-j \frac{d}{d \omega}\right) \sum_{k=0}^{LN-1} \exp(-j \omega k) - LN}
     &= \left(LN+j\frac{d}{d \omega}\right) \frac{1-\exp(j \omega LN)}{1-\exp(j \omega)}
-    \\& \pushright{+ \left(LN-j \frac{d}{d \omega}\right) \frac{1-\exp(-j \omega LN)}{1-\exp(-j \omega)} - LN}.
+    \pushright{+ \left(LN-j \frac{d}{d \omega}\right) \frac{1-\exp(-j \omega LN)}{1-\exp(-j \omega)} - LN.} 
 \end{align*}
 Further algebraic simplification yields that
 \begin{align*}
     \DTFT\{W[i]\} = \frac{\cos(LN \omega) - 1}{\cos(\omega) - 1}.
 \end{align*}
-Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\DTFT\{W[i]\}$, $\DTFT\{E(r[i])\}$ respresents a distorted version of $\mathcal{P}(\omega)$. Suppose $LN \to \infty$. Then, since $W[i]/LN \to 1$, we are tempted to say that $\DTFT\{W[i]/LN\} \to 2 \pi \delta(w)$. This yields that the resolution of the obtained power spectral density is approximately determined by the first zero of $\DTFT\{W[i]\}$. Therefore the resolution is given by
+Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\DTFT\{W[i]\}$, $\DTFT\{E(r[i])\}$ respresents a distorted version of $\mathcal{P}(\omega)$. Suppose $LN \to \infty$. Then, since $W[i]/LN \to 1$, we are tempted to say that $\DTFT\{W[i]/LN\} \to 2 \pi \delta(w)$. So for large enough $LN$, $\DTFT\{W[i]\}$ behaves approximately like a delta function. This allows that the resolution of the obtained power spectral density can approximately be determined by the first zero of $\DTFT\{W[i]\}$. Therefore the resolution is given by
 \begin{align*}
-    \Delta \omega = \frac{\pi}{2LN}.
+    \Delta \omega \approx \frac{\pi}{2LN}.
 \end{align*}
 
 \chapter{Detection}

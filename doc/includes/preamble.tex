@@ -176,9 +176,8 @@
 \renewcommand*{\memUChead}[1]{\titlecap{#1}}
 
 % \hfill for math mode
-% Specify \pushrightwidth before align to align the text (best fix for now...)
-\newcommand{\pushrightwidth}{10cm}
-\newcommand{\pushright}[1]{\text{\makebox[\pushrightwidth]{\hfill$#1$}}}
+\newcommand{\pushright}[1]{\intertext{\hfill$#1$}}
+\newcommand{\pushline}{\hskip \textwidth minus \textwidth}
 
 % Setup actiepunten
 \newenvironment{important}[1][]{%
