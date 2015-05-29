@@ -7,7 +7,7 @@ class Coprime(Sampler):
 
     """Coprime coset sampler implementation"""
 
-    def __init__(self, a, b, mode="cps"):
+    def __init__(self, a, b):
         Sampler.__init__(self)
         self.a = a
         self.b = b
@@ -17,10 +17,14 @@ class Coprime(Sampler):
         chunk_size = self.a * self.b
         output_chunk_size = self.a + self.b - 1
         chunks = int(np.floor(len(signal) / chunk_size))
-        output = np.zeros((output_chunk_size  * chunks))
-        for i, j in zip(range(0, chunks*output_chunk_size, output_chunk_size), (range(0, chunks * chunk_size, chunk_size))):
-             output[i:i + output_chunk_size] = np.dot(signal[j:j + chunk_size], self.C)
+        output = np.zeros((output_chunk_size, chunks))
+        print output.shape
+        for i, j in enumerate(range(0, chunks * chunk_size, chunk_size)):
+             output[:, i] = np.dot(signal[j:j + chunk_size], self.C)
         return output
+
+    def get_C(self):
+        return self.C
 
     def generate_C(self):
         n = range(max(self.a, self.b))  # max number of multiples in the coprime solution

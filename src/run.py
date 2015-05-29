@@ -10,7 +10,7 @@ from multiprocessing import Process, Queue, Pipe
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
-parser.add_argument('-N', metavar='N', type=int, default=14)
+parser.add_argument('-N', metavar='N', type=int, default=12)
 parser.add_argument('-L', metavar='L', type=int, default=40)
 parser.add_argument('-source', metavar='source', type=str, default='dump')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     p1 = Process(target=run_generator_profiler,
                  args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, child_opt_src))
     p2 = Process(target=run_reconstructor,
-                 args=(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
+                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
     p3 = Process(target=run_websocket_server,
                  args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, child_opt_web))
     p4 = Process(target=run_settings_server,

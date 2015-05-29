@@ -16,10 +16,13 @@ class noise_power(Detector):
 
     def detect(self, rx):
         length = (len(rx) - 1) / 2
-        # Normalize autocorrelation
         autocorr = rx / max(abs(rx))
-        # Normalize PSD
         psd = cg.fft(autocorr) / (2 * length)
+        # self.threshold = self.calc_threshold(psd, self.window_length, rx)
+
+        # Normalize autocorrelation
+
+        # Normalize PSD
         power = np.zeros(self.num_bins)
         stepsize = np.floor(len(psd) / self.num_bins)
         for i in range(0, self.num_bins):
@@ -27,7 +30,6 @@ class noise_power(Detector):
         return power > self.threshold
 
     def parse_options(self, options):
-        print "Det opt"
         for key, value in options.items():
             if key == "threshold":
                 self.threshold = options["threshold"]
