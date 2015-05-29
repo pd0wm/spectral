@@ -402,6 +402,91 @@ Argue that last and first $N-1$ samples are zero.
 \subsection{Unicity of Solution}
 rank => circ min sparse ruler
 
+\subsection{Minimal Circular Rulers}
+Consider a ruler $\vec{r} \in \{0,1\}^N$ of length $N$. $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.
+
+A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $(\vec{r})_i = 1$, $(\vec{r})_j = 1$ and $|i-j| = d$ or  $N-|i-j| = d$. The ruler $\vec{r}$ is a circular ruler if it contains distances $ 1, \ldots, N - 1$. A circular ruler $\vec{r}$ is minimal if and only if $||\vec{r}||_1$ is minimal. A circular ruler can be depicted in a nice way. \Cref{fig:circular-ruler} shows a minimal circular ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \def\N{7}
+        \draw [thick, black] circle[radius=2.5cm] (0,0);
+        \foreach \i in {1,...,\N} {
+            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,black,thick] plot ({\x*sin(360*(\i-1)/\N)},{\x*cos(360*(\i-1)/\N)});
+            \draw [black,thick,dashed] (0,0) -- ({2.5*sin(360*(\i-1)/\N)},{2.5*cos(360*(\i-1)/\N)});
+            \node[black] at ({3*sin(360*(\i-1)/\N)},{3*cos(360*(\i-1)/\N)}) {$\i$};
+        }
+        \foreach \i in {0,1,3} {
+            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,red,line width=1mm] plot ({\x*sin(360*\i/\N)},{\x*cos(360*\i/\N)});
+        }
+        \draw [scale=1,domain=0.1:0.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 1
+        \draw [scale=1,domain=1.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 2
+        \draw [scale=1,domain=3.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 4
+        \draw [scale=1,domain=0.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1.5*sin(360*\x/\N)},{1.5*cos(360*\x/\N)}); % 3
+        \draw [scale=1,domain=3.1:7.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1*sin(360*\x/\N)},{1*cos(360*\x/\N)}); % 5
+        \draw [scale=1,domain=1.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({0.5*sin(360*\x/\N)},{0.5*cos(360*\x/\N)}); % 6
+    \end{tikzpicture}
+    \caption{Minimal circular ruler for $N=7$}
+    \label{fig:circular-ruler}
+\end{figure}
+
+\begin{blockDefinition}
+    Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
+\end{blockDefinition}
+
+\begin{blockDefinition}[Modulo]
+    Let $x,y \in \mathbb{Z}$. Then $x~(\mod~y)$ denotes $z \in \mathbb{Z}$ such that $x = z + ny$ for $n \in \mathbb{Z}$ as big as possible.
+\end{blockDefinition}
+
+Let
+\begin{align*}
+    D_d = \{\vec{d} \in \{0,1\}^N : (\vec{d})_i = 1 \text{ and } (\vec{d})_{i + d~(\mod N)} = 1 \text{ for } i = 1,\ldots,N-1\}
+\end{align*}
+for $d = 1,\ldots,N-1$. We now formulate a theorem which guarantees that a ruler contains a specific distance.
+
+\begin{blockTheorem} \label{th:ruler-distance}\nolinebreak
+    Let $\vec{r} \in \{0,1\}^N$ be a ruler. Then $\vec{r}$ contains the distance $d$ if $\vec{d}^T \vec{r} = 2$ for any $\vec{d} \in D_d$.\nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:ruler-distance}}
+    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, $j = i + d~(\mod N)$. So either $|i-j|=d$ or $|i-j| = N-d$, since $0 \le d \le N - 1$. In both cases, $\vec{r}$ contains the distance $d$. 
+\end{blockProofTheorem}
+
+Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in $D_d$ as rows.
+
+\begin{blockTheorem} \label{th:ruler-distance-matrix}\nolinebreak
+    Let $\vec{r} \in \{0,1\}^N$ be a ruler and let $\vec{y} \in \{0,1\}^{|D_d|}$. Then $\vec{r}$ contains the distance $d$ at least once if $\mat{D}_d \vec{r} \ge 2\vec{y}$ such that $||\vec{y}||_1 = 1$.
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:ruler-distance-matrix}}
+    Assume that $\mat{D}_d \vec{r} \ge 2 \vec{y}$ such that $||\vec{y}||_1 = 1$. Then there is one and only one $i$ such that $(\vec{y})_i=1$. Therefore there exists a $\vec{d} \in D_d$ such that $\vec{d}^T \vec{r} \ge 2 (\vec{y})_i = 2$. Since $||\vec{d}||_1=2$, the equality holds and thus $\vec{r}$ contains the distance $d$. Now consider $\vec{d}' \in D_d$ such that $\vec{d}' \neq \vec{d}$. Then $\vec{d}^T \vec{r} \ge 0$, which holds for any $\vec{r}$.  
+\end{blockProofTheorem}
+
+Consider the binary integer linear program
+\begin{align*}
+    \text{minimise } &\vec{1}_N^T \vec{r} \\
+    \text{such that } &
+    \begin{bmatrix}
+        \mat{D}_1 \\
+        \vdots \\
+        \mat{D}_{N-1}
+    \end{bmatrix} \vec{r} \ge 2 \begin{bmatrix}
+        \vec{y}_1 \\
+        \vdots \\
+        \vec{y}_2
+    \end{bmatrix}, \begin{bmatrix}
+        \vec{1}_{|D_1|}^T & & \\
+        & \ddots & \\
+        & & \vec{1}_{|D_{N-1}|}^T
+    \end{bmatrix}  \begin{bmatrix}
+        \vec{y}_1 \\
+        \vdots \\
+        \vec{y}_{N-1}
+    \end{bmatrix} = \vec{1}_{N-1}, \\
+    & \vec{r} \in \{0,1\}^N \text{ and } \vec{y}_i \in \{0,1\}^{|D_i|} \text{ for } i = 1,\ldots,N-1.
+\end{align*}
+Then, by the definition of a minimal circular ruler and \cref{th:ruler-distance-matrix}, this program yields a minimal circular ruler of length $N$.
+
 \subsection{Algorithm}
 Proceed as follows:
 \begin{enumerate}
@@ -446,26 +531,26 @@ Ideally, we would want to use $r_z[m]$ to estimate $E(r_y[m])$ for $m = -L+1,\ld
         0 & \text{elsewhere.}
     \end{cases}
 \end{align*}
-$W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by $r_z[m]$ to prevent biasing. This is pictured by the green arcs in \cref{fig:window}.
+$W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by $r_z[m]$ to prevent biasing. This is pictured by the green arrows in \cref{fig:window}.
 
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
-        \draw [red, thick] (-5, 0) -- (0, 3) -- (5, 0);
-        \draw [blue, thick] (-2, 0) -- (0, 2) -- (2, 0);
+        \draw [red, thick] (-5, -1) -- (-5, 0) -- (0, 3) -- (5, 0) -- (5, -1);
+        \draw [blue, thick] (-5, -1) -- (-2, -1) -- (-2, 0) -- (0, 2) -- (2, 0) -- (2, -1) -- (5, -1);
         \draw [blue, dashed] (0, 2) -- (5, 2);
         \draw (5,2) node[black, xshift=0.5cm] {$L$};
         \draw (5,3) node[black, xshift=0.5cm] {$KL$};
         \draw [red, dashed] (0, 3) -- (5, 3);
-        \draw [black, thick] (-5, 0) -- (5, 0);
-        \draw [black, thick] (-5, -0.2) -- (-5, 0.2);
-        \draw [black, thick] (-2, -0.2) -- (-2, 0.2);
-        \draw [black, thick] (5, -0.2) -- (5, 0.2);
-        \draw [black, thick] (2, -0.2) -- (2, 0.2);
-        \draw (-5, 0) node[black, yshift=-0.5cm] {$-KL+1$};
-        \draw (-2, 0) node[black, yshift=-0.5cm] {$-L+1$};
-        \draw (5, 0) node[black, yshift=-0.5cm] {$-KL+1$};
-        \draw (2, 0) node[black, yshift=-0.5cm] {$-L+1$};
+        \draw [black, thick] (-5, -1) -- (5, -1);
+        \draw [black, thick] (-5, -1.2) -- (-5, -0.8);
+        \draw [black, thick] (-2, -1.2) -- (-2, -0.8);
+        \draw [black, thick] (5, -1.2) -- (5, -0.8);
+        \draw [black, thick] (2, -1.2) -- (2, -0.8);
+        \draw (-5, -1) node[black, yshift=-0.5cm] {$-KL+1$};
+        \draw (-2, -1) node[black, yshift=-0.5cm] {$-L+1$};
+        \draw (5, -1) node[black, yshift=-0.5cm] {$-KL+1$};
+        \draw (2, -1) node[black, yshift=-0.5cm] {$-L+1$};
         \draw [>=latex, ->, green, thick] (0, 3) to (0, 2);
         \draw [green, fill=green] (0, 3) circle [radius=0.05];
         \draw [green, fill=green] (0, 2) circle [radius=0.05];
@@ -474,7 +559,10 @@ $W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by
         \draw [green, fill=green] (2, 1.8) circle [radius=0.05];
         \draw [green, fill=green] (-2, 0) circle [radius=0.05];
         \draw [>=latex, ->, green, thick] (-2, 1.8) to (-2, 0);
-        \draw [green, fill=green] (-2, 0) circle [radius=0.05];
+        \draw [green, fill=green] (2, 0) circle [radius=0.05];
+        \draw [green, thick] (2, -1) -- (5, -1);
+        \draw [green, thick] (-2, -1) -- (-5, -1);
+        %\draw [green, thick, >=latex, ->] (-3.6, 0.6) to[bend left=25] (-3, -0.8);
 
         \draw [red, thick] (-5,3) -- (-4.5,3);
         \draw (-4.5,3) node[black, xshift=0.7cm] {$W_z[m]$};
@@ -520,6 +608,8 @@ could be used instead.
 TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already showed).
 \section{Exploring Further Possibilities}
 \subsection{Sample-Wide Autocorrelation}
+TODO: Revise
+
 Is it possible to estimate $E(\vec{r}_x)$ by making use of $\vec{w}_m$. To this end,
 \begin{align*}
     (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M (\vec{w}_m)_k (\conj{\vec{w}}_m)_{M-i+k} \\
@@ -634,6 +724,14 @@ Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\D
 \begin{align*}
     \Delta \omega \approx \frac{\pi}{2LN}.
 \end{align*}
+
+TODO: window places copies at -30 dB, limit? other windows?
+
+\section{Discussion}
+TODO: assumption wide sense stationary
+
+
+\end{document}
 
 \chapter{Detection}
 
