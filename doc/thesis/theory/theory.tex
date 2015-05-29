@@ -15,7 +15,7 @@
 \begin{document}
 
 \chapter{Reconstruction}
-TODO: appropriate referencing
+This chapter introduces a reconstruction method which is largely based on \cite{ariananda2012compressive}. However, \cite{ariananda2012compressive} considers the reconstruction from a statistical perspective, where we choose a deterministic point of view.
 
 \section{Preliminaries}
 Vectors are denoted by lower-case bold-faced letters and matrices are denoted by upper-case bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We now introduce notation to denote elements of vectors and matrices.
@@ -394,10 +394,10 @@ In this section the stated theorems will be proven.
 \end{blockProofTheorem}
 
 \section{The Algorithm}
-This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets.
+This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets
 
 \subsection{Support of Solution}
-Argue that last and first $N-1$ samples are zero.
+Consider \cref{th:deci-corr}. Here $[E(N \vec{r}_{y'_i,y'_j})]_{m + L}$ is an estimator of $R_{Y'_i,Y'_j}[m]$ for $m = -L+1,L-1$. Since one is only able to estimate $R_{Y'_i,Y'_j}[m]$ for $m=-L+1,L-1$, it is often assumed that $R_{Y'_i,Y'_j}[m]=0$ for $m \le L$ and $m \ge L$. But then $R_{Y'_i,Y'_j}[m]=0$ for $m \le LN$ and $m \ge LN$, which implies that $E[(\vec{r}_{y_i,y_j})]_{m+LN + N-1}=0$ for $m \le LN$ and $m \ge LN$. Therefore the first and last $N-1$ elements of $E[(\vec{r}_{y_i,y_j})]$ are zero. By the structure of $\mat{R}_{c_i,c_j}$, the first $N-1$ elements of $E(\vec{r}_x)$ consist of the first $N-1$ elements of $\vec{r}_{y_i,y_j}$, which are zero. Therefore, the first $N-1$ elements of $E(\vec{r}_x)$ are zero. Similarly, the last $N-1$ elements of $E(\vec{r}_x)$ are zero.
 
 \subsection{Unicity of Solution}
 rank => circ min sparse ruler
@@ -539,7 +539,7 @@ $W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by
         \draw [red, thick] (-5, -1) -- (-5, 0) -- (0, 3) -- (5, 0) -- (5, -1);
         \draw [blue, thick] (-5, -1) -- (-2, -1) -- (-2, 0) -- (0, 2) -- (2, 0) -- (2, -1) -- (5, -1);
         \draw [blue, dashed] (0, 2) -- (5, 2);
-        \draw (5,2) node[black, xshift=0.5cm] {$L$};
+        \draw (5, 2) node[black, xshift=0.5cm] {$L$};
         \draw (5,3) node[black, xshift=0.5cm] {$KL$};
         \draw [red, dashed] (0, 3) -- (5, 3);
         \draw [black, thick] (-5, -1) -- (5, -1);
@@ -583,9 +583,9 @@ Then
 \end{align*}
 To this end, let $\vec{w}_{z \to y} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w}_{z \to y})_{i+L} = W_{z \to y}[i]$ for $i = -L+1,\ldots,L-1$. Then
 \begin{align*}
-    \vec{w}_{z \to y} = \pushline  \pushright{\begin{bmatrix}
-        \frac{1}{KL - L + 1} & \frac{2}{KL - L + 2} & \cdots & \frac{L- 1}{KL - 1} & K & \frac{L- 1}{KL - 1} & \cdots & \frac{2}{KL - L + 2} & \frac{1}{KL - L + 1}
-    \end{bmatrix}^T.}
+    \vec{w}_{z \to y} =\begin{bmatrix}
+        \frac{1}{KL - L + 1} & \cdots & \frac{L- 1}{KL - 1} & K & \frac{L- 1}{KL - 1} & \cdots & \frac{1}{KL - L + 1}
+    \end{bmatrix}^T.
 \end{align*} 
 We can now state that
 \begin{align*}
