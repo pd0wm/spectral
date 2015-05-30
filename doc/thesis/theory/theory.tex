@@ -397,13 +397,13 @@ In this section the stated theorems will be proven.
 This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets
 
 \subsection{Support of Solution}
-Consider \cref{th:deci-corr}. Here $[E(N \vec{r}_{y'_i,y'_j})]_{m + L}$ is an estimator of $R_{Y'_i,Y'_j}[m]$ for $m = -L+1,L-1$. Since one is only able to estimate $R_{Y'_i,Y'_j}[m]$ for $m=-L+1,L-1$, it is often assumed that $R_{Y'_i,Y'_j}[m]=0$ for $m \le L$ and $m \ge L$. But then $R_{Y'_i,Y'_j}[m]=0$ for $m \le LN$ and $m \ge LN$, which implies that $E[(\vec{r}_{y_i,y_j})]_{m+LN + N-1}=0$ for $m \le LN$ and $m \ge LN$. Therefore the first and last $N-1$ elements of $E[(\vec{r}_{y_i,y_j})]$ are zero. By the structure of $\mat{R}_{c_i,c_j}$, the first $N-1$ elements of $E(\vec{r}_x)$ consist of the first $N-1$ elements of $\vec{r}_{y_i,y_j}$, which are zero. Therefore, the first $N-1$ elements of $E(\vec{r}_x)$ are zero. Similarly, the last $N-1$ elements of $E(\vec{r}_x)$ are zero.
+Consider \cref{th:deci-corr}. Here $[E(N \vec{r}_{y'_i,y'_j})]_{m + L}$ is an estimator of $R_{Y'_i,Y'_j}[m]$ for $m = -L+1,L-1$. Since one is only able to estimate $R_{Y'_i,Y'_j}[m]$ for $m=-L+1,L-1$, it is often assumed that $R_{Y'_i,Y'_j}[m]=0$ for $m \le -L$ and $m \ge L$. But then $R_{Y'_i,Y'_j}[m]=0$ for $m \le -LN$ and $m \ge LN$, which implies that $E[(\vec{r}_{y_i,y_j})]_{m+LN + N-1}=0$ for $m \le -LN$ and $m \ge LN$. Therefore the first and last $N-1$ elements of $E[(\vec{r}_{y_i,y_j})]$ are zero. By the structure of $\mat{R}_{c_i,c_j}$, the first $N-1$ elements of $E(\vec{r}_x)$ consist of the first $N-1$ elements of $\vec{r}_{y_i,y_j}$, which are zero. Therefore, the first $N-1$ elements of $E(\vec{r}_x)$ are zero. Similarly, the last $N-1$ elements of $E(\vec{r}_x)$ are zero.
 
 \subsection{Unicity of Solution}
 rank => circ min sparse ruler
 
 \subsection{Minimal Circular Rulers}
-Consider a ruler $\vec{r} \in \{0,1\}^N$ of length $N$. $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.
+We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$. Then $\vec{r} \in \{0,1\}^N$. Also, $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.
 
 A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $(\vec{r})_i = 1$, $(\vec{r})_j = 1$ and $|i-j| = d$ or  $N-|i-j| = d$. The ruler $\vec{r}$ is a circular ruler if it contains distances $ 1, \ldots, N - 1$. A circular ruler $\vec{r}$ is minimal if and only if $||\vec{r}||_1$ is minimal. A circular ruler can be depicted in a nice way. \Cref{fig:circular-ruler} shows a minimal circular ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
 \begin{figure}[H]
@@ -434,22 +434,19 @@ A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $
     Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
 \end{blockDefinition}
 
-\begin{blockDefinition}[Modulo]
-    Let $x,y \in \mathbb{Z}$. Then $x~(\mod~y)$ denotes $z \in \mathbb{Z}$ such that $x = z + ny$ for $n \in \mathbb{Z}$ as big as possible.
-\end{blockDefinition}
-
-Let
-\begin{align*}
-    D_d = \{\vec{d} \in \{0,1\}^N : (\vec{d})_i = 1 \text{ and } (\vec{d})_{i + d~(\mod N)} = 1 \text{ for } i = 1,\ldots,N-1\}
-\end{align*}
-for $d = 1,\ldots,N-1$. We now formulate a theorem which guarantees that a ruler contains a specific distance.
+Let $D_d$ be the set consisting of the vectors $\vec{d} \in \{0,1\}^N$ such that $(\vec{d})_i=1$ and $(\vec{d})_{i+d}=1$ where $i = 1,\ldots,N-d$ or $(\vec{d})_i=1$ and $(\vec{d})_{i+d-N}$ where $i = N-d+1,\ldots,N-1$.
+% \begin{align*}
+%     D_d = \{\vec{d} \in \{0,1\}^N : (\vec{d})_i = 1, (\vec{d})_{i + d} = 1, i = 1,\ldots,N-d~\}~\cup \pushline \pushright{\{\vec{d} \in \{0,1\}^N : (\vec{d})_i = 1, (\vec{d})_{i + d - N} = 1, i = N-d+1,\ldots,N-1\}}
+% \end{align*}
+% for $d = 1,\ldots,N-1$.
+We now formulate a theorem which guarantees that a ruler contains a specific distance.
 
 \begin{blockTheorem} \label{th:ruler-distance}\nolinebreak
     Let $\vec{r} \in \{0,1\}^N$ be a ruler. Then $\vec{r}$ contains the distance $d$ if $\vec{d}^T \vec{r} = 2$ for any $\vec{d} \in D_d$.\nolinebreak
 \end{blockTheorem}
 
 \begin{blockProofTheorem}{\ref{th:ruler-distance}}
-    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, $j = i + d~(\mod N)$. So either $|i-j|=d$ or $|i-j| = N-d$, since $0 \le d \le N - 1$. In both cases, $\vec{r}$ contains the distance $d$. 
+    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, either $|i-j|=d$ or $|i-j| = N-d$. In both cases, $\vec{r}$ contains the distance $d$. 
 \end{blockProofTheorem}
 
 Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in $D_d$ as rows.
