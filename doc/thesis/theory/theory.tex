@@ -484,15 +484,6 @@ Consider the binary integer linear program
 \end{align*}
 Then, by the definition of a minimal circular ruler and \cref{th:ruler-distance-matrix}, this program yields a minimal circular ruler of length $N$.
 
-\subsection{Algorithm}
-Proceed as follows:
-\begin{enumerate}
-    \item Construct $\mat{R}$.
-    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
-    \item Construct $\vec{r}'_y$.
-    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
-\end{enumerate}
-
 \subsection{Oversampling}
 Let $K \in \mathbb{N}$ denote the oversampling factor. Instead of obtaining $L$ samples from each coset to estimate all correlations from $-L+1$ to $L-1$, we could use $KL$ samples to estimate all correlations from $-L+1$ to $L-1$.
 
@@ -602,7 +593,21 @@ Thus
 \end{align*}
 could be used instead.
 
-TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already showed).
+TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already shown).
+
+
+\subsection{Algorithm}
+TODO: cut support and guarantee full column rank, include oversampling
+
+Proceed as follows:
+\begin{enumerate}
+    \item Construct $\mat{R}$.
+    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
+    \item Construct $\vec{r}'_y$.
+    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
+\end{enumerate}
+
+
 \section{Exploring Further Possibilities}
 \subsection{Sample-Wide Autocorrelation}
 TODO: Revise
