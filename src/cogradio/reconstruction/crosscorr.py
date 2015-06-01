@@ -9,16 +9,18 @@ class CrossCorrelation(Reconstructor):
 
     def __init__(self, N, L, C=None, svthresh=None):
         Reconstructor.__init__(self)
-        self.N = N              # Decimation factor
-        sparseruler = cg.sparseruler(N)
         if C is None:
+            sparseruler = cg.sparseruler(N)
             self.C = cg.build_C(sparseruler, N)
         else:
             self.C = C
         self.M = self.C.shape[0]
+        self.N = self.C.shape[1]
         self.L = L            # Length of input vector
-        R = self.cross_correlation_filters()
-        self.R_pinv = self.calc_pseudoinverse(R)
+        self.R = self.cross_correlation_filters()
+        print "Shape", self.R.shape
+        print "Rank", np.linalg.matrix_rank(self.R)
+        self.R_pinv = self.calc_pseudoinverse(self.R)
 
         # Caching mechanism
 
