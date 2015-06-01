@@ -16,14 +16,15 @@ class noise_power(Detector):
 
     def detect(self, rx):
         length = (len(rx) - 1) / 2
-        # Normalize autocorrelation
-        autocorr = rx / max(abs(rx))
-        # Normalize PSD
-        psd = cg.fft(autocorr) / (2 * length)
+        autocorr = rx
+        psd = cg.fft(autocorr)
+        # create array for power in bins
         power = np.zeros(self.num_bins)
+
         stepsize = np.floor(len(psd) / self.num_bins)
+
         for i in range(0, self.num_bins):
-            power[i] = np.sum(psd[stepsize * (i - 1) + 1:stepsize * i - 1] ** 2)
+            power[i] = np.sum(psd[stepsize * (i - 1) + 1:stepsize * i - 1])
         return power > self.threshold
 
     def parse_options(self, options):
@@ -43,10 +44,10 @@ class noise_power(Detector):
         for i in range(0, length):
             kidx = max(0, i - self.window_length)
             gidx = min(length - 1, i + self.window_length)
-            noise_estimate[i] = np.mean(psd[kidx: gidx])
+            noise_estimate[i] = np.sum(psd[kidx: gidx])
 
-        # Minimum level should equal noise (signal only adds up to PSD)
-        noise_level = min(abs(noise_estimate))
         stepsize = np.floor(len(psd) / self.num_bins)
-        return (stats.norm.isf(self.Pfa) + np.sqrt(stepsize)) * \
-            np.sqrt(stepsize) * 2 * noise_level
+        noise_level = len(psd)*min(abs(noise_estimate))/stepsize
+
+        return ((stats.norm.isf(self.Pfa) + np.sqrt(stepsize))
+                * np.sqrt(stepsize) * 2 * noise_level)/(stepsize/len(psd))
