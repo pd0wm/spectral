@@ -17,23 +17,19 @@ class Coprime(Sampler):
         chunk_size = self.a * self.b
         output_chunk_size = self.a + self.b - 1
         chunks = int(np.floor(len(signal) / chunk_size))
-        output = np.zeros((output_chunk_size, chunks))
-        print output.shape
+        output = np.zeros((output_chunk_size, chunks), dtype=np.complex64)
         for i, j in enumerate(range(0, chunks * chunk_size, chunk_size)):
-             output[:, i] = np.dot(signal[j:j + chunk_size], self.C)
+            output[:, i] = np.dot(np.fliplr(self.C), signal[j:j + chunk_size])
         return output
-
-    def get_C(self):
-        return self.C
 
     def generate_C(self):
         n = range(max(self.a, self.b))  # max number of multiples in the coprime solution
-        C = np.zeros((self.a * self.b, self.a + self.b - 1))
+        C = np.zeros((self.a + self.b - 1, self.a * self.b))
 
         a_indices = {i * self.a for i in n if i * self.a < self.a * self.b}
         b_indices = {i * self.b for i in n if i * self.b < self.a * self.b}
         indices = list(a_indices.union(b_indices))
 
-        for j, i in enumerate(indices):
+        for i, j in enumerate(indices):
             C[i, j] = 1
         return C

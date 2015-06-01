@@ -10,18 +10,22 @@ class Wessel(Reconstructor):
 
     def __init__(self, N, L, C=None):
         Reconstructor.__init__(self)
-        self.N = N
         self.L = L
-        sparseruler = cg.sparseruler(N)
         if C is None:
+            self.N = N
+            sparseruler = cg.sparseruler(N)
             self.C = cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
+        else:
+            self.C = C
         # get length of C
         self.M = self.C.shape[0]
+        self.N = self.C.shape[1]
 
         self.R = self.constructR()
         # Force full column rank with slicing
-        self.R = self.R[:, (self.N - 1): -(self.N - 1)]
-        # print "Full colum rank?", self.R.shape[1] == np.linalg.matrix_rank(self.R)
+        self.R = self.R[:, (self.N): -(self.N)]
+        print "Full colum rank?", self.R.shape
+        print "shape ", np.linalg.matrix_rank(self.R)
         self.R_pinv = self.calc_pseudoinverse(self.R)
 
     # Given M decimated channels, try to estimate the PSD
