@@ -16,12 +16,13 @@ class noise_power(Detector):
 
     def detect(self, rx):
         length = (len(rx) - 1) / 2
-        autocorr = rx
-        psd = cg.fft(autocorr)
+        psd = cg.fft(rx)
         # create array for power in bins
         power = np.zeros(self.num_bins)
 
         stepsize = np.floor(len(psd) / self.num_bins)
+        self.threshold = self.calc_threshold(psd, rx)
+        print self.threshold
 
         for i in range(0, self.num_bins):
             power[i] = np.sum(psd[stepsize * (i - 1) + 1:stepsize * i - 1])
@@ -37,7 +38,7 @@ class noise_power(Detector):
             elif key == "window_length":
                 self.window_length = options["window_length"]
 
-    def calc_threshold(self, psd, window_length, rx):
+    def calc_threshold(self, psd, rx):
         length = (len(rx) - 1) / 2
         noise_estimate = np.zeros(length)
         # Sliding window over frequency bins
@@ -50,4 +51,4 @@ class noise_power(Detector):
         noise_level = len(psd)*min(abs(noise_estimate))/stepsize
 
         return ((stats.norm.isf(self.Pfa) + np.sqrt(stepsize)) *
-                np.sqrt(stepsize) * 2 * noise_level)/(stepsize/len(psd))
+                np.sqrt(stepsize) * 2 * noise_level)*(stepsize/len(psd))
