@@ -15,7 +15,7 @@
 \begin{document}
 
 \chapter{Reconstruction}
-TODO: appropriate referencing
+This chapter introduces a reconstruction method which is largely based on \cite{ariananda2012compressive}. However, \cite{ariananda2012compressive} considers the reconstruction from a statistical perspective, where we choose a deterministic point of view.
 
 \section{Preliminaries}
 Vectors are denoted by lower-case bold-faced letters and matrices are denoted by upper-case bold-faced letters. Unless stated otherwise, a vector is always assumed to be a column vector. The complex conjugate of a vector $\vec{x}$ is denoted by $\bar{\vec{x}}$. The inner product of an inner product space is denoted by $\cdot$. We now introduce notation to denote elements of vectors and matrices.
@@ -394,22 +394,183 @@ In this section the stated theorems will be proven.
 \end{blockProofTheorem}
 
 \section{The Algorithm}
-This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets.
+This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets
 
 \subsection{Support of Solution}
-Argue that last and first $N-1$ samples are zero.
+Consider \cref{th:deci-corr}. Here $[E(N \vec{r}_{y'_i,y'_j})]_{m + L}$ is an estimator of $R_{Y'_i,Y'_j}[m]$ for $m = -L+1,L-1$. Since one is only able to estimate $R_{Y'_i,Y'_j}[m]$ for $m=-L+1,L-1$, it is often assumed that $R_{Y'_i,Y'_j}[m]=0$ for $m \le -L$ and $m \ge L$. But then $R_{Y'_i,Y'_j}[m]=0$ for $m \le -LN$ and $m \ge LN$, which implies that $E[(\vec{r}_{y_i,y_j})]_{m+LN + N-1}=0$ for $m \le -LN$ and $m \ge LN$. Therefore the first and last $N-1$ elements of $E[(\vec{r}_{y_i,y_j})]$ are zero. By the structure of $\mat{R}_{c_i,c_j}$, the first $N-1$ elements of $E(\vec{r}_x)$ consist of the first $N-1$ elements of $\vec{r}_{y_i,y_j}$, which are zero. Therefore, the first $N-1$ elements of $E(\vec{r}_x)$ are zero. Similarly, the last $N-1$ elements of $E(\vec{r}_x)$ are zero.
 
 \subsection{Unicity of Solution}
 rank => circ min sparse ruler
 
-\subsection{Algorithm}
-Proceed as follows:
-\begin{enumerate}
-    \item Construct $\mat{R}$.
-    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
-    \item Construct $\vec{r}'_y$.
-    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
-\end{enumerate}
+\subsection{Minimal Circular Rulers}
+We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$. Then $\vec{r} \in \{0,1\}^N$. Also, $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.
+
+A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $(\vec{r})_i = 1$, $(\vec{r})_j = 1$ and $|i-j| = d$ or  $N-|i-j| = d$. The ruler $\vec{r}$ is a circular ruler if it contains distances $ 1, \ldots, N - 1$. A circular ruler $\vec{r}$ is minimal if and only if $||\vec{r}||_1$ is minimal. A circular ruler can be depicted in a nice way. \Cref{fig:circular-ruler} shows a minimal circular ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \def\N{7}
+        \draw [thick, black] circle[radius=2.5cm] (0,0);
+        \foreach \i in {1,...,\N} {
+            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,black,thick] plot ({\x*sin(360*(\i-1)/\N)},{\x*cos(360*(\i-1)/\N)});
+            \draw [black,thick,dashed] (0,0) -- ({2.5*sin(360*(\i-1)/\N)},{2.5*cos(360*(\i-1)/\N)});
+            \node[black] at ({3*sin(360*(\i-1)/\N)},{3*cos(360*(\i-1)/\N)}) {$\i$};
+        }
+        \foreach \i in {0,1,3} {
+            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,red,line width=1mm] plot ({\x*sin(360*\i/\N)},{\x*cos(360*\i/\N)});
+        }
+        \draw [scale=1,domain=0.1:0.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 1
+        \draw [scale=1,domain=1.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 2
+        \draw [scale=1,domain=3.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 4
+        \draw [scale=1,domain=0.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1.5*sin(360*\x/\N)},{1.5*cos(360*\x/\N)}); % 3
+        \draw [scale=1,domain=3.1:7.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1*sin(360*\x/\N)},{1*cos(360*\x/\N)}); % 5
+        \draw [scale=1,domain=1.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({0.5*sin(360*\x/\N)},{0.5*cos(360*\x/\N)}); % 6
+    \end{tikzpicture}
+    \caption{Minimal circular ruler for $N=7$}
+    \label{fig:circular-ruler}
+\end{figure}
+
+\todo[inline, author=Kees]{Hier begint work in progress stuk van Kees}
+
+\subsection{Optimal circular sparse rulers}
+Let $\mathbf{S} \in \mathbb{N}^M$ with $S_i \leq N$ where $M$ is the amount of elements and $N$ the maximum length. We want this $\mathbf{S}$ to represent optimal circular sparse ruler solutions.
+
+\begin{blockDefinition}
+    Let $\mathbf{S} \in \mathbb{N}^M$ , then the set of lags $\Omega = \{|n_i-n_j|\} \cup \{N-|n_i-n_j|\} \quad \forall_{n_i,n_j}\in \mathbf{S}$.
+\end{blockDefinition}
+    
+
+\begin{blockDefinition}
+    $\mathbf{S}$ is an optimal circular sparse ruler solution if $\mathbf{S}$ is a circular sparse ruler solution, and there exists no circular sparse ruler solution with greater length while having the same amount of elements.
+\end{blockDefinition}
+
+\subsection{Verifying circular sparse rulers}
+
+\begin{blockTheorem} \label{th:circ_verify}\nolinebreak
+    $\mathbf{S}$ is a solution of circular sparse ruler if and only if all lags $\{0,1,\dots, \lfloor\frac{N}{2}\rfloor\}$ can be made. \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:circ_verify}}
+    Given lag $k$, one can get lag $N-k$ by turning in opposite direction on the circle. Assume that $\mathbf{S}$ contains all lags $\{0,1,\dots, A\}$. It then follows that one can also make the lags  $\{N-A,N-A+1,\dots, N-1\}$. If $(N-A)-A \leq 1$ then the two sets of lags connect to the set of lags $\{0,1,\dots,N-1\}$. $A=\lfloor\frac{N}{2}\rfloor$. $N-\lfloor\frac{2N}{2}\rfloor \leq 1$.
+\end{blockProofTheorem}
+
+\subsection{Circular sparse ruler from optimal linear sparse ruler}\label{ssec:minimal_linear_s}
+Linear sparse ruler is a problem that is already well defined and researched. 
+
+\begin{blockDefinition}\label{def:minimal_sparse}
+    $\mathbf{S}$ is a minimal linear sparse ruler solution if 
+    $$
+    \min_S|S| \quad s.t. \{0,1,\dots,N-1\} \in \Omega_{\text{linear}}
+    $$
+\end{blockDefinition}
+
+From definition \ref{def:minimal_sparse} one can see that a minimal sparse ruler solution guarantees a set where $\{0,1,\dots,N_{linear}-1\} \in \Omega$. We can use theorem \ref{th:circ_verify} to show that the minimal sparse ruler solution with length $N_{linear}$ is also a solution for circular sparse ruler with $N=2N_{linear}-1$.
+For example, the minimal sparse ruler solution for $N_{linear}=7$: $\{1,2,5,7\}$ is also a valid circular sparse ruler solution for $N=13$.
+
+\subsection{Upper-bound and lower-bound of optimal circular sparse ruler}
+To tell whether a circular sparse ruler solution is also optimal, it is useful to define an upper and lower-bound. The lower-bound is the minimal optimal solution one can get with $M$ elements. For this we can simply use the minimal linear sparse ruler solutions as described in section \ref{ssec:minimal_linear_s}, because this allows us to easily find circular sparse ruler solutions. The upper bound is the theoretical maximum amount of length $N$ one can achieve with $M$ elements.
+
+\begin{blockTheorem} \label{th:upperbound}\nolinebreak
+    the maximum length $N$ one can achieve with $M$ elements is $N=M(M-1)+1$\nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:upperbound}}
+    Let $\mathbf{S} \in \mathbb{N}^M$, and $n_i,n_j \in \mathbf{S}$, then the amount of lags $\Omega$ one can make with $M$ elements is $M^2$. We are only interested in unique combinations. Out of the $M^2$ combinations $M$ are $n_i=n_j$, resulting in a lag of 0. These cannot be unique, so the theoretic maximum amount of unique lags is reduced to $N=M(M-1)+1$
+\end{blockProofTheorem}
+
+\subsection{The structure of optimal circular sparse rulers}
+
+\begin{blockTheorem} \label{th:lag1}\nolinebreak
+    Let $M$ be the amount of elements and $N$ the length of a solution $\mathbf{S}$, and $M\geq 2$, then there exists a solution $\mathbf{S}$ with the same $M$ and $N$ where $\{1,2\} \in \mathbf{S}$  \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:lag1}}
+    For every solution holds: $1 \in \Omega$. Therefore there are always two elements next to each other. Because the problem is circular, one can translate the locations of the elements freely. Therefore one can always get a solution where $\{1,2\} \in \mathbf{S}$
+\end{blockProofTheorem}
+
+This is a useful property when writing an algorithm, for it allows the first two elements to be forced.
+
+\begin{blockTheorem} \label{th:odd}\nolinebreak
+    The length $N$ of an optimal solution $\mathbf{S}$ is an odd integer \nolinebreak
+\end{blockTheorem}
+
+This is something that has no proof yet, but holds some intuition to it. One wants to optimize the amount of different lags. When $N$ is even, there  needs to be a lag $|\frac{N}{2}|$, but when there is such a lag one also has the lag $N-|\frac{N}{2}|=|\frac{N}{2}|$. So with $N$ is even, one always has a double lag. Also the trend in the solution set for $2<N<40$ supports this. The minimal circular sparse ruler for $N=38$ has $M=8$, while the minimal sparse ruler for $N=39$ has $M=7$. Therefore the theorem \ref{th:odd} is a good assumption when writing an algorithm.
+
+\begin{blockTheorem} \label{th:lag2}\nolinebreak
+    Let $M$ be the elements and $N$ the length of an optimal solution, and $M\geq 4$, then there exists a solution $\mathbf{S}$ with these properties where $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,...N-4\}$   \nolinebreak
+\end{blockTheorem}
+
+For this theorem is also no proof yet, but this theorem also holds some intuition in it. When one uses this rule one gets the lags 1 and 2 for free, and also a block of length 4, which location is determined by the location of $k$. This is a very convenient property when constructing an optimal circular sparse ruler problem. 
+For example:
+\begin{align}
+M=4,N=13 \quad S&=\{1,2,5,7\}\\
+\end{align}
+where $k=5$. This is an optimal circular sparse ruler solution because $N=13$ is the upperbound of $M=4$ as defined by theorem \ref{th:upperbound}. The block of length 4 is in this case the set $\{3,4,5,6\}$.
+
+\subsection{A set of optimal circular sparse rulers}
+\begin{align}
+M=2,N=3  \quad S&=\{1,2\}\\
+M=3,N=7  \quad S&=\{1,2,4\}\\
+M=4,N=13 \quad S&=\{1,2,5,7\}\\
+M=5,N=21 \quad S&=\{1,2,5,15,17\}\\
+M=6,N=31 \quad S&=\{1,2,16,20,22,25\}
+\end{align}
+All these solutions are optimal circular sparse rulers because they are at the upperbound descibed in theorem \ref{th:upperbound}.
+\todo[inline, author=Kees]{Hier eindigt work in progress stuk van Kees}
+
+\begin{blockDefinition}
+    Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
+\end{blockDefinition}
+
+Let $D_d$ be the set consisting of the vectors $\vec{d} \in \{0,1\}^N$ such that $(\vec{d})_i=1$ and $(\vec{d})_{i+d}=1$ where $i = 1,\ldots,N-d$ or $(\vec{d})_i=1$ and $(\vec{d})_{i+d-N}$ where $i = N-d+1,\ldots,N-1$.
+% \begin{align*}
+%     D_d = \{\vec{d} \in \{0,1\}^N : (\vec{d})_i = 1, (\vec{d})_{i + d} = 1, i = 1,\ldots,N-d~\}~\cup \pushline \pushright{\{\vec{d} \in \{0,1\}^N : (\vec{d})_i = 1, (\vec{d})_{i + d - N} = 1, i = N-d+1,\ldots,N-1\}}
+% \end{align*}
+% for $d = 1,\ldots,N-1$.
+We now formulate a theorem which guarantees that a ruler contains a specific distance.
+
+\begin{blockTheorem} \label{th:ruler-distance}\nolinebreak
+    Let $\vec{r} \in \{0,1\}^N$ be a ruler. Then $\vec{r}$ contains the distance $d$ if $\vec{d}^T \vec{r} = 2$ for any $\vec{d} \in D_d$.\nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:ruler-distance}}
+    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, either $|i-j|=d$ or $|i-j| = N-d$. In both cases, $\vec{r}$ contains the distance $d$. 
+\end{blockProofTheorem}
+
+Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in $D_d$ as rows.
+
+\begin{blockTheorem} \label{th:ruler-distance-matrix}\nolinebreak
+    Let $\vec{r} \in \{0,1\}^N$ be a ruler and let $\vec{y} \in \{0,1\}^{|D_d|}$. Then $\vec{r}$ contains the distance $d$ at least once if $\mat{D}_d \vec{r} \ge 2\vec{y}$ such that $||\vec{y}||_1 = 1$.
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:ruler-distance-matrix}}
+    Assume that $\mat{D}_d \vec{r} \ge 2 \vec{y}$ such that $||\vec{y}||_1 = 1$. Then there is one and only one $i$ such that $(\vec{y})_i=1$. Therefore there exists a $\vec{d} \in D_d$ such that $\vec{d}^T \vec{r} \ge 2 (\vec{y})_i = 2$. Since $||\vec{d}||_1=2$, the equality holds and thus $\vec{r}$ contains the distance $d$. Now consider $\vec{d}' \in D_d$ such that $\vec{d}' \neq \vec{d}$. Then $\vec{d}^T \vec{r} \ge 0$, which holds for any $\vec{r}$.  
+\end{blockProofTheorem}
+
+Consider the binary integer linear program
+\begin{align*}
+    \text{minimise } &\vec{1}_N^T \vec{r} \\
+    \text{such that } &
+    \begin{bmatrix}
+        \mat{D}_1 \\
+        \vdots \\
+        \mat{D}_{N-1}
+    \end{bmatrix} \vec{r} \ge 2 \begin{bmatrix}
+        \vec{y}_1 \\
+        \vdots \\
+        \vec{y}_2
+    \end{bmatrix}, \begin{bmatrix}
+        \vec{1}_{|D_1|}^T & & \\
+        & \ddots & \\
+        & & \vec{1}_{|D_{N-1}|}^T
+    \end{bmatrix}  \begin{bmatrix}
+        \vec{y}_1 \\
+        \vdots \\
+        \vec{y}_{N-1}
+    \end{bmatrix} = \vec{1}_{N-1}, \\
+    & \vec{r} \in \{0,1\}^N \text{ and } \vec{y}_i \in \{0,1\}^{|D_i|} \text{ for } i = 1,\ldots,N-1.
+\end{align*}
+Then, by the definition of a minimal circular ruler and \cref{th:ruler-distance-matrix}, this program yields a minimal circular ruler of length $N$.
 
 \subsection{Oversampling}
 Let $K \in \mathbb{N}$ denote the oversampling factor. Instead of obtaining $L$ samples from each coset to estimate all correlations from $-L+1$ to $L-1$, we could use $KL$ samples to estimate all correlations from $-L+1$ to $L-1$.
@@ -446,26 +607,26 @@ Ideally, we would want to use $r_z[m]$ to estimate $E(r_y[m])$ for $m = -L+1,\ld
         0 & \text{elsewhere.}
     \end{cases}
 \end{align*}
-$W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by $r_z[m]$ to prevent biasing. This is pictured by the green arcs in \cref{fig:window}.
+$W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by $r_z[m]$ to prevent biasing. This is pictured by the green arrows in \cref{fig:window}.
 
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
-        \draw [red, thick] (-5, 0) -- (0, 3) -- (5, 0);
-        \draw [blue, thick] (-2, 0) -- (0, 2) -- (2, 0);
+        \draw [red, thick] (-5, -1) -- (-5, 0) -- (0, 3) -- (5, 0) -- (5, -1);
+        \draw [blue, thick] (-5, -1) -- (-2, -1) -- (-2, 0) -- (0, 2) -- (2, 0) -- (2, -1) -- (5, -1);
         \draw [blue, dashed] (0, 2) -- (5, 2);
-        \draw (5,2) node[black, xshift=0.5cm] {$L$};
+        \draw (5, 2) node[black, xshift=0.5cm] {$L$};
         \draw (5,3) node[black, xshift=0.5cm] {$KL$};
         \draw [red, dashed] (0, 3) -- (5, 3);
-        \draw [black, thick] (-5, 0) -- (5, 0);
-        \draw [black, thick] (-5, -0.2) -- (-5, 0.2);
-        \draw [black, thick] (-2, -0.2) -- (-2, 0.2);
-        \draw [black, thick] (5, -0.2) -- (5, 0.2);
-        \draw [black, thick] (2, -0.2) -- (2, 0.2);
-        \draw (-5, 0) node[black, yshift=-0.5cm] {$-KL+1$};
-        \draw (-2, 0) node[black, yshift=-0.5cm] {$-L+1$};
-        \draw (5, 0) node[black, yshift=-0.5cm] {$-KL+1$};
-        \draw (2, 0) node[black, yshift=-0.5cm] {$-L+1$};
+        \draw [black, thick] (-5, -1) -- (5, -1);
+        \draw [black, thick] (-5, -1.2) -- (-5, -0.8);
+        \draw [black, thick] (-2, -1.2) -- (-2, -0.8);
+        \draw [black, thick] (5, -1.2) -- (5, -0.8);
+        \draw [black, thick] (2, -1.2) -- (2, -0.8);
+        \draw (-5, -1) node[black, yshift=-0.5cm] {$-KL+1$};
+        \draw (-2, -1) node[black, yshift=-0.5cm] {$-L+1$};
+        \draw (5, -1) node[black, yshift=-0.5cm] {$-KL+1$};
+        \draw (2, -1) node[black, yshift=-0.5cm] {$-L+1$};
         \draw [>=latex, ->, green, thick] (0, 3) to (0, 2);
         \draw [green, fill=green] (0, 3) circle [radius=0.05];
         \draw [green, fill=green] (0, 2) circle [radius=0.05];
@@ -474,7 +635,10 @@ $W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by
         \draw [green, fill=green] (2, 1.8) circle [radius=0.05];
         \draw [green, fill=green] (-2, 0) circle [radius=0.05];
         \draw [>=latex, ->, green, thick] (-2, 1.8) to (-2, 0);
-        \draw [green, fill=green] (-2, 0) circle [radius=0.05];
+        \draw [green, fill=green] (2, 0) circle [radius=0.05];
+        \draw [green, thick] (2, -1) -- (5, -1);
+        \draw [green, thick] (-2, -1) -- (-5, -1);
+        %\draw [green, thick, >=latex, ->] (-3.6, 0.6) to[bend left=25] (-3, -0.8);
 
         \draw [red, thick] (-5,3) -- (-4.5,3);
         \draw (-4.5,3) node[black, xshift=0.7cm] {$W_z[m]$};
@@ -495,9 +659,9 @@ Then
 \end{align*}
 To this end, let $\vec{w}_{z \to y} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w}_{z \to y})_{i+L} = W_{z \to y}[i]$ for $i = -L+1,\ldots,L-1$. Then
 \begin{align*}
-    \vec{w}_{z \to y} = \pushline  \pushright{\begin{bmatrix}
-        \frac{1}{KL - L + 1} & \frac{2}{KL - L + 2} & \cdots & \frac{L- 1}{KL - 1} & K & \frac{L- 1}{KL - 1} & \cdots & \frac{2}{KL - L + 2} & \frac{1}{KL - L + 1}
-    \end{bmatrix}^T.}
+    \vec{w}_{z \to y} =\begin{bmatrix}
+        \frac{1}{KL - L + 1} & \cdots & \frac{L- 1}{KL - 1} & K & \frac{L- 1}{KL - 1} & \cdots & \frac{1}{KL - L + 1}
+    \end{bmatrix}^T.
 \end{align*} 
 We can now state that
 \begin{align*}
@@ -517,9 +681,25 @@ Thus
 \end{align*}
 could be used instead.
 
-TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already showed).
+TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already shown).
+
+
+\subsection{Algorithm}
+TODO: cut support and guarantee full column rank, include oversampling
+
+Proceed as follows:
+\begin{enumerate}
+    \item Construct $\mat{R}$.
+    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
+    \item Construct $\vec{r}'_y$.
+    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
+\end{enumerate}
+
+
 \section{Exploring Further Possibilities}
 \subsection{Sample-Wide Autocorrelation}
+TODO: Revise
+
 Is it possible to estimate $E(\vec{r}_x)$ by making use of $\vec{w}_m$. To this end,
 \begin{align*}
     (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M (\vec{w}_m)_k (\conj{\vec{w}}_m)_{M-i+k} \\
@@ -634,6 +814,14 @@ Since $\DTFT\{E(r[i])\}$ is the result of $\mathcal{P}(\omega)$ convolved by $\D
 \begin{align*}
     \Delta \omega \approx \frac{\pi}{2LN}.
 \end{align*}
+
+TODO: window places copies at -30 dB, limit? other windows?
+
+\section{Discussion}
+TODO: assumption wide sense stationary
+
+
+\end{document}
 
 \chapter{Detection}
 
