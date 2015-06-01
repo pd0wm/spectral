@@ -29,7 +29,6 @@ class noise_power(Detector):
         return power > self.threshold
 
     def parse_options(self, options):
-        print "Det opt"
         for key, value in options.items():
             if key == "threshold":
                 self.threshold = options["threshold"]
