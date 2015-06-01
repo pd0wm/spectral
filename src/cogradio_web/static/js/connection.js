@@ -7,9 +7,11 @@ var Connection = function() {
     var TYPE_SRC_DATA = 'src_data';
     var TYPE_REC_DATA = 'rec_data';
     var TYPE_DET_DATA = 'det_data';
-    var srcDataReceived = new Event(TYPE_SRC_DATA);
-    var recDataReceived = new Event(TYPE_REC_DATA);
-    var detDataReceived = new Event(TYPE_DET_DATA);
+    var events = {
+        'src_data': new Event(TYPE_SRC_DATA),
+        'rec_data': new Event(TYPE_REC_DATA),
+        'det_data': new Event(TYPE_DET_DATA)
+    }
 
     return {
         src_data: null,
@@ -25,20 +27,8 @@ var Connection = function() {
                 });
                 _socket.addEventListener("message", function(event) {
                     var container = JSON.parse(event.data);
-                    switch (container.dtype) {
-                        case TYPE_SRC_DATA:
-                            Connection.src_data = container;
-                            document.dispatchEvent(srcDataReceived);
-                            break;
-                        case TYPE_REC_DATA:
-                            Connection.rec_data = container;
-                            document.dispatchEvent(recDataReceived);
-                            break;
-                        case TYPE_DET_DATA:
-                            Connection.det_data = container;
-                            document.dispatchEvent(detDataReceived);
-                            break;
-                    }
+                    Connection[container.dtype] = container;
+                    document.dispatchEvent(events[container.dtype]);
                 });
                 _socket.addEventListener("close", function() {
                     console.log("Connection closed");

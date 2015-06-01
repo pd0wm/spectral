@@ -6,6 +6,7 @@ var Visualisation = function() {
     var TYPE_NONE = 'none';
     var TYPE_FFT = 'fft';
     var TYPE_SPECTROGRAM = 'spectrogram'
+    var TYPE_DET = 'detector'
     var DATATYPE_SRC_DATA = 'src_data';
     var DATATYPE_REC_DATA = 'rec_data';
     var DATATYPE_DET_DATA = 'det_data';
@@ -72,12 +73,22 @@ var Visualisation = function() {
 
             title(container, type, datatype);
 
-            if (type == TYPE_FFT) {
-                elements[container_id] = new FFTplot(container_id + "-container", datatype);
+
+            if (datatype == DATATYPE_DET_DATA) {
+                elements[container_id] = new DetPlot(container_id + "-container");
+                $("#" + container_id + " .visualisation-type").find('input').prop('disabled', true);
             }
-            else if (type == TYPE_SPECTROGRAM) {
-                elements[container_id] = new SpectroGram(container_id + "-container", datatype);
+            else {
+                if (type == TYPE_FFT) {
+                    elements[container_id] = new FFTplot(container_id + "-container", datatype);
+                }
+                else if (type == TYPE_SPECTROGRAM) {
+                    elements[container_id] = new SpectroGram(container_id + "-container", datatype);
+                }
+
+                $("#" + container_id + " .visualisation-type").find('input').prop('disabled', false);
             }
+
 
             if (type != TYPE_NONE) {
                 if (types.indexOf(datatype) == -1) {

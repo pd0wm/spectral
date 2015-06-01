@@ -29,11 +29,16 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
             source.parse_options(options)
 
 
-def run_reconstructor(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, opt):
+def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq, opt):
     while True:
         inp = signal_queue.get()
         if inp.any():
-            signal = cg.fft(reconstructor.reconstruct(inp))
+            rx = reconstructor.reconstruct(inp)
+            signal = cg.fft(rx)
+
+            if det_queue.full():
+                det_queue.get()
+            det_queue.put_nowait(rx)
 
             container = WebsocketDataContainer(ServerProtocolPlot.REC_DATA, signal)
             container.enqueue(websocket_rec_queue)
@@ -59,14 +64,15 @@ def run_detector(detector, detection_queue, websocket_det_queue, opt):
     while True:
         inp = detection_queue.get()
         if inp.any():
-            detect = detector.detect(inp)
-            if websocket_det_queue.full():
-                websocket_det_queue.get()
-            websocket_det_queue.put_nowait(detect)
+            detect = [int(x) for x in detector.detect(inp)]
+            container = WebsocketDataContainer(ServerProtocolPlot.DET_DATA, detect)
+            container.enqueue(websocket_det_queue)
+
+        options = None
         while opt.poll():
             options = opt.recv()
         if options:
-            detect.parse_options(options)
+            detector.parse_options(options)
 
 
 def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt):

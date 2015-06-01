@@ -1,1 +1,2 @@
 killall Python
+killall python

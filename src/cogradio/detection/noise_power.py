@@ -49,5 +49,5 @@ class noise_power(Detector):
         stepsize = np.floor(len(psd) / self.num_bins)
         noise_level = len(psd)*min(abs(noise_estimate))/stepsize
 
-        return ((stats.norm.isf(self.Pfa) + np.sqrt(stepsize))
-                * np.sqrt(stepsize) * 2 * noise_level)/(stepsize/len(psd))
+        return ((stats.norm.isf(self.Pfa) + np.sqrt(stepsize)) *
+                np.sqrt(stepsize) * 2 * noise_level)/(stepsize/len(psd))

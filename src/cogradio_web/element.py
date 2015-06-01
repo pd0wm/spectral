@@ -8,6 +8,7 @@ class Element(object):
         self.key = key
         self.title = title
         self.width = 1
+        self.has_changed = False
 
     @property
     def update_eval(self):
@@ -30,6 +31,7 @@ class TextElement(Element):
 
     @property
     def update_eval(self):
+        self.has_changed = False
         code = """$('#{0}').html("{1}")""".format(self.uuid, self.value)
         return code
 
@@ -57,6 +59,7 @@ class SliderElement(Element):
 
     @property
     def update_eval(self):
+        self.has_changed = False
         code = """$('#{0}').slider('setValue', {1})""".format(
             self.uuid, self.value)
         return code
@@ -97,6 +100,7 @@ class CheckBoxElement(Element):
 
     @property
     def update_eval(self):
+        self.has_changed = False
         code = """$('#{0}').prop('checked', {1});""".format(
             self.uuid, str(self.value).lower())
         return code
@@ -138,6 +142,7 @@ class VisualisationElement(Element):
 
     @property
     def update_eval(self):
+        # self.has_changed = False
         # code = """$('#{0}').prop('checked', {1});""".format(
         #     self.uuid, str(self.value).lower())
         # return code
