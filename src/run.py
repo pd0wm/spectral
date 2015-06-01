@@ -12,7 +12,7 @@ parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-N', metavar='N', type=int, default=12)
 parser.add_argument('-L', metavar='L', type=int, default=40)
-parser.add_argument('-source', metavar='source', type=str, default='dump')
+parser.add_argument('-source', metavar='source', type=str, default='complex')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
 parser.add_argument('-dump', metavar='file', type=str, default='dumps/twotone.dmp')
 args = parser.parse_args()
@@ -25,9 +25,11 @@ dump_file_path = args.dump
 source_type = args.source.lower()
 source_snr = args.snr
 
-frequencies = [2e3, 4e3, 5e6, 8e6]
+frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
+a = 3
+b = 5
 upscale_factor = 100  # Warning: greatly diminishes perfomance
 block_size = L * N * upscale_factor
 threshold = 2000
@@ -42,8 +44,14 @@ elif source_type == "dump":
 elif source_type == "complex":
     source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
 
-sampler = cg.sampling.MultiCoset(N)
-reconstructor = cg.reconstruction.Wessel(N, L)
+N = a * b
+M = a + b - 1
+#sampler_old = cg.sampling.MultiCoset(N)
+#print "old:\n", sampler_old.C
+sampler = cg.sampling.Coprime(a, b)
+#print "new:\n", sampler.C
+# sampler = cg.sampling.MultiCoset(N)
+reconstructor = cg.reconstruction.Wessel(N, L, C=sampler.get_C())
 detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
 
 # Init processes
