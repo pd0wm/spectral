@@ -430,7 +430,7 @@ A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $
     \label{fig:circular-ruler}
 \end{figure}
 
-\todo[inline, author=Kees]{Hier begint work in progress stuk van Kees}
+\todo[inline, author=Kees]{Read from here}
 
 \subsection{Optimal circular sparse rulers}
 Let $\mathbf{S} \in \mathbb{N}^M$ with $S_i \leq N$ where $M$ is the amount of elements and $N$ the maximum length. We want this $\mathbf{S}$ to represent optimal circular sparse ruler solutions.
@@ -458,7 +458,7 @@ Let $\mathbf{S} \in \mathbb{N}^M$ with $S_i \leq N$ where $M$ is the amount of e
 Linear sparse ruler is a problem that is already well defined and researched. 
 
 \begin{blockDefinition}\label{def:minimal_sparse}
-    $\mathbf{S}$ is a minimal linear sparse ruler solution if 
+    $\mathbf{S}$ is a minimal linear sparse ruler solution of length $N$ if 
     $$
     \min_S|S| \quad s.t. \{0,1,\dots,N-1\} \in \Omega_{\text{linear}}
     $$
@@ -490,33 +490,55 @@ To tell whether a circular sparse ruler solution is also optimal, it is useful t
 
 This is a useful property when writing an algorithm, for it allows the first two elements to be forced.
 
+
+
+\begin{blockTheorem} \label{th:lag2}\nolinebreak
+    all circular sparse ruler solutions can be written as $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$, or a rotation of those. \todo{dit is net niet lekker geformuleerd}   \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:identical_lags}}
+    We know that lag $2 \in \Omega$, therefore there need to be two devices with distance two from each other. This can be done in combination with element 1 or 2 from theorem \ref{th:lag1}. The only way to achieve this is $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\}$, $\{1,2,N\}$, $\{1,2,N-1\}$, but the last two options are identical to the first two except for their rotation. If no combination with element 1 or 2 is used then two other devices must be somewhere with distance 2 from each other. All options can be covered with $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,N-4\}$, but this set can also be reduced by exploiting rotation, resulting in $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$. Therefore every solution can be written as $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$, or a rotation of those. 
+\end{blockProofTheorem}
+
+This theorem has the potential to be used for a substantial speed-up when designing an algorithm.
+
+\begin{blockTheorem} \label{th:identical_lags}\nolinebreak
+    Let $\mathbf{S}$ be a solution to minimal circular sparse ruler. The amount of identical lags in $\Omega$ are $N_{\text{lags}} = M(M-1)+1-N$   \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:identical_lags}}
+    For a given $M$ elements there are $M(M-1)+1$ different combination possible. See theorem \ref{th:upperbound}. The amount of different lags in a solution is $N$. Therefore the amount of identical lags is $N_{\text{lags}} = M(M-1)+1-N$ 
+\end{blockProofTheorem}
+
+\subsection{Guesswork}
+\todo{Guesswork? Wat is de engelse variant van een vermoeden?}
+
 \begin{blockTheorem} \label{th:odd}\nolinebreak
     The length $N$ of an optimal solution $\mathbf{S}$ is an odd integer \nolinebreak
 \end{blockTheorem}
 
 This is something that has no proof yet, but holds some intuition to it. One wants to optimize the amount of different lags. When $N$ is even, there  needs to be a lag $|\frac{N}{2}|$, but when there is such a lag one also has the lag $N-|\frac{N}{2}|=|\frac{N}{2}|$. So with $N$ is even, one always has a double lag. Also the trend in the solution set for $2<N<40$ supports this. The minimal circular sparse ruler for $N=38$ has $M=8$, while the minimal sparse ruler for $N=39$ has $M=7$. Therefore the theorem \ref{th:odd} is a good assumption when writing an algorithm.
 
-\begin{blockTheorem} \label{th:lag2}\nolinebreak
-    Let $M$ be the elements and $N$ the length of an optimal solution, and $M\geq 4$, then there exists a solution $\mathbf{S}$ with these properties where $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,...N-4\}$   \nolinebreak
+\begin{blockTheorem} \label{th:lag1_2}\nolinebreak
+    Let $M$ be the elements and $N$ the length of an minimal circular sparse ruler solution, then there exists a solution $\mathbf{S}$ with these properties where lag 1 and 2 are only achieved with one combination   \nolinebreak
 \end{blockTheorem}
 
-For this theorem is also no proof yet, but this theorem also holds some intuition in it. When one uses this rule one gets the lags 1 and 2 for free, and also a block of length 4, which location is determined by the location of $k$. This is a very convenient property when constructing an optimal circular sparse ruler problem. 
-For example:
-\begin{align}
-M=4,N=13 \quad S&=\{1,2,5,7\}\\
-\end{align}
-where $k=5$. This is an optimal circular sparse ruler solution because $N=13$ is the upperbound of $M=4$ as defined by theorem \ref{th:upperbound}. The block of length 4 is in this case the set $\{3,4,5,6\}$.
+This theorem also has no proof yet, but it also holds some intuition. A solution is optimal when it has as few identical lags as possible. If this theorem should be false then there would be a minimal solution where either lag 1 or lag 2 are double, but when lag 1 and 2 are double, that means that there are at least 6 double lags. Looking at theorem \ref{th:identical_lags} this performance is unacceptable for low $M$. Additional work needs to be done to prove this theorem, but it can already be used as an assumption to search for circular sparse ruler solutions quicker.
+
+\subsection{Recursive algorithm}
+Assuming all theorems above are correct, one can make an algorithm that quickly searches for circular sparse ruler solutions. Some additional work needs to be done to describe this algorithm.
 
 \subsection{A set of optimal circular sparse rulers}
 \begin{align}
 M=2,N=3  \quad S&=\{1,2\}\\
 M=3,N=7  \quad S&=\{1,2,4\}\\
 M=4,N=13 \quad S&=\{1,2,5,7\}\\
-M=5,N=21 \quad S&=\{1,2,5,15,17\}\\
-M=6,N=31 \quad S&=\{1,2,16,20,22,25\}
+M=5,N=21 \quad S&=\{1,2,7,9, 19\}\\
+M=6,N=31 \quad S&=\{1,2,5,7,14,22\}\\
+M=7,N=39 \quad S&=\{1,2,5,7,14,21,31\}
 \end{align}
-All these solutions are optimal circular sparse rulers because they are at the upperbound descibed in theorem \ref{th:upperbound}.
-\todo[inline, author=Kees]{Hier eindigt work in progress stuk van Kees}
+
+\todo[inline, author=Kees]{Read until here}
 
 \begin{blockDefinition}
     Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
