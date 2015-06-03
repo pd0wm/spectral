@@ -430,6 +430,116 @@ A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $
     \label{fig:circular-ruler}
 \end{figure}
 
+\todo[inline, author=Kees]{Read from here}
+
+\subsection{Optimal circular sparse rulers}
+Let $\mathbf{S} \in \mathbb{N}^M$ with $S_i \leq N$ where $M$ is the amount of elements and $N$ the maximum length. We want this $\mathbf{S}$ to represent optimal circular sparse ruler solutions.
+
+\begin{blockDefinition}
+    Let $\mathbf{S} \in \mathbb{N}^M$ , then the set of lags $\Omega = \{|n_i-n_j|\} \cup \{N-|n_i-n_j|\} \quad \forall_{n_i,n_j}\in \mathbf{S}$.
+\end{blockDefinition}
+    
+
+\begin{blockDefinition}
+    $\mathbf{S}$ is an optimal circular sparse ruler solution if $\mathbf{S}$ is a circular sparse ruler solution, and there exists no circular sparse ruler solution with greater length while having the same amount of elements.
+\end{blockDefinition}
+
+\subsection{Verifying circular sparse rulers}
+
+\begin{blockTheorem} \label{th:circ_verify}\nolinebreak
+    $\mathbf{S}$ is a solution of circular sparse ruler if and only if all lags $\{0,1,\dots, \lfloor\frac{N}{2}\rfloor\}$ can be made. \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:circ_verify}}
+    Given lag $k$, one can get lag $N-k$ by turning in opposite direction on the circle. Assume that $\mathbf{S}$ contains all lags $\{0,1,\dots, A\}$. It then follows that one can also make the lags  $\{N-A,N-A+1,\dots, N-1\}$. If $(N-A)-A \leq 1$ then the two sets of lags connect to the set of lags $\{0,1,\dots,N-1\}$. $A=\lfloor\frac{N}{2}\rfloor$. $N-\lfloor\frac{2N}{2}\rfloor \leq 1$.
+\end{blockProofTheorem}
+
+\subsection{Circular sparse ruler from optimal linear sparse ruler}\label{ssec:minimal_linear_s}
+Linear sparse ruler is a problem that is already well defined and researched. 
+
+\begin{blockDefinition}\label{def:minimal_sparse}
+    $\mathbf{S}$ is a minimal linear sparse ruler solution of length $N$ if 
+    $$
+    \min_S|S| \quad s.t. \{0,1,\dots,N-1\} \in \Omega_{\text{linear}}
+    $$
+\end{blockDefinition}
+
+From definition \ref{def:minimal_sparse} one can see that a minimal sparse ruler solution guarantees a set where $\{0,1,\dots,N_{linear}-1\} \in \Omega$. We can use theorem \ref{th:circ_verify} to show that the minimal sparse ruler solution with length $N_{linear}$ is also a solution for circular sparse ruler with $N=2N_{linear}-1$.
+For example, the minimal sparse ruler solution for $N_{linear}=7$: $\{1,2,5,7\}$ is also a valid circular sparse ruler solution for $N=13$.
+
+\subsection{Upper-bound and lower-bound of optimal circular sparse ruler}
+To tell whether a circular sparse ruler solution is also optimal, it is useful to define an upper and lower-bound. The lower-bound is the minimal optimal solution one can get with $M$ elements. For this we can simply use the minimal linear sparse ruler solutions as described in section \ref{ssec:minimal_linear_s}, because this allows us to easily find circular sparse ruler solutions. The upper bound is the theoretical maximum amount of length $N$ one can achieve with $M$ elements.
+
+\begin{blockTheorem} \label{th:upperbound}\nolinebreak
+    the maximum length $N$ one can achieve with $M$ elements is $N=M(M-1)+1$\nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:upperbound}}
+    Let $\mathbf{S} \in \mathbb{N}^M$, and $n_i,n_j \in \mathbf{S}$, then the amount of lags $\Omega$ one can make with $M$ elements is $M^2$. We are only interested in unique combinations. Out of the $M^2$ combinations $M$ are $n_i=n_j$, resulting in a lag of 0. These cannot be unique, so the theoretic maximum amount of unique lags is reduced to $N=M(M-1)+1$
+\end{blockProofTheorem}
+
+\subsection{The structure of optimal circular sparse rulers}
+
+\begin{blockTheorem} \label{th:lag1}\nolinebreak
+    Let $M$ be the amount of elements and $N$ the length of a solution $\mathbf{S}$, and $M\geq 2$, then there exists a solution $\mathbf{S}$ with the same $M$ and $N$ where $\{1,2\} \in \mathbf{S}$  \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:lag1}}
+    For every solution holds: $1 \in \Omega$. Therefore there are always two elements next to each other. Because the problem is circular, one can translate the locations of the elements freely. Therefore one can always get a solution where $\{1,2\} \in \mathbf{S}$
+\end{blockProofTheorem}
+
+This is a useful property when writing an algorithm, for it allows the first two elements to be forced.
+
+
+
+\begin{blockTheorem} \label{th:lag2}\nolinebreak
+    all circular sparse ruler solutions can be written as $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$, or a rotation of those. \todo{dit is net niet lekker geformuleerd}   \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:identical_lags}}
+    We know that lag $2 \in \Omega$, therefore there need to be two devices with distance two from each other. This can be done in combination with element 1 or 2 from theorem \ref{th:lag1}. The only way to achieve this is $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\}$, $\{1,2,N\}$, $\{1,2,N-1\}$, but the last two options are identical to the first two except for their rotation. If no combination with element 1 or 2 is used then two other devices must be somewhere with distance 2 from each other. All options can be covered with $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,N-4\}$, but this set can also be reduced by exploiting rotation, resulting in $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$. Therefore every solution can be written as $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$, or a rotation of those. 
+\end{blockProofTheorem}
+
+This theorem has the potential to be used for a substantial speed-up when designing an algorithm.
+
+\begin{blockTheorem} \label{th:identical_lags}\nolinebreak
+    Let $\mathbf{S}$ be a solution to minimal circular sparse ruler. The amount of identical lags in $\Omega$ are $N_{\text{lags}} = M(M-1)+1-N$   \nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:identical_lags}}
+    For a given $M$ elements there are $M(M-1)+1$ different combination possible. See theorem \ref{th:upperbound}. The amount of different lags in a solution is $N$. Therefore the amount of identical lags is $N_{\text{lags}} = M(M-1)+1-N$ 
+\end{blockProofTheorem}
+
+\subsection{Guesswork}
+\todo{Guesswork? Wat is de engelse variant van een vermoeden?}
+
+\begin{blockTheorem} \label{th:odd}\nolinebreak
+    The length $N$ of an optimal solution $\mathbf{S}$ is an odd integer \nolinebreak
+\end{blockTheorem}
+
+This is something that has no proof yet, but holds some intuition to it. One wants to optimize the amount of different lags. When $N$ is even, there  needs to be a lag $|\frac{N}{2}|$, but when there is such a lag one also has the lag $N-|\frac{N}{2}|=|\frac{N}{2}|$. So with $N$ is even, one always has a double lag. Also the trend in the solution set for $2<N<40$ supports this. The minimal circular sparse ruler for $N=38$ has $M=8$, while the minimal sparse ruler for $N=39$ has $M=7$. Therefore the theorem \ref{th:odd} is a good assumption when writing an algorithm.
+
+\begin{blockTheorem} \label{th:lag1_2}\nolinebreak
+    Let $M$ be the elements and $N$ the length of an minimal circular sparse ruler solution, then there exists a solution $\mathbf{S}$ with these properties where lag 1 and 2 are only achieved with one combination   \nolinebreak
+\end{blockTheorem}
+
+This theorem also has no proof yet, but it also holds some intuition. A solution is optimal when it has as few identical lags as possible. If this theorem should be false then there would be a minimal solution where either lag 1 or lag 2 are double, but when lag 1 and 2 are double, that means that there are at least 6 double lags. Looking at theorem \ref{th:identical_lags} this performance is unacceptable for low $M$. Additional work needs to be done to prove this theorem, but it can already be used as an assumption to search for circular sparse ruler solutions quicker.
+
+\subsection{Recursive algorithm}
+Assuming all theorems above are correct, one can make an algorithm that quickly searches for circular sparse ruler solutions. Some additional work needs to be done to describe this algorithm.
+
+\subsection{A set of optimal circular sparse rulers}
+\begin{align}
+M=2,N=3  \quad S&=\{1,2\}\\
+M=3,N=7  \quad S&=\{1,2,4\}\\
+M=4,N=13 \quad S&=\{1,2,5,7\}\\
+M=5,N=21 \quad S&=\{1,2,7,9, 19\}\\
+M=6,N=31 \quad S&=\{1,2,5,7,14,22\}\\
+M=7,N=39 \quad S&=\{1,2,5,7,14,21,31\}
+\end{align}
+
+\todo[inline, author=Kees]{Read until here}
+
 \begin{blockDefinition}
     Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
 \end{blockDefinition}

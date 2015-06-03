@@ -7,3 +7,6 @@ class Sampler(object):
 
     def sample(self, signal):
         raise NotImplementedError("Implement this method")
+
+    def get_C(self):
+        return self.C

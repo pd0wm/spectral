@@ -20,6 +20,7 @@ class Content(object):
 
     def set_by_uuid(self, uuid, value):
         self._by_uuid[uuid].value = value
+        self._by_uuid[uuid].has_changed = True
 
     @property
     def js_init(self):
@@ -48,7 +49,7 @@ class Content(object):
 
     @property
     def update_eval(self):
-        return {k: v.update_eval for k, v in self._by_uuid.items()}
+        return {k: v.update_eval for k, v in self._by_uuid.items() if v.has_changed}
 
     @property
     def values(self):
