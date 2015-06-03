@@ -66,16 +66,10 @@ class SliderElement(Element):
 
     @property
     def js_init(self):
-        code = """$('#{0}').slider().on('change', function(ev){{
-                      $.ajax({{
-                        type: "POST",
-                        url:'/update',
-                        data: JSON.stringify({{id: "{0}",
-                                value: ev.value.newValue}}),
-                        contentType: 'application/json'
-                        }});
-                      //worker();
-                  }});""".format(self.uuid)
+        code = """$('#{0}').slider().on('change', function(ev) {{
+            Control.update("{0}", ev.value.newValue);
+        }});""".format(self.uuid)
+
         return code
 
     @property
@@ -107,15 +101,9 @@ class CheckBoxElement(Element):
 
     @property
     def js_init(self):
-        code = """$('#{0}').on('change', function(ev){{
-                    $.ajax({{
-                        type: "POST",
-                        url:'/update',
-                        data: JSON.stringify({{id: "{0}",
-                                value: this.checked}}),
-                        contentType: 'application/json'
-                        }});
-                  }});""".format(self.uuid)
+        code = """$('#{0}').on('change', function(ev) {{
+            Control.update("{0}", this.checked);
+        }});""".format(self.uuid)
         return code
 
     @property
@@ -142,10 +130,6 @@ class VisualisationElement(Element):
 
     @property
     def update_eval(self):
-        # self.has_changed = False
-        # code = """$('#{0}').prop('checked', {1});""".format(
-        #     self.uuid, str(self.value).lower())
-        # return code
         pass
 
     @property

@@ -12,8 +12,8 @@ var SpectroGram = function(container_id, data_type) {
 };
 
 SpectroGram.prototype.update = function() {
-    var sample_freq = Connection[this.data_type].sample_freq;
-    var fft_data = Connection[this.data_type].data;
+    var sample_freq = Visualisation[this.data_type].sample_freq;
+    var fft_data = Visualisation[this.data_type].data;
 
     this.draw(fft_data);
 };

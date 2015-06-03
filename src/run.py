@@ -46,11 +46,8 @@ elif source_type == "complex":
 
 N = a * b
 M = a + b - 1
-#sampler_old = cg.sampling.MultiCoset(N)
-#print "old:\n", sampler_old.C
-sampler = cg.sampling.Coprime(a, b)
-#print "new:\n", sampler.C
-# sampler = cg.sampling.MultiCoset(N)
+# sampler = cg.sampling.Coprime(a, b)
+sampler = cg.sampling.MultiCoset(N)
 reconstructor = cg.reconstruction.Wessel(N, L, C=sampler.get_C())
 detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
 

@@ -22,7 +22,6 @@ class noise_power(Detector):
 
         stepsize = np.floor(len(psd) / self.num_bins)
         self.threshold = self.calc_threshold(psd, rx)
-        print self.threshold
 
         for i in range(0, self.num_bins):
             power[i] = np.sum(psd[stepsize * (i - 1) + 1:stepsize * i - 1])

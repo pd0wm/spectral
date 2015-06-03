@@ -1,3 +1,6 @@
+import time
+
+
 class Content(object):
 
     def __init__(self):
@@ -5,6 +8,7 @@ class Content(object):
         self._by_position = {}
         self._by_key = {}
         self.max_y = 0
+        self.timestamp = time.time()
 
     def add(self, element, position):
         if not 0 <= position[0] <= 6:
@@ -21,6 +25,13 @@ class Content(object):
     def set_by_uuid(self, uuid, value):
         self._by_uuid[uuid].value = value
         self._by_uuid[uuid].has_changed = True
+
+    def poll_updates(self):
+        has_update = reduce(lambda x, y: x or y.has_changed, self._by_uuid.values(), False)
+
+        if has_update:
+            self.timestamp = time.time()
+        return has_update
 
     @property
     def js_init(self):
@@ -47,9 +58,8 @@ class Content(object):
             r += """</div>\n"""
         return r
 
-    @property
     def update_eval(self):
-        return {k: v.update_eval for k, v in self._by_uuid.items() if v.has_changed}
+        return {k: v.update_eval for k, v in self._by_uuid.items()}
 
     @property
     def values(self):

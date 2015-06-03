@@ -12,9 +12,9 @@ var DetPlot = function(container_id){
 
 DetPlot.prototype.update = function() {
     // Parse the message content.
-    var sample_freq = Connection[this.data_type].sample_freq;
-    var center_freq = Connection[this.data_type].center_freq;
-    var fft_data = Connection[this.data_type].data;
+    var sample_freq = Visualisation[this.data_type].sample_freq;
+    var center_freq = Visualisation[this.data_type].center_freq;
+    var fft_data = Visualisation[this.data_type].data;
 
     // Update the chart
     this.chart.series[0].setData(fft_data, false, false, true);
