@@ -58,6 +58,3 @@ class CrossCorrelation(Reconstructor):
                 elif (j == (2 * (self.L - 1)) and i == 0):  # Right top case
                     Rc[x:x + Rc1.shape[0], y:y + Rc1.shape[1]] = Rc1
         return Rc
-
-    def get_filename(self):
-        return (cg.CACHE_DIR + "crosscorr_cache_" + str(self.N) + str(self.L) + str(self.M))

@@ -70,5 +70,4 @@ class Wessel(Reconstructor):
             R[i * (2 * self.L - 1):((i + 1) * (2 * self.L - 1)), :] = D.dot(Rcc).toarray()
         return R
 
-    def get_filename(self):
-        return (cg.CACHE_DIR + "wessel_cache_" + str(self.N) + str(self.L) + str(self.M))
+
