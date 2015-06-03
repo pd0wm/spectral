@@ -15,16 +15,24 @@ class noise_power(Detector):
         self.threshold = threshold
 
     def detect(self, rx):
-        length = (len(rx) - 1) / 2
-        psd = cg.fft(rx)
-        # create array for power in bins
+        psd = abs(cg.fft(rx))
+        # create array for power in bin
         power = np.zeros(self.num_bins)
-
         stepsize = np.floor(len(psd) / self.num_bins)
+        # calculate threshold for energy (time domain)
         self.threshold = self.calc_threshold(psd, rx)
 
+        # calculate variance of noise
+        noise_variance = calc_noise_variance(psd)
+        noise_level = noise_variance*len(psd)/2
+        # simulate noise in the other numbins-1 bands
+        additive_noise = (len(psd)-stepsize)*noise_level
+
         for i in range(0, self.num_bins):
-            power[i] = np.sum(psd[stepsize * (i - 1) + 1:stepsize * i - 1])
+            power[i] = (
+                np.sum(psd[stepsize * (i - 1) + 1:stepsize * i - 1]) +
+                additive_noise)/len(psd)
+
         return power > self.threshold
 
     def parse_options(self, options):
@@ -36,16 +44,20 @@ class noise_power(Detector):
             elif key == "window_length":
                 self.window_length = options["window_length"]
 
-    def calc_threshold(self, psd, rx):
-        length = (len(rx) - 1) / 2
-        noise_estimate = np.zeros(length)
+    def calc_noise_variance(self, psd):
+        noise_estimate = np.zeros(len(psd))
+
         # Sliding window over frequency bins
-        for i in range(0, length):
+        for i in range(0, len(psd)):
             kidx = max(0, i - self.window_length)
             gidx = min(length - 1, i + self.window_length)
-            noise_estimate[i] = np.sum(psd[kidx: gidx])
+            noise_estimate[i] = np.mean(psd[kidx: gidx])
 
-        stepsize = np.floor(len(psd) / self.num_bins)
-        noise_level = len(psd)*min(abs(noise_estimate))/stepsize
-        return ((stats.norm.isf(self.Pfa) + np.sqrt(stepsize)) *
-                np.sqrt(stepsize) * 2 * noise_level)*(stepsize/len(psd))
+        return 2*min(noise_estimate)*len(psd)
+
+    def calc_threshold(self, psd):
+        # calculate the length of the TIME DOMAIN signal
+        N = (len(psd)+1)/2
+        noise_variance = calc_noise_variance(psd)
+        threshold = (stats.norm.isf(self.Pfa)*sqrt(N)+N)*noise_variance
+        return threshold
