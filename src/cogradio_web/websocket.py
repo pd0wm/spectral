@@ -6,37 +6,37 @@ from autobahn.twisted.websocket import WebSocketServerFactory, \
                                        WebSocketServerProtocol
 
 
-settings = Pyro4.Proxy("PYRONAME:cg.settings")
-
-
 class ServerProtocolDash(WebSocketServerProtocol):
 
     """WebSocket protocol for processing configuration data"""
 
     def __init__(self):
+        self.client_address = ''
+        self.timestamp = time.time()
         WebSocketServerProtocol.__init__(self)
 
     def onOpen(self):
         print("WebSocket connection open.")
-        timestamp = time.time()
 
         def update():
-            if self.content.poll_updates() or self.content.timestamp != timestamp:
-                timestamp = self.content.timestamp
-                update_code = self.content.update_eval()
+            if self.factory.content.update_timestamp != self.timestamp and \
+                    self.factory.content.update_client != self.client_address:
+                self.timestamp = self.factory.content.update_timestamp
+                update_code = self.factory.content.update_eval()
                 self.sendMessage(json.dumps(update_code))
-            self.factory.reactor.callLater(0.05, update)
+
+            self.factory.reactor.callLater(0.01, update)
 
         update()
 
     def onConnect(self, request):
         print("Client connecting: {}".format(request.peer))
+        self.client_address = request.peer
 
     def onMessage(self, payload, isBinary):
         data = json.loads(payload)
-        print data
-        self.content.set_by_uuid(data['id'], data['value'])
-        settings.update(self.content.values)
+        self.factory.content.set_by_uuid(data['id'], data['value'], self.client_address)
+        self.factory.settings.update(self.factory.content.values)
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
@@ -46,13 +46,12 @@ class WebSocketServerDashFactory(WebSocketServerFactory):
 
     """Factory for creating ServerProtocolPlot instances"""
 
-    def __init__(self, **kwargs):
-        url = kwargs.pop('url')
-        self.protocol_params = kwargs
+    def __init__(self, url, content):
+        self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
+        self.content = content
         WebSocketServerFactory.__init__(self, url)
 
     def buildProtocol(self, addr):
         protocol = self.protocol()
         protocol.factory = self
-        protocol.content = self.protocol_params['content']
         return protocol

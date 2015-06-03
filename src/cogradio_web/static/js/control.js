@@ -4,6 +4,7 @@
 
  var Control = function() {
     var _socket = null;
+    websocket_init();
 
     function update_controls(data) {
         for (var id in data){
@@ -19,7 +20,6 @@
                 console.log("Connected to " + _socket.url);
             });
             _socket.addEventListener("message", function(event) {
-                console.log(event.data)
                 var data = JSON.parse(event.data);
                 update_controls(data);
             });
@@ -44,7 +44,6 @@
     return {
         update : function (id, value) {
             if (!Control.running()) {
-                websocket_init();
                 window.setTimeout(Control.update, 100, id, value);
                 return;
             }

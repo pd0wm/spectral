@@ -30,6 +30,8 @@
         'det_data': "detection data",
     };
 
+    websocket_init();
+
     function title(container, type, datatype) {
         var title = title1[type] + (type == TYPE_NONE ? "" : title2[datatype]);
         container.siblings("h3").text(title);
@@ -104,7 +106,6 @@
 
         init : function(container_id) {
             if (!Visualisation.running()) {
-                websocket_init();
                 window.setTimeout(Visualisation.init, 100, container_id);
                 return;
             }

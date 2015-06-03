@@ -8,7 +8,6 @@ class Element(object):
         self.key = key
         self.title = title
         self.width = 1
-        self.has_changed = False
 
     @property
     def update_eval(self):

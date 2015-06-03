@@ -8,7 +8,8 @@ class Content(object):
         self._by_position = {}
         self._by_key = {}
         self.max_y = 0
-        self.timestamp = time.time()
+        self.update_timestamp = time.time()
+        self.update_client = ''
 
     def add(self, element, position):
         if not 0 <= position[0] <= 6:
@@ -22,16 +23,10 @@ class Content(object):
         self._by_position[position] = element
         self._by_key[element.key] = element
 
-    def set_by_uuid(self, uuid, value):
+    def set_by_uuid(self, uuid, value, client):
+        self.update_timestamp = time.time()
+        self.update_client = client
         self._by_uuid[uuid].value = value
-        self._by_uuid[uuid].has_changed = True
-
-    def poll_updates(self):
-        has_update = reduce(lambda x, y: x or y.has_changed, self._by_uuid.values(), False)
-
-        if has_update:
-            self.timestamp = time.time()
-        return has_update
 
     @property
     def js_init(self):
