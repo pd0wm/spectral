@@ -24,7 +24,7 @@ class Wessel(Reconstructor):
 
         self.R = self.constructR()
         # Force full column rank with slicing
-        self.R = self.R[:, (2 * self.N - 1): -(2 * self.N - 1)]
+        self.R = self.R[:, (self.N - 1): -(self.N - 1)]
         print "Full colum rank?", self.R.shape
         print "shape ", np.linalg.matrix_rank(self.R)
         self.R_pinv = self.calc_pseudoinverse(self.R)
