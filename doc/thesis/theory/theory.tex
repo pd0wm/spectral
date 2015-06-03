@@ -153,7 +153,7 @@ Note that $(1,1),\ldots,(N,N)$ represents in an $N \times N$ grid a corner point
         Deterministic correlation of input & $\vec{r}_x$ & $2LN - 1$ \\
         Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
         Sampling vector of coset $i$ reversed & $\vec{d}_i$ & $N$ \\
-        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN-2N-3 \times 2LN-1$ \\
+        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN+2N-3 \times 2LN-1$ \\
         Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
         Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
         Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2LN + 2N - 3$ \\
@@ -204,7 +204,7 @@ Commutativity and the definition of the convolution operator yield that
     \end{bmatrix}\\
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $2L-1\times 2LN-2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\vec{r}'_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
+Let the $2L-1\times 2LN+2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\vec{r}'_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
 \begin{align*}
     \begin{bmatrix}
         \vec{r}'_{y_1,y_1} \\
