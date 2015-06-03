@@ -41,6 +41,7 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         print("Client connecting: {}".format(request.peer))
 
     def onMessage(self, payload, isBinary):
+        # print payload
         self.pushData(payload)
 
     def onClose(self, wasClean, code, reason):

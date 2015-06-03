@@ -28,9 +28,10 @@ source_snr = args.snr
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
-a = 3
-b = 5
-upscale_factor = 100  # Warning: greatly diminishes perfomance
+a = 5
+b = 3
+L = 40
+upscale_factor = 100  # Warning: greatly diminishes performance
 block_size = L * N * upscale_factor
 threshold = 2000
 num_bins = 20
@@ -48,7 +49,9 @@ N = a * b
 M = a + b - 1
 # sampler = cg.sampling.Coprime(a, b)
 sampler = cg.sampling.MultiCoset(N)
+
 reconstructor = cg.reconstruction.Wessel(N, L, C=sampler.get_C())
+# reconstructor = cg.reconstruction.CrossCorrelation(N, L, C=sampler.get_C())
 detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
 
 # Init processes

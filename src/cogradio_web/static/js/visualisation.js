@@ -34,7 +34,7 @@
 
     function title(container, type, datatype) {
         var title = title1[type] + (type == TYPE_NONE ? "" : title2[datatype]);
-        container.siblings("h3").text(title);
+        container.siblings(".visualisation-header").find("h3").text(title);
     };
 
     function register(type, datatype) {

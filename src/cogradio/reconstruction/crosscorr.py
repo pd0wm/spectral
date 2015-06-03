@@ -9,16 +9,18 @@ class CrossCorrelation(Reconstructor):
 
     def __init__(self, N, L, C=None, svthresh=None):
         Reconstructor.__init__(self)
-        self.N = N              # Decimation factor
-        sparseruler = cg.sparseruler(N)
         if C is None:
+            sparseruler = cg.sparseruler(N)
             self.C = cg.build_C(sparseruler, N)
         else:
             self.C = C
         self.M = self.C.shape[0]
+        self.N = self.C.shape[1]
         self.L = L            # Length of input vector
-        R = self.cross_correlation_filters()
-        self.R_pinv = self.calc_pseudoinverse(R)
+        self.R = self.cross_correlation_filters()
+        print "Shape", self.R.shape
+        print "Rank", np.linalg.matrix_rank(self.R)
+        self.R_pinv = self.calc_pseudoinverse(self.R)
 
         # Caching mechanism
 
@@ -27,7 +29,6 @@ class CrossCorrelation(Reconstructor):
         y_stacked = cross_corr_mat.ravel(order='F')
         rx = self.R_pinv.dot(y_stacked)  # Ravel reforms to 1 column
         return rx
-
 
     def cross_correlation_filters(self):
         Rc0 = np.zeros((self.M ** 2, self.N))
@@ -45,7 +46,7 @@ class CrossCorrelation(Reconstructor):
 
     def block_toeplitz(self, Rc0, Rc1):
         Rc = np.zeros(((2 * self.L - 1) * self.M ** 2,
-                      (2 * self.L - 1) * self.N))
+                       (2 * self.L - 1) * self.N))
         for i in range((2 * self.L - 1)):
             for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate

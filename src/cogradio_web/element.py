@@ -147,19 +147,21 @@ class VisualisationElement(Element):
     def html(self):
         return """
         <div class="visualisation" id="{0}">
-            <h3 style="float:left;"></h3>
-            <table class="visualisation-control" style="float:right;">
-                <tr class="visualisation-type">
-                  <td><label><input type="radio" name="{0}-type" value="fft"/>FFT Plot</label></td>
-                  <td><label><input type="radio" name="{0}-type" value="spectrogram" checked />Spectrogram</label></td>
-                  <td><label><input type="radio" name="{0}-type" value="none"/>None</label></td>
-                </tr>
-                <tr class="visualisation-data">
-                  <td><label><input type="radio" name="{0}-data" value="src_data"/>Original</label></td>
-                  <td><label><input type="radio" name="{0}-data" value="rec_data" checked />Reconstructed</label></td>
-                  <td><label><input type="radio" name="{0}-data" value="det_data" />Detection</label></td>
-                </tr>
-            </table>
+            <div class="visualisation-header" style="overflow:auto;">
+                <h3 style="float:left;"></h3>
+                <table class="visualisation-control" style="float:right;">
+                    <tr class="visualisation-type">
+                      <td><label><input type="radio" name="{0}-type" value="fft"/>FFT Plot</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="spectrogram" checked />Spectrogram</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="none"/>None</label></td>
+                    </tr>
+                    <tr class="visualisation-data">
+                      <td><label><input type="radio" name="{0}-data" value="src_data" checked/>Original</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="rec_data" />Reconstructed</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="det_data" />Detection</label></td>
+                    </tr>
+                </table>
+            </div>
             <div class="visualisation-container" id="{0}-container" ></div>
         </div>""".format(self.uuid)
 

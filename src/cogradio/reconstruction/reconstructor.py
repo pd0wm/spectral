@@ -60,6 +60,6 @@ class Reconstructor(object):
     def get_filename(self):
         filepath = cg.CACHE_DIR
         filename = self.__class__.__name__
-        filename += str(self.L) +"_"
+        filename += str(self.L) + "_"
         filename += "_".join(str(rule) for rule in self.get_non_zero_column(self.C))
         return filepath + filename

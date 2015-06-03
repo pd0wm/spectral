@@ -18,12 +18,13 @@ class Wessel(Reconstructor):
         else:
             self.C = C
         # get length of C
+        print self.C
         self.M = self.C.shape[0]
         self.N = self.C.shape[1]
 
         self.R = self.constructR()
         # Force full column rank with slicing
-        self.R = self.R[:, (self.N): -(self.N)]
+        self.R = self.R[:, (self.N - 1): -(self.N - 1)]
         self.R_pinv = self.calc_pseudoinverse(self.R)
 
     # Given M decimated channels, try to estimate the PSD
@@ -38,7 +39,7 @@ class Wessel(Reconstructor):
         D = np.zeros((2 * self.L - 1, 2 * self.N * self.L - 1), dtype=np.complex64)
         for i in range(1, 2 * self.L):
             D[i - 1, i * self.N - 1] = 1
-
+        D_tmp = D
         D = sp.sparse.csr_matrix(D)
         # Calculate M^2 filter cross correlations
         cross_correlations = np.zeros((self.M ** 2, 2 * self.N - 1),
@@ -64,10 +65,12 @@ class Wessel(Reconstructor):
             column = np.zeros(2 * self.N * self.L - 1, dtype=np.complex64)
             row[0] = cross_correlations[i, 0]
             column[:len(cross_correlations[i, :])] = cross_correlations[i, :]
-            Rcc = sp.sparse.csr_matrix(sp.linalg.toeplitz(column, row))
+            tmp = sp.linalg.toeplitz(column, row)
+            Rcc = sp.sparse.csr_matrix(tmp)
 
             # Place in R
             R[i * (2 * self.L - 1):((i + 1) * (2 * self.L - 1)), :] = D.dot(Rcc).toarray()
+            dump = {'C_pyth': self.C,
+                    'D_pyth': D_tmp,
+                    'R_pyth': R}
         return R
-
-
