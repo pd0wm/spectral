@@ -77,5 +77,4 @@ class Wessel(Reconstructor):
                     'R_pyth': R}
         return R
 
-    def get_filename(self):
-        return (cg.CACHE_DIR + "wessel_cache_" + str(self.N) + str(self.L) + str(self.M))
+
