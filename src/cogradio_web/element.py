@@ -122,10 +122,12 @@ class CheckBoxElement(Element):
 
 class VisualisationElement(Element):
 
-    def __init__(self, key, title=None, value=None, width=3):
+    def __init__(self, key, title=None, value=None, default_type='fft', default_datatype='src_data', width=3):
         super(VisualisationElement, self).__init__(key, title)
         self.width = width
         self.value = value
+        self.default_type = default_type
+        self.default_datatype = default_datatype
 
     @property
     def update_eval(self):
@@ -151,19 +153,27 @@ class VisualisationElement(Element):
                 <h3 style="float:left;"></h3>
                 <table class="visualisation-control" style="float:right;">
                     <tr class="visualisation-type">
-                      <td><label><input type="radio" name="{0}-type" value="fft"/>FFT Plot</label></td>
-                      <td><label><input type="radio" name="{0}-type" value="spectrogram" checked />Spectrogram</label></td>
-                      <td><label><input type="radio" name="{0}-type" value="none"/>None</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="fft" {1}/>FFT Plot</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="spectrogram" {2}/>Spectrogram</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="none" {3}/>None</label></td>
                     </tr>
                     <tr class="visualisation-data">
-                      <td><label><input type="radio" name="{0}-data" value="src_data" checked/>Original</label></td>
-                      <td><label><input type="radio" name="{0}-data" value="rec_data" />Reconstructed</label></td>
-                      <td><label><input type="radio" name="{0}-data" value="det_data" />Detection</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="src_data" {4}/>Original</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="rec_data" {5}/>Reconstructed</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="det_data" {6}/>Detection</label></td>
                     </tr>
                 </table>
             </div>
             <div class="visualisation-container" id="{0}-container" ></div>
-        </div>""".format(self.uuid)
+        </div>""".format(
+            self.uuid,
+            'checked' if self.default_type == 'fft' else '',
+            'checked' if self.default_type == 'spectrogram' else '',
+            'checked' if self.default_type == 'none' else '',
+            'checked' if self.default_datatype == 'src_data' else '',
+            'checked' if self.default_datatype == 'rec_data' else '',
+            'checked' if self.default_datatype == 'det_data' else ''
+            )
 
 if __name__ == '__main__':
     print "Hello, World!"

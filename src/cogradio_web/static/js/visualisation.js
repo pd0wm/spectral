@@ -125,6 +125,9 @@
                 elements[container_id] = new DetPlot(container_id + "-container");
                 $("#" + container_id + " .visualisation-type").find('input').prop('disabled', true);
             }
+            else if (type == TYPE_NONE) {
+                $("#" + container_id + " .visualisation-data").find('input').prop('disabled', true);
+            }
             else {
                 if (type == TYPE_FFT) {
                     elements[container_id] = new FFTplot(container_id + "-container", datatype);
@@ -134,6 +137,7 @@
                 }
 
                 $("#" + container_id + " .visualisation-type").find('input').prop('disabled', false);
+                $("#" + container_id + " .visualisation-data").find('input').prop('disabled', false);
             }
 
             register(type, datatype);
