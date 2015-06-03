@@ -23,9 +23,9 @@ var FFTplot = function(container_id, data_type){
 
 FFTplot.prototype.update = function() {
     // Parse the message content.
-    var sample_freq = Connection[this.data_type].sample_freq;
-    var center_freq = Connection[this.data_type].center_freq;
-    var fft_data = Connection[this.data_type].data;
+    var sample_freq = Visualisation[this.data_type].sample_freq;
+    var center_freq = Visualisation[this.data_type].center_freq;
+    var fft_data = Visualisation[this.data_type].data;
 
     // Update the chart
     this.averaged_fft = this.getAverage(fft_data);

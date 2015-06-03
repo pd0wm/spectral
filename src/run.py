@@ -47,9 +47,8 @@ elif source_type == "complex":
 
 N = a * b
 M = a + b - 1
-
-sampler = cg.sampling.Coprime(a, b)
-# sampler = cg.sampling.MultiCoset(N)
+# sampler = cg.sampling.Coprime(a, b)
+sampler = cg.sampling.MultiCoset(N)
 
 reconstructor = cg.reconstruction.Wessel(N, L, C=sampler.get_C())
 # reconstructor = cg.reconstruction.CrossCorrelation(N, L, C=sampler.get_C())

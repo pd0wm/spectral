@@ -1,3 +1,6 @@
+import time
+
+
 class Content(object):
 
     def __init__(self):
@@ -5,6 +8,8 @@ class Content(object):
         self._by_position = {}
         self._by_key = {}
         self.max_y = 0
+        self.update_timestamp = time.time()
+        self.update_client = ''
 
     def add(self, element, position):
         if not 0 <= position[0] <= 6:
@@ -18,9 +23,10 @@ class Content(object):
         self._by_position[position] = element
         self._by_key[element.key] = element
 
-    def set_by_uuid(self, uuid, value):
+    def set_by_uuid(self, uuid, value, client):
+        self.update_timestamp = time.time()
+        self.update_client = client
         self._by_uuid[uuid].value = value
-        self._by_uuid[uuid].has_changed = True
 
     @property
     def js_init(self):
@@ -47,9 +53,8 @@ class Content(object):
             r += """</div>\n"""
         return r
 
-    @property
     def update_eval(self):
-        return {k: v.update_eval for k, v in self._by_uuid.items() if v.has_changed}
+        return {k: v.update_eval for k, v in self._by_uuid.items()}
 
     @property
     def values(self):

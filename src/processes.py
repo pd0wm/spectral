@@ -1,6 +1,7 @@
 import cogradio as cg
 import sys
 import Pyro4
+import Pyro4.util
 from cogradio.websocket import ServerProtocolPlot, WebsocketDataContainer
 from multiprocessing import Queue, Pipe
 from twisted.python import log
@@ -91,9 +92,15 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
 
 
 def run_settings_server(web_opt, src_opt, rec_opt, det_opt):
-    daemon = Pyro4.Daemon()
-    ns = Pyro4.locateNS()
-    settings = cg.Settings(web_opt, src_opt, rec_opt, det_opt)
-    uri = daemon.register(settings)
-    ns.register("cg.settings", uri)
-    daemon.requestLoop()
+    try:
+        daemon = Pyro4.Daemon()
+        ns = Pyro4.locateNS()
+        settings = cg.Settings(web_opt, src_opt, rec_opt, det_opt)
+        uri = daemon.register(settings)
+        ns.register("cg.settings", uri)
+        daemon.requestLoop()
+    except Exception:
+        print("Pyro traceback:")
+        print("".join(Pyro4.util.getPyroTraceback()))
+    finally:
+        daemon.close()
