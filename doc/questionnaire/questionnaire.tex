@@ -1,0 +1,87 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+
+%% Scroll door naar 'Vragen'
+\usepackage{fullpage}
+\pagenumbering{gobble}
+\newcounter{counter}
+\newcommand{\docount}{\stepcounter{counter} \thecounter}
+\renewcommand{\section}[1]{
+    \begin{flushright}
+        \fontsize{0.5cm}{1em}
+        \textsc{#1}
+    \end{flushright}
+}
+
+\newenvironment{opinion}{
+    \tabularx{\textwidth}{lXccccc}
+    && Erg oneens & Oneens & Neutraal & Eens & Erg eens \\
+}{
+    \endtabularx
+}
+\newcommand{\opinionoptions}{& $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\}
+\newcommand{\opinionquestion}[1]{
+    \docount & #1 \opinionoptions
+}
+
+\renewenvironment{fill}{
+    \tabularx{\textwidth}{lX}
+}{
+    \endtabularx
+}
+\newcommand{\fillgap}{\underline{\hspace{3cm}}~}
+\newcommand{\fillgaplarge}{\underline{\hspace{6cm}}~}
+\newcommand{\fillquestion}[1]{
+    \docount & #1 \\
+}
+
+\begin{document}
+\makebox[\textwidth]{
+    \centering
+    \fontsize{1cm}{1em}
+    \textsc{Questionnaire}
+} \\
+
+Dit document bevat aan aantal vragen die u tijdens de bijeenkomt kunt beantwoorden. De informatie zal worden gebruikt om de interesse en staat van ons product te onderzoeken. Uw antwoorden zullen nooit persoonlijk aan u gerelateerd worden, met uitzondering van de voorwaarde hieronder. Het invullen van deze questionnaire is vrijwillig.
+
+\begin{tabularx}{\textwidth}{lX}
+    $\square$ & Mijn antwoorden mogen worden verwerkt tot informatie die Spectral tijdens hun eindpresentatie mag presenteren. \\
+    $\square$ & Ik mag worden benaderd voor nadere toelichting op mijn antwoorden.
+\end{tabularx}
+
+%% Vragen
+
+\section{algemeen}
+\begin{opinion}
+    \opinionquestion{Cognitive radio biedt kansen binnen de markt van Defensie.}
+    \opinionquestion{Rechtstreekse aankoop van producten uit een start is geen probleem.}
+    \opinionquestion{Aankoop van producten is alleen mogelijk via een samenwerking met een gerenommeerde partij (bijvoorbeeld Thales).}
+    \opinionquestion{De kans op succes is groter door samen te werken met een geronomeerde partij (bijvoorbeeld Thales).}
+    \opinionquestion{Ik zie mogelijkheden om een samenwerkingsverband met de TU Delft te beginnen.}
+    \opinionquestion{De presentatie van Spectral heeft duidelijk gemaakt wat ik wilde weten.}
+    \opinionquestion{Spectral heeft professioneel gehandeld.}
+\end{opinion}
+
+\begin{fill}
+    \fillquestion{Ik zie een andere mogelijkheid om cognitive radio toe te passen, namelijk \fillgaplarge, \fillgaplarge of \fillgaplarge .}
+   
+\end{fill}
+
+\section{slimme stoorzender}
+\begin{opinion}
+    \opinionquestion{De slimme stoorzender maakt kans binnen de markt van Defensie.}
+    \opinionquestion{De slimme stoorzender biedt mogelijkheden die er nog niet zijn.}
+    \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen om de vijandige communicatie te storen terwijl de eigen communicatie behouden blijft.}
+    \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen om IED's onschadelijk te maken.}
+    \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen in combinatie met drones.}
+\end{opinion}
+
+\begin{fill}
+    \fillquestion{De slimme stoorzender is interessant als deze \fillgap kost.}
+    \fillquestion{De slimme stoorzender is vergelijkbaar met \fillgap .}
+\end{fill}
+
+\end{document}
