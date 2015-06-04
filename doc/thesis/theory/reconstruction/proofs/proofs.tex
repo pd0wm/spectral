@@ -1,0 +1,127 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\begin{document}
+
+
+\section{Proofs}
+\label{sec:proofs}
+In this section the stated theorems will be proven.
+
+\begin{blockProofTheorem}{\ref{th:conv-comm}}
+    A change of index yields that
+    \begin{align*}
+        (\vec{x} \ast \vec{y})_i &= \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1} \\
+        &= \sum_{k=-\infty}^{\infty} (\vec{x})_k (\vec{y})_{i-k+1} \\
+        &= \sum_{k'=-\infty}^{\infty} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
+        &= \sum_{k'=1}^{M} (\vec{y})_{k'} (\vec{x})_{i-k'+1} \\
+        &= (\vec{y} \ast \vec{x})_i.
+    \end{align*}
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:corr-unbiased}}
+    Without loss of generality, assume that $M \le N$. Suppose that $1 \le i \le M$, then
+    \begin{align*}
+        E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}
+        })_{M-i+k}] \\
+        &= E[(\vec{x})_1 (\conj{\vec{y}})_{M-i+1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
+        &= E(X[1] \conj{Y}[M-i+1]) + \ldots + E(X[i] \conj{Y}[M])  \\
+        &= i R_{X,Y}[i-M]
+    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(i+M)R_{X,Y}[i]$ for $-M + 1\le i \le -M+M$. Now suppose that $M < i < N$, then
+    \begin{align*}
+        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
+        &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[i] \conj{Y}[M]) \\  
+        &= M R_{X,Y}[i-M]
+    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $N \le i \le N +M - 1$, then
+    \begin{align*}
+        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}] \\
+        &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[N] \conj{Y}[M-i+N]) \\
+        &= (N+M-i) R_{X,Y}[i-M]
+    \end{align*}
+    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(N-i)R_{X,Y}[i]$ for $N-M<i\le N-1$.
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:dots-extended}}
+    Consider \cref{def:dots-extended}. Then note that $S$ is bounded. Therefore $(1,1),\ldots,(N,N)$ is finite. Now note that
+    \begin{align*}
+        (1,1),\ldots,(N,N) =
+        \underbrace{(1,1)}_{\text{length } 1},
+        \underbrace{(1,2)}_{\text{length } 1},
+        \underbrace{(1,3),(2,3)}_{\text{length } 2},
+        \ldots,
+        \underbrace{(1,N),\ldots,(N-1,N)}_{\text{length } N-1}
+    \end{align*}
+    has length
+    \begin{align*}
+        1+1+2+\ldots+N-1 = \frac{1}{2}N(N-1)+1.
+    \end{align*}
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:conv-corr}}
+    Note that
+    \begin{align*}
+        (\vec{y}_i \circ \vec{y}_j)_m
+        &= [(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x})]_m \\
+        &=\sum_{k''=1}^{LN+N-1}\sum_{k=1}^N (\vec{c}_i)_k (\vec{x})_{k''-k+1}\sum_{k'=1}^{N}(\conj{\vec{c}}_j)_{k'}(\conj{\vec{x}})_{(LN+N-1-m+k'')-k'+1} \\
+        &=\sum_{k=-\infty}^\infty\sum_{k'=\infty}^{\infty}\sum_{k''=-\infty}^{\infty} (\vec{c}_i)_k (\conj{\vec{c}}_j)_{k'}(\vec{x})_{k''-k+1}(\conj{\vec{x}})_{(LN+N-1-m+k'')-k'+1}.
+    \end{align*}
+    To further evaluate this expression, we introduce a change of variables. To this end, let $k' = N -l'' +k$ and $k'' = l' + k - 1$. This transformation is invertible, so
+    \begin{align*}
+        (\vec{y}_i \circ \vec{y}_j)_m
+        % I don't think this step is necessary
+        % &=\sum_{k=-\infty}^\infty\sum_{l''=-\infty}^{\infty}\sum_{l'=\infty}^{\infty} (\vec{c}_i)_k (\vec{c}_j)_{N -l'' +k}(\vec{x})_{(l' + k - 1)-k+1}(\vec{x})_{[LN+N-1-m+(l' + k - 1)]-(N -l'' +k)+1} \\
+        &=\sum_{k=-\infty}^\infty\sum_{l''=-\infty}^{\infty}\sum_{l'=\infty}^{\infty} (\vec{c}_i)_k (\conj{\vec{c}}_j)_{N -l'' +k}(\vec{x})_{l'}
+        (\conj{\vec{x}})_{LN-(m-l'' + 1)+l'} \\
+        &=\sum_{l''=1}^{2N-1}\sum_{k=1}^{N}(\vec{c}_i)_k (\conj{\vec{c}}_j)_{N -l'' +k}\sum_{l'=1}^{LN}(\vec{x})_{l'}
+        (\conj{\vec{x}})_{LN-(m-l'' + 1)+l'} \\
+        &=[(\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})]_m.
+    \end{align*}
+\end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:deci-corr}}
+    Note that
+    \begin{align*}
+        R_{Y'_i,Y'_j}[m]
+        &= E(\conj{Y}'_i[k]Y'_j[k+m]) \\
+        &= E[(\conj{\vec{y}}'_i)_{k}(\vec{y}'_j)_{k+m}] \\
+        &= E[(\conj{\vec{y}}_i)_{kN}(\vec{y}_j)_{kN+mN}] \\
+        &= E(\conj{Y}_i[kN]Y_j[kN+mN]) \\
+        &= R_{Y_i,Y_j}[mN].
+    \end{align*}
+    Therefore
+    \begin{align*}
+        [E(N\vec{r}_{y'_i,y'_j})]_{m+L}
+        &= N W[m] R_{Y'_i,Y'_j}[m]
+        = N W[m] R_{Y_i,Y_j}[mN]
+        % &= E(\vec{r}'_{y_i,y_j}).
+    \end{align*}
+    where
+    \begin{align*}
+        NW[m] &= N\begin{cases}
+            m+L & \text{if } -L+1 \le i \le 0, \\
+            L-m & \text{if } 0 \le i \le L - 1, \\
+            0 & \text{elsewhere}
+        \end{cases} \\
+        &= \begin{cases}
+            mN+LN & \text{if } -LN+N \le iN \le 0, \\
+            LN-mN & \text{if } 0 \le iN \le LN - N,\\
+            0 & \text{elsewhere}
+        \end{cases} \\
+        &= \begin{cases}
+            mN+LN & \text{if } -LN+1 \le iN \le 0, \\
+            LN-mN & \text{if } 0 \le iN \le LN - 1, \\
+            0 & \text{elsewhere}.
+        \end{cases}
+    \end{align*}
+    We now recognise that
+    \begin{align*}
+        [E(N\vec{r}_{y'_i,y'_j})]_{m+L} &= [E(\vec{r}_{y_i,y_j})]_{mN+LN} = [E(\vec{r}'_{y_i,y_j})]_{m+L} .
+    \end{align*}
+\end{blockProofTheorem}
+
+\end{document}

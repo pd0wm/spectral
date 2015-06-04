@@ -1,0 +1,23 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\begin{document}
+
+
+\section{The Algorithm}
+This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets
+\subsection{Algorithm}
+TODO: cut support and guarantee full column rank, include oversampling
+
+Proceed as follows:
+\begin{enumerate}
+    \item Construct $\mat{R}$.
+    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
+    \item Construct $\vec{r}'_y$.
+    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
+\end{enumerate}
+
+\end{document}
