@@ -24,6 +24,7 @@ class noise_power(Detector):
 
         # calculate variance of noise
         noise_variance = self.calc_noise_variance(psd)
+        print noise_variance
         noise_level = noise_variance*len(psd)/2
         # simulate noise in the other numbins-1 bands
         additive_noise = (len(psd)-stepsize)*noise_level
@@ -52,8 +53,9 @@ class noise_power(Detector):
             kidx = max(0, i - self.window_length)
             gidx = min(len(psd) - 1, i + self.window_length)
             noise_estimate[i] = np.mean(psd[kidx: gidx])
+        print(np.mean(psd))
 
-        return 2*min(noise_estimate)*len(psd)
+        return 2*min(noise_estimate)/len(psd)
 
     def calc_threshold(self, psd):
         # calculate the length of the TIME DOMAIN signal
