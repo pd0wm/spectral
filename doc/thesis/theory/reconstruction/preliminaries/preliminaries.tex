@@ -1,8 +1,8 @@
 %!TEX program = xelatex
 
 \documentclass[a4paper, openany, oneside]{memoir}
-\input{../../includes/preamble.tex}
-\addbibresource{../../includes/bibliography.bib}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
 
 \begin{document}
 \section{Preliminaries}
@@ -24,6 +24,12 @@ We will need notation to denote two uncommon vector operations.
 \end{blockDefinition}
 
 Note that a subvector includes both boundary elements.
+
+\begin{blockDefinition}[Submatrix]
+    Let $\mat{A}$ be an $M \times N$ matrix. Then $\mat{A}[a,b]$ denotes the $M \times b-a+1$ matrix consisting of columns $a,\ldots,b$ of $\mat{A}$.
+\end{blockDefinition}
+
+Also a submatrix includes both boundary elements.
 
 \begin{blockDefinition}[Reverse of Vector]
     Let $\vec{x} \in \mathbb{C}^N$. Then the reverse of $\vec{x}$ denotes a vector $\vec{y} \in \mathbb{C}^N$ such that $(\vec{y})_i = (\vec{x})_{N-i+1}$ for $i = 1,\ldots,N$.
