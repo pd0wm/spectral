@@ -1,8 +1,8 @@
 %!TEX program = xelatex
 
 \documentclass[a4paper, openany, oneside]{memoir}
-\input{../../includes/preamble.tex}
-\addbibresource{../../includes/bibliography.bib}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
 
 \begin{document}
 \section{Additional Analysis}
@@ -41,12 +41,10 @@ A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $
     \label{fig:circular-ruler}
 \end{figure}
 
-\todo[inline, author=Kees]{Read from here}
-
 \subsection{Optimal circular sparse rulers}
 Let $\mathbf{S} \in \mathbb{N}^M$ with $S_i \leq N$ where $M$ is the amount of elements and $N$ the maximum length. We want this $\mathbf{S}$ to represent optimal circular sparse ruler solutions.
 
-\begin{blockDefinition}
+\begin{blockDefinition}\label{dif:lags}
     Let $\mathbf{S} \in \mathbb{N}^M$ , then the set of lags $\Omega = \{|n_i-n_j|\} \cup \{N-|n_i-n_j|\} \quad \forall_{n_i,n_j}\in \mathbf{S}$.
 \end{blockDefinition}
     
@@ -75,8 +73,7 @@ Linear sparse ruler is a problem that is already well defined and researched.
     $$
 \end{blockDefinition}
 
-From definition \ref{def:minimal_sparse} one can see that a minimal sparse ruler solution guarantees a set where $\{0,1,\dots,N_{linear}-1\} \in \Omega$. We can use theorem \ref{th:circ_verify} to show that the minimal sparse ruler solution with length $N_{linear}$ is also a solution for circular sparse ruler with $N=2N_{linear}-1$.
-For example, the minimal sparse ruler solution for $N_{linear}=7$: $\{1,2,5,7\}$ is also a valid circular sparse ruler solution for $N=13$.
+From definition \ref{def:minimal_sparse} one can see that a minimal sparse ruler solution guarantees a set where $\{0,1,\dots,N_{linear}-1\} \in \Omega$. We can use theorem \ref{th:circ_verify} to show that the minimal sparse ruler solution with length $N_{linear}$ is also a solution for circular sparse ruler with $N=2N_{linear}-1$. For example, the minimal sparse ruler solution for $N_{linear}=7$: $\{1,2,5,7\}$ is also a valid circular sparse ruler solution for $N=13$.
 
 \subsection{Upper-bound and lower-bound of optimal circular sparse ruler}
 To tell whether a circular sparse ruler solution is also optimal, it is useful to define an upper and lower-bound. The lower-bound is the minimal optimal solution one can get with $M$ elements. For this we can simply use the minimal linear sparse ruler solutions as described in section \ref{ssec:minimal_linear_s}, because this allows us to easily find circular sparse ruler solutions. The upper bound is the theoretical maximum amount of length $N$ one can achieve with $M$ elements.
@@ -91,24 +88,43 @@ To tell whether a circular sparse ruler solution is also optimal, it is useful t
 
 \subsection{The structure of optimal circular sparse rulers}
 
+\begin{blockTheorem} \label{th:translation}\nolinebreak
+    Let $\mathbf{S}$ be a solution for a circular sparse ruler problem of length $N$, then this solution can be used to make $N$ different solutions by translation only.
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:translation}}
+    Definition \ref{dif:lags} shows that the absolute position of elements does not matter. Therefore one can rotate the solution however he likes and will still get the same lags. The total amount of different locations are equal to the length $N$ of the circular sparse ruler problem. 
+\end{blockProofTheorem}
+
+This theorem is useful when designing algorithms because it allows the solution space to be narrowed down by a factor $N$.
+
 \begin{blockTheorem} \label{th:lag1}\nolinebreak
     Let $M$ be the amount of elements and $N$ the length of a solution $\mathbf{S}$, and $M\geq 2$, then there exists a solution $\mathbf{S}$ with the same $M$ and $N$ where $\{1,2\} \in \mathbf{S}$  \nolinebreak
 \end{blockTheorem}
 
 \begin{blockProofTheorem}{\ref{th:lag1}}
-    For every solution holds: $1 \in \Omega$. Therefore there are always two elements next to each other. Because the problem is circular, one can translate the locations of the elements freely. Therefore one can always get a solution where $\{1,2\} \in \mathbf{S}$
+    For every solution holds: $1 \in \Omega$. Therefore there are always two elements next to each other. Using theorem \ref{th:translation} one can always use translation to get a solution where $\{1,2\} \in \mathbf{S}$
 \end{blockProofTheorem}
 
 This is a useful property when writing an algorithm, for it allows the first two elements to be forced.
 
+\begin{blockTheorem} \label{th:mirror}\nolinebreak
+    Let $\mathbf{S}$ be a solution for a circular sparse ruler problem of length $N$, then this solution can be used to make another solution one cannot get through translation by mirroring.
+\end{blockTheorem}
+$\Omega = \{|n_i-n_j|\} \cup \{N-|n_i-n_j|\} \quad \forall_{n_i,n_j}\in \mathbf{S}$
 
+\begin{blockProofTheorem}{\ref{th:mirror}}
+    Let $\mathbf{S}$ be a solution to a circular sparse ruler problem with length $N$. Then every combination of elements produces two lags: $|n_i-n_j|$ and $N-|n_i-n_j|$ with $n_i,n_j\in \mathbf{S}$. Would one mirror $\mathbf{S}$ in on an axis, then the lags produced by $n'_i$ and $n'_j$ is $|(n_j+k)-(n_i+k)| = |n_i-n_j|$ and $N-|(n_j+k)-(n_j+k)|=N-|n_i-n_j|$ with $k \in \mathbb{Z}$. Therefore mirroring a viable solution will produce another viable solution.
+\end{blockProofTheorem}
+
+<<<<<<< HEAD
 
 \begin{blockTheorem} \label{th:lag2}\nolinebreak
-    all circular sparse ruler solutions can be written as $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$, or a rotation of those. \todo{dit is net niet lekker geformuleerd}   \nolinebreak
+    All circular sparse ruler solutions with more than 3 elements can be translated or mirrored into a solution for which holds $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$.   \nolinebreak
 \end{blockTheorem}
 
 \begin{blockProofTheorem}{\ref{th:identical_lags}}
-    We know that lag $2 \in \Omega$, therefore there need to be two devices with distance two from each other. This can be done in combination with element 1 or 2 from theorem \ref{th:lag1}. The only way to achieve this is $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\}$, $\{1,2,N\}$, $\{1,2,N-1\}$, but the last two options are identical to the first two except for their rotation. If no combination with element 1 or 2 is used then two other devices must be somewhere with distance 2 from each other. All options can be covered with $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,N-4\}$, but this set can also be reduced by exploiting rotation, resulting in $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$. Therefore every solution can be written as $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$, or a rotation of those. 
+    We know that lag $2 \in \Omega$, therefore there need to be two devices with distance two from each other. This can be done in combination with element 1 or 2 from theorem \ref{th:lag1}. The only way to achieve this is $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\}$, $\{1,2,N\}$, $\{1,2,N-1\}$, but the last two options are identical to the first two except for their rotation. If no combination with element 1 or 2 is used then two other devices must be somewhere with distance 2 from each other. All options can be covered with $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,N-4\}$, but this set can also be reduced by exploiting mirroring, resulting in $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$. 
 \end{blockProofTheorem}
 
 This theorem has the potential to be used for a substantial speed-up when designing an algorithm.
@@ -123,6 +139,8 @@ This theorem has the potential to be used for a substantial speed-up when design
 
 \subsection{Guesswork}
 \todo{Guesswork? Wat is de engelse variant van een vermoeden?}
+
+This section contains several theorems that have no proof yet.
 
 \begin{blockTheorem} \label{th:odd}\nolinebreak
     The length $N$ of an optimal solution $\mathbf{S}$ is an odd integer \nolinebreak
@@ -149,7 +167,6 @@ M=6,N=31 \quad S&=\{1,2,5,7,14,22\}\\
 M=7,N=39 \quad S&=\{1,2,5,7,14,21,31\}
 \end{align}
 
-\todo[inline, author=Kees]{Read until here}
 
 \begin{blockDefinition}
     Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
