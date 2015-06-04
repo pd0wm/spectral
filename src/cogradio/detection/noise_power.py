@@ -20,10 +20,10 @@ class noise_power(Detector):
         power = np.zeros(self.num_bins)
         stepsize = np.floor(len(psd) / self.num_bins)
         # calculate threshold for energy (time domain)
-        self.threshold = self.calc_threshold(psd, rx)
+        self.threshold = self.calc_threshold(psd)
 
         # calculate variance of noise
-        noise_variance = calc_noise_variance(psd)
+        noise_variance = self.calc_noise_variance(psd)
         noise_level = noise_variance*len(psd)/2
         # simulate noise in the other numbins-1 bands
         additive_noise = (len(psd)-stepsize)*noise_level
@@ -50,7 +50,7 @@ class noise_power(Detector):
         # Sliding window over frequency bins
         for i in range(0, len(psd)):
             kidx = max(0, i - self.window_length)
-            gidx = min(length - 1, i + self.window_length)
+            gidx = min(len(psd) - 1, i + self.window_length)
             noise_estimate[i] = np.mean(psd[kidx: gidx])
 
         return 2*min(noise_estimate)*len(psd)
@@ -58,6 +58,6 @@ class noise_power(Detector):
     def calc_threshold(self, psd):
         # calculate the length of the TIME DOMAIN signal
         N = (len(psd)+1)/2
-        noise_variance = calc_noise_variance(psd)
-        threshold = (stats.norm.isf(self.Pfa)*sqrt(N)+N)*noise_variance
+        noise_variance = self.calc_noise_variance(psd)
+        threshold = (stats.norm.isf(self.Pfa)*np.sqrt(N)+N)*noise_variance
         return threshold
