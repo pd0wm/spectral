@@ -8,22 +8,23 @@ class Wessel(Reconstructor):
 
     """Implementation of Wessel's adaption of the ariananda algorithm"""
 
-    def __init__(self, N, L, C=None):
+    def __init__(self, L, C):
         Reconstructor.__init__(self)
         self.L = L
         if C is None:
-            self.N = N
             sparseruler = cg.sparseruler(N)
             self.C = cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
         else:
             self.C = C
-        # get length of C
-        print self.C
+
         self.M = self.C.shape[0]
         self.N = self.C.shape[1]
 
         self.R = self.constructR()
         # Force full column rank with slicing
+        print "Shape", self.R.shape
+        print "Rank", np.linalg.matrix_rank(self.R)
+
         self.R = self.R[:, (self.N - 1): -(self.N - 1)]
         self.R_pinv = self.calc_pseudoinverse(self.R)
 

@@ -63,7 +63,7 @@ DetPlot.prototype.getPlotSettings = function() {
             column: {
                 enableMouseTracking: false,
                 animation: false,
-                turboThreshold: 1200,
+                turboThreshold: 10000,
                 groupPadding: 0,
                 pointPadding: 0,
                 borderWidth: 0,
