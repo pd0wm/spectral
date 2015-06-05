@@ -45,8 +45,8 @@ def cross_correlate(a, b, maxlag=None):
         return cross_corr
 
 
-def auto_correlation(signal):
-    return np.correlate(signal, signal, mode='same')
+def auto_correlation(signal, maxlag=None):
+    return cross_correlate(signal, signal, maxlag=maxlag)
 
 
 def build_sparse_ruler_sampling_matrix(sparseruler, N):

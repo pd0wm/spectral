@@ -53,4 +53,4 @@ class UsrpN210(Source):
             if key == 'antenna_gain':
                 self.set_gain(value)
             if key == 'center_freq':
-                self.set_frequency(value * 1e6)
+                self.set_frequency(value * 1e9)

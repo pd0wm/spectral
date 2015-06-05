@@ -41,21 +41,17 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         print("Client connecting: {}".format(request.peer))
 
     def onMessage(self, payload, isBinary):
-        # print payload
         self.pushData(payload)
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
 
     def update_options(self):
-        options = None
-        while self.opt.poll():
-            options = self.opt.recv()
-
-        if options:
+        if not self.opt.empty():
+            options = self.opt.get()
             for key, value in options.items():
                 if key == 'center_freq':
-                    self.center_freq = value * 1e6
+                    self.center_freq = value * 1e9
                 elif hasattr(self, key):
                     setattr(self, key, value)
 

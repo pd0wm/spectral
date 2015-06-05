@@ -6,7 +6,6 @@
     var TYPE_NONE = 'none';
     var TYPE_FFT = 'fft';
     var TYPE_SPECTROGRAM = 'spectrogram'
-    var TYPE_DET = 'detector'
 
     var DATATYPE_SRC_DATA = 'src_data';
     var DATATYPE_REC_DATA = 'rec_data';
@@ -32,8 +31,17 @@
 
     websocket_init();
 
+    /* Helper functions */
+
     function title(container, type, datatype) {
-        var title = title1[type] + (type == TYPE_NONE ? "" : title2[datatype]);
+        var title = "";
+        if (datatype == DATATYPE_DET_DATA) {
+            title = "Detector";
+        }
+        else {
+            title = title1[type] + (type == TYPE_NONE ? "" : title2[datatype]);
+        }
+
         container.siblings(".visualisation-header").find("h3").text(title);
     };
 
@@ -69,6 +77,25 @@
         delete elements[container_id];
     }
 
+    function update_limits() {
+        if (!Visualisation.src_data || !Visualisation.rec_data) {
+            return;
+        }
+
+        var min = 10 * Math.log10(Math.min(math.min(Visualisation.src_data.data), math.min(Visualisation.rec_data.data)));
+        var max = 10 * Math.log10(Math.max(math.max(Visualisation.src_data.data), math.max(Visualisation.rec_data.data)));
+
+        if (min < Visualisation.ymin) {
+            Visualisation.ymin = min;
+        }
+
+        if (max > Visualisation.ymax) {
+            Visualisation.ymax = max;
+        }
+    }
+
+    /* WebSocket helper functions */
+
     function websocket_init() {
         if (_socket === null) {
             _socket = new WebSocket("ws://" + window.location.hostname + ":9000");
@@ -79,6 +106,7 @@
             _socket.addEventListener("message", function(event) {
                 var container = JSON.parse(event.data);
                 Visualisation[container.dtype] = container;
+                update_limits();
                 update(container.dtype);
             });
             _socket.addEventListener("close", function() {
@@ -99,10 +127,14 @@
         _socket.send(data);
     };
 
+    /* Public methods and data */
+
     return {
         src_data: null,
         rec_data: null,
         det_data: null,
+        ymin: 0,
+        ymax: 0,
 
         init : function(container_id) {
             if (!Visualisation.running()) {
@@ -110,8 +142,8 @@
                 return;
             }
 
-            var type = $('input[name=' + container_id + '-type]:checked', "#" + container_id).val()
-            var datatype = $('input[name=' + container_id + '-data]:checked', "#" + container_id).val()
+            var type = $('input[name=' + container_id + '-type]:checked', "#" + container_id).val();
+            var datatype = $('input[name=' + container_id + '-data]:checked', "#" + container_id).val();
             var container = $("#" + container_id + "-container");
             container.html("");
 

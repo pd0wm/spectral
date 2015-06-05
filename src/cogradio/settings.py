@@ -1,7 +1,12 @@
 class Settings(object):
 
     def __init__(self, web_opt, src_opt, rec_opt, det_opt):
-        self.pipes = [web_opt, src_opt, rec_opt, det_opt]
+        self.queues = [web_opt, src_opt, rec_opt, det_opt]
 
     def update(self, update):
-        [pipe.send(update) for pipe in self.pipes]
+        [self.send(queue, update) for queue in self.queues]
+
+    def send(self, queue, update):
+        if queue.full():
+            queue.get()
+        queue.put_nowait(update)

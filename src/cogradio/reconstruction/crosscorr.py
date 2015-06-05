@@ -7,13 +7,9 @@ class CrossCorrelation(Reconstructor):
 
     """Implementation of ariananda2012 algorithm"""
 
-    def __init__(self, N, L, C=None, svthresh=None):
+    def __init__(self, L, C):
         Reconstructor.__init__(self)
-        if C is None:
-            sparseruler = cg.sparseruler(N)
-            self.C = cg.build_C(sparseruler, N)
-        else:
-            self.C = C
+        self.C = C
         self.M = self.C.shape[0]
         self.N = self.C.shape[1]
         self.L = L            # Length of input vector

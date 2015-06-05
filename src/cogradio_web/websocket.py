@@ -2,6 +2,7 @@ import json
 import time
 import Pyro4
 from multiprocessing import Queue
+from twisted.internet import defer
 from autobahn.twisted.websocket import WebSocketServerFactory, \
                                        WebSocketServerProtocol
 
@@ -13,6 +14,7 @@ class ServerProtocolDash(WebSocketServerProtocol):
     def __init__(self):
         self.client_address = ''
         self.timestamp = time.time()
+        self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
         WebSocketServerProtocol.__init__(self)
 
     def onOpen(self):
@@ -36,7 +38,8 @@ class ServerProtocolDash(WebSocketServerProtocol):
     def onMessage(self, payload, isBinary):
         data = json.loads(payload)
         self.factory.content.set_by_uuid(data['id'], data['value'], self.client_address)
-        self.factory.settings.update(self.factory.content.values)
+        values = self.factory.content.values
+        self.settings.update(values)
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
@@ -47,7 +50,6 @@ class WebSocketServerDashFactory(WebSocketServerFactory):
     """Factory for creating ServerProtocolPlot instances"""
 
     def __init__(self, url, content):
-        self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
         self.content = content
         WebSocketServerFactory.__init__(self, url)
 
