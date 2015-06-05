@@ -22,18 +22,12 @@ def safe_queue(queue, signal):
     queue.put_nowait(signal)
 
 
-def process_option_queue(queue, obj):
-    options = safe_dequeue(queue)
-    if options:
-        obj.parse_options(options)
-
-
 def send_to_websocket(queue, data, dtype):
     container = WebsocketDataContainer(dtype, data)
     container.enqueue(queue)
 
 
-def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt):
+def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, settings):
     while True:
         orig_signal = source.generate(block_size)
         sampled = sampler.sample(orig_signal)
@@ -43,10 +37,10 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
         data = cg.fft(cg.auto_correlation(orig_signal, maxlag=offset))
         send_to_websocket(websocket_src_queue, data, ServerProtocolPlot.SRC_DATA)
 
-        process_option_queue(opt, source)
+        source.parse_options(settings.read())
 
 
-def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq, opt):
+def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq, settings):
     while True:
         inp = signal_queue.get()
         if inp.any():
@@ -57,17 +51,17 @@ def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructo
             send_to_websocket(websocket_rec_queue, signal, ServerProtocolPlot.REC_DATA)
 
 
-def run_detector(detector, detection_queue, websocket_det_queue, opt):
+def run_detector(detector, detection_queue, websocket_det_queue, settings):
     while True:
         inp = detection_queue.get()
         if inp.any():
             detect = [int(x) for x in detector.detect(inp)]
             send_to_websocket(websocket_det_queue, detect, ServerProtocolPlot.DET_DATA)
 
-        process_option_queue(opt, detector)
 
+        detection.parse_options(settings.read())
 
-def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt):
+def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, settings):
     log.startLogging(sys.stdout)
     factory = cg.websocket.WebSocketServerPlotFactory(url="ws://localhost:9000",
                                                       src_queue=websocket_src_queue,
@@ -75,7 +69,7 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
                                                       det_queue=websocket_det_queue,
                                                       sample_freq=sample_freq,
                                                       center_freq=center_freq,
-                                                      opt=opt)
+                                                      settings=settings)
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)

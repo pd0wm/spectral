@@ -47,13 +47,12 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         print("WebSocket connection closed: {}".format(reason))
 
     def update_options(self):
-        if not self.opt.empty():
-            options = self.opt.get()
-            for key, value in options.items():
-                if key == 'center_freq':
-                    self.center_freq = value * 1e9
-                elif hasattr(self, key):
-                    setattr(self, key, value)
+        options = settings.read()
+        for key, value in options.items():
+            if key == 'center_freq':
+                self.center_freq = value * 1e9
+            elif hasattr(self, key):
+                setattr(self, key, value)
 
     def dequeue(self, request):
         if request not in self.buffer:
@@ -83,7 +82,7 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
         }
         protocol.center_freq = self.protocol_params['center_freq']
         protocol.sample_freq = self.protocol_params['sample_freq']
-        protocol.opt = self.protocol_params['opt']
+        protocol.settings = self.protocol_params['settings']
         protocol.factory = self
         return protocol
 
