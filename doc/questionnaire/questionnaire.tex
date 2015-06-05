@@ -6,7 +6,7 @@
 \usepackage{eurosym}
 
 %% Scroll door naar 'Vragen'
-\usepackage{fullpage}
+\usepackage[margin=2cm]{geometry}
 \usepackage{minibox}
 \pagenumbering{gobble}
 \newcounter{counter}
@@ -18,6 +18,7 @@
     \end{flushright}
 }
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X} % Left-justified text in tabularx environment
+\newcommand{\fillbox}[1]{\hbox to #1{\vbox to 0.8cm{ }}}
 
 % Opinion environment
 \newcommand{\opinionoptionwidth}{0.8cm}
@@ -43,14 +44,16 @@
 }{
     \endtabularx
 }
-\newcommand{\fillgap}{\underline{\hspace{3cm}}~}
-\newcommand{\fillgaplarge}{\underline{\hspace{6cm}}~}
-\newcommand{\fillgapline}{\underline{\hspace{\linewidth}} ~ }
+\newcommand{\fillgap}{\underline{\fillbox{3cm}}~}
+\newcommand{\fillgaplarge}{\underline{\fillbox{6cm}}~}
+\newcommand{\fillgapline}{\underline{\fillbox{\linewidth}} ~ }
 \newcommand{\fillquestion}[1]{
     \docount & #1 \\
 }
 
 \begin{document}
+% Force document into one page
+\begin{minipage}[t][0pt]{\linewidth}
 % Title
 \makebox[\textwidth]{
     \centering
@@ -60,10 +63,10 @@
 
 Dit document bevat aan aantal vragen die u tijdens de bijeenkomst kunt beantwoorden. De informatie zal worden gebruikt om de interesse en staat van ons product te onderzoeken. Uw antwoorden zullen nooit persoonlijk aan u gerelateerd worden, met uitzondering van de voorwaarde hieronder. Het invullen van deze questionnaire is vrijwillig.
 
-\begin{tabularx}{\textwidth}{lX}
+\begin{tabularx}{\textwidth}{lY}
     $\square$ & Mijn antwoorden mogen worden verwerkt tot informatie die Spectral tijdens hun eindpresentatie mag presenteren. \\
     $\square$ & Ik mag worden benaderd voor nadere toelichting op mijn antwoorden. Mijn naam is \\
-    & \underline{\hspace{0.3\linewidth}} en mijn e-mailadres is \underline{\hspace{0.5\linewidth}}. \\
+    & \underline{\fillbox{.3\linewidth}} en mijn e-mailadres is \underline{\fillbox{.49\linewidth}}. \\
 \end{tabularx}
 
 %% Vragen
@@ -82,7 +85,7 @@ Dit document bevat aan aantal vragen die u tijdens de bijeenkomst kunt beantwoor
 \end{fill}
 \section{slimme stoorzender}
 \begin{opinion}
-    \opinionquestion{De \textit{techniek achter} de slimme stoorzender maakt kans binnen de markt van Defensie.}
+    \opinionquestion{De techniek \textit{achter} de slimme stoorzender maakt kans binnen de markt van Defensie.}
     \opinionquestion{De slimme stoorzender maakt kans binnen de markt van Defensie.}
     \opinionquestion{De slimme stoorzender biedt mogelijkheden die er nog niet zijn.}
     \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen in het storen van de vijandige communicatie terwijl de eigen communicatie behouden blijft.}
@@ -95,4 +98,5 @@ Dit document bevat aan aantal vragen die u tijdens de bijeenkomst kunt beantwoor
     \fillquestion{Ik heb een opmerking over de slimme stoorzender, namelijk \fillgapline \fillgapline}
 \end{fill}
 
+\end{minipage}
 \end{document}
