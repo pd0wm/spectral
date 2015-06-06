@@ -1,5 +1,6 @@
 import json
 import cogradio as cg
+import Pyro4
 from multiprocessing import Queue
 from autobahn.twisted.websocket import WebSocketServerFactory, \
                                        WebSocketServerProtocol
@@ -19,6 +20,7 @@ class ServerProtocolPlot(WebSocketServerProtocol):
     center_freq = 2.41e9
 
     def __init__(self):
+        self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
         self.buffer = {
             self.SRC_DATA: None,
             self.REC_DATA: None,
@@ -47,7 +49,7 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         print("WebSocket connection closed: {}".format(reason))
 
     def update_options(self):
-        options = settings.read()
+        options = self.settings.read()
         for key, value in options.items():
             if key == 'center_freq':
                 self.center_freq = value * 1e9
@@ -82,7 +84,6 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
         }
         protocol.center_freq = self.protocol_params['center_freq']
         protocol.sample_freq = self.protocol_params['sample_freq']
-        protocol.settings = self.protocol_params['settings']
         protocol.factory = self
         return protocol
 

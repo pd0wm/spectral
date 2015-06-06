@@ -27,7 +27,8 @@ def send_to_websocket(queue, data, dtype):
     container.enqueue(queue)
 
 
-def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, settings):
+def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor):
+    settings = Pyro4.Proxy("PYRONAME:cg.settings")
     while True:
         orig_signal = source.generate(block_size)
         sampled = sampler.sample(orig_signal)
@@ -40,7 +41,7 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
         source.parse_options(settings.read())
 
 
-def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq, settings):
+def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq):
     while True:
         inp = signal_queue.get()
         if inp.any():
@@ -51,17 +52,18 @@ def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructo
             send_to_websocket(websocket_rec_queue, signal, ServerProtocolPlot.REC_DATA)
 
 
-def run_detector(detector, detection_queue, websocket_det_queue, settings):
+def run_detector(detector, detection_queue, websocket_det_queue):
+    settings = Pyro4.Proxy("PYRONAME:cg.settings")
     while True:
         inp = detection_queue.get()
         if inp.any():
             detect = [int(x) for x in detector.detect(inp)]
             send_to_websocket(websocket_det_queue, detect, ServerProtocolPlot.DET_DATA)
 
+        detector.parse_options(settings.read())
 
-        detection.parse_options(settings.read())
-
-def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, settings):
+def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq):
+    settings = Pyro4.Proxy("PYRONAME:cg.settings")
     log.startLogging(sys.stdout)
     factory = cg.websocket.WebSocketServerPlotFactory(url="ws://localhost:9000",
                                                       src_queue=websocket_src_queue,
@@ -69,17 +71,8 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
                                                       det_queue=websocket_det_queue,
                                                       sample_freq=sample_freq,
                                                       center_freq=center_freq,
-                                                      settings=settings)
+                                                      )
     factory.protocol = cg.websocket.ServerProtocolPlot
 
     reactor.listenTCP(9000, factory)
     reactor.run()
-
-
-def run_settings_server(web_opt, src_opt, rec_opt, det_opt):
-    daemon = Pyro4.Daemon()
-    ns = Pyro4.locateNS()
-    settings = cg.Settings(web_opt, src_opt, rec_opt, det_opt)
-    uri = daemon.register(settings)
-    ns.register("cg.settings", uri)
-    daemon.requestLoop()

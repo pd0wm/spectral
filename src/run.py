@@ -60,24 +60,17 @@ websocket_src_queue = Queue(10)
 websocket_rec_queue = Queue(10)
 websocket_det_queue = Queue(10)
 
-opt_src = Queue(10)
-opt_rec = Queue(10)
-opt_web = Queue(10)
-opt_det = Queue(10)
-
 if __name__ == '__main__':
 
     p1 = Process(target=run_generator,
-                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt_src))
+                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor))
     p2 = Process(target=run_reconstructor,
-                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq, center_freq, opt_rec))
+                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq, center_freq))
     p3 = Process(target=run_websocket_server,
-                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt_web))
-    p4 = Process(target=run_settings_server,
-                 args=(opt_web, opt_src, opt_rec, opt_det))
-    p5 = Process(target=run_detector,
-                 args=(detector, detection_queue, websocket_det_queue, opt_det))
-    processes = [p1, p2, p3, p4, p5]
+                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq))
+    p4 = Process(target=run_detector,
+                 args=(detector, detection_queue, websocket_det_queue))
+    processes = [p1, p2, p3, p4]
 
     try:
         [p.start() for p in processes]
