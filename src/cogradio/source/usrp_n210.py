@@ -1,5 +1,6 @@
 from .source import Source
 import numpy as np
+import time
 try:
     from gnuradio import uhd
 except ImportError:
@@ -14,7 +15,7 @@ class UsrpN210(Source):
 
     def __init__(self, addr, samp_freq=10e6, center_freq=2.4e9, lo_offset=12e6, gain=10, sample_format='fc32'):
         self.samp_freq = samp_freq
-        self.center_freq = center_freq
+        self.center_freq = 0
         self.lo_offset = lo_offset
         self.gain = gain
         self.window = [0]
@@ -26,7 +27,6 @@ class UsrpN210(Source):
         self.uhd.set_samp_rate(self.samp_freq)
         self.uhd.set_antenna("TX/RX", 0)
         self.uhd.set_bandwidth(self.samp_freq / 2, 0)
-
         self.set_frequency(center_freq)
         self.set_gain(gain)
 
