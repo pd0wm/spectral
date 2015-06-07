@@ -6,39 +6,33 @@
 
 \begin{document}
 
-
 \section{Preliminaries}
 
-% \begin{blockDefinition}[Delta vector]
-% The $N$ dimensional delta vector is represented by a vector $\vec{\delta} \in \mathbb{C}^N$such that:
-
-% \begin{align*}
-%   (\vec{\delta})_i &= 1 &&\text{for $i = \lfloor \frac{N}{2} \rfloor$} \\ 
-%   (\vec{\delta})_i &= 0 &&\text{elsewhere.}
-% \end{align*}
-% \end{blockDefinition}
-% \begin{blockDefinition}[Element wise multiplication]
-% The result of the element wise multiplication of two $N$ dimensional vectors $\vec{a}$ and $\vec{b}$, denoted by
-
-% \begin{align*}
-%   \vec{a} \diamond \vec{b}
-% \end{align*}
-%  is given by a $N$ dimension vector $\vec{c}$ with element $(\vec{c})_i = (\vec{a})_i (\vec{b})_i$. 
-% \end{blockDefinition}
-
 \begin{blockDefinition}[Likelihood function under Hypothesis]
-Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$. Then $f_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
+Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$. Then $L_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
+\end{blockDefinition}
+
+% \begin{blockDefinition}{Deterministic autocorrelation of a discrete signal}
+% Given a discrete time signal $y[k]$, its autocorrelation function is defined as
+
+% \begin{align}
+%     r_{yy}[k] = \sum_{i=-\infty}^{\infty}y[i]\overline{y}[i-j]
+% \end{align}
+
+% \end{blockDefinition}
+
+\begin{blockDefinition}[Generalized Chi-square distribution]
+A random variable $\mathbf{X} \in \mathbb{C}$ that follows a chi-square distribution with $N$ degrees of freedom, denoted by $\mathbf{X} \sim \chi^2_N$, is the sum of $N$ independent circular complex normal distributed random variables with zero mean and standard deviation equal to 1. 
 \end{blockDefinition}
 
 \begin{blockDefinition}[Neyman-Pearson Test]
-Given a continous random vector $\vec{\mathfrak{x}}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that $\mathbf{x}$ has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$ when
-
+Given a continous random vector $\vec{X}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that the realization of $\vec{X}$, $\vec{x}$, has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$
+when
 \begin{align*}
-    \Lambda (\mathbf{x}) &= \frac{f_{\vec{\mathfrak{x}} | \mathcal{H}_0} (\mathbf{x})}{f_{(\vec{\mathfrak{x}} | \mathcal{H}_1}(\mathbf{x})} < \eta 
+    \Lambda (\mathbf{x}) &= \frac{L_{\vec{X} | \mathcal{H}_0} (\mathbf{x})}{L_{(\vec{X} | \mathcal{H}_1}(\mathbf{x})} > \eta. 
 \end{align*}
 
-The decision threshold $\eta$ is chosen such that $P(\Lambda(\vec{\mathfrak{x}}) < \eta) = \alpha$.
+Where $\eta$, the decision threshold, is chosen such that $P(\Lambda(\vec{x} < \eta) | \mathcal{H}_1)$ is minimized subject to $P(\Lambda(\vec{x}) > \eta) | \mathcal{H}_0) = P_{fa}$, where $P_{fa}$ denotes the false alarm probability. % insert ref naar boek
 \end{blockDefinition}
-
 
 \end{document}
