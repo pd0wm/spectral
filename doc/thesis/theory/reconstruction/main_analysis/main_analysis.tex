@@ -41,7 +41,7 @@ Commutativity and the definition of the convolution operator yield that
     \end{bmatrix}\\
     &= \mat{R}_{c_i,c_j} \vec{r}_x.
 \end{align*}
-Let the $2L-1\times 2LN+2N-3$ decimation matrix be defined by $(\mat{D})_{i,iN} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\vec{r}'_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
+Let the $2L-1\times 2LN+2N-3$ decimation matrix be defined by $(\mat{D})_{i,(i+1)N-1} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. The decimation matrix is used to derive the output of a coset from its pseudo output. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\vec{r}'_{y_i,y_j} = \mat{D} \vec{r}_{y_i,y_j}$. Then let $\mat{R}$ be such that
 \begin{align*}
     \begin{bmatrix}
         \vec{r}'_{y_1,y_1} \\
