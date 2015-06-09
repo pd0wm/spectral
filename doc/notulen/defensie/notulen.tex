@@ -1,0 +1,326 @@
+%!TEX program=xelatex
+
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[dutch]{babel}
+\usepackage[strict,autostyle]{csquotes}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{datetime}
+\usepackage{fullpage}
+\usepackage{eurosym}
+\usepackage{xcolor,mdframed}
+\usepackage{tikz}
+\usepackage{framed}
+
+\usepackage{fontspec}
+
+% Fancy quotes
+\newfontfamily\quotefont[Ligatures=TeX]{Palatino Linotype} % selects Libertine as the quote font
+
+% \newcommand*\quotesize{60} % if quote size changes, need a way to make shifts relative
+% Make commands for the quotes
+% \newcommand*{\openquote}
+%    {\tikz[remember picture,overlay,xshift=-4ex,yshift=-2.5ex]
+%    \node (OQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont``};\kern0pt}
+
+% \newcommand*{\closequote}[1]
+%   {\tikz[remember picture,overlay,xshift=4ex,yshift={#1}]
+%    \node (CQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont''};}
+
+% select a colour for the shading
+\colorlet{shadecolor}{white}
+
+\newcommand*\shadedauthorformat{\emph} % define format for the author argument
+
+% Now a command to allow left, right and centre alignment of the author
+\newcommand*\authoralign[1]{%
+  \if#1l
+    \def\authorfill{}\def\quotefill{\hfill}
+  \else
+    \if#1r
+      \def\authorfill{\hfill}\def\quotefill{}
+    \else
+      \if#1c
+        \gdef\authorfill{\hfill}\def\quotefill{\hfill}
+      \else\typeout{Invalid option}
+      \fi
+    \fi
+  \fi}
+% wrap everything in its own environment which takes one argument (author) and one optional argument
+% specifying the alignment [l, r or c]
+%
+\newenvironment{shadequote}[2][l]%
+{\authoralign{#1}
+\ifblank{#2}
+   {\def\shadequoteauthor{}\def\yshift{-2ex}\def\quotefill{\hfill}}
+   {\def\shadequoteauthor{\par\authorfill\shadedauthorformat{#2}}\def\yshift{2ex}}
+\begin{snugshade}\begin{quote}\openquote}
+{\shadequoteauthor\quotefill\closequote{\yshift}\end{quote}\end{snugshade}}
+
+
+% Setup actiepunten
+\newenvironment{important}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={red!15}, hidealllines=true,
+      skipabove=0.7\baselineskip, skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt, splittopskip=4pt, #1]%
+   \makebox[0pt]{% ignore the withd of !
+      \smash{% ignor the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{red!70!black}\sffamily\bfseries !}% type the bold red !
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+\newcommand{\excl}[1]{
+\begin{important}
+  \textbf{#1}
+\end{important}
+}
+\newcommand{\excll}[2]{
+\begin{important}
+  \textbf{#1}\\#2
+\end{important}
+}
+
+% Setup fonts
+\defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
+\setmainfont[Ligatures={Common,TeX}]{Palatino Linotype}
+\newfontfamily\hdrfont{Palatino Linotype}
+
+% Setup hyperlinks
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+% Setup header
+\pagestyle{fancy}
+%\rhead{\includegraphics[height=3cm]{kascomlogo.png}}
+%\lhead{\includegraphics[height=3cm]{bondslogo.pdf}}
+\rhead{}
+\lhead{}
+\chead{\hdrfont \hspace{4cm} {\Huge \bf \sc Cognitive Radio} \vspace{0.5cm} \\ \rule{15cm}{0.5pt} \vspace{0.2cm} \\ {\Large \sc Notulen sessie Defensie \displaydate{date}} \vspace{0.2cm}}
+\usepackage[headsep=.5cm, top=5cm, headheight=10cm, heightrounded]{geometry}
+
+% Setup date
+\newdate{date}{08}{06}{2015}
+\date{\displaydate{date}}
+
+\begin{document}
+\section{Aanwezigen}
+\begin{tabular}{p{0.4\textwidth}p{0.5\textwidth}}
+    Mariniers
+    \begin{itemize}
+        \item Koen ter Aa
+        \item Hans de Boer
+        \item Dennis Borst
+        \item Jochem de Hollander
+        \item van Houten
+        \item Wouter van Maaren
+        \item Eric Verheien
+    \end{itemize} &
+
+    Studenten
+    \begin{itemize}
+        \item Wessel Bruinsma
+        \item Robin Hes
+        \item Kees Kroep
+        \item Dorus Leliveld
+        \item Willem Melching
+        \item Tom aan de Wiel
+    \end{itemize} \\
+\end{tabular}
+
+
+\section{Punten vooraf}
+\begin{itemize}
+  \item Informeel overleg
+  \item Aanwezigen voornamelijk `eindgebruikers' van apparatuur
+  \item De gegeven achtergrondinformatie (documentje) was bruikbaar
+\end{itemize}
+
+\section{Na de presentatie}
+\begin{itemize}
+    \item Onduidelijkheid over de wijze van onderscheid tussen gewenste en ongewenste communicatie
+    \begin{itemize}
+        \item A priori informatie is sleutelwoord
+        \item Interesse naar herkennen van modulatietechnieken
+    \end{itemize}
+
+    \item Interesse naar frequentiebereik van de techniek
+    \begin{itemize}
+        \item Communicatie is verspreid over een breed gebied (>1 GHz)
+        \item Theoretisch oneindig voor oneindige tijd
+        \item Afhankelijk van gebruikte hardware
+    \end{itemize}
+
+    \item Interesse naar spatiaal bereik van techniek
+    \begin{itemize}
+        \item Bij inzet is het belangrijk om te weten hoe ver de effecten reiken
+        \item Alleen storen wat gestoord moet worden (TV, radio en mobiele diensten mogen bijv. niet verstoord worden)
+    \end{itemize}
+
+    \item De niet-technische presentatie bleek zeker niet te moeilijk te zijn
+\end{itemize}
+
+\section{Na de technische presentatie}
+\begin{itemize}
+    \item Meer nadruk op gebruik van meerdere samplers, niet meerdere antennes (zie illustratie)
+
+    \item Verleg nadruk van \emph{smart jamming} naar \emph{smart sensing}
+    \begin{itemize}
+        \item Ook vanuit projectopdracht een goed idee
+        \item Jamming is nog steeds dom, alleen gericht na smart sensing
+        \item Verduidelijken dat het vooralsnog vooral om een softwareoplossing gaat
+    \end{itemize}
+
+    \item Met betrekking tot integratie
+    \begin{itemize}
+        \item Integratie met bestaande systemen belangrijk pluspunt
+        \item Modulariteit belangrijk
+        \item Formaat belangrijk
+        \item Gebruiksgemak
+        \item Meerdere form-factors: schip, voertuig, portable (`signaalvrije bubbel'), etc.
+    \end{itemize}
+
+    \item Ook potentie bij het zoeken van een vrij kanaal om te zenden (dynamische zendsystemen)
+
+    \item TNO
+    \begin{itemize}
+        \item Bij TNO loopt mogelijk onderzoek in onze richting
+        \item Mogelijk geheim, men mocht hier niet te veel over zeggen
+        \item Professor Zwamborn (TU Eindhoven) mogelijk contactpersoon
+        \item Introductie via e-mail door Hans de Boer
+        \item Let op intellectueel eigendom
+    \end{itemize}
+
+    \item Side-effects
+    \begin{itemize}
+        \item Let op stralingsrisico's voor zowel personeel als omstanders
+        \item Nogmaals, storen van openbare zaken als telefoon kan echt niet
+        \item Let op effecten door modificaties door de eindgebruikers (voorbeeld prikkeldraad op pantservoertuig)
+        \item Systeem moet hufter-proof zijn
+    \end{itemize}
+
+    \item Bij storen, probeer er voor te zorgen dat de tegenstander het niet door heeft
+    \item Resolutie is een belangrijke specificatie bij aanliggende frequentiebanden
+\end{itemize}
+
+\section{Discussie}
+\begin{itemize}
+    \item Suggestie: spatiaal gericht storen
+    \begin{itemize}
+        \item Maakt jammen met minder side-effects mogelijk
+        \item Mogelijk met array-antennas
+        \item Bij voorkeur variabel
+        \item Future work?
+    \end{itemize}
+
+    \item Scenario's
+    \begin{itemize}
+        \item Marine: boardingoperaties
+        \begin{itemize}
+            \item Anti-piraterij
+            \item Niet alleen storen, maar ook kennis over communicatie van tegenstander is waardevol
+            \item Jamming wordt hier al toegepast
+        \end{itemize}
+
+        \item Grootschalige operaties
+        \begin{itemize}
+            \item Anti-terreur, op meerdere locaties tegelijk (recent: Frankrijk)
+            \item Ondermijnen van coördinatie terroristen
+            \item Inzet van drones is een goede toepassing
+        \end{itemize}
+
+        \item Deconflictering
+        \begin{itemize}
+            \item Lastig om informatie te krijgen van bondgenoten over gebruikte frequenties
+            \item Ook binnen NATO is men hier geheimzinnig over
+            \item Moeilijk om zo vriendelijke en vijandige communicatie te scheiden
+            \item Belangrijke hindernis
+        \end{itemize}
+
+        \item Grootschalige detectie
+        \begin{itemize}
+            \item Gebruik van technologie om af te luisteren frequenties te detecteren
+            \item Voor grootschalige surveillance
+            \item Concept bestaat al in de vorm van sweep (\url{aronia.de}, <10.000 euro)
+        \end{itemize}
+
+        \item Sales
+        \begin{itemize}
+            \item Defensie koopt producten, geen technieken
+            \item De mogelijke prijs voor een product schaalt met de mate waarin het de veiligheid vergroot
+            \item DMP-cyclus
+
+            \begin{itemize}
+                \item Behoefte $\rightarrow$ planning $\rightarrow$ aanbesteding $\rightarrow$ productie
+                \item Bij geringe kosten kan afgeweken worden van de cyclus
+                \item De duur van de cyclus (jaren) zorgt voor complicaties (deprecation on release)
+            \end{itemize}
+
+            \item Kleine bedrijven kunnen worden gesubsidieerd en begeleid
+            \item Nogmaals, hiervoor moet een product in het vooruitzicht worden gesteld
+            \item Conclusie: laat je uitkopen door bestaande leverancier
+
+            \item Overige punten sales
+            \begin{itemize}
+                \item Prijs is niet te bepalen zonder idee van wat er geleverd wordt
+                \item Prijzen voor softwarepakketten algemeen lopen uiteen
+                \item Denk bij prijsbepaling in businessplan aan alle aspecten: levering \& installatie, hardware, software, documentatie, opleiding, service
+            \end{itemize}
+        \end{itemize}
+
+        \item Concurrenten/Partners \\
+        \begin{tabular}{p{0.3\textwidth}p{0.4\textwidth}}
+            \begin{itemize}
+                \item General Dynamic (Bowman)
+                \item Thales
+                \item Thomson Aerospace \& Defence
+                \item Bull
+                \item L-3 Communications
+            \end{itemize} &
+
+            \begin{itemize}
+                \item Wolf (?)
+                \item Telefunken Racoms (Airbus?)
+                \item Rohde \& Schwarz
+                \item Harris Corporation
+                \item Raytheon
+            \end{itemize} \\
+        \end{tabular}
+
+        \item Regelgeving jammers
+        \begin{itemize}
+            \item Binnen Nederland zeer strikte regelgeving, afhankelijk van situatie
+            \item Alleen EODD heeft licentie voor gebruik
+            \item Buiten Nederland hangt het af van de afspraken met lokale regering en wetgeving
+            \item Maritiem lijken de regels niet-bestaand of vaag
+            \item Bij natie vs. natie gelden in principe geen regels
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section{Overige zaken}
+\begin{itemize}
+    \item Kosten bepaalde radio: 70k
+    \item Benchmark scannen: 1 GHz per ms
+    \item Vijand $\rightarrow$ tegenstander
+    \item IED $\rightarrow$ radio-controlled IED
+    \item IED onschadelijk maken $\rightarrow$ IED neutraliseren
+\end{itemize}
+
+\section{Enquête}
+
+
+\end{document}
