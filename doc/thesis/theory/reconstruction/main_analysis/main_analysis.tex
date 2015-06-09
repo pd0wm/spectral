@@ -15,7 +15,7 @@ Let $L$, $N$ and $M$ be parameters. $M$ cosets will provide $L$ samples downsamp
     \makebox[\textwidth]{\centering $(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})$.} \nolinebreak
 \end{blockTheorem}
 
-Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$ and let the correlation of sampling vectors of cosets $i$ and $j$ be given by $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
+Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\vec{r}_{y_i,y_j} = \vec{y}_i \circ \vec{y}_j$ and let the correlation of the sampling vectors of cosets $i$ and $j$ be given by $\vec{r}_{c_i,c_j} = \vec{c}_i \circ \vec{c}_j$. Then
 \begin{align*}
     \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
@@ -62,9 +62,9 @@ Let the $2L-1\times 2LN+2N-3$ decimation matrix be defined by $(\mat{D})_{i,(i+1
 \end{align*}
 Note that we used \cref{def:dots-extended} here. We now investigate $\vec{r}'_{y_i,y_j}$'s structure. Notice that
 \begin{align*}
-    (\vec{r}'_{y_i,y_j})_m = (\mat{D} \vec{r}_{y_i,y_j})_{m} = (\vec{r}_{y_i,y_j})_{mN}.
+    (\vec{r}'_{y_i,y_j})_m = (\mat{D} \vec{r}_{y_i,y_j})_{m} = (\vec{r}_{y_i,y_j})_{(m+1)N-1}.
 \end{align*}
-Thus $\vec{r}'_{y_i,y_j}$ is the $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$. Now let $\vec{r}_{y'_i,y'_j} = \vec{y}'_i \circ \vec{y}'_j$.
+Thus $\vec{r}'_{y_i,y_j}$ is a $N$-decimation of $\vec{r}_{y_i,y_j}$. Let $\vec{y}'_i$ denote the $N$-decimation of $\vec{y}_i$. Then $\vec{y}'_i$ corresponds to the output of coset $i$. Now let $\vec{r}_{y'_i,y'_j} = \vec{y}'_i \circ \vec{y}'_j$.
 
 \begin{blockTheorem} \lab{th:deci-corr}
     Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=1,\ldots,LN+N-1$. Furthermore, let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=1,\ldots,L$. Then $N\vec{r}_{y'_i,y'_j}$ is an unbiased estimator of $E( \vec{r}'_{y_i,y_j})$.
