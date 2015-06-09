@@ -60,8 +60,9 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         if request not in self.buffer:
             raise ValueError("Invalid request: '{}'".format(request))
 
-        if not self.queue[request].empty():
-            self.buffer[request] = self.queue[request].get()
+        item = self.queue[request].dequeue()
+        if item is not None:
+            self.buffer[request] = item
 
         return self.buffer[request]
 
@@ -121,7 +122,4 @@ class WebsocketDataContainer:
         self.data = data
 
     def enqueue(self, queue):
-        if queue.full():
-            queue.get()
-
-        queue.put_nowait(self)
+        queue.queue(self)
