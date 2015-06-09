@@ -1,0 +1,22 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+
+\section{Proofs}
+\label{sec:proofs_detection}
+In this section the stated theorems will be proven.
+
+\begin{blockProofTheorem}{\ref{th:abs-psd}}
+    \begin{align*}
+        \exp \left [ \frac{2\pi j (N-1)}{2N-1} \right] \sum_{n=1}^{2N-1} r[n] \exp \left[ \frac{2\pi j (n-1)(k-1)}{2N-1}\right] \\
+        \sum_{n=1}^{2N-1} r[n] \exp \left[ \frac{2\pi j (n-N)(k-1)}{2N-1}\right] \\
+        \sum_{n=1}^{2N-1} \sum_{\tau=1}^{N} x[\tau - n] \overline{x}[n] \exp \left[ \frac{2\pi j (n-1)(k-1)}{2N-1}\right]  \\        
+    \end{align*}
+\end{blockProofTheorem}
+
+\end{document}
