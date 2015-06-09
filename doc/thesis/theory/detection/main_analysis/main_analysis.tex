@@ -20,15 +20,15 @@ The algorithm must decide between to hypotheses:
 in which $\vec{n} \in \mathbb{C}^{N} $ denotes a noise signal and $\vec{s} \in \mathbb{C}^{N}$ denotes a signal as transmitted by a primary user.
 
 \subsection{Energy Detection}
-We assume that the noise samples are i.i.d. zero mean circular complex gaussian distributed; $(\vec{n})_i \sim \mathcal{CN}(0, \sigma_n^2 \mathbf{I})$. 
-We furthermore assume that the samples of the signal $\vec{s}$ can be modelled independtly as circular complex gaussian $\mathcal{CN}(0, \sigma_s^2 \mathbf{I})$. % todo ref
+We assume that the noise samples are i.i.d. zero mean circular complex gaussian distributed; $(\vec{n})_i \sim \mathcal{CN}(0, \sigma_n^2)$. 
+We furthermore assume that the samples of the signal $\vec{s}$ can be modelled independently as circular complex gaussian $\mathcal{CN}(0, \sigma_s^2)$. % todo ref
 % dat dit aannemelijk maakt That is
 
 \begin{align*}
-\vec{x} \sim 
+(\vec{x}_i) \sim 
     \begin{cases}
-        \mathcal{CN}(0, (\sigma_n^2)\mathbf{I} & \text{under $\mathcal{H}_0$} \\
-        \mathcal{CN}(0, (\sigma_s^2 + \sigma_n^2)\mathbf{I} & \text{under $\mathcal{H}_1$}
+        \mathcal{CN}(0, \sigma_n^2) & \text{under $\mathcal{H}_0$} \\
+        \mathcal{CN}(0, (\sigma_s^2 + \sigma_n^2)) & \text{under $\mathcal{H}_1$}
     \end{cases}
 \end{align*} 
 
@@ -37,22 +37,23 @@ The likelihood function $L(\vec{x})$ of the signal $\vec{x}$ is given by:
 \begin{align*}
     L(\vec{x}) &= \prod_{i=1}^N f_{(\vec{x})_i}\\
     &= \begin{cases}
-        \frac{1}{\pi^N \sigma_n^2} \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_0$} \\
-        \frac{1}{\pi^N \sigma_n^2} \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_1$}
+        \frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_0$} \\
+        \frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_1$}
     \end{cases}
 \end{align*}
 
 Where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ in $\vec{x}$.  The test statistic $\Lambda(\vec{x})$ as used in the Neyman Pearson test is then given by:
 \begin{align*}
-\Lambda(\vec{x}) &=\frac{\frac{1}{\pi^N \sigma_n^2} \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{\frac{1}{\pi^N (\sigma_n^2 + \sigma_s^2)} \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}
+\Lambda(\vec{x}) &=\frac{\frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{\frac{(\sigma_n^2 + \sigma_s^2)}{\pi^N } \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}
 \end{align*}
 
 
 By taking the logarithm of $\Lambda(x)$ we obtain a Log Likelihood Ratio test statistic $\Lambda'(x)$, given by
 
 \begin{align*}
-\Lambda(\vec{x}) &= \log(\frac{\frac{1}{\pi^N \sigma_n^2} \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{\frac{1}{\pi^N (\sigma_n^2 + \sigma_s^2)} \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}) \\
-&= \log(\frac{1}{\pi^N \sigma_n^2}) - \log(\frac{1}{\pi^N (\sigma_n^2 + \sigma_s^2)}) +  (\sigma_s^2) \sum_{i=1}^N |x|^2. \\
+\Lambda(\vec{x}) &= \log \left(
+\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)\exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}\right) \\
+&= \log\left(\sigma_n^2\right) - \log\left(\sigma_n^2 + \sigma_s^2\right) +  (\sigma_s^2) \sum_{i=1}^N |x|^2. 
 \end{align*}
 
 Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic 
@@ -64,11 +65,12 @@ Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of
 is proportional to $\Lambda'(x)$. A detector using the test statistic $\Lambda''(x)$ is  referred to as the \emph{Energy detector}. 
 
 \subsubsection{Threshold}
-
-Without loss of generality, let $\sigma_n = N^2$ \footnote{To determine the threshold $\eta$ for $\sigma_n \neq N^2$, observe that we can normalize $(\vec{x})_i$, by dividing it by its standard deviation $\sigma_n$.}. Under $\mathcal{H}_0$ the following applies\cite{teguigspectrum2014}  
+In this section we will determine the threshold $\eta$, for the energy detector test statistic $\Lambda''(x)$.
+%Without loss of generality, let $\sigma_n = N^2$ \footnote{To determine the threshold $\eta$ for $\sigma_n \neq N^2$, observe that we can normalize $(\vec{x})_i$, by dividing it by its standard deviation $\sigma_n$.}. 
+Under $\mathcal{H}_0$ the following applies\cite{teguigspectrum2014}  
 
 \begin{align}
-    \frac{\Lambda''(x)}{N} &= \sum_{i=1}^N \left|\frac{x}{N}\right|^2 \sim \chi^2_{2N}.
+    \frac{2\Lambda''(x)}{\sigma_n^2} \sim \chi^2_{2N}.
 \end{align}
 
 % Sensing Throughput Tradeoff in Cognitive Radio, Y. C. Liang
@@ -76,22 +78,22 @@ Without loss of generality, let $\sigma_n = N^2$ \footnote{To determine the thre
 Therefore the false alarm probability $P_{fa}$ is given by \cite{rugini2013small}:
 
 \begin{align*}
-    P_{fa} &= P\left[\frac{\Lambda''(\vec{x} > \eta)}{N}\right] \\
-        &= 1-F_{2N} (\eta)
+    P_{fa} &= P\left[(\Lambda''(\vec{x}) > \eta)\right] \\
+        &= 1-F_{2N} (\frac{2\eta}{\sigma_n^2})
 \end{align*}
 
-with $F_{2N}$ the CDF of a chi square distribution with $2N$ degrees of freedom. That is, $E[\frac{\Lambda''(x)}{N}] = 2N$ and $\text{Var}[\frac{\Lambda''(x)}{N}] = 4N$.
+with $F_{2N}$ the CDF of a chi square distribution with $2N$ degrees of freedom. 
 
-If $N$ is large enough, we can approximate the test statistics' distribtion by a gaussian distribution, using the Central Limit theorem:
+If $N$ is large enough, we can approximate the test statistics' distribution by a gaussian distribution, using the Central Limit theorem:
 
 \begin{align*}
-F_{2N} \approx 1-Q(\frac{\frac{\Lambda''(x)}{N}-2N}{2\sqrt{N}}).
+F_{2N} \approx 1-Q(\frac{\frac{2\Lambda''(x)}{\sigma^2_n}-2N}{2\sqrt{N}}).
 \end{align*}
 
 $P_{fa}$ can then be approximated as 
 
  \begin{align}
- P_{fa} = P(\Lambda'(\vec{x}) > \eta) = Q(\frac{\eta -\sigma_n^2}{\sqrt{\frac{2}{N}\sigma^2_n}}).\label{eq:p_fa}
+ P_{fa} \approx Q\left(\frac{2\eta -2N}{2\sqrt{N}\sigma_n^2}\right).\label{eq:p_fa}
  \end{align} \cite{
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
  }
@@ -99,99 +101,9 @@ $P_{fa}$ can then be approximated as
  and given a desired $P_{fa}$ the threshold $\eta$ is given by
 
 \begin{align}
- \eta = Q^{-1}(P_{fa}) P(\Lambda'(\vec{x}) > \eta) = Q(\frac{\eta -\sigma_n^2}{\sqrt{\frac{2}{N}\sigma^2_n}}).
+ \eta = Q^{-1}\left(P_{fa})\sqrt{N} + N\right) \sigma_n^2
  \end{align} \cite{
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
  }
  
-
- \subsection{The energy detector in the fourier domain}
-In this section we discuss how the test statistic of the energy detector relates to the power spectral density of the signal that serves as input of the detector.
-
-\subsubsection{Power spectral density \& autocorrelation}
-Consider a discrete time signal $x[n]$. We define its \emph{expected} power as $E\left[\left|x[n]\right|^2\right]$, which equals the autocorrelation function of $x$ at zero lag. 
-
-By the Wiener-Khinchin Theorem we have that 
-
- \begin{align*}
-S(j\omega) = \sum_{k=-\infty}^{\infty} r_{xx}[k] \exp \left( -j2\pi \omega k) \right)
- \end{align*}
-
-where $r_{xx}[k]$ denotes the autocorrelation function of $x$ at lag $k$ and $S(\omega$ denotes the spectral power density (PSD).
-By definition of the PSD 
-
-\begin{align*}
-E\left[\left|x[n]\right|^2\right] = \int_{\omega = -\infty}^{\infty} S(j\omega)\text{d}\omega.
-\end{align*}
-
-\subsubsection{Detection of Bandlimited signals}
-By our assumption that the noise is circular complex gaussian
-\begin{align*}
-    r_{nn}[k] = \sigma^2_n \delta[k]
-\end{align*}
-and 
-\begin{align*}
-    S(j\omega) = \sigma^2_n.
-\end{align*}
-
-If just \emph{one} bandlimited signal $s$ is present in the received signal $x$, then under the assumption that it is independent from the noise, we can add the PSD of $s$ to that of the $n$ to obtain the PSD of $x$. If the lowest frequency present in $s$ is $\omega_1$ and the highest frequency $\omega_2$, then, given a bandpass filter with a frequency response 
-
-\begin{align*}
-H(j\omega) &= \begin{cases}1 &\text{$\omega_1 \leq |\omega| \leq \omega_2$} \\
-0 & \text{elsewhere} \end{cases} 
-\end{align*}
-the PSD of $x$ is given by
-\begin{align}
-S_x(j\omega) &= H(j\omega) \cdot S(j\omega) + \sigma_n^2 \cdot \left(-H(j\omega+1) \right).
-\end{align}
-
-% Let us now consider the vector $\vec{x} \in \mathbb{C}^{2M+1}$ for which $(\vec{x})_{i+M+1} = x[i]$.
-\subsection{The algorithm}
-
-To detect the presence of a signal in a certain frequency band, given the autocorrelation of the received signal, $r_{xx}$,  we propose the following algorithm
-
-\begin{enumerate}   
-    \item Estimate the PSD of $x$, $\hat{S}_x(j\Omega)$  by taking the absolute value of the DFT of $r_{xx}$.
-    \item Estimate the noise variance $\sigma_n^2$ from the estimated PSD
-    \item Summate $S(j\Omega)$ in the desired frequency band.
-    \item Add $\sigma_n^2 \cdot W$ to the result of the previous step, where $W$ denotes the bandwidth of
-    $x$ minus that of the certain frequency band. 
-    \item Compare the result of the previous step with a threshold $\gamma$.
-\end{enumerate}
-
-% \begin{align*}
-%     \mathcal{P}[k] = \sum_{n=1}^{2N-1} (\vec{x} \circ \vec{x})_n e^{-\omega(n-1)(k-1)}
-% \end{align*}
-
-% with $\omega = \frac{2\pi\cdot j}{2N-1}$
-
-% That is, using the inverse fourier transform, we can retrieve Nth element of $\vec{x}\circ \vec{x}$:
-
-% \begin{align*}
-% (\vec{x} \circ \vec{x})_N &= \frac{1}{2N-1} \sum_{k=1}^{2N-1}  \mathcal{P}[k] e^{\omega (N-1)(k-1)} \\
-% &=  \frac{1}{2N-1} \sum_{k=1}^{2N-1} \sum_{n=1}^{2N-1} \left((\vec{x} \circ \vec{x})_n e^{-\omega(n-1)(k-1)}\right)e^{\omega(N-1)(k-1)} \\
-% % &=  \frac{1}{2N-1} \sum_{k=1}^{2N-1} ||x||^2 + \sum_{n=1}^{2N-1} (\vec{x} \circ \vec{x})_n e^{-\omega(n-N)(k-1)} + \overline{(\vec{x} \circ \vec{x})_n e^{-\omega(n-N)(k-1)}} \\
-% % &=\frac{1}{2N-1} \sum_{k=1}^{2N-1} ||x||^2 + \sum_{n=1}^{N-1} \Re{(\vec{x} \circ \vec{x})_n e^{-\omega(n-N)(k-1)}}
-% \end{align*}
-
-% Note that 
-% \begin{align*}
-% (\vec{x} \circ \vec{x})_i &= \overline{(\vec{x} \circ \vec{x})}_{i+N} & \text{for $i=1,2 \ldots, N-1$}
-% \end{align*}
-
-% \begin{align*}
-% \sum_{n=1}^{2N-1} \left((\vec{x} \circ \vec{x})_n e^{-\omega(n-1)(k-1)}\right)e^{\omega(N-1)(k-1)} &= d
-% % &=  \frac{1}{2N-1} \sum_{k=1}^{2N-1} ||x||^2 + \sum_{n=1}^{2N-1} (\vec{x} \circ \vec{x})_n e^{-\omega(n-N)(k-1)} + \overline{(\vec{x} \circ \vec{x})_n e^{-\omega(n-N)(k-1)}} \\
-% % &=\frac{1}{2N-1} \sum_{k=1}^{2N-1} ||x||^2 + \sum_{n=1}^{N-1} \Re{(\vec{x} \circ \vec{x})_n e^{-\omega(n-N)(k-1)}}
-% \end{align*}
-
-
-
-
-\subsection{Estimation of the noise variance}
-To determine the threshold for the test statistic, it is necessary that we can estimate the noise variance 
-
-% http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6809311
-% http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
-
 \end{document}
