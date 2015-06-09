@@ -23,13 +23,11 @@ We will need notation to denote two uncommon vector operations.
     Let $\vec{x} \in \mathbb{C}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{C}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
 \end{blockDefinition}
 
-Note that a subvector includes both boundary elements.
-
 \begin{blockDefinition}[Submatrix]
-    Let $\mat{A}$ be an $M \times N$ matrix. Then $\mat{A}[a,b]$ denotes the $M \times b-a+1$ matrix consisting of columns $a,\ldots,b$ of $\mat{A}$.
+    Let $\mat{A}$ be an $M \times N$ matrix. Then $\mat{A}[a,b]$ denotes the $M \times b-a+1$ matrix $\mat{B}$ such that $(\mat{B})_{i,j}=(\mat{A})_{i,j+a-1}$ for $i = 1,\ldots,b-a+1$ and $i = 1,\ldots,N$.
 \end{blockDefinition}
 
-Also a submatrix includes both boundary elements.
+Note that subvectors and submatrices include both boundary elements.
 
 \begin{blockDefinition}[Reverse of Vector]
     Let $\vec{x} \in \mathbb{C}^N$. Then the reverse of $\vec{x}$ denotes a vector $\vec{y} \in \mathbb{C}^N$ such that $(\vec{y})_i = (\vec{x})_{N-i+1}$ for $i = 1,\ldots,N$.
@@ -84,53 +82,10 @@ The following theorem identifies the expected value of the correlation operator.
 Finally, we extend the use of dots to denote finite sequences.
 
 \begin{blockDefinition} \lab{def:dots-extended}
-    Let $N \in \mathbb{N}$ and let $S=\{(a,b) \in \mathbb{N} \times \mathbb{N} : a < b \le N\}\cup \{(1,1)\}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence of all elements in $S$ such that $(1,1)$ is first and $(a,b) \in S$ comes before $(c,d) \in S$ when $a < c$, or when $b < d$ if $a = c$.
+    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ denotes the sequence
+
+    \makebox[\textwidth]{\centering
+        $(1,1),\ldots(1,N),(2,1),\ldots,(2,N),(3,1),\ldots,(N,N).$
+    } \nolinebreak
 \end{blockDefinition}
-
-Note that $(1,1),\ldots,(N,N)$ represents in an $N \times N$ grid a corner point and the dots below the diagonal. This is pictured in \cref{fig:dots-extended}.
-
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw [black, fill=black] (0,0) circle [radius=0.05];
-        \draw [black, fill=black] (0,0.5) circle [radius=0.05];
-        \draw [black, fill=black] (0,1) circle [radius=0.05];
-        \draw [black, fill=black] (0,1.5) circle [radius=0.05];
-        \draw [black, fill=black] (0,2) circle [radius=0.05];
-
-        \draw [black, fill=black] (0.5,0) circle [radius=0.05];
-        \draw [black, fill=black] (0.5,0.5) circle [radius=0.05];
-        \draw [black, fill=black] (0.5,1) circle [radius=0.05];
-        \draw [black, fill=black] (0.5,1.5) circle [radius=0.05];
-        \draw [black, fill=black] (0.5,2) circle [radius=0.05];
-
-        \draw [black, fill=black] (1,0) circle [radius=0.05];
-        \draw [black, fill=black] (1,0.5) circle [radius=0.05];
-        \draw [black, fill=black] (1,1) circle [radius=0.05];
-        \draw [black, fill=black] (1,1.5) circle [radius=0.05];
-        \draw [black, fill=black] (1,2) circle [radius=0.05];
-
-        \draw [black, fill=black] (1.5,0) circle [radius=0.05];
-        \draw [black, fill=black] (1.5,0.5) circle [radius=0.05];
-        \draw [black, fill=black] (1.5,1) circle [radius=0.05];
-        \draw [black, fill=black] (1.5,1.5) circle [radius=0.05];
-        \draw [black, fill=black] (1.5,2) circle [radius=0.05];
-
-        \draw [black, fill=black] (2,0) circle [radius=0.05];
-        \draw [black, fill=black] (2,0.5) circle [radius=0.05];
-        \draw [black, fill=black] (2,1) circle [radius=0.05];
-        \draw [black, fill=black] (2,1.5) circle [radius=0.05];
-        \draw [black, fill=black] (2,2) circle [radius=0.05];
-
-        \draw [red, thick] (-.25, 2) -- (-0.25, -0.25) -- (2.25, -0.25) -- (2.25, 0.25) -- (1.5, 0.25) -- (-.25, 2);
-    \end{tikzpicture}
-    \caption{Visualisation of $(1,1),\ldots,(N,N)$}
-    \label{fig:dots-extended}
-\end{figure}
-
-
-\begin{blockTheorem} \lab{th:dots-extended}
-    Let $N \in \mathbb{N}$. Then $(1,1),\ldots,(N,N)$ is finite and has length $\frac{1}{2}N(N-1)+1$.
-\end{blockTheorem}
-
 \end{document}

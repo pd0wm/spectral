@@ -29,8 +29,10 @@ class noise_power(Detector):
         additive_noise = (len(psd)-stepsize)*noise_level
 
         for i in range(0, self.num_bins):
+            kidx = np.floor(i*len(PSD)/self.num_bins)
+            gidx = np.floor((i+1)*len(PSD)/self.num_bins)
             power[i] = (
-                np.sum(psd[stepsize * i:stepsize * (i + 1)]) +
+                np.sum(psd[kidx:gidx]) +
                 additive_noise)/len(psd)
 
         return power > self.threshold

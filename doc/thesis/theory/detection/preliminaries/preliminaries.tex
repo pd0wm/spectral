@@ -6,39 +6,70 @@
 
 \begin{document}
 
-
 \section{Preliminaries}
 
-% \begin{blockDefinition}[Delta vector]
-% The $N$ dimensional delta vector is represented by a vector $\vec{\delta} \in \mathbb{C}^N$such that:
-
-% \begin{align*}
-%   (\vec{\delta})_i &= 1 &&\text{for $i = \lfloor \frac{N}{2} \rfloor$} \\ 
-%   (\vec{\delta})_i &= 0 &&\text{elsewhere.}
-% \end{align*}
-% \end{blockDefinition}
-% \begin{blockDefinition}[Element wise multiplication]
-% The result of the element wise multiplication of two $N$ dimensional vectors $\vec{a}$ and $\vec{b}$, denoted by
-
-% \begin{align*}
-%   \vec{a} \diamond \vec{b}
-% \end{align*}
-%  is given by a $N$ dimension vector $\vec{c}$ with element $(\vec{c})_i = (\vec{a})_i (\vec{b})_i$. 
-% \end{blockDefinition}
-
 \begin{blockDefinition}[Likelihood function under Hypothesis]
-Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$. Then $f_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
+Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$, then $L_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
+\end{blockDefinition}
+
+\begin{blockDefinition}[Complex Gaussian Random Variable]
+Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed.
+\end{blockDefinition}
+
+\begin{blockDefinition}[Circular Complex Gaussian Random Variable]
+Given a complex gaussian random variable $Z$, then $Z$ is circular complex gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta \in \mathbb{R}$. Since
+\begin{align*}
+	E\left[Z\right] = E\left[e^{j\theta}Z\right]  = e^{j\theta}E\left[Z\right] 
+\end{align*}
+and
+\begin{align*}
+	E\left[ZZ\right] = E\left[e^{j\theta}Z e^j\theta{Z}\right]  = e^{2j\theta}E\left[Z^2\right] 
+\end{align*}
+it follows that $Z$  has an expectation value of zero ($E\left[Z\right] = 0$) and that %$E\left[Z^2\right]= E\left[X^2 - Y^2 + 2jXY] = 0$.  
+This implies that $E\left[X\right] = E\left[Y\right] = 0$ and that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$. That is, $X$ and $Y$ are gaussian distributed
+with zero mean and equal variance. 
+A circular complex gaussian random variable $Z$ is referred to as $Z \sim \mathcal{CN}(0,\sigma)$ with $\sigma= E\left[Z\overline{Z}\right] = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$. 
+\end{blockDefinition}
+
+\begin{blockDefinition}[Circular Complex Gaussian Random Vector]
+Given the random vector $\vec{Z} \in \mathbb{C}^N$, then $\vec{Z} = \vec{X} + j\vec{Y}$ is a circular complex random vector if $\vec{X}$ and $\vec{Y}$ are jointly gaussian distributed and $\vec{Z}$ has the same distribution as $e^{j\theta}\vec{Z}$ with $\theta \in \mathbb{R}$. Similar to a circular complex gaussian variable, $E\left[\vec{Z}\right] = 0$
+and $E\left[\vec{Z}\vec{Z}^T\right] = 0$. A circular complex gaussian random vector $\vec{Z}$ is referred to as $\vec{Z} \sim \mathcal{CN}(0,\mathbf{\Gamma})$ with $\mathbf{\Gamma} = E\left[\vec{Z}\overline{\vec{Z}} \right]$. For the standard circular complex gaussian random vector, $\mathbf{\Gamma} = \mathbf{I}$. 
+
+The probability density function of a circular complex gaussian vector $\vec{Z}\in \mathbb{C}^N$ is given by:
+
+\begin{align*}
+	\frac{1}{\pi^N \text{det}(\mathbf{\Gamma})} \exp \left(-\overline{\vec{z}}^T \mathbf{\Gamma}^{-1}\vec{z}\right)
+\end{align*}
+\end{blockDefinition}
+
+\begin{blockDefinition}[Chi-square distribution of circular complex gaussian random variables]
+Given a random vector $\vec{Z} \in \mathbb{C}^N$, with $(\vec{Z})_i \sim \mathcal{CN}(0, 2)$ then the random variable $\mathbf{X}$ defined as
+
+\begin{align*}
+	\mathbf{X} &= \sum_{n=1}^N \left|(\vec{Z})_n\right|^2 % http://dsp-book.narod.ru/DSPMW/60.PDF
+\end{align*}
+
+% https://books.google.nl/books?id=KwkgAwAAQBAJ&pg=PA158&lpg=PA158&dq=circular+complex+gaussian+chi+square&source=bl&ots=9e7czQCFaN&sig=yuMXCjiFC21c_0EgmSM_yzefVFk&hl=nl&sa=X&ei=MbB2VfTXBsizswGi34DgCw&ved=0CFIQ6AEwBg#v=onepage&q=circular%20complex%20gaussian%20chi%20square&f=false
+
+% https://books.google.nl/books?id=ERLrAQAAQBAJ&pg=PA145&dq=circular+complex+gaussian&hl=nl&sa=X&ei=YLd2Vc7HLMmmsgHhx4TgCQ&ved=0CCEQ6AEwAA#v=onepage&q=circular%20complex%20gaussian&f=false
+
+% http://lib.tkk.fi/Diss/2010/isbn9789526030319/article6.pdf
+
+% https://www.ee.iitb.ac.in/~sarva/courses/EE703/2013/Slides/CircularlySymmetricGaussian.pdf
+
+% http://www.ifp.illinois.edu/~pramodv/Chapters_PDF/Fundamentals_Wireless_Communication_AppendixA.pdf
+
+follows a chi-square distribution with $2N$ degrees of freedom, denoted by $\mathbf{X} \sim \chi^2_{2N}$.
+Its expected value is equal to $E[\frac{\Lambda''(x)}{N}] = 2N$ and its variance is equal to $\text{Var}[\frac{\Lambda''(x)}{N}] = 4N$.
 \end{blockDefinition}
 
 \begin{blockDefinition}[Neyman-Pearson Test]
-Given a continous random vector $\vec{\mathfrak{x}}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that $\mathbf{x}$ has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$ when
-
+Given a continous random vector $\vec{X}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that the realization of $\vec{X}$, $\vec{x}$, has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$
+when
 \begin{align*}
-    \Lambda (\mathbf{x}) &= \frac{f_{\vec{\mathfrak{x}} | \mathcal{H}_0} (\mathbf{x})}{f_{(\vec{\mathfrak{x}} | \mathcal{H}_1}(\mathbf{x})} < \eta 
+    \Lambda (\mathbf{x}) &= \frac{L_{\vec{X} | \mathcal{H}_0} (\mathbf{x})}{L_{(\vec{X} | \mathcal{H}_1}(\mathbf{x})} > \eta. 
 \end{align*}
-
-The decision threshold $\eta$ is chosen such that $P(\Lambda(\vec{\mathfrak{x}}) < \eta) = \alpha$.
+Where $\eta$, the decision threshold, is chosen such that $P(\Lambda(\vec{x} < \eta) | \mathcal{H}_1)$ is minimized subject to $P(\Lambda(\vec{x}) > \eta) | \mathcal{H}_0) = P_{fa}$, where $P_{fa}$ denotes the false alarm probability. % insert ref naar boek
 \end{blockDefinition}
-
 
 \end{document}

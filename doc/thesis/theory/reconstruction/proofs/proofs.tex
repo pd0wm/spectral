@@ -46,22 +46,6 @@ In this section the stated theorems will be proven.
     since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(N-i)R_{X,Y}[i]$ for $N-M<i\le N-1$.
 \end{blockProofTheorem}
 
-\begin{blockProofTheorem}{\ref{th:dots-extended}}
-    Consider \cref{def:dots-extended}. Then note that $S$ is bounded. Therefore $(1,1),\ldots,(N,N)$ is finite. Now note that
-    \begin{align*}
-        (1,1),\ldots,(N,N) =
-        \underbrace{(1,1)}_{\text{length } 1},
-        \underbrace{(1,2)}_{\text{length } 1},
-        \underbrace{(1,3),(2,3)}_{\text{length } 2},
-        \ldots,
-        \underbrace{(1,N),\ldots,(N-1,N)}_{\text{length } N-1}
-    \end{align*}
-    has length
-    \begin{align*}
-        1+1+2+\ldots+N-1 = \frac{1}{2}N(N-1)+1.
-    \end{align*}
-\end{blockProofTheorem}
-
 \begin{blockProofTheorem}{\ref{th:conv-corr}}
     Note that
     \begin{align*}
@@ -96,31 +80,50 @@ In this section the stated theorems will be proven.
     Therefore
     \begin{align*}
         [E(N\vec{r}_{y'_i,y'_j})]_{m+L}
-        &= N W[m] R_{Y'_i,Y'_j}[m]
-        = N W[m] R_{Y_i,Y_j}[mN]
-        % &= E(\vec{r}'_{y_i,y_j}).
+        &= N W_1[m] R_{Y'_i,Y'_j}[m]
+        = N W_1[m] R_{Y_i,Y_j}[mN]
     \end{align*}
     where
     \begin{align*}
-        NW[m] &= N\begin{cases}
-            m+L & \text{if } -L+1 \le i \le 0, \\
-            L-m & \text{if } 0 \le i \le L - 1, \\
-            0 & \text{elsewhere}
-        \end{cases} \\
-        &= \begin{cases}
-            mN+LN & \text{if } -LN+N \le iN \le 0, \\
-            LN-mN & \text{if } 0 \le iN \le LN - N,\\
-            0 & \text{elsewhere}
-        \end{cases} \\
-        &= \begin{cases}
-            mN+LN & \text{if } -LN+1 \le iN \le 0, \\
-            LN-mN & \text{if } 0 \le iN \le LN - 1, \\
+        NW_1[m] &= \begin{cases}
+            mN+LN & \text{if } -L+1 \le m \le 0, \\
+            LN-mN & \text{if } 0 \le m \le L - 1, \\
             0 & \text{elsewhere}.
+        \end{cases} \\
+        % &= \begin{cases}
+        %     mN+LN & \text{if } -LN+N \le mN \le 0, \\
+        %     LN-mN & \text{if } 0 \le mN \le LN - N,\\
+        %     0 & \text{elsewhere}.
+        % \end{cases} \\
+        % &= \begin{cases}
+        %     mN+LN & \text{if } -LN+1 \le iN \le 0, \\
+        %     LN-mN & \text{if } 0 \le iN \le LN - 1, \\
+        %     0 & \text{elsewhere}.
+        % \end{cases}
+    \end{align*}
+    Also note that $E[(\vec{r}_{y_i,y_j})_{mN+LN+N-1}] = W_2[mN] R_{Y_i,Y_j}[mN]$ where
+    \begin{align*}
+        W_2[mN] &= \begin{cases}
+            mN+LN+N-1 & \text{if } -LN-N+2 \le mN \le 0, \\
+            LN+N-1-mN& \text{if } 0 \le mN \le LN+N-2, \\
+            0 & \text{elsewhere.}
         \end{cases}
     \end{align*}
-    We now recognise that
+    Let
     \begin{align*}
-        [E(N\vec{r}_{y'_i,y'_j})]_{m+L} &= [E(\vec{r}_{y_i,y_j})]_{mN+LN} = [E(\vec{r}'_{y_i,y_j})]_{m+L} .
+        W_{1 \to 2}[m] &= \begin{cases}
+            (mN+LN+N-1)/(mN+LN) & \text{if } -L+1 \le m \le 0, \\
+            (LN+N-1-mN)/(LN-mN) & \text{if } 0 \le m \le L-1, \\
+            0 & \text{elsewhere.}
+        \end{cases}
+    \end{align*}
+    Then $W_{1 \to 2}[m] N W_1[m] = W_2[mN]$ for $m = -L+1,\ldots,L-1$. To this end, let $\vec{w}_{1 \to 2} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w}_{1 \to 2})_{i+L}=W_{1 \to 2}[i]$ for $i = -L+1,\ldots,L-1$. We then recognise that
+    \begin{align*}
+        [E(\vec{w}_{1 \to 2} \odot N\vec{r}_{y'_i,y'_j})]_{m+L} &= [E(\vec{r}_{y_i,y_j})]_{(m+L+1)N-1} \\
+        % &= [E(\vec{r}_{y_i,y_j})]_{(m+L+1)N-1} \\
+        &= [E(\mat{D} \vec{r}_{y_i,y_j})]_{m+L} \\
+        &= [E(\vec{r}'_{y_i,y_j})]_{m+L}.
+        % (m+L+1)N-1 = mN + LN + N - 1
     \end{align*}
 \end{blockProofTheorem}
 
