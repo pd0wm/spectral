@@ -13,7 +13,8 @@
 		"*.pdf",
 		"*.swf",
 		"*.jar",
-		"*.zip"
+		"*.zip",
+		"*.doc"
 	],
 	"build_systems":
 	[
@@ -24,41 +25,41 @@
 			"shell_cmd": "python -u \"$file\""
 		}
 	],
-	"file_exclude_patterns":
-	[
-		"*.pyc",
-		"*.pyo",
-		"*.exe",
-		"*.dll",
-		"*.obj",
-		"*.o",
-		"*.a",
-		"*.lib",
-		"*.so",
-		"*.dylib",
-		"*.ncb",
-		"*.sdf",
-		"*.suo",
-		"*.pdb",
-		"*.idb",
-		".DS_Store",
-		"*.class",
-		"*.psd",
-		"*.db",
-		"*.aux",
-		"*.synctex.gz",
-		"*-blx.bib",
-		"*.blg",
-		"*.out",
-		"*.fdb_latexmk",
-		"*.log",
-		"*.toc",
-		"*.run.xml"
-	],
 	"folders":
 	[
 		{
-			"path": "."
+			"path": ".",
+			"file_exclude_patterns":
+			[
+				"*.pyc",
+				"*.pyo",
+				"*.exe",
+				"*.dll",
+				"*.obj",
+				"*.o",
+				"*.a",
+				"*.lib",
+				"*.so",
+				"*.dylib",
+				"*.ncb",
+				"*.sdf",
+				"*.suo",
+				"*.pdb",
+				"*.idb",
+				".DS_Store",
+				"*.class",
+				"*.psd",
+				"*.db",
+				"*.aux",
+				"*.synctex.gz",
+				"*-blx.bib",
+				"*.blg",
+				"*.out",
+				"*.fdb_latexmk",
+				"*.log",
+				"*.toc",
+				"*.run.xml"
+			],
 		}
 	],
 	"tab_size": 4,

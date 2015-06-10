@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import cogradio as cg
+import cogradio_vis as vis
 import argparse
 import time
+import sys
 from processes import *
 from multiprocessing import Process, Queue, Pipe
 
@@ -25,20 +27,23 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-center_freq = 466e6
 a = 5
 b = 3
 N = a * b
 upscale_factor = 50  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
-threshold = 2000
-num_bins = 20
-window_length = 50
-Pfa = 0.1  # Doet niks sur le moment
+settings = Pyro4.Proxy("PYRONAME:cg.settings")
+settings.update({
+    'Pfa': 0.1,
+    'center_freq': 2.4,  # GHz
+    'num_bins': 150,
+    'window_length': 50,
+    'antenna_gain': 10
+})
 
 if source_type == "usrp":
-    source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
+    source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq)
 elif source_type == "dump":
     source = cg.source.File(dump_file_path)
 elif source_type == "complex":
@@ -51,35 +56,35 @@ sampler = cg.sampling.MultiCoset(N)
 
 reconstructor = cg.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = cg.reconstruction.CrossCorrelation(N, L, C=sampler.get_C())
-detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
+detector = cg.detection.noise_power()
 
-# Init processes
-signal_queue = Queue(2)
-detection_queue = Queue(2)
-websocket_src_queue = Queue(10)
-websocket_rec_queue = Queue(10)
-websocket_det_queue = Queue(10)
+# Init queues
+signal_queue = vis.multiprocessing.SafeQueue()
+detection_queue = vis.multiprocessing.SafeQueue()
 
-opt_src = Queue(10)
-opt_rec = Queue(10)
-opt_web = Queue(10)
-opt_det = Queue(10)
+websocket_src_queue = vis.multiprocessing.SafeQueue()
+websocket_rec_queue = vis.multiprocessing.SafeQueue()
+websocket_det_queue = vis.multiprocessing.SafeQueue()
+
 
 if __name__ == '__main__':
 
     p1 = Process(target=run_generator,
-                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt_src))
+                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor))
     p2 = Process(target=run_reconstructor,
-                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq, center_freq, opt_rec))
-    p3 = Process(target=run_websocket_server,
-                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt_web))
-    p4 = Process(target=run_settings_server,
-                 args=(opt_web, opt_src, opt_rec, opt_det))
-    p5 = Process(target=run_detector,
-                 args=(detector, detection_queue, websocket_det_queue, sample_freq, center_freq, opt_det))
-    p6 = Process(target=run_jam_queue)
+                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq))
+    p3 = Process(target=run_detector,
+                 args=(detector, detection_queue, websocket_det_queue))
+    p4 = Process(target=run_server,
+                 args=())
+    p5 = Process(target=run_websocket_control,
+                 args=())
+    p6 = Process(target=run_websocket_data,
+                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq))
+    p7 = Process(target=run_jam_queue,
+                 args=())
 
-    processes = [p1, p2, p3, p4, p5, p6]
+    processes = [p1, p2, p3, p4, p5, p6, p7]
 
     try:
         [p.start() for p in processes]

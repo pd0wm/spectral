@@ -1,11 +1,13 @@
-import cogradio_utils as cg
+import cogradio as cg
 
 import cProfile
 import pstats
 import StringIO
 
-N = 14
+N = 6
 L = 40
+a = 2
+b = 3
 frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
@@ -15,29 +17,50 @@ nyq_block_size = L * N * multiplier
 window_length = nyq_block_size
 threshold = 2000
 
-pr = cProfile.Profile()
-pr.enable()
-source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=5)
-sampler = cg.sampling.MultiCoset(N)
-reconstructor = cg.reconstruction.Wessel(N, L)
-pr.disable()
-s = StringIO.StringIO()
-sortby = 'cumulative'
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-pr.dump_stats("Single_process_complete_init.dmp")
+
+def gen_profiling_report(obj, args, method=None, constructor=False):
+    pr = cProfile.Profile()
+    pr.enable()
+    ret = method(*args)
+
+    pr.disable()
+    s = StringIO.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    if constructor:
+        pr.dump_stats("profiler_reports/{}_{}.prof".format(obj.__name__, "init"))
+    else:
+        pr.dump_stats("profiler_reports/{}_{}.prof".format(obj.__class__.__name__, method.__name__))
+    return ret
 
 
-pr = cProfile.Profile()
-pr.enable()
-for i in range(100):
-    signal = source.generate(nyq_block_size)
-    cos_samp = sampler.sample(signal)
-    rec_sig = reconstructor.reconstruct(cos_samp)
-pr.disable()
-s = StringIO.StringIO()
-sortby = 'cumulative'
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-print s.getvalue()
-pr.dump_stats("Single_process_complete.dmp")
+sources = [cg.source.Sinusoidal, cg.source.ComplexExponential]  # , cg.source.Rect]
+sources_init_args = [(frequencies, sample_freq)] * len(sources)
+
+init_sources = []
+for obj, args in zip(sources, sources_init_args):
+    init_sources.append(gen_profiling_report(obj, args, obj, constructor=True))
+
+init_samplers = []
+samplers = [cg.sampling.Coprime, cg.sampling.MultiCoset]
+sampler_init_args = [(a, b), (N,)]
+
+for obj, args in zip(samplers, sampler_init_args):
+    init_samplers.append(gen_profiling_report(obj, args, obj, constructor=True))
+
+C = init_samplers[0].get_C()
+
+reconstructors = [cg.reconstruction.CrossCorrelation, cg.reconstruction.Wessel]
+reconstructors_init_args = [(L, C)] * len(reconstructors)
+
+init_reconstructors = []
+for obj, args in zip(reconstructors, reconstructors_init_args):
+    init_reconstructors.append(gen_profiling_report(obj, args, obj, constructor=True))
+
+#  sources_gen_args = [(nyq_block_size,)] * len(init_sources)
+#  signals = []
+#  for obj, args in zip(init_sources, sources_gen_args):
+#      signals.append(gen_profiling_report(obj, args, obj.generate))
+#  
+#  
+#  

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ title }}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"></link>
+
+    <!-- Bootstrap theme -->
+    <link href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap-theme.css') }}" rel="stylesheet"></link>
+
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet"></link>
+    <link href="{{ url_for('bower.static', filename='seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" rel="stylesheet"></link>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+      	<div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      	    <span class="sr-only">Toggle navigation</span>
+      	  </button>
+      	  <a class="navbar-brand" href="/">Spectral</a>
+      	</div>
+      	<div id="navbar" class="navbar-collapse collapse">
+          {% set navigation_bar = [
+              ('/', 'index', 'Dashboard'),
+              ('/sweep', 'sweep', 'Sweep')
+          ] -%}
+          {% set active_page = active_page|default('index') -%}
+      	  <ul class="nav navbar-nav">
+            {% for href, id, caption in navigation_bar %}
+              <li{% if id == active_page %} class="active"{% endif
+              %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+            {% endfor %}
+      	  </ul>
+      	</div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container-fluid" role="main">
+        {{ content|safe }}
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+	  ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('bower.static', filename='jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='bootstrap/dist/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='seiyria-bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='highcharts/highcharts.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='mathjs/dist/math.js') }}"></script>
+    <script src="{{ url_for('bower.static', filename='chroma-js/chroma.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/control.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/visualisation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fftplot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/detplot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/spectrogram.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sweep.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/elements.js') }}"></script>
+
+    <script type="text/javascript">
+      {{ js_init|safe }}
+    </script>
+  </body>
+</html>
