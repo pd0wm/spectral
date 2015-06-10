@@ -1,0 +1,44 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+
+\section{Preliminaries}
+
+% \begin{blockDefinition}[Delta vector]
+% The $N$ dimensional delta vector is represented by a vector $\vec{\delta} \in \mathbb{C}^N$such that:
+
+% \begin{align*}
+%   (\vec{\delta})_i &= 1 &&\text{for $i = \lfloor \frac{N}{2} \rfloor$} \\ 
+%   (\vec{\delta})_i &= 0 &&\text{elsewhere.}
+% \end{align*}
+% \end{blockDefinition}
+% \begin{blockDefinition}[Element wise multiplication]
+% The result of the element wise multiplication of two $N$ dimensional vectors $\vec{a}$ and $\vec{b}$, denoted by
+
+% \begin{align*}
+%   \vec{a} \diamond \vec{b}
+% \end{align*}
+%  is given by a $N$ dimension vector $\vec{c}$ with element $(\vec{c})_i = (\vec{a})_i (\vec{b})_i$. 
+% \end{blockDefinition}
+
+\begin{blockDefinition}[Likelihood function under Hypothesis]
+Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$. Then $f_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
+\end{blockDefinition}
+
+\begin{blockDefinition}[Neyman-Pearson Test]
+Given a continous random vector $\vec{\mathfrak{x}}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that $\mathbf{x}$ has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$ when
+
+\begin{align*}
+    \Lambda (\mathbf{x}) &= \frac{f_{\vec{\mathfrak{x}} | \mathcal{H}_0} (\mathbf{x})}{f_{(\vec{\mathfrak{x}} | \mathcal{H}_1}(\mathbf{x})} < \eta 
+\end{align*}
+
+The decision threshold $\eta$ is chosen such that $P(\Lambda(\vec{\mathfrak{x}}) < \eta) = \alpha$.
+\end{blockDefinition}
+
+
+\end{document}

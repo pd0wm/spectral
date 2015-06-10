@@ -8,65 +8,63 @@ from twisted.internet import reactor
 import numpy as np
 
 
+def safe_dequeue(queue):
+    if not queue.empty():
+        options = queue.get_nowait()
+        return options
+
+    return None
+
+
+def safe_queue(queue, signal):
+    if queue.full():
+        queue.get()
+    queue.put_nowait(signal)
+
+
+def process_option_queue(queue, obj):
+    options = safe_dequeue(queue)
+    if options:
+        obj.parse_options(options)
+
+
+def send_to_websocket(queue, data, dtype):
+    container = WebsocketDataContainer(dtype, data)
+    container.enqueue(queue)
+
+
 def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt):
     while True:
         orig_signal = source.generate(block_size)
         sampled = sampler.sample(orig_signal)
+        safe_queue(signal_queue, sampled)
 
-        if signal_queue.full():
-            signal_queue.get()
-        signal_queue.put_nowait(sampled)
-        act_length = len(orig_signal)
         offset = int(block_size / upscale_factor)
-        if len(orig_signal) == block_size:
-            container = WebsocketDataContainer(ServerProtocolPlot.SRC_DATA, cg.fft(orig_signal[act_length - offset:act_length + offset]))
-            container.enqueue(websocket_src_queue)
+        data = cg.fft(cg.auto_correlation(orig_signal, maxlag=offset))
+        send_to_websocket(websocket_src_queue, data, ServerProtocolPlot.SRC_DATA)
 
-        options = None
-        while opt.poll():
-            options = opt.recv()
-        if options:
-            source.parse_options(options)
+        process_option_queue(opt, source)
 
 
-def run_reconstructor(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, opt):
+def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq, opt):
     while True:
         inp = signal_queue.get()
         if inp.any():
-            signal = cg.fft(reconstructor.reconstruct(inp))
+            rx = reconstructor.reconstruct(inp)
+            signal = cg.fft(rx)
 
-            container = WebsocketDataContainer(ServerProtocolPlot.REC_DATA, signal)
-            container.enqueue(websocket_rec_queue)
-
-
-def run_generator_profiler(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt):
-    import cProfile
-    import pstats
-    import StringIO
-    pr = cProfile.Profile()
-    pr.enable()
-    run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt)
-    pr.disable()
-    s = StringIO.StringIO()
-    sortby = 'cumulative'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    ps.print_stats()
-    print s.getvalue()
-    pr.dump_stats("Reconstruction_profiling.dmp")
+            safe_queue(det_queue, rx)
+            send_to_websocket(websocket_rec_queue, signal, ServerProtocolPlot.REC_DATA)
 
 
 def run_detector(detector, detection_queue, websocket_det_queue, opt):
     while True:
         inp = detection_queue.get()
         if inp.any():
-            detect = detector.detect(inp)
-            if websocket_det_queue.full():
-                websocket_det_queue.get()
-            websocket_det_queue.put_nowait(detect)
-        while opt.poll():
-            options = opt.recv()
-        if options:
-            detect.parse_options(options)
+            detect = [int(x) for x in detector.detect(inp)]
+            send_to_websocket(websocket_det_queue, detect, ServerProtocolPlot.DET_DATA)
+
+        process_option_queue(opt, detector)
 
 
 def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt):

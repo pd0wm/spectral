@@ -23,9 +23,9 @@ var FFTplot = function(container_id, data_type){
 
 FFTplot.prototype.update = function() {
     // Parse the message content.
-    var sample_freq = Connection[this.data_type].sample_freq;
-    var center_freq = Connection[this.data_type].center_freq;
-    var fft_data = Connection[this.data_type].data;
+    var sample_freq = Visualisation[this.data_type].sample_freq;
+    var center_freq = Visualisation[this.data_type].center_freq;
+    var fft_data = Visualisation[this.data_type].data;
 
     // Update the chart
     this.averaged_fft = this.getAverage(fft_data);
@@ -82,42 +82,42 @@ FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
         });
     }
 
-    var ymax = math.max(fft_data);
-    if (this.chart.yAxis[0].max < ymax) {
-        this.chart.yAxis[0].update({max: ymax});
+    if (this.chart.yAxis[0].max != Visualisation.ymax) {
+        this.chart.yAxis[0].update({max: Visualisation.ymax});
     }
 
-    var ymin = math.min(fft_data);
-    if (this.chart.yAxis[0].min > ymin) {
-        this.chart.yAxis[0].update({min: ymin});
+    if (this.chart.yAxis[0].min != Visualisation.ymin) {
+        this.chart.yAxis[0].update({min: Visualisation.ymin});
     }
 };
 
 FFTplot.prototype.getPlotSettings = function() {
     return {
         chart: {
-            zoomType: 'x',
             animation: false,
+            height: 400,
             renderTo: this.container_id,
-            height: 400
+            zoomType: 'x'
         },
         title: {
             text: null
         },
         xAxis: {
-            type: 'linear',
-            title: { text: 'Frequency [Hz]' }
+            title: { text: 'Frequency [Hz]' },
+            type: 'linear'
         },
         yAxis: {
             max: 0,
             min: 0,
-            title: { text: '' }
+            title: { text: '[dB]' }
         },
         legend: {
             enabled: false
         },
         plotOptions: {
             area: {
+                animation: false,
+                enableMouseTracking: false,
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
                     stops: [
@@ -125,19 +125,18 @@ FFTplot.prototype.getPlotSettings = function() {
                         [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                     ]
                 },
+                lineWidth: 1,
                 marker: {
                     enabled: false
                 },
-                lineWidth: 1,
-                threshold: null,
-                enableMouseTracking: false
+                threshold: null
             }
         },
         series: [{
-            type: 'area',
-            name: 'FFT',
             animation: false,
-            turboThreshold: 1200
+            name: 'FFT',
+            turboThreshold: 10000,
+            type: 'area'
         }],
         tooltip: {
             enabled: false

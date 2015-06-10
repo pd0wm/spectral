@@ -1,0 +1,102 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+\usepackage{eurosym}
+
+%% Scroll door naar 'Vragen'
+\usepackage[margin=2cm]{geometry}
+\usepackage{minibox}
+\pagenumbering{gobble}
+\newcounter{counter}
+\newcommand{\docount}{\stepcounter{counter} \thecounter}
+\renewcommand{\section}[1]{
+    \begin{flushright}
+        \fontsize{0.5cm}{1em}
+        \textsc{#1}
+    \end{flushright}
+}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X} % Left-justified text in tabularx environment
+\newcommand{\fillbox}[1]{\hbox to #1{\vbox to 0.8cm{ }}}
+
+% Opinion environment
+\newcommand{\opinionoptionwidth}{0.8cm}
+\newenvironment{opinion}{
+    \tabularx{\textwidth}{lYccccc}
+    &&
+        \makebox[\opinionoptionwidth]{\minibox[c]{zeer\\oneens}} &
+        \makebox[\opinionoptionwidth]{oneens} &
+        \makebox[\opinionoptionwidth]{neutraal} &
+        \makebox[\opinionoptionwidth]{eens} &
+        \makebox[\opinionoptionwidth]{\minibox[c]{zeer\\eens}} \\
+}{
+    \endtabularx
+}
+\newcommand{\opinionoptions}{& $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\}
+\newcommand{\opinionquestion}[1]{
+    \docount & #1 \opinionoptions
+}
+
+% Fill gap environment
+\renewenvironment{fill}{
+    \tabularx{\textwidth}{lY}
+}{
+    \endtabularx
+}
+\newcommand{\fillgap}{\underline{\fillbox{2cm}}~}
+\newcommand{\fillgaplarge}{\underline{\fillbox{6cm}}~}
+\newcommand{\fillgapline}{\underline{\fillbox{\linewidth}} ~ }
+\newcommand{\fillquestion}[1]{
+    \docount & #1 \\
+}
+
+\begin{document}
+% Force document into one page
+\begin{minipage}[t][0pt]{\linewidth}
+% Title
+\makebox[\textwidth]{
+    \centering
+    \fontsize{1cm}{1em}
+    \textsc{Questionnaire}
+} \\
+
+Dit document bevat aan aantal vragen die u tijdens de bijeenkomst kunt beantwoorden. De informatie zal worden gebruikt om de interesse en staat van ons product te onderzoeken. Uw antwoorden zullen nooit persoonlijk aan u gerelateerd worden, tenzij u hieronder toestaat dat wij u mogen benaderen voor nadere toelichting op uw antwoorden. Het invullen van deze enquête is vrijwillig.
+
+\begin{tabularx}{\textwidth}{lY}
+    $\square$ & Mijn antwoorden mogen worden verwerkt tot informatie die Spectral tijdens hun eindpresentatie mag presenteren. \\
+    $\square$ & Ik mag worden benaderd voor nadere toelichting op mijn antwoorden. Mijn naam is \\
+    & \underline{\fillbox{.3\linewidth}} en mijn e-mailadres is \underline{\fillbox{.49\linewidth}}. \\
+\end{tabularx}
+
+%% Vragen
+
+\section{algemeen}
+\begin{opinion}
+    \opinionquestion{Rechtstreekse aankoop van producten uit een startup is geen probleem.}
+    \opinionquestion{Aankoop van producten is alleen mogelijk via een samenwerking met een gerenommeerde partij.}
+    \opinionquestion{De kans op succes is groter door samen te werken met een gerenommeerde partij.}
+    \opinionquestion{Ik zie mogelijkheden om een samenwerkingsverband met de TU Delft te beginnen.}
+    \opinionquestion{De presentatie van Spectral heeft duidelijk gemaakt wat ik wilde weten.}
+    \opinionquestion{Spectral heeft professioneel gehandeld.}
+\end{opinion}
+\begin{fill}
+    \fillquestion{Ik zie andere mogelijkheden om de voorgestelde technologie toe te passen, namelijk \fillgapline \fillgapline}
+\end{fill}
+\section{slimme stoorzender}
+\begin{opinion}
+    \opinionquestion{De techniek \textit{achter} de slimme stoorzender maakt kans binnen de markt van Defensie.}
+    \opinionquestion{De slimme stoorzender maakt kans binnen de markt van Defensie.}
+    \opinionquestion{De slimme stoorzender biedt mogelijkheden die er nog niet zijn.}
+    \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen in het storen van de vijandige communicatie terwijl de eigen communicatie behouden blijft.}
+    \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen in het onschadelijk maken van IED's.}
+    \opinionquestion{Ik zie kansen om de slimme stoorzender toe te passen in combinatie met drones.}
+\end{opinion}
+\begin{fill}
+    \fillquestion{De slimme stoorzender is interessant als deze ligt in de prijsklasse \euro \fillgap - \euro \fillgap.}
+    \fillquestion{Een vergelijkbaar product als de slimme stoorzender is \fillgaplarge .}
+    \fillquestion{Ik heb een opmerking over de slimme stoorzender, namelijk \fillgapline \fillgapline}
+\end{fill}
+
+\end{minipage}
+\end{document}

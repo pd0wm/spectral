@@ -47,8 +47,19 @@ class Reconstructor(object):
         return R_pinv
 
     def check_valid_pinv(self, Mat, Pinv):
+
         if Mat.shape != Pinv.shape[::-1]:
             return False
         Mat_accent = Mat.dot(Pinv.dot(Mat))
         check = np.allclose(Mat_accent.toarray(), Mat.toarray(), atol=1e-5)
         return check
+
+    def get_non_zero_column(self, matrix):
+        return set(np.nonzero(matrix)[1])  # Vieze oneliners ftw
+
+    def get_filename(self):
+        filepath = cg.CACHE_DIR
+        filename = self.__class__.__name__
+        filename += str(self.L) + "_"
+        filename += "_".join(str(rule) for rule in self.get_non_zero_column(self.C))
+        return filepath + filename

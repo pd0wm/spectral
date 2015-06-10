@@ -10,26 +10,28 @@ from multiprocessing import Process, Queue, Pipe
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
-parser.add_argument('-N', metavar='N', type=int, default=14)
 parser.add_argument('-L', metavar='L', type=int, default=40)
-parser.add_argument('-source', metavar='source', type=str, default='dump')
+parser.add_argument('-source', metavar='source', type=str, default='complex')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
 parser.add_argument('-dump', metavar='file', type=str, default='dumps/twotone.dmp')
 args = parser.parse_args()
 
 ip = args.ip
 L = args.L
-N = args.N
 sample_freq = args.f_samp
 dump_file_path = args.dump
 source_type = args.source.lower()
 source_snr = args.snr
 
-frequencies = [2e3, 4e3, 5e6, 8e6]
+frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-center_freq = 2.41e9
-upscale_factor = 100  # Warning: greatly diminishes perfomance
-block_size = L * N * upscale_factor
+center_freq = 2.4e9
+a = 5
+b = 3
+N = a * b
+upscale_factor = 50  # Warning: greatly diminishes performance
+block_size = N * upscale_factor * L
+
 threshold = 2000
 num_bins = 20
 window_length = 50
@@ -42,8 +44,13 @@ elif source_type == "dump":
 elif source_type == "complex":
     source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
 
+
+# sampler = cg.sampling.Coprime(a, b)
 sampler = cg.sampling.MultiCoset(N)
-reconstructor = cg.reconstruction.Wessel(N, L)
+
+
+reconstructor = cg.reconstruction.Wessel(L, sampler.get_C())
+# reconstructor = cg.reconstruction.CrossCorrelation(N, L, C=sampler.get_C())
 detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
 
 # Init processes
@@ -53,23 +60,23 @@ websocket_src_queue = Queue(10)
 websocket_rec_queue = Queue(10)
 websocket_det_queue = Queue(10)
 
-parent_opt_src, child_opt_src = Pipe()
-parent_opt_rec, child_opt_rec = Pipe()
-parent_opt_web, child_opt_web = Pipe()
-parent_opt_det, child_opt_det = Pipe()
+opt_src = Queue(10)
+opt_rec = Queue(10)
+opt_web = Queue(10)
+opt_det = Queue(10)
 
 if __name__ == '__main__':
 
-    p1 = Process(target=run_generator_profiler,
-                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, child_opt_src))
+    p1 = Process(target=run_generator,
+                 args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor, opt_src))
     p2 = Process(target=run_reconstructor,
-                 args=(signal_queue, websocket_rec_queue, reconstructor, sample_freq, center_freq, child_opt_rec))
+                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq, center_freq, opt_rec))
     p3 = Process(target=run_websocket_server,
-                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, child_opt_web))
+                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt_web))
     p4 = Process(target=run_settings_server,
-                 args=(parent_opt_web, parent_opt_src, parent_opt_rec, parent_opt_det))
+                 args=(opt_web, opt_src, opt_rec, opt_det))
     p5 = Process(target=run_detector,
-                 args=(detector, detection_queue, websocket_det_queue, child_opt_det))
+                 args=(detector, detection_queue, websocket_det_queue, opt_det))
     processes = [p1, p2, p3, p4, p5]
 
     try:

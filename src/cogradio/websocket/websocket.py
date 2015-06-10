@@ -1,6 +1,5 @@
 import json
 import cogradio as cg
-# import numpy as np
 from multiprocessing import Queue
 from autobahn.twisted.websocket import WebSocketServerFactory, \
                                        WebSocketServerProtocol
@@ -10,13 +9,7 @@ class ServerProtocolPlot(WebSocketServerProtocol):
 
     """WebSocket protocol for pushing plot data"""
 
-    src_buffer = None
-    rec_buffer = None
-    det_buffer = None
-
-    src_queue = None
-    rec_queue = None
-    det_queue = None
+    queue = None
 
     SRC_DATA = 'src_data'
     REC_DATA = 'rec_data'
@@ -26,6 +19,11 @@ class ServerProtocolPlot(WebSocketServerProtocol):
     center_freq = 2.41e9
 
     def __init__(self):
+        self.buffer = {
+            self.SRC_DATA: None,
+            self.REC_DATA: None,
+            self.DET_DATA: None
+        }
         WebSocketServerProtocol.__init__(self)
 
     def pushData(self, request):
@@ -49,37 +47,22 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         print("WebSocket connection closed: {}".format(reason))
 
     def update_options(self):
-        options = None
-        while self.opt.poll():
-            options = self.opt.recv()
-
-        if options:
+        if not self.opt.empty():
+            options = self.opt.get()
             for key, value in options.items():
                 if key == 'center_freq':
-                    self.center_freq = value * 1e6
+                    self.center_freq = value * 1e9
                 elif hasattr(self, key):
                     setattr(self, key, value)
 
     def dequeue(self, request):
-        if request == self.SRC_DATA:
-            if not self.src_queue.empty():
-                self.src_buffer = self.src_queue.get()
+        if request not in self.buffer:
+            raise ValueError("Invalid request: '{}'".format(request))
 
-            return self.src_buffer
+        if not self.queue[request].empty():
+            self.buffer[request] = self.queue[request].get()
 
-        if request == self.REC_DATA:
-            if not self.rec_queue.empty():
-                self.rec_buffer = self.rec_queue.get()
-
-            return self.rec_buffer
-
-        if request == self.DET_DATA:
-            if not self.det_queue.empty():
-                self.det_buffer = self.det_queue.get()
-
-            return self.det_buffer
-
-        raise ValueError("Invalid request: '{}'".format(request))
+        return self.buffer[request]
 
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
@@ -93,8 +76,14 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
 
     def buildProtocol(self, addr):
         protocol = self.protocol()
-        for key, value in self.protocol_params.items():
-            setattr(protocol, key, value)
+        protocol.queue = {
+            ServerProtocolPlot.SRC_DATA: self.protocol_params['src_queue'],
+            ServerProtocolPlot.REC_DATA: self.protocol_params['rec_queue'],
+            ServerProtocolPlot.DET_DATA: self.protocol_params['det_queue']
+        }
+        protocol.center_freq = self.protocol_params['center_freq']
+        protocol.sample_freq = self.protocol_params['sample_freq']
+        protocol.opt = self.protocol_params['opt']
         protocol.factory = self
         return protocol
 
@@ -107,7 +96,11 @@ class PlotDataContainer:
         self.sample_freq = sample_freq
         self.center_freq = center_freq
         self.dtype = dtype
-        self.data = data.tolist()
+
+        if not isinstance(data, list):
+            self.data = data.tolist()
+        else:
+            self.data = data
 
     def encode(self):
         obj = dict(self.__dict__)

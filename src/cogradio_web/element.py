@@ -30,6 +30,7 @@ class TextElement(Element):
 
     @property
     def update_eval(self):
+        self.has_changed = False
         code = """$('#{0}').html("{1}")""".format(self.uuid, self.value)
         return code
 
@@ -57,22 +58,17 @@ class SliderElement(Element):
 
     @property
     def update_eval(self):
+        self.has_changed = False
         code = """$('#{0}').slider('setValue', {1})""".format(
             self.uuid, self.value)
         return code
 
     @property
     def js_init(self):
-        code = """$('#{0}').slider().on('change', function(ev){{
-                      $.ajax({{
-                        type: "POST",
-                        url:'/update',
-                        data: JSON.stringify({{id: "{0}",
-                                value: ev.value.newValue}}),
-                        contentType: 'application/json'
-                        }});
-                      //worker();
-                  }});""".format(self.uuid)
+        code = """$('#{0}').slider().on('change', function(ev) {{
+            Control.update("{0}", ev.value.newValue);
+        }});""".format(self.uuid)
+
         return code
 
     @property
@@ -97,21 +93,16 @@ class CheckBoxElement(Element):
 
     @property
     def update_eval(self):
+        self.has_changed = False
         code = """$('#{0}').prop('checked', {1});""".format(
             self.uuid, str(self.value).lower())
         return code
 
     @property
     def js_init(self):
-        code = """$('#{0}').on('change', function(ev){{
-                    $.ajax({{
-                        type: "POST",
-                        url:'/update',
-                        data: JSON.stringify({{id: "{0}",
-                                value: this.checked}}),
-                        contentType: 'application/json'
-                        }});
-                  }});""".format(self.uuid)
+        code = """$('#{0}').on('change', function(ev) {{
+            Control.update("{0}", this.checked);
+        }});""".format(self.uuid)
         return code
 
     @property
@@ -131,16 +122,15 @@ class CheckBoxElement(Element):
 
 class VisualisationElement(Element):
 
-    def __init__(self, key, title=None, value=None, width=3):
+    def __init__(self, key, title=None, value=None, default_type='fft', default_datatype='src_data', width=3):
         super(VisualisationElement, self).__init__(key, title)
         self.width = width
         self.value = value
+        self.default_type = default_type
+        self.default_datatype = default_datatype
 
     @property
     def update_eval(self):
-        # code = """$('#{0}').prop('checked', {1});""".format(
-        #     self.uuid, str(self.value).lower())
-        # return code
         pass
 
     @property
@@ -159,21 +149,31 @@ class VisualisationElement(Element):
     def html(self):
         return """
         <div class="visualisation" id="{0}">
-            <h3 style="float:left;"></h3>
-            <table class="visualisation-control" style="float:right;">
-                <tr class="visualisation-type">
-                  <td><label><input type="radio" name="{0}-type" value="fft"/>FFT Plot</label></td>
-                  <td><label><input type="radio" name="{0}-type" value="spectrogram" checked />Spectrogram</label></td>
-                  <td><label><input type="radio" name="{0}-type" value="none"/>None</label></td>
-                </tr>
-                <tr class="visualisation-data">
-                  <td><label><input type="radio" name="{0}-data" value="src_data"/>Original</label></td>
-                  <td><label><input type="radio" name="{0}-data" value="rec_data" checked />Reconstructed</label></td>
-                  <td><label><input type="radio" name="{0}-data" value="det_data" />Detection</label></td>
-                </tr>
-            </table>
+            <div class="visualisation-header" style="overflow:auto;">
+                <h3 style="float:left;"></h3>
+                <table class="visualisation-control" style="float:right;">
+                    <tr class="visualisation-type">
+                      <td><label><input type="radio" name="{0}-type" value="fft" {1}/>FFT Plot</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="spectrogram" {2}/>Spectrogram</label></td>
+                      <td><label><input type="radio" name="{0}-type" value="none" {3}/>None</label></td>
+                    </tr>
+                    <tr class="visualisation-data">
+                      <td><label><input type="radio" name="{0}-data" value="src_data" {4}/>Original</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="rec_data" {5}/>Reconstructed</label></td>
+                      <td><label><input type="radio" name="{0}-data" value="det_data" {6}/>Detection</label></td>
+                    </tr>
+                </table>
+            </div>
             <div class="visualisation-container" id="{0}-container" ></div>
-        </div>""".format(self.uuid)
+        </div>""".format(
+            self.uuid,
+            'checked' if self.default_type == 'fft' else '',
+            'checked' if self.default_type == 'spectrogram' else '',
+            'checked' if self.default_type == 'none' else '',
+            'checked' if self.default_datatype == 'src_data' else '',
+            'checked' if self.default_datatype == 'rec_data' else '',
+            'checked' if self.default_datatype == 'det_data' else ''
+            )
 
 if __name__ == '__main__':
     print "Hello, World!"
