@@ -94,8 +94,8 @@
             return;
         }
 
-        var min = 10 * Math.log10(Math.min(math.min(Visualisation.src_data.data), math.min(Visualisation.rec_data.data)));
-        var max = 10 * Math.log10(Math.max(math.max(Visualisation.src_data.data), math.max(Visualisation.rec_data.data)));
+        var min = 10 * Math.log(Math.min(math.min(Visualisation.src_data.data), math.min(Visualisation.rec_data.data))) / Math.log(10);
+        var max = 10 * Math.log(Math.max(math.max(Visualisation.src_data.data), math.max(Visualisation.rec_data.data))) / Math.log(10);
 
         if (min < Visualisation.ymin) {
             Visualisation.ymin = min;
