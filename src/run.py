@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import cogradio as cg
+import cogradio_vis as vis
 import argparse
 import time
 from processes import *
@@ -57,11 +58,13 @@ reconstructor = cg.reconstruction.Wessel(L, sampler.get_C())
 detector = cg.detection.noise_power()
 
 # Init processes
-signal_queue = Queue(10)
-detection_queue = Queue(10)
-websocket_src_queue = Queue(10)
-websocket_rec_queue = Queue(10)
-websocket_det_queue = Queue(10)
+signal_queue = vis.multiprocessing.SafeQueue()
+detection_queue = vis.multiprocessing.SafeQueue()
+
+websocket_src_queue = vis.multiprocessing.SafeQueue()
+websocket_rec_queue = vis.multiprocessing.SafeQueue()
+websocket_det_queue = vis.multiprocessing.SafeQueue()
+
 
 if __name__ == '__main__':
 

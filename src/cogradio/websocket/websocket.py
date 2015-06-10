@@ -47,6 +47,9 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         for key, value in options.items():
             if key == 'center_freq':
                 self.center_freq = value * 1e9
+            elif hasattr(self, key):
+                setattr(self, key, value)
+
 
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
@@ -78,8 +81,9 @@ class WebSocketServerPlotFactory(WebSocketServerFactory):
         if request not in self.buffers:
             raise ValueError("Invalid request: '{}'".format(request))
 
-        if not self.queues[request].empty():
-            self.buffers[request] = self.queues[request].get()
+        item = self.queues[request].dequeue()
+        if item is not None:
+            self.buffers[request] = item
 
         return self.buffers[request]
 
@@ -117,7 +121,4 @@ class WebsocketDataContainer:
         self.data = data
 
     def enqueue(self, queue):
-        if queue.full():
-            queue.get()
-
-        queue.put_nowait(self)
+        queue.queue(self)

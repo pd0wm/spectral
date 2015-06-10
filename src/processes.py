@@ -1,25 +1,11 @@
 import cogradio as cg
+import cogradio_vis as vis
 import sys
 import Pyro4
 from cogradio.websocket import ServerProtocolPlot, WebsocketDataContainer
-from multiprocessing import Queue, Pipe
 from twisted.python import log
 from twisted.internet import reactor
 import numpy as np
-
-
-def safe_dequeue(queue):
-    if not queue.empty():
-        options = queue.get_nowait()
-        return options
-
-    return None
-
-
-def safe_queue(queue, signal):
-    if queue.full():
-        queue.get()
-    queue.put_nowait(signal)
 
 
 def send_to_websocket(queue, data, dtype):
@@ -34,7 +20,7 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
 
         orig_signal = source.generate(block_size)
         sampled = sampler.sample(orig_signal)
-        safe_queue(signal_queue, sampled)
+        signal_queue.queue(sampled)
 
         offset = int(block_size / upscale_factor)
         data = cg.fft(cg.auto_correlation(orig_signal, maxlag=offset))
@@ -43,12 +29,11 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
 
 def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq):
     while True:
-        inp = signal_queue.get()
-        if inp.any():
+        inp = signal_queue.dequeue()
+        if inp is not None:
             rx = reconstructor.reconstruct(inp)
             signal = cg.fft(rx)
-
-            safe_queue(det_queue, rx)
+            det_queue.queue(rx)
             send_to_websocket(websocket_rec_queue, signal, ServerProtocolPlot.REC_DATA)
 
 
@@ -57,8 +42,8 @@ def run_detector(detector, detection_queue, websocket_det_queue):
     while True:
         detector.parse_options(settings.read())
 
-        inp = detection_queue.get()
-        if inp.any():
+        inp = detection_queue.dequeue()
+        if inp is not None:
             detect = [int(x) for x in detector.detect(inp)]
             send_to_websocket(websocket_det_queue, detect, ServerProtocolPlot.DET_DATA)
 
@@ -73,6 +58,5 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
                                                       sample_freq=sample_freq,
                                                       )
     factory.protocol = cg.websocket.ServerProtocolPlot
-
     reactor.listenTCP(9000, factory)
     reactor.run()
