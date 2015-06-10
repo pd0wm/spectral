@@ -13,7 +13,7 @@ class UsrpN210(Source):
 
     """Implementation of UsrpN210 driver"""
 
-    def __init__(self, addr, samp_freq=25e6, center_freq=2.4e9, lo_offset=0e6, gain=10, sample_format='fc32'):
+    def __init__(self, addr, samp_freq=25e6, center_freq=2.4e9, lo_offset=12.5e6, gain=10, sample_format='fc32'):
         self.samp_freq = samp_freq
         self.center_freq = 0
         self.lo_offset = lo_offset

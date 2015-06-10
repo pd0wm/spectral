@@ -50,16 +50,14 @@ def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructo
 
 
 def run_detector(detector, detection_queue, websocket_det_queue):
-    detector.parse_options(settings.read())
-    jammer = cg.jamming.Jammer(sample_freq, center_freq)
     settings = Pyro4.Proxy("PYRONAME:cg.settings")
+    detector.parse_options(settings.read())
 
     while True:
 
         inp = detection_queue.dequeue()
         if inp is not None:
             detect = [int(x) for x in detector.detect(inp)]
-            jammer.jam(detect)
             send_to_websocket(websocket_det_queue, detect, ServerProtocolData.DET_DATA)
 
 
