@@ -15,8 +15,8 @@ Bower(app)
 
 gain_slider = SliderElement(key="antenna_gain", title="Antenna gain",
                             value=10, width=1, range=(0, 50))
-freq_slider = SliderElement(key="center_freq", title="Center Frequency",
-                            value=2.4, width=2, range=(2.38, 2.42), step=0.001)
+freq_slider = SliderElement(key="center_freq", title="Center Frequency (GHz)",
+                            value=0.466, width=2, range=(0.4, 1), step=0.001)
 bin_slider = SliderElement(key="num_bins", title="Number of Bins", value=150, width=1, range=(100, 200))
 win_len_slider = SliderElement(key="window_length", title="Detection windows", value=100, width=1, range=(0, 200))
 vis1 = VisualisationElement(key="vis1", title="Test 1", default_type="fft", default_datatype="src_data")

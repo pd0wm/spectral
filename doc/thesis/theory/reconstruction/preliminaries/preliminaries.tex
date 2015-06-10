@@ -23,11 +23,11 @@ We will need notation to denote two uncommon vector operations.
     Let $\vec{x} \in \mathbb{C}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{C}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
 \end{blockDefinition}
 
-Note that a subvector includes both boundary elements.
-
 \begin{blockDefinition}[Submatrix]
-    Let $\mat{A}$ be an $M \times N$ matrix. Then $\mat{A}[a,b]$ denotes the $M \times b-a+1$ matrix $\mat{B}$ such that $(\mat{B})_{i,j}=(\mat{A})_{i,j+a-1}$ for $i = 1,\ldots,b-a+1$ and $i = 1,\ldots,N$.
+    Let $\mat{A}$ be an $M \times N$ matrix. Then $\mat{A}[a,b]$ denotes the $M \times b-a+1$ matrix $\mat{B}$ such that $(\mat{B})_{i,j}=(\mat{A})_{i,j+a-1}$ for $i = 1,\ldots,N$ and $j = 1,\ldots,b-a+1$.
 \end{blockDefinition}
+
+Note that subvectors and submatrices include both boundary elements.
 
 \begin{blockDefinition}[Reverse of Vector]
     Let $\vec{x} \in \mathbb{C}^N$. Then the reverse of $\vec{x}$ denotes a vector $\vec{y} \in \mathbb{C}^N$ such that $(\vec{y})_i = (\vec{x})_{N-i+1}$ for $i = 1,\ldots,N$.

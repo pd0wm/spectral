@@ -9,7 +9,7 @@ from multiprocessing import Process, Queue, Pipe
 # Set up initial parameters
 parser = argparse.ArgumentParser(description='Cognitive radio compressive sensing process')
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
-parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
+parser.add_argument('-f_samp', metavar='f_samp', type=int, default=25e6)
 parser.add_argument('-L', metavar='L', type=int, default=40)
 parser.add_argument('-source', metavar='source', type=str, default='complex')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
@@ -25,7 +25,7 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-center_freq = 2.4e9
+center_freq = 466e6
 a = 5
 b = 3
 N = a * b
@@ -54,8 +54,8 @@ reconstructor = cg.reconstruction.Wessel(L, sampler.get_C())
 detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
 
 # Init processes
-signal_queue = Queue(10)
-detection_queue = Queue(10)
+signal_queue = Queue(2)
+detection_queue = Queue(2)
 websocket_src_queue = Queue(10)
 websocket_rec_queue = Queue(10)
 websocket_det_queue = Queue(10)
@@ -76,8 +76,10 @@ if __name__ == '__main__':
     p4 = Process(target=run_settings_server,
                  args=(opt_web, opt_src, opt_rec, opt_det))
     p5 = Process(target=run_detector,
-                 args=(detector, detection_queue, websocket_det_queue, opt_det))
-    processes = [p1, p2, p3, p4, p5]
+                 args=(detector, detection_queue, websocket_det_queue, sample_freq, center_freq, opt_det))
+    p6 = Process(target=run_jam_queue)
+
+    processes = [p1, p2, p3, p4, p5, p6]
 
     try:
         [p.start() for p in processes]

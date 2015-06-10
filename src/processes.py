@@ -8,6 +8,17 @@ from twisted.internet import reactor
 import numpy as np
 
 
+class JammerQueue(object):
+    def __init__(self):
+        self.jam = None
+
+    def read(self):
+        return self.jam
+
+    def send(self, update):
+        self.jam = update
+
+
 def safe_dequeue(queue):
     if not queue.empty():
         options = queue.get_nowait()
@@ -25,7 +36,7 @@ def safe_queue(queue, signal):
 def process_option_queue(queue, obj):
     options = safe_dequeue(queue)
     if options:
-        obj.parse_options(options)
+        [o.parse_options(options) for o in obj]
 
 
 def send_to_websocket(queue, data, dtype):
@@ -43,7 +54,7 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
         data = cg.fft(cg.auto_correlation(orig_signal, maxlag=offset))
         send_to_websocket(websocket_src_queue, data, ServerProtocolPlot.SRC_DATA)
 
-        process_option_queue(opt, source)
+        process_option_queue(opt, [source])
 
 
 def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq, opt):
@@ -57,14 +68,16 @@ def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructo
             send_to_websocket(websocket_rec_queue, signal, ServerProtocolPlot.REC_DATA)
 
 
-def run_detector(detector, detection_queue, websocket_det_queue, opt):
+def run_detector(detector, detection_queue, websocket_det_queue, sample_freq, center_freq, opt):
+    jammer = cg.jamming.Jammer(sample_freq, center_freq)
     while True:
         inp = detection_queue.get()
         if inp.any():
             detect = [int(x) for x in detector.detect(inp)]
+            jammer.jam(detect)
             send_to_websocket(websocket_det_queue, detect, ServerProtocolPlot.DET_DATA)
 
-        process_option_queue(opt, detector)
+        process_option_queue(opt, [detector, jammer])
 
 
 def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq, opt):
@@ -80,6 +93,15 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
 
     reactor.listenTCP(9000, factory)
     reactor.run()
+
+
+def run_jam_queue():
+    daemon = Pyro4.Daemon()
+    ns = Pyro4.locateNS()
+    jamq = JammerQueue()
+    uri = daemon.register(jamq)
+    ns.register("jamqueue", uri)
+    daemon.requestLoop()
 
 
 def run_settings_server(web_opt, src_opt, rec_opt, det_opt):
