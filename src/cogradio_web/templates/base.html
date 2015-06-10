@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>JAMM Dashboard</title>
+    <title>{{ title }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('bower.static', filename='bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"></link>
@@ -37,12 +37,19 @@
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
       	    <span class="sr-only">Toggle navigation</span>
       	  </button>
-      	  <a class="navbar-brand" href="#">Dashboard</a>
+      	  <a class="navbar-brand" href="/">Spectral</a>
       	</div>
       	<div id="navbar" class="navbar-collapse collapse">
+          {% set navigation_bar = [
+              ('/', 'index', 'Dashboard'),
+              ('/sweep', 'sweep', 'Sweep')
+          ] -%}
+          {% set active_page = active_page|default('index') -%}
       	  <ul class="nav navbar-nav">
-      	    <li class="active"><a href="#">Home</a></li>
-      	    <li><a href="#contact">Contact</a></li>
+            {% for href, id, caption in navigation_bar %}
+              <li{% if id == active_page %} class="active"{% endif
+              %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+            {% endfor %}
       	  </ul>
       	</div><!--/.nav-collapse -->
       </div>
@@ -66,6 +73,8 @@
     <script src="{{ url_for('static', filename='js/fftplot.js') }}"></script>
     <script src="{{ url_for('static', filename='js/detplot.js') }}"></script>
     <script src="{{ url_for('static', filename='js/spectrogram.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sweep.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/elements.js') }}"></script>
 
     <script type="text/javascript">
       {{ js_init|safe }}

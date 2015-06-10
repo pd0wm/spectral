@@ -1,3 +1,5 @@
+%!TEX program=xelatex
+
 \documentclass[12pt, a4paper]{article}
 
 \usepackage{booktabs}
@@ -19,15 +21,15 @@
 % Fancy quotes
 \newfontfamily\quotefont[Ligatures=TeX]{Palatino Linotype} % selects Libertine as the quote font
 
-\newcommand*\quotesize{60} % if quote size changes, need a way to make shifts relative
+% \newcommand*\quotesize{60} % if quote size changes, need a way to make shifts relative
 % Make commands for the quotes
-\newcommand*{\openquote}
-   {\tikz[remember picture,overlay,xshift=-4ex,yshift=-2.5ex]
-   \node (OQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont``};\kern0pt}
+% \newcommand*{\openquote}
+%    {\tikz[remember picture,overlay,xshift=-4ex,yshift=-2.5ex]
+%    \node (OQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont``};\kern0pt}
 
-\newcommand*{\closequote}[1]
-  {\tikz[remember picture,overlay,xshift=4ex,yshift={#1}]
-   \node (CQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont''};}
+% \newcommand*{\closequote}[1]
+%   {\tikz[remember picture,overlay,xshift=4ex,yshift={#1}]
+%    \node (CQ) {\quotefont\fontsize{\quotesize}{\quotesize}\selectfont''};}
 
 % select a colour for the shading
 \colorlet{shadecolor}{white}
@@ -90,7 +92,7 @@
 % Setup fonts
 \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
 \setmainfont[Ligatures={Common,TeX}]{Palatino Linotype}
-\newfontfamily\hdrfont{Bookman Old Style}
+\newfontfamily\hdrfont{Palatino Linotype}
 
 % Setup hyperlinks
 \hypersetup{

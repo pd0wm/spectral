@@ -24,8 +24,8 @@ class Wessel(Reconstructor):
         self.R = self.constructR()
         # Force full column rank with slicing
 
-        print "Shape", self.R.shape
-        print "Rank", np.linalg.matrix_rank(self.R)
+        # print "Shape", self.R.shape
+        # print "Rank", np.linalg.matrix_rank(self.R)
         self.R_pinv = self.calc_pseudoinverse(self.R)
 
     # Given M decimated channels, try to estimate the PSD

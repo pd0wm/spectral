@@ -10,26 +10,20 @@ class ServerProtocolPlot(WebSocketServerProtocol):
 
     """WebSocket protocol for pushing plot data"""
 
-    queue = None
-
     SRC_DATA = 'src_data'
     REC_DATA = 'rec_data'
     DET_DATA = 'det_data'
 
     sample_freq = 10e6
-    center_freq = 2.41e9
+    center_freq = 2.4e9
 
     def __init__(self):
         self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
-        self.buffer = {
-            self.SRC_DATA: None,
-            self.REC_DATA: None,
-            self.DET_DATA: None
-        }
+
         WebSocketServerProtocol.__init__(self)
 
     def pushData(self, request):
-        container = self.dequeue(request)
+        container = self.factory.dequeue(request)
         self.update_options()
 
         if container:
@@ -53,39 +47,41 @@ class ServerProtocolPlot(WebSocketServerProtocol):
         for key, value in options.items():
             if key == 'center_freq':
                 self.center_freq = value * 1e9
-            elif hasattr(self, key):
-                setattr(self, key, value)
-
-    def dequeue(self, request):
-        if request not in self.buffer:
-            raise ValueError("Invalid request: '{}'".format(request))
-
-        if not self.queue[request].empty():
-            self.buffer[request] = self.queue[request].get()
-
-        return self.buffer[request]
 
 
 class WebSocketServerPlotFactory(WebSocketServerFactory):
 
     """Factory for creating ServerProtocolPlot instances"""
 
-    def __init__(self, **kwargs):
-        url = kwargs.pop('url')
-        self.protocol_params = kwargs
+    def __init__(self, url, src_queue, rec_queue, det_queue, sample_freq):
+        self.sample_freq = sample_freq
+        self.queues = {
+            ServerProtocolPlot.SRC_DATA: src_queue,
+            ServerProtocolPlot.REC_DATA: rec_queue,
+            ServerProtocolPlot.DET_DATA: det_queue
+        }
+        self.buffers = {
+            ServerProtocolPlot.SRC_DATA: None,
+            ServerProtocolPlot.REC_DATA: None,
+            ServerProtocolPlot.DET_DATA: None
+        }
+
         WebSocketServerFactory.__init__(self, url)
 
     def buildProtocol(self, addr):
         protocol = self.protocol()
-        protocol.queue = {
-            ServerProtocolPlot.SRC_DATA: self.protocol_params['src_queue'],
-            ServerProtocolPlot.REC_DATA: self.protocol_params['rec_queue'],
-            ServerProtocolPlot.DET_DATA: self.protocol_params['det_queue']
-        }
-        protocol.center_freq = self.protocol_params['center_freq']
-        protocol.sample_freq = self.protocol_params['sample_freq']
+        protocol.sample_freq = self.sample_freq
         protocol.factory = self
         return protocol
+
+    def dequeue(self, request):
+        if request not in self.buffers:
+            raise ValueError("Invalid request: '{}'".format(request))
+
+        if not self.queues[request].empty():
+            self.buffers[request] = self.queues[request].get()
+
+        return self.buffers[request]
 
 
 class PlotDataContainer:

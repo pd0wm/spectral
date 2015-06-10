@@ -1,4 +1,4 @@
 from .content import *
-from .element import *
+from .elements import *
 from .websocket import *
-from .flaskr import app, cnt
+from .flaskr import app

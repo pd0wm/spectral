@@ -25,20 +25,23 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-center_freq = 2.4e9
 a = 5
 b = 3
 N = a * b
 upscale_factor = 50  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
-threshold = 2000
-num_bins = 20
-window_length = 50
-Pfa = 0.1  # Doet niks sur le moment
+settings = Pyro4.Proxy("PYRONAME:cg.settings")
+settings.update({
+    'Pfa': 0.1,
+    'center_freq': 2.4,  # GHz
+    'num_bins': 150,
+    'window_length': 50,
+    'antenna_gain': 10
+})
 
 if source_type == "usrp":
-    source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq, center_freq=center_freq)
+    source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq)
 elif source_type == "dump":
     source = cg.source.File(dump_file_path)
 elif source_type == "complex":
@@ -51,7 +54,7 @@ sampler = cg.sampling.MultiCoset(N)
 
 reconstructor = cg.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = cg.reconstruction.CrossCorrelation(N, L, C=sampler.get_C())
-detector = cg.detection.noise_power(threshold, Pfa, window_length, num_bins)
+detector = cg.detection.noise_power()
 
 # Init processes
 signal_queue = Queue(10)
@@ -65,9 +68,9 @@ if __name__ == '__main__':
     p1 = Process(target=run_generator,
                  args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor))
     p2 = Process(target=run_reconstructor,
-                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq, center_freq))
+                 args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq))
     p3 = Process(target=run_websocket_server,
-                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq))
+                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq))
     p4 = Process(target=run_detector,
                  args=(detector, detection_queue, websocket_det_queue))
     processes = [p1, p2, p3, p4]

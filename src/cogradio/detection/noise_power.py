@@ -8,11 +8,10 @@ class noise_power(Detector):
 
     "Estimated Noise Power Energy Detector"
 
-    def __init__(self, threshold, Pfa, window_length, num_bins):
+    def __init__(self, Pfa=0.1, window_length=50, num_bins=150):
         self.Pfa = Pfa
         self.window_length = window_length
         self.num_bins = num_bins
-        self.threshold = threshold
 
     def detect(self, rx):
         psd = abs(cg.fft(rx))
@@ -37,12 +36,12 @@ class noise_power(Detector):
 
     def parse_options(self, options):
         for key, value in options.items():
-            if key == "threshold":
-                self.threshold = options["threshold"]
-            elif key == "num_bins":
+            if key == "num_bins":
                 self.num_bins = options["num_bins"]
             elif key == "window_length":
                 self.window_length = options["window_length"]
+            elif key == "Pfa":
+                self.Pfa = options["Pfa"]
 
     def calc_noise_variance(self, psd):
         noise_estimate = np.zeros(len(psd))

@@ -30,6 +30,8 @@ def send_to_websocket(queue, data, dtype):
 def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor):
     settings = Pyro4.Proxy("PYRONAME:cg.settings")
     while True:
+        source.parse_options(settings.read())
+
         orig_signal = source.generate(block_size)
         sampled = sampler.sample(orig_signal)
         safe_queue(signal_queue, sampled)
@@ -38,10 +40,8 @@ def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_fre
         data = cg.fft(cg.auto_correlation(orig_signal, maxlag=offset))
         send_to_websocket(websocket_src_queue, data, ServerProtocolPlot.SRC_DATA)
 
-        source.parse_options(settings.read())
 
-
-def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq, center_freq):
+def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructor, sample_freq):
     while True:
         inp = signal_queue.get()
         if inp.any():
@@ -55,14 +55,15 @@ def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructo
 def run_detector(detector, detection_queue, websocket_det_queue):
     settings = Pyro4.Proxy("PYRONAME:cg.settings")
     while True:
+        detector.parse_options(settings.read())
+
         inp = detection_queue.get()
         if inp.any():
             detect = [int(x) for x in detector.detect(inp)]
             send_to_websocket(websocket_det_queue, detect, ServerProtocolPlot.DET_DATA)
 
-        detector.parse_options(settings.read())
 
-def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq, center_freq):
+def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq):
     settings = Pyro4.Proxy("PYRONAME:cg.settings")
     log.startLogging(sys.stdout)
     factory = cg.websocket.WebSocketServerPlotFactory(url="ws://localhost:9000",
@@ -70,7 +71,6 @@ def run_websocket_server(websocket_src_queue, websocket_rec_queue, websocket_det
                                                       rec_queue=websocket_rec_queue,
                                                       det_queue=websocket_det_queue,
                                                       sample_freq=sample_freq,
-                                                      center_freq=center_freq,
                                                       )
     factory.protocol = cg.websocket.ServerProtocolPlot
 

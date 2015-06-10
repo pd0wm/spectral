@@ -4,15 +4,42 @@
 
  var Control = function() {
     var _socket = null;
-    websocket_init();
+    var _elements_by_id = {};
+    var _elements_by_key = {};
+    websocketInit();
 
-    function update_controls(data) {
-        for (var id in data){
-            eval(data[id]);
+    function processUpdate(data) {
+        if (data.settings === true) {
+            delete data.settings;
+            for (var key in data) {
+                if (key in _elements_by_key) {
+                    updateElementByKey(key, data[key]);
+                }
+                else {
+                    console.log("Skipping initialisation of setting '" + key + "'");
+                }
+            }
+        }
+        else if (data.id) {
+            updateElementById(data.id, data.value);
+        }
+        else if (data.key) {
+            updateElementByKey(data.id, data.value);
+        }
+        else {
+            console.error("Could not index element by ID or key");
         }
     };
 
-    function websocket_init() {
+    function updateElementById(id, value) {
+        _elements_by_id[id].update(value);
+    }
+
+    function updateElementByKey(key, value) {
+        _elements_by_key[key].update(value);
+    }
+
+    function websocketInit() {
         if (_socket === null) {
             _socket = new WebSocket("ws://" + window.location.hostname + ":1337");
 
@@ -21,7 +48,7 @@
             });
             _socket.addEventListener("message", function(event) {
                 var data = JSON.parse(event.data);
-                update_controls(data);
+                processUpdate(data);
             });
             _socket.addEventListener("close", function() {
                 console.log("Connection closed");
@@ -32,7 +59,7 @@
         }
     };
 
-    function websocket_send(data) {
+    function websocketSend(data) {
         if (!Control.running()) {
             console.error("Tried to send message when not connected.");
             return;
@@ -42,14 +69,19 @@
     };
 
     return {
-        update : function (id, value) {
+        register : function (element) {
+            _elements_by_id[element.id] = element;
+            _elements_by_key[element.key] = element;
+        },
+
+        update : function (element, value) {
             if (!Control.running()) {
-                window.setTimeout(Control.update, 100, id, value);
+                window.setTimeout(Control.update, 100, element, value);
                 return;
             }
 
-            var message = JSON.stringify({id: id, value: value});
-            websocket_send(message);
+            var message = JSON.stringify({id: element.id, key: element.key, value: value});
+            websocketSend(message);
         },
 
         stop : function() {

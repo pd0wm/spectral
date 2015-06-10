@@ -8,4 +8,3 @@ class Settings(object):
 
     def read(self):
         return self.options
-

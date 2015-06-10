@@ -12,46 +12,53 @@ class ServerProtocolDash(WebSocketServerProtocol):
     """WebSocket protocol for processing configuration data"""
 
     def __init__(self):
-        self.client_address = ''
-        self.timestamp = time.time()
         self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
         WebSocketServerProtocol.__init__(self)
 
     def onOpen(self):
         print("WebSocket connection open.")
+        self.factory.register(self)
 
-        def update():
-            if self.factory.content.update_timestamp != self.timestamp and \
-                    self.factory.content.update_client != self.client_address:
-                self.timestamp = self.factory.content.update_timestamp
-                update_code = self.factory.content.update_eval()
-                self.sendMessage(json.dumps(update_code))
-
-            self.factory.reactor.callLater(0.01, update)
-
-        update()
+        # Push initial settings to client
+        settings = self.settings.read()
+        settings['settings'] = True
+        self.sendMessage(json.dumps(settings).encode('utf8'))
 
     def onConnect(self, request):
         print("Client connecting: {}".format(request.peer))
-        self.client_address = request.peer
 
     def onMessage(self, payload, isBinary):
         data = json.loads(payload)
-        self.factory.content.set_by_uuid(data['id'], data['value'], self.client_address)
-        values = self.factory.content.values
-        self.settings.update(values)
+        self.settings.update({data['key']: data['value']})
+        self.factory.relay(self, payload)
 
     def onClose(self, wasClean, code, reason):
         print("WebSocket connection closed: {}".format(reason))
+        self.factory.unregister(self)
 
 
 class WebSocketServerDashFactory(WebSocketServerFactory):
 
-    """Factory for creating ServerProtocolPlot instances"""
+    """Factory for creating ServerProtocolDash instances"""
 
-    def __init__(self, url, content):
-        self.content = content
+    def __init__(self, url):
         WebSocketServerFactory.__init__(self, url)
+        self.clients = []
+
+    def register(self, client):
+        if client not in self.clients:
+            print("Registered client {}".format(client.peer))
+            self.clients.append(client)
+
+    def unregister(self, client):
+            if client in self.clients:
+                print("Unregistered client {}".format(client.peer))
+                self.clients.remove(client)
+
+    def relay(self, client, msg):
+            for c in self.clients:
+                if c is not client:
+                    c.sendMessage(msg.encode('utf8'))
 
     def buildProtocol(self, addr):
         protocol = self.protocol()
