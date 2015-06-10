@@ -6,6 +6,8 @@ import StringIO
 
 N = 14
 L = 40
+a = 5
+b = 7
 frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
@@ -14,6 +16,7 @@ multiplier = 100  # Warning: greatly diminishes perfomance
 nyq_block_size = L * N * multiplier
 window_length = nyq_block_size
 threshold = 2000
+
 
 def gen_profiling_report(obj, args, method=None, constructor=False):
     pr = cProfile.Profile()
@@ -31,22 +34,33 @@ def gen_profiling_report(obj, args, method=None, constructor=False):
     return ret
 
 
-pr = cProfile.Profile()
-pr.enable()
-
-sources = [cg.source.Sinusoidal, cg.source.ComplexExponential, cg.source.Rect]
-sources_init_args = [(frequencies, sample_freq), (frequencies, sample_freq), (frequencies, widths, sample_freq)]
+sources = [cg.source.Sinusoidal, cg.source.ComplexExponential]  # , cg.source.Rect]
+sources_init_args = [(frequencies, sample_freq)] * len(sources)
 
 init_sources = []
-
 for obj, args in zip(sources, sources_init_args):
     init_sources.append(gen_profiling_report(obj, args, obj, constructor=True))
 
+init_samplers = []
+samplers = [cg.sampling.Coprime, cg.sampling.MultiCoset]
+sampler_init_args = [(a, b), (N,)]
 
-sources_gen_args = [(nyq_block_size,)] * len(init_sources)
-signals = []
-for obj, args in zip(init_sources, sources_gen_args):
-    signals.append(gen_profiling_report(obj, args, obj.generate))
+for obj, args in zip(samplers, sampler_init_args):
+    init_samplers.append(gen_profiling_report(obj, args, obj, constructor=True))
 
+C = init_samplers[0].get_C()
 
+reconstructors = [cg.reconstruction.CrossCorrelation, cg.reconstruction.Wessel]
+reconstructors_init_args = [(L, C)] * len(reconstructors)
 
+init_reconstructors = []
+for obj, args in zip(reconstructors, reconstructors_init_args):
+    init_reconstructors.append(gen_profiling_report(obj, args, obj, constructor=True))
+
+#  sources_gen_args = [(nyq_block_size,)] * len(init_sources)
+#  signals = []
+#  for obj, args in zip(init_sources, sources_gen_args):
+#      signals.append(gen_profiling_report(obj, args, obj.generate))
+#  
+#  
+#  
