@@ -39,11 +39,7 @@ def get_content_from_file(prof_rep):
         if line == "\n":
             break
         row = line.strip(' \t\n\r').split()
-        print ""
-        print row[-1]
         row[-1] = clean_filename_entry(row[-1])
-        print row[-1]
-        print ""
         data.append(row)
 
     return {'header': header, 'data': data}
