@@ -2,8 +2,9 @@
  * Logic for rendering an FFT plot using highcharts.
  */
 
-var DetPlot = function(container_id){
-    this.container_id = container_id;
+var DetPlot = function(wrapper_id) {
+    this.wrapper_id = wrapper_id;
+    this.container_id = wrapper_id + "-container";
     this.data_type = 'det_data';
 
     // Set up the chart.

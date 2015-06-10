@@ -2,39 +2,28 @@
  * Logic for rendering an FFT plot using highcharts.
  */
 
- var Sweep = function(container_id){
-    this.container_id = container_id;
-    this.data_type = 'rec_data';
+ var Sweep = function(wrapper_id, data_type, start, end) {
+    this.wrapper_id = wrapper_id;
+    this.container_id = wrapper_id + "-container";
+    this.data_type = data_type;
+    this.data = [];
+    this.start = start;
+    this.end = end;
 
     // Set up the chart.
-    this.container_id = container_id;
     this.chart = new Highcharts.Chart(this.getPlotSettings());
 };
 
-FFTplot.prototype.update = function() {
+Sweep.prototype.update = function() {
     // Parse the message content.
     var sample_freq = Visualisation[this.data_type].sample_freq;
     var center_freq = Visualisation[this.data_type].center_freq;
-    var fft_data = Visualisation[this.data_type].data;
+    var fft_data = math.multiply(math.log10(Visualisation[this.data_type].data));
 
-    fft_data = math.log10(fft_data);
-    fft_data = math.multiply(fft_data, 10);
+    Array.prototype.push.apply(this.data, fft_data);
 };
 
-FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
-    // Fix horizontal scale when needed.
-    var interval = sample_freq / fft_data.length;
-    var prev_interval = this.chart.series[0].pointInterval;
-    var point_start = -sample_freq / 2 + center_freq;
-    var prev_point_start = this.chart.series[0].pointStart;
-
-    if (prev_interval != interval || prev_point_start != point_start) {
-        this.chart.series[0].update({
-            pointInterval: interval,
-            pointStart: point_start
-        });
-    }
-
+Sweep.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
     var ymax = math.max(fft_data);
     if (this.chart.yAxis[0].max < ymax) {
         this.chart.yAxis[0].update({max: ymax});
@@ -46,7 +35,7 @@ FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
     }
 };
 
-FFTplot.prototype.getPlotSettings = function() {
+Sweep.prototype.getPlotSettings = function() {
     return {
         chart: {
             zoomType: 'x',
@@ -62,8 +51,8 @@ FFTplot.prototype.getPlotSettings = function() {
             title: { text: 'Frequency [Hz]' }
         },
         yAxis: {
-            max: 0,
-            min: 0,
+            max: this.end,
+            min: this.start,
             title: { text: '' }
         },
         legend: {
@@ -90,7 +79,7 @@ FFTplot.prototype.getPlotSettings = function() {
             type: 'area',
             name: 'FFT',
             animation: false,
-            turboThreshold: 1200
+            turboThreshold: 1000000
         }],
         tooltip: {
             enabled: false
@@ -101,6 +90,6 @@ FFTplot.prototype.getPlotSettings = function() {
     };
 };
 
-FFTplot.prototype.destroy = function() {
+Sweep.prototype.destroy = function() {
     this.chart.destroy();
 };

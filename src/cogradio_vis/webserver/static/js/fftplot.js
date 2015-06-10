@@ -2,23 +2,32 @@
  * Logic for rendering an FFT plot using highcharts.
  */
 
-var FFTplot = function(container_id, data_type){
+var FFTplot = function(wrapper_id, data_type){
     this.N = 10;
-    this.container_id = container_id;
+    this.wrapper_id = wrapper_id
+    this.container_id = wrapper_id + "-container";
     this.data_type = data_type;
 
     // Set up the chart.
-    this.container_id = container_id;
     this.chart = new Highcharts.Chart(this.getPlotSettings());
 
-    $("#" + container_id).append(this.getSliderHtml());
-
     // Set up the averaging slider.
-    this.averaging_slider = $("#" + container_id + "-averaging-slider").slider();
+    $("#" + this.container_id).append(this.getSliderHtml());
+    this.averaging_slider = $("#" + this.wrapper_id + "-averaging-slider").slider();
     this.averaging_slider.slider("setValue", this.N);
-    $(document).on("change", "#" + container_id + "-averaging-slider", {plotter: this}, function(e) {
+    $(document).on("change", "#" + this.wrapper_id + "-averaging-slider", {plotter: this}, function(e) {
         e.data.plotter.N = parseInt(this.value);
     });
+};
+
+FFTplot.prototype.getType = function() {
+    var parent = container.parent();
+    if (parent.hasClass('sweep')) {
+        return TYPE_SWEEP;
+    }
+    else {
+        return parent.find('input[name=' + parent.attr('id') + '-type]:checked').val();
+    }
 };
 
 FFTplot.prototype.update = function() {
@@ -73,7 +82,7 @@ FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
     var interval = sample_freq / fft_data.length;
     var prev_interval = this.chart.series[0].pointInterval;
     var point_start = -sample_freq / 2 + center_freq;
-    var prev_point_start = this.chart.series[0].pointStart;
+    var prev_point_start = this.chart.series[0].xData[0];
 
     if (prev_interval != interval || prev_point_start != point_start) {
         this.chart.series[0].update({
@@ -82,11 +91,11 @@ FFTplot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
         });
     }
 
-    if (this.chart.yAxis[0].max != Visualisation.ymax) {
+    if (this.chart.yAxis[0].max < Visualisation.ymax) {
         this.chart.yAxis[0].update({max: Visualisation.ymax});
     }
 
-    if (this.chart.yAxis[0].min != Visualisation.ymin) {
+    if (this.chart.yAxis[0].min > Visualisation.ymin) {
         this.chart.yAxis[0].update({min: Visualisation.ymin});
     }
 };
@@ -150,7 +159,7 @@ FFTplot.prototype.getPlotSettings = function() {
 FFTplot.prototype.getSliderHtml = function() {
     return '<div> \
         <h3 class="panel-title" style="text-align: center; margin-bottom:0.5em;">Averaging</h3> \
-        <input id="' + this.container_id + '-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show"> \
+        <input id="' + this.wrapper_id + '-averaging-slider" type="text" style="width: 100%;" data-slider-min="1" data-slider-max="20" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show"> \
     </div>';
 }
 

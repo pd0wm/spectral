@@ -1,4 +1,4 @@
-import time
+from flask import render_template
 
 
 class Content(object):
@@ -8,8 +8,6 @@ class Content(object):
         self._by_position = {}
         self._by_key = {}
         self.max_y = 0
-        self.update_timestamp = time.time()
-        self.update_client = ''
 
     def add(self, element, position):
         if not 0 <= position[0] <= 6:
@@ -24,8 +22,6 @@ class Content(object):
         self._by_key[element.key] = element
 
     def set_by_uuid(self, uuid, value, client):
-        self.update_timestamp = time.time()
-        self.update_client = client
         self._by_uuid[uuid].value = value
 
     @property
@@ -46,7 +42,7 @@ class Content(object):
                 if (x, y) in self._by_position:
                     element = self._by_position[(x, y)]
                     r += """<div class="col-sm-{0}">\n""".format(element.width * 2)
-                    r += element.html + "\n"
+                    r += render_template(element.template, **element.context) + "\n"
                 else:
                     r += """<div class="col-sm-2">\n"""
                 r += """</div>\n"""
@@ -59,14 +55,3 @@ class Content(object):
     @property
     def values(self):
         return {k: v.value for k, v in self._by_key.items()}
-
-if __name__ == '__main__':
-    from element import TextElement
-    el1 = TextElement(key="uptime", title="Uptime", value=123)
-    el2 = TextElement(key="status", title="System Status", value="Critical")
-    cnt = Content()
-    cnt.add(el1, (0, 1))
-    cnt.add(el2, (2, 0))
-
-    print cnt.html
-    print cnt.values

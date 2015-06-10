@@ -2,13 +2,13 @@
  * Logic for rendering a spectrogram using an HTML5 canvas.
  */
 
-var SpectroGram = function(container_id, data_type) {
-    this.container_id = container_id;
-    this.initCanvas(this.container_id);
+var SpectroGram = function(wrapper_id, data_type) {
+    this.wrapper_id = wrapper_id;
+    this.container_id = wrapper_id + "-container";
+    this.initCanvas(wrapper_id);
     this.data_type = data_type;
 
     this.colormap = chroma.scale(['#FFF', '#CCC', Highcharts.getOptions().colors[0]]);
-    // this.colormap = chroma.scale(["#000", "#F00", "#FF0", "#FFF"]);
 };
 
 SpectroGram.prototype.update = function() {
@@ -18,9 +18,12 @@ SpectroGram.prototype.update = function() {
     this.draw(fft_data);
 };
 
-SpectroGram.prototype.initCanvas = function(container_id) {
-    $("#" + container_id).append('<canvas id="' + container_id +'-spectrogram" style="width:100%; height:400px;"></canvas>');
-    this.canvas = document.getElementById(container_id +'-spectrogram');
+SpectroGram.prototype.initCanvas = function() {
+    var container = $("#" + this.container_id).append(
+        '<canvas id="' + this.wrapper_id +'-spectrogram" style="width:100%; height:400px;"></canvas>'
+    );
+
+    this.canvas = container.children("canvas").get(0);
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext("2d");
@@ -46,8 +49,7 @@ SpectroGram.prototype.draw = function(fft_data) {
 };
 
 SpectroGram.prototype.rescale = function(fft_data, length) {
-    // Create a new, longer array from the data in the given array,
-    // using a method derived from Bresenham's line algorithm.
+    // Create a new, longer array from the data in the given array.
     var fft_data_scaled = new Array(length);
     var fft_data_length = fft_data.length;
 

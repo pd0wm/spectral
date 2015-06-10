@@ -1,12 +1,10 @@
 class Settings(object):
 
-    def __init__(self, web_opt, src_opt, rec_opt, det_opt):
-        self.queues = [web_opt, src_opt, rec_opt, det_opt]
+    def __init__(self):
+        self.options = dict()
 
     def update(self, update):
-        [self.send(queue, update) for queue in self.queues]
+        self.options.update(update)
 
-    def send(self, queue, update):
-        if queue.full():
-            queue.get()
-        queue.put_nowait(update)
+    def read(self):
+        return self.options
