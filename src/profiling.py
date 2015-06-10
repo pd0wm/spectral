@@ -4,10 +4,10 @@ import cProfile
 import pstats
 import StringIO
 
-N = 14
+N = 6
 L = 40
-a = 5
-b = 7
+a = 2
+b = 3
 frequencies = [2e3, 4e3, 5e6, 8e6]
 widths = [1000, 1000, 1000, 1000]
 center_freq = 2.41e9
