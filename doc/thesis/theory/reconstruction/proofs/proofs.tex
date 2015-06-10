@@ -22,7 +22,7 @@ In this section the stated theorems will be proven.
     \end{align*}
 \end{blockProofTheorem}
 
-\begin{blockProofTheorem}{\ref{th:corr-unbiased}}
+\begin{blockProofTheorem}{\ref{th:correlation-bias}}
     Without loss of generality, assume that $M \le N$. Suppose that $1 \le i \le M$, then
     \begin{align*}
         E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}
@@ -79,15 +79,17 @@ In this section the stated theorems will be proven.
     \end{align*}
     Therefore
     \begin{align*}
-        [E(N\vec{r}_{y'_i,y'_j})]_{m+L}
-        &= N W_1[m] R_{Y'_i,Y'_j}[m]
-        = N W_1[m] R_{Y_i,Y_j}[mN]
+        [E(N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L}
+        &= [E(N\vec{r}_{y'_i,y'_j})]_{m+L+(KL-L+1)-1} \\
+        &= [E(N\vec{r}_{y'_i,y'_j})]_{m+KL} \\
+        &= N W_1[m] R_{Y'_i,Y'_j}[m] \\
+        &= N W_1[m] R_{Y_i,Y_j}[mN]
     \end{align*}
     where
     \begin{align*}
         NW_1[m] &= \begin{cases}
-            mN+LN & \text{if } -L+1 \le m \le 0, \\
-            LN-mN & \text{if } 0 \le m \le L - 1, \\
+            mN+KLN & \text{if } -KL+1 \le m \le 0, \\
+            KLN-mN & \text{if } 0 \le m \le KL - 1, \\
             0 & \text{elsewhere}.
         \end{cases} \\
         % &= \begin{cases}
@@ -101,28 +103,63 @@ In this section the stated theorems will be proven.
         %     0 & \text{elsewhere}.
         % \end{cases}
     \end{align*}
-    Also note that $E[(\vec{r}_{y_i,y_j})_{mN+KLN+N-1}] = W_2[mN] R_{Y_i,Y_j}[mN]$ where
+    Also note that
+    \begin{align*}
+        E[(\hat{\vec{r}}_{y_i,y_j})_{mN+LN-N+1}] &= E[(\vec{r}_{y_i,y_j})_{mN+LN-N+1 +(KLN-LN+2N-1) - 1}] \\
+        &=E[(\vec{r}_{y_i,y_j})_{mN+KLN+N-1}] \\
+        &= W_2[mN] R_{Y_i,Y_j}[mN]
+    \end{align*}
+    where
     \begin{align*}
         W_2[mN] &= \begin{cases}
             mN+KLN+N-1 & \text{if } -KLN-N+2 \le mN \le 0, \\
             KLN+N-1-mN& \text{if } 0 \le mN \le KLN+N-2, \\
+            0 & \text{elsewhere.}
+        \end{cases} \\
+        &= \begin{cases}
+            mN+KLN+N-1 & \text{if } -KL\le m \le 0, \\
+            KLN+N-1-mN& \text{if } 0 \le m \le KL, \\
             0 & \text{elsewhere.}
         \end{cases}
     \end{align*}
     Let
     \begin{align*}
         W_{1 \to 2}[m] &= \begin{cases}
-            (mN+LN+N-1)/(mN+LN) & \text{if } -L+1 \le m \le 0, \\
-            (LN+N-1-mN)/(LN-mN) & \text{if } 0 \le m \le L-1, \\
+            (mN+KLN+N-1)/(mN+KLN) & \text{if } -KL+1 \le m \le 0, \\
+            (KLN+N-1-mN)/(KLN-mN) & \text{if } 0 \le m \le KL-1, \\
             0 & \text{elsewhere.}
         \end{cases}
     \end{align*}
-    Then $W_{1 \to 2}[m] N W_1[m] = W_2[mN]$ for $m = -L+1,\ldots,L-1$. To this end, let $\vec{w}_{1 \to 2} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w}_{1 \to 2})_{i+L}=W_{1 \to 2}[i]$ for $i = -L+1,\ldots,L-1$. We then recognise that
+    Then $W_{1 \to 2}[m] N W_1[m] = W_2[mN]$ for $m = -KL+1,\ldots,KL-1$. To this end, let $\vec{w} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w})_{i+L}=W_{1 \to 2}[i]$ for $i = -L+1,\ldots,L-1$. So
     \begin{align*}
-        [E(\vec{w}_{1 \to 2} \odot N\vec{r}_{y'_i,y'_j})]_{m+L} &= [E(\vec{r}_{y_i,y_j})]_{(m+L+1)N-1} \\
-        % &= [E(\vec{r}_{y_i,y_j})]_{(m+L+1)N-1} \\
-        &= [E(\mat{D} \vec{r}_{y_i,y_j})]_{m+L} \\
-        &= [E(\vec{r}'_{y_i,y_j})]_{m+L}.
+        \begin{bmatrix}
+            KLN+(-L+2)N-1 \\
+            KLN+(-L+3)N-1 \\
+            \vdots \\
+            KLN+0\cdot N-1 \\
+            KLN+1\cdot N-1 \\
+            KLN+0\cdot N-1 \\
+            \vdots \\
+            KLN+(-L+3)N-1 \\
+            KLN+(-L+2)N-1
+         \end{bmatrix}^T \odot \begin{bmatrix}
+            [KLN+(-L+1)N]^{-1} \\
+            [KLN+(-L+2)N]^{-1} \\
+            \vdots \\
+            [KLN -1 \cdot N]^{-1} \\
+            [KLN+ 0 \cdot N]^{-1} \\
+            [KLN -1 \cdot N]^{-1} \\
+            \vdots \\
+            [KLN+(-L+2)N]^{-1} \\
+            [KLN+(-L+1)N]^{-1}
+         \end{bmatrix}^T.
+    \end{align*}
+    We then recognise that
+    \begin{align*}
+        [E(\vec{w} \odot N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L} &= E[(\hat{\vec{r}}_{y_i,y_j})_{mN+LN-N+1}] \\
+        &= E[(\hat{\vec{r}}_{y_i,y_j})_{(m+L-1)N+1}] \\
+        &= [E(\mat{D} \hat{\vec{r}}_{y_i,y_j})]_{m+L} \\
+        &= [E(\hat{\vec{r}}'_{y_i,y_j})]_{m+L}.
         % (m+L+1)N-1 = mN + LN + N - 1
     \end{align*}
 \end{blockProofTheorem}

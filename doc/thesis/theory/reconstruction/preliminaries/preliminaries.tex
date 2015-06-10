@@ -17,7 +17,11 @@ Vectors are denoted by lower-case bold-faced letters and matrices are denoted by
     Let $\mat{A}$ be an $M \times N$ matrix. Then $(\mat{A})_{i,j}$ denotes the $j$'th element of the $i$'th row of $\mat{A}$ for $i = 1,\ldots,M$ and $j=1,\ldots,N$.
 \end{blockDefinition}
 
-We will need notation to denote two uncommon vector operations.
+\begin{blockDefinition}
+    Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
+\end{blockDefinition}
+
+We will also need notation to denote two uncommon vector operations.
 
 \begin{blockDefinition}[Subvector]
     Let $\vec{x} \in \mathbb{C}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{C}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
@@ -66,7 +70,7 @@ Furthermore, we define the Hadamard product as a closed binary operation on vect
 Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related.
 The following theorem identifies the expected value of the correlation operator.
 
-\begin{blockTheorem} \lab{th:corr-unbiased}
+\begin{blockTheorem} \lab{th:correlation-bias}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Furthermore, let $r[n]$ be a discrete signal such that $r[i] = (\vec{x} \circ \vec{y})_{i+M}$ for $i = -M+1,\ldots,N-1$. Then $r[i]$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where
     \begin{align*}
         W[i] = \begin{cases}
