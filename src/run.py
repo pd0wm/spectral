@@ -3,6 +3,7 @@ import cogradio as cg
 import cogradio_vis as vis
 import argparse
 import time
+import sys
 from processes import *
 from multiprocessing import Process, Queue, Pipe
 
@@ -72,11 +73,15 @@ if __name__ == '__main__':
                  args=(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor))
     p2 = Process(target=run_reconstructor,
                  args=(signal_queue, websocket_rec_queue, detection_queue, reconstructor, sample_freq))
-    p3 = Process(target=run_websocket_server,
-                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq))
-    p4 = Process(target=run_detector,
+    p3 = Process(target=run_detector,
                  args=(detector, detection_queue, websocket_det_queue))
-    processes = [p1, p2, p3, p4]
+    p4 = Process(target=run_server,
+                 args=())
+    p5 = Process(target=run_websocket_control,
+                 args=())
+    p6 = Process(target=run_websocket_data,
+                 args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq))
+    processes = [p1, p2, p3, p4, p5, p6]
 
     try:
         [p.start() for p in processes]

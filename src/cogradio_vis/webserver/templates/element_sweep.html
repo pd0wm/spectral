@@ -1,0 +1,12 @@
+<div class="visualisation sweep" id="{{ id }}">
+    <div class="visualisation-header" style="overflow:auto;">
+        <h3 style="float:left;"></h3>
+        <table class="visualisation-control" style="float:right;">
+            <tr class="visualisation-data">
+              <td><label><input type="radio" name="{{ id }}-data" value="src_data" {%- if dtype == "src_data" -%}checked{% endif %}/>Original</label></td>
+              <td><label><input type="radio" name="{{ id }}-data" value="rec_data" {%- if dtype == "rec_data" -%}checked{% endif %}/>Reconstructed</label></td>
+            </tr>
+        </table>
+    </div>
+    <div class="visualisation-container" id="{{ id }}-container" ></div>
+</div>
