@@ -28,7 +28,7 @@ DetPlot.prototype.fixAxes = function(fft_data, sample_freq, center_freq) {
     var interval = sample_freq / fft_data.length;
     var prev_interval = this.chart.series[0].pointInterval;
     var point_start = center_freq - sample_freq / 2;
-    var prev_point_start = this.chart.series[0].pointStart;
+    var prev_point_start = this.chart.series[0].xData[0];
 
     if (prev_interval != interval || prev_point_start != point_start) {
         this.chart.series[0].update({
@@ -71,6 +71,7 @@ DetPlot.prototype.getPlotSettings = function() {
             }
         },
         series: [{
+            animation: false,
             type: 'column',
         }],
         tooltip: {
