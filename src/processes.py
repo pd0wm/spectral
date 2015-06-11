@@ -51,10 +51,9 @@ def run_reconstructor(signal_queue, websocket_rec_queue, det_queue, reconstructo
 
 def run_detector(detector, detection_queue, websocket_det_queue):
     settings = Pyro4.Proxy("PYRONAME:cg.settings")
-    detector.parse_options(settings.read())
 
     while True:
-
+        detector.parse_options(settings.read())
         inp = detection_queue.dequeue()
         if inp is not None:
             detect = [int(x) for x in detector.detect(inp)]
