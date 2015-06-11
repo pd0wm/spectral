@@ -7,9 +7,6 @@
 \begin{document}
 \section{Additional Analysis}
 
-\subsection{Support of Solution}
-Consider \cref{th:deci-corr}. Here $[E(N \vec{r}_{y'_i,y'_j})]_{m + L}$ is an estimator of $R_{Y'_i,Y'_j}[m]$ for $m = -L+1,L-1$. Since one is only able to estimate $R_{Y'_i,Y'_j}[m]$ for $m=-L+1,L-1$, it is often assumed that $R_{Y'_i,Y'_j}[m]=0$ for $m \le -L$ and $m \ge L$. But then $R_{Y'_i,Y'_j}[m]=0$ for $m \le -LN$ and $m \ge LN$, which implies that $E[(\vec{r}_{y_i,y_j})]_{m+LN + N-1}=0$ for $m \le -LN$ and $m \ge LN$. Therefore the first and last $N-1$ elements of $E[(\vec{r}_{y_i,y_j})]$ are zero. By the structure of $\mat{R}_{c_i,c_j}$, the first $N-1$ elements of $E(\vec{r}_x)$ consist of the first $N-1$ elements of $\vec{r}_{y_i,y_j}$, which are zero. Therefore, the first $N-1$ elements of $E(\vec{r}_x)$ are zero. Similarly, the last $N-1$ elements of $E(\vec{r}_x)$ are zero.
-
 \subsection{Unicity of Solution}
 rank => circ min sparse ruler
 
@@ -117,8 +114,6 @@ $\Omega = \{|n_i-n_j|\} \cup \{N-|n_i-n_j|\} \quad \forall_{n_i,n_j}\in \mathbf{
     Let $\mathbf{S}$ be a solution to a circular sparse ruler problem with length $N$. Then every combination of elements produces two lags: $|n_i-n_j|$ and $N-|n_i-n_j|$ with $n_i,n_j\in \mathbf{S}$. Would one mirror $\mathbf{S}$ in on an axis, then the lags produced by $n'_i$ and $n'_j$ is $|(n_j+k)-(n_i+k)| = |n_i-n_j|$ and $N-|(n_j+k)-(n_j+k)|=N-|n_i-n_j|$ with $k \in \mathbb{Z}$. Therefore mirroring a viable solution will produce another viable solution.
 \end{blockProofTheorem}
 
-<<<<<<< HEAD
-
 \begin{blockTheorem} \label{th:lag2}\nolinebreak
     All circular sparse ruler solutions with more than 3 elements can be translated or mirrored into a solution for which holds $\{1,2,3\} \in \mathbf{S}$, $\{1,2,4\} \in \mathbf{S}$,  or $\{1,2,k, k+2\} \in \mathbf{S}$ where $k \in \{5,6,\dots,\lfloor\frac{N}{2}\rfloor-1\}$.   \nolinebreak
 \end{blockTheorem}
@@ -217,196 +212,8 @@ Consider the binary integer linear program
 \end{align*}
 Then, by the definition of a minimal circular ruler and \cref{th:ruler-distance-matrix}, this program yields a minimal circular ruler of length $N$.
 
-\subsection{Oversampling}
-Let $K \in \mathbb{N}$ denote the oversampling factor. Instead of obtaining $L$ samples from each coset to estimate all correlations from $-L+1$ to $L-1$, we could use $KL$ samples to estimate all correlations from $-L+1$ to $L-1$.
-
-Consider \cref{th:deci-corr}. Let $\vec{z}'_i, \vec{z}'_j \in \mathbb{C}^{KL}$ denote the samples obtained by cosets $i$ and $j$ such that $(\vec{z}'_i)_m = Y'_i[m]$ and $(\vec{z}'_j)_m=Y'_j[m]$ for $m = 1,\ldots,KL$. Then note that $\vec{z}'_i[1,L]=\vec{y}'_i$ and $\vec{z}'_j[1,L]=\vec{y}'_j$. Let $\vec{r}_{z'_i,z'_j} = \vec{z}'_i \circ \vec{z}'_j$. Furthermore, let $r_z[n]$ denote a discrete signal such that $r_z[m] = (\vec{r}_{z'_i,z'_j})_{m+KL}$ for $m = -KL+1,\ldots,KL-1$. Then
-\begin{align*}
-    E(r_z[m]) = W_z[m]R_{Y'_i,Y'_j}[m]
-\end{align*}
-where
-\begin{align*}
-    W_z[m] = \begin{cases}
-        m + KL & \text{if } -KL + 1 \le m \le 0, \\
-        KL - m & \text{if } 0 \le m \le KL - 1, \\
-        0 & \text{elsewhere.}
-    \end{cases}
-\end{align*}
-Also, let $r_y[n]$ denote a discrete signal such that $r_y[m] = (\vec{r}_{y'_i,y'_j})_{m+L}$ for $m = -L+1,\ldots,L-1$. Then
-\begin{align*}
-    E(r_y[m]) = W_y[m]R_{Y'_i,Y'_j}[m]
-\end{align*}
-where
-\begin{align*}
-    W_y[m] = \begin{cases}
-        m + L & \text{if } -L+1 \le m \le 0, \\
-        L - m & \text{if } 0 \le m \le L - 1, \\
-        0 & \text{elsewhere.}
-    \end{cases}
-\end{align*}
-Ideally, we would want to use $r_z[m]$ to estimate $E(r_y[m])$ for $m = -L+1,\ldots,L-1$. This can be done by introducing
-\begin{align*}
-    W_{z \to y}[m] = \begin{cases}
-        (m + L)/(m + KL) & \text{if } -L+1 \le m \le 0, \\
-        (L - m)/(KL - m) & \text{if } 0 \le m \le L - 1, \\
-        0 & \text{elsewhere.}
-    \end{cases}
-\end{align*}
-$W_{z \to y}$ transforms the window applied by $r_y[m]$ to the window applied by $r_z[m]$ to prevent biasing. This is pictured by the green arrows in \cref{fig:window}.
-
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw [red, thick] (-5, -1) -- (-5, 0) -- (0, 3) -- (5, 0) -- (5, -1);
-        \draw [blue, thick] (-5, -1) -- (-2, -1) -- (-2, 0) -- (0, 2) -- (2, 0) -- (2, -1) -- (5, -1);
-        \draw [blue, dashed] (0, 2) -- (5, 2);
-        \draw (5, 2) node[black, xshift=0.5cm] {$L$};
-        \draw (5,3) node[black, xshift=0.5cm] {$KL$};
-        \draw [red, dashed] (0, 3) -- (5, 3);
-        \draw [black, thick] (-5, -1) -- (5, -1);
-        \draw [black, thick] (-5, -1.2) -- (-5, -0.8);
-        \draw [black, thick] (-2, -1.2) -- (-2, -0.8);
-        \draw [black, thick] (5, -1.2) -- (5, -0.8);
-        \draw [black, thick] (2, -1.2) -- (2, -0.8);
-        \draw (-5, -1) node[black, yshift=-0.5cm] {$-KL+1$};
-        \draw (-2, -1) node[black, yshift=-0.5cm] {$-L+1$};
-        \draw (5, -1) node[black, yshift=-0.5cm] {$-KL+1$};
-        \draw (2, -1) node[black, yshift=-0.5cm] {$-L+1$};
-        \draw [>=latex, ->, green, thick] (0, 3) to (0, 2);
-        \draw [green, fill=green] (0, 3) circle [radius=0.05];
-        \draw [green, fill=green] (0, 2) circle [radius=0.05];
-        \draw [>=latex, ->, green, thick] (2, 1.8) to (2, 0);
-        \draw [green, fill=green] (-2, 1.8) circle [radius=0.05];
-        \draw [green, fill=green] (2, 1.8) circle [radius=0.05];
-        \draw [green, fill=green] (-2, 0) circle [radius=0.05];
-        \draw [>=latex, ->, green, thick] (-2, 1.8) to (-2, 0);
-        \draw [green, fill=green] (2, 0) circle [radius=0.05];
-        \draw [green, thick] (2, -1) -- (5, -1);
-        \draw [green, thick] (-2, -1) -- (-5, -1);
-        %\draw [green, thick, >=latex, ->] (-3.6, 0.6) to[bend left=25] (-3, -0.8);
-
-        \draw [red, thick] (-5,3) -- (-4.5,3);
-        \draw (-4.5,3) node[black, xshift=0.7cm] {$W_z[m]$};
-        \draw [blue, thick] (-5,2.5) -- (-4.5,2.5);
-        \draw (-4.5,2.5) node[black, xshift=0.7cm] {$W_y[m]$};
-        \draw [green, thick] (-5,2) -- (-4.5,2);
-        \draw (-4.5,2) node[black, xshift=0.9cm] {$W_{z \to y}[m]$};
-    \end{tikzpicture}
-    \caption{Transformation of the window applied by $r_y[m]$}
-    \label{fig:window}
-\end{figure}
-
-Then
-\begin{align*}
-    E(W_{z \to y}[m]r_z[m]) &= W_{z \to y}[m] W_z[m] R_{Y'_i,Y'_j}[m] \\
-    &= W_y[m] R_{Y'_i,Y'_j}[m] \\
-    &= E(r_y[m]).
-\end{align*}
-To this end, let $\vec{w}_{z \to y} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w}_{z \to y})_{i+L} = W_{z \to y}[i]$ for $i = -L+1,\ldots,L-1$. Then
-\begin{align*}
-    \vec{w}_{z \to y} =\begin{bmatrix}
-        \frac{1}{KL - L + 1} & \cdots & \frac{L- 1}{KL - 1} & K & \frac{L- 1}{KL - 1} & \cdots & \frac{1}{KL - L + 1}
-    \end{bmatrix}^T.
-\end{align*} 
-We can now state that
-\begin{align*}
-    E(N \vec{r}_{z'_i,z'_j}[KL-L+1,KL+L-1] \odot \vec{w}_{z \to y}) = E(N \vec{r}_{y'_i,y'_j}) = E(\vec{r}'_{y_i,y_j}).
-\end{align*}
-Thus
-\begin{align*}
-    \vec{r}'_y = N\begin{bmatrix}
-        \vec{r}_{z'_1,z'_1}[KL-L+1,KL+L-1] \\
-        \vdots \\
-        \vec{r}_{z'_M,z'_M}[KL-L+1,KL+L-1]
-    \end{bmatrix} \odot \begin{bmatrix}
-        \vec{w}_{z \to y} \\
-        \vdots \\
-        \vec{w}_{z \to y} 
-    \end{bmatrix}
-\end{align*}
-could be used instead.
-
-TODO: Argue that using oversampling decreases mean squared error. And that $\vec{w}_{z\to y}$ slightly increases mean squared error, but makes the estimation unbiased (already shown).
-
-
-\subsection{Sample-Wide Autocorrelation}
-TODO: Revise
-
-Is it possible to estimate $E(\vec{r}_x)$ by making use of $\vec{w}_m$. To this end,
-\begin{align*}
-    (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M (\vec{w}_m)_k (\conj{\vec{w}}_m)_{M-i+k} \\
-    &= \sum_{k=1}^M (\vec{d}_k^T \vec{x}_m)(\conj{\vec{d}}_{M-i+k}^T \conj{\vec{x}}_m) \\
-    &= \sum_{k=1}^M (\vec{x}_m^T \vec{d}_k)(\conj{\vec{d}}_{M-i+k}^T \conj{\vec{x}}_m)
-\end{align*}
-where $\vec{d}_i = \vec{0}$ for $i < 1$ and $i > M$. Let
-\begin{align*}
-     \mat{A}_i = \sum_{k=1}^M  \vec{d}_k \conj{\vec{d}}_{M-i+k}^T
-\end{align*}
-for $i = 1,\ldots,2M-1$. Then
-\begin{align*}
-    (\vec{w}_m \circ \vec{w}_m)_i &= \sum_{k=1}^M \vec{x}_m^T (\vec{d}_k \conj{\vec{d}}_{M-i+k}^T) \conj{\vec{x}}_m \\
-    &= \vec{x}_m^T\left(\sum_{k=1}^M  \vec{d}_k \conj{\vec{d}}_{M-i+k}^T\right) \conj{\vec{x}}_m \\
-    &= \vec{x}_m^T \mat{A}_i \conj{\vec{x}}_m \\
-    &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x}_m)_k (\conj{\vec{x}}_m)_l (\mat{A}_i)_{k,l} \\
-    &= \sum_{k = 1}^N \sum_{l=1}^N (\vec{x})_{(m-1)N+k} (\conj{\vec{x}})_{(m-1)N+l} (\mat{A}_i)_{k,l}.
-\end{align*}
-Now let $\vec{\mathfrak{x}} \in \mathbb{C}^{(LN)^2}$ be such that $(\vec{\mathfrak{x}})_{(i-1)LN+j} = (\vec{x})_i (\conj{\vec{x}})_j$ for $i = 1,\ldots,LN$ and $j = 1,\ldots,LN$. Then
-\begin{align*}
-    (\vec{w}_m \circ \vec{w}_m)_i = \vec{p}_{m,i}^T \vec{\mathfrak{x}}
-\end{align*}
-where $\vec{p}_{m,i} \in \mathbb{C}^{(LN)^2}$ such that
-\begin{align*}
-    (\vec{p}_{m,i})_{[(m-1)N+k-1]LN+(m-1)N+l} = (\mat{A}_i)_{k,l}
-\end{align*}
-for $k = 1,\ldots,N$ and $l = 1,\ldots,N$. Now let $\vec{r}_w$ and $\mat{P}$ be such that
-\begin{align*}
-    \vec{r}_w = \begin{bmatrix}
-        (\vec{w}_1 \circ \vec{w}_1)_1 \\
-        \vdots \\
-        (\vec{w}_L \circ \vec{w}_L)_{2M-1}
-    \end{bmatrix} = \begin{bmatrix}
-        \vec{p}_{1,1}^T \vec{\mathfrak{x}} \\
-        \vdots \\
-        \vec{p}_{L,2M-1}^T \vec{\mathfrak{x}}
-    \end{bmatrix} = \begin{bmatrix}
-        \vec{p}_{1,1}^T \\
-        \vdots \\
-        \vec{p}_{L,2M-1}^T
-    \end{bmatrix} \vec{\mathfrak{x}} = \mat{P} \vec{\mathfrak{x}}.
-\end{align*}
-Similarly, we can relate
-\begin{align*}
-    (\vec{r}_x)_i &= \sum_{k=1}^{LN}(\vec{x})_k (\conj{\vec{x}})_{LN-i+k} \\
-    &= \vec{b}_i^T \vec{\mathfrak{x}}
-\end{align*}
-where $\vec{b}_i \in \mathbb{C}^{(LN)^2}$ is such that
-\begin{align*}
-    (\vec{b}_i)_{(k-1)LN+LN-i+k} = 1
-\end{align*}
-for $k = 1,\ldots,LN$ such that $1 \le LN-i+k \le LN$. Now let $\mat{B}$ be such that
-\begin{align*}
-    \vec{r}_x = \begin{bmatrix}
-        (\vec{r}_x)_1 \\
-        \vdots \\
-        (\vec{r}_x)_{2LN-1}
-    \end{bmatrix} = \begin{bmatrix}
-        \vec{b}_1^T \vec{\mathfrak{x}} \\
-        \vdots \\
-        \vec{b}_{2LN-1}^T \vec{\mathfrak{x}}
-    \end{bmatrix} = \begin{bmatrix}
-        \vec{b}_1^T \\
-        \vdots \\
-        \vec{b}_{2LN-1}^T
-    \end{bmatrix} \vec{\mathfrak{x}} = \mat{B} \vec{\mathfrak{x}}.
-\end{align*}
-This yields the system
-\begin{align*}
-    \vec{r}_w &= \mat{P} \vec{\mathfrak{x}}, \\
-    \vec{r}_x &= \mat{B} \vec{\mathfrak{x}}
-\end{align*}
-which can be used in a similar way to estimate $E(\vec{r}_x)$. However, since $\mat{A}_i$ is an $N \times N$ matrix, all elements in $\vec{p}_{m,i}$ relating to $(\vec{x})_k (\conj{\vec{x}})_l$ where $|k - l| \ge N$ will be zero. Therefore using $\vec{r}_w$ to estimate $E(\vec{r}_x)$ yields that the estimation is limited in support from $-N+1$ to $N-1$. This damages the resolution severely.
-
 \subsection{Discussion of \cref{th:corr-unbiased}}
+TODO: revise
 In this section we discuss the applicability of \cref{th:corr-unbiased} on the algorithm. Let $r[n]$ be a discrete signal such that $r[i] = (\vec{r}_x)_{i+LN}$ for $i = -LN+1,\ldots,LN-1$. Then
 \begin{align*}
     E(r[i])=E[(\vec{r}_x)_{i + LN}]=W[i]R_X[i]
