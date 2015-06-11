@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(description='Cognitive radio compressive sensin
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-L', metavar='L', type=int, default=40)
-parser.add_argument('-source', metavar='source', type=str, default='complex')
+parser.add_argument('-source', metavar='source', type=str, default='sinusoidal')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
 parser.add_argument('-dump', metavar='file', type=str, default='dumps/twotone.dmp')
 args = parser.parse_args()
@@ -27,7 +27,8 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-a = 5
+L = 15
+a = 4
 b = 3
 N = a * b
 upscale_factor = 50  # Warning: greatly diminishes performance
@@ -46,8 +47,8 @@ if source_type == "usrp":
     source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq)
 elif source_type == "dump":
     source = cg.source.File(dump_file_path)
-elif source_type == "complex":
-    source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
+elif source_type == "sinusoidal":
+    source = cg.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
 
 
 # sampler = cg.sampling.Coprime(a, b)
