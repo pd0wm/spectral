@@ -49,7 +49,7 @@ def table_to_file(table, filename):
     with open(filename, 'w') as f:
         f.write(build_table)
 
-OUTPUT_DIR = "../doc/thesis/performance/profiling_reports/"
+OUTPUT_DIR = "../doc/thesis/appendix/profiling_reports/"
 INPUT_DIR = "./profiler_reports/"
 OUTPUT_EXT = ".tex"
 key = ('cumtime', 'tottime')
