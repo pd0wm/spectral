@@ -13,6 +13,7 @@ def settings_server():
     print "started settings server"
     daemon.requestLoop()
 
+
 def safe_start_name_server():
     try:
         Pyro4.locateNS()
@@ -20,7 +21,6 @@ def safe_start_name_server():
         print "Starting nameserver"
         p = Process(target=Pyro4.naming.startNSloop)
         p.start()
-
 
 
 if __name__ == "__main__":
