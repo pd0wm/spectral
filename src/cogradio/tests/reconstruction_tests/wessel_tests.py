@@ -6,10 +6,13 @@ import cogradio as cg
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def herm(a):
     return np.transpose(np.conjugate(a))
 
+
 class Wessel_test(unittest.TestCase):
+
     def setUp(self):
         self.dony = sp.io.loadmat("./cogradio/tests/reconstruction_tests/wessel_tests")
         self.wes = cg.reconstruction.Wessel(self.dony['L'][0][0], self.dony['C'])
@@ -35,7 +38,7 @@ class Wessel_test(unittest.TestCase):
         psd1 = np.absolute(self.dony['PSD_ruler']).T
         psd2 = np.absolute(np.fft.fft(self.wes.R_pinv.dot(self.ry).T))
 
-        assertLess(np.linalg.norm(psd1 - psd2), 10**-12)
+        self.assertLess(np.linalg.norm(psd1 - psd2), 10**-12)
 
     def sample(self, C, x):
         y = np.dot(C, x.transpose().reshape((self.dony['N'], self.L * self.K), order='F'))
@@ -55,8 +58,8 @@ class Wessel_test(unittest.TestCase):
             out[:, lag + max_lag] = tmp2[:, 0]
         for lag in range(max_lag + 1):
             out[:, max_lag - lag] = (np.reshape(
-                    np.dot(y[:, :length - lag], herm(y[:, lag:length])),
-                    (-1, 1), order='F')/float(length - lag))[:, 0]
+                np.dot(y[:, :length - lag], herm(y[:, lag:length])),
+                (-1, 1), order='F')/float(length - lag))[:, 0]
 
         return out.T.reshape((-1, 1), order='F')
 
