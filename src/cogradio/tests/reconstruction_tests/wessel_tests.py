@@ -13,6 +13,7 @@ class Wessel_test(unittest.TestCase):
     def setUp(self):
         self.dony = sp.io.loadmat("./cogradio/tests/reconstruction_tests/wessel_tests")
         self.wes = cg.reconstruction.Wessel(self.dony['L'][0][0], self.dony['C'])
+        self.sampler = cg.sampling.MultiCoset(0, C=self.dony['C'])
         self.L = self.dony['L'][0][0]
         self.K = 1984
         y = self.sample(self.dony['C'], self.dony['x'])

@@ -1,0 +1,15 @@
+Wed Jun 10 11:25:25 2015    ./profiler_reports/Wessel_init.prof
+
+         233082 function calls (232836 primitive calls) in 479.352 seconds
+
+   Ordered by: cumulative time, internal time
+   List reduced from 221 to 5 due to restriction <5>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000  479.352  479.352 /Users/dorus/Development/cogradio/src/cogradio/reconstruction/wessel.py:12(__init__)
+        1    0.081    0.081  427.999  427.999 /Users/dorus/Development/cogradio/src/cogradio/reconstruction/reconstructor.py:38(calc_pseudoinverse)
+        1    0.023    0.023  424.456  424.456 /usr/local/lib/python2.7/site-packages/scipy/linalg/basic.py:557(pinv)
+        1  424.283  424.283  424.313  424.313 /usr/local/lib/python2.7/site-packages/scipy/linalg/basic.py:456(lstsq)
+        1    0.000    0.000   35.116   35.116 /usr/local/lib/python2.7/site-packages/numpy/linalg/linalg.py:1430(matrix_rank)
+
+

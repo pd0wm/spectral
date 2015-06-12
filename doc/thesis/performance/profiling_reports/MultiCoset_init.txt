@@ -1,0 +1,15 @@
+Wed Jun 10 11:48:54 2015    ./profiler_reports/MultiCoset_init.prof
+
+         9 function calls in 0.000 seconds
+
+   Ordered by: cumulative time, internal time
+   List reduced from 8 to 5 due to restriction <5>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 /Users/dorus/Development/cogradio/src/cogradio/sampling/multicoset.py:10(__init__)
+        1    0.000    0.000    0.000    0.000 /Users/dorus/Development/cogradio/src/cogradio/helperfunctions.py:52(build_sparse_ruler_sampling_matrix)
+        1    0.000    0.000    0.000    0.000 {numpy.core.multiarray.zeros}
+        1    0.000    0.000    0.000    0.000 {range}
+        1    0.000    0.000    0.000    0.000 /Users/dorus/Development/cogradio/src/cogradio/sparseruler.py:1(sparseruler)
+
+
