@@ -8,10 +8,16 @@
 \begin{document}
 
 
+todo: CONSEQUENTIE VAN E en haakjes, elimineer > in defs
 \section{Main Analysis}
-Let $L$, $N$ and $M$ be integer parameters such that $M$ cosets provide $KL$ samples downsampled by a factor $N$. Thus $KLN$ samples of the input signal are required. Let the input signal be denoted by $\vec{x} \in \mathbb{C}^{KLN}$. The main analysis will be considered a limiting process of $K \in \mathbb{N}$ where $K \to \infty$. To this end, let $\varepsilon > 0$.
+Let $K \in \mathbb{N}$. $K$ will be used as a parameter which is related to the bias of the estimator of the autocorrelation of the input signal. Eventually, we will let $K \to \infty$, which will allow us to study the case in which an unbiased estimatior is used.
 
-Let the sampling vector for coset $i$ be given by $\vec{c}_i \in \mathbb{C}^{N}$. The sampling vector determines the output of a coset. The exact relationship has yet to be derived. Let the pseudo output for coset $i$ be given by $\vec{y}_i = \vec{c}_i \ast \vec{x}$. The pseudo output will be used to derive the output of a coset.
+Let $L$, $N$ and $M$ be integer parameters such that $M$ cosets provide $KL$ samples of the input signal, downsampled by a factor $N$. This means that $KLN$ samples of the input signal are required. Let the input signal be denoted by $\vec{x} \in \mathbb{C}^{KLN}$.
+
+Let the sampling vector of coset $i$ be given by $\vec{c}_i \in \mathbb{C}^{N}$. The sampling vector determines the output of a coset. The exact relationship has yet to be derived. Let the pseudo output of coset $i$ be given by $\vec{y}_i = \vec{c}_i \ast \vec{x}$. The pseudo output will be used to derive the output of a coset.
+
+
+OUTPUT SAMPLING VECTOR
 
 \begin{blockTheorem} \label{th:conv-corr}
     \makebox[\textwidth]{\centering $(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x})$.} \nolinebreak
@@ -21,13 +27,15 @@ Let the correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\ve
 \begin{align*}
     \vec{r}_{y_i,y_j} =(\vec{c}_i \ast \vec{x}) \circ (\vec{c}_j \ast \vec{x}) = (\vec{c}_i \circ \vec{c}_j) \ast (\vec{x} \circ \vec{x}) = \vec{r}_{c_i,c_j} \ast \vec{r}_x.
 \end{align*}
-Denote a truncated version of $\vec{r}_{y_i,y_j}$ by $\hat{\vec{r}}_{y_i,y_j} = \vec{r}_{y_i,y_j}[KLN-LN+2N-1,KLN+LN-1]$. Denote a truncated version of $\vec{r}_x$ by $\hat{\vec{r}}_x = \vec{r}_x [KLN-LN+1,KLN+LN-1]$. Let $\mat{R}_{c_i,c_j}$ be such that
+Denote a truncated version of $\vec{r}_{y_i,y_j}$ by $\hat{\vec{r}}_{y_i,y_j} = \vec{r}_{y_i,y_j}[KLN-LN+2N-1,KLN+LN-1]$. Denote a truncated version of $\vec{r}_x$ by $\hat{\vec{r}}_x = \vec{r}_x [KLN-LN+1,KLN+LN-1]$. Then
 \begin{align*}
     \hat{\vec{r}}_{y_i,y_j}
     &= (\vec{r}_{c_i,c_j} \ast \vec{r}_x)[KLN-LN+2N-1,KLN+LN-1]\\
     &= (\vec{r}_x \ast \vec{r}_{c_i,c_j})[KLN-LN+2N-1,KLN+LN-1] \\
-    &= \pushline \\
-    \pushright{
+    &= \mat{R}_{c_i,c_j} \hat{\vec{r}}_x
+\end{align*}
+where $\mat{R}_{c_i,c_j}$ denotes the matrix
+\begin{align*}
     \begin{bmatrix}
         % (\vec{r}_{c_i,c_j})_1 & 0 & 0& \cdots & 0 \\
         % (\vec{r}_{c_i,c_j})_2 & (\vec{r}_{c_i,c_j})_1 & 0 & \cdots & 0 \\
@@ -39,16 +47,9 @@ Denote a truncated version of $\vec{r}_{y_i,y_j}$ by $\hat{\vec{r}}_{y_i,y_j} = 
         && \multicolumn{2}{c}{\ddots} \\
         \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_{1} & 0 \\
         \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots &(\vec{r}_{c_i,c_j})_{2} & (\vec{r}_{c_i,c_j})_{1} 
-    \end{bmatrix} \pushline}
-    \pushright{\begin{bmatrix}
-        (\vec{r}_x)_{KLN-LN+1} \\
-        (\vec{r}_x)_{KLN-LN+2} \\
-        \vdots \\
-        (\vec{r}_x)_{KLN+LN-2} \\
-        (\vec{r}_x)_{KLN+LN-1}
-    \end{bmatrix} }
-    &= \mat{R}_{c_i,c_j} \hat{\vec{r}}_x.
+    \end{bmatrix}.
 \end{align*}
+
 Let the $2L-1\times 2LN-2N+1$ decimation matrix be defined by $(\mat{D})_{i,(i-1)N+1} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. Let the decimated correlation of the pseudo outputs of cosets $i$ and $j$ by given by $\hat{\vec{r}}'_{y_i,y_j} = \mat{D} \hat{\vec{r}}_{y_i,y_j}$.
 % Then let $\mat{R}$ be such that
 % \begin{align*}
@@ -177,16 +178,19 @@ Therefore equating and dividing by $KLN$ yields that
 \begin{align*}
     \left(\frac{\vec{b}_y}{KL}\right) \odot \vecsc{r}_{y'_i,y'_j} = \vec{w} \odot \mat{D}\mat{R}_{c_i,c_i} \left[\left(\frac{\vec{b}_x}{KLN}\right) \odot \vecsc{r}_{x}\right].
 \end{align*}
-We have now related $\vecsc{r}_{y'_i,y'_j}$ to $\vecsc{r}_{x}$. However, this relationship involves element-wise multiplication, which can be considered as effects due to windowing.
+We have related $\vecsc{r}_{y'_i,y'_j}$ to $\vecsc{r}_{x}$. However, this relationship involves element-wise multiplication, which can be considered as effects due to windowing.
 
-
-todo: CONSEQUENTIE VAN E en haakjes, elimineer > in defs
-\subsection{Limiting Case}
-Assume that $R_{Y'_i,Y'_j}[m] = 0$ for $-KL+1 \le m \le -L$ and $L \le m \le KL-1$. The proof of \cref{th:conv-corr} then shows that $R_{Y_i,Y_j}[m]=0$ for $m \le -LN$ and $m \ge LN$, which implies that $[E(\vec{r}_{y_i,y_j})]_{m}=0$ for $m \le KLN - LN + N - 1$ and $m \ge KLN +LN + N - 1$. Since $\vec{r}_{y_i,y_j} = \vec{r}_{c} \ast \vec{r}_x$, $[E(\vec{r}_x)]_m=0$ for $m \le KLN - LN$ and $m \ge KLN + LN$. This is achieved by letting $(\vec{x})_m=0$ for $m \ge LN + 1$.
-
-Imply limiting process
-
-To eliminate these effects, we assume that $R_X[i]=0$ for $i \ge LN$ and $i \le -LN$. To achieve this, let $(\vec{x})_i=0$ for $i \ge LN$ and let $K \to \infty$. Because $K \to \infty$, we notice that $\vec{b}_x/KLN \to \vec{1}_{2LN-1}$, $\vec{b}_y/KL \to \vec{1}_{2L-1}$ and $\vec{w} \to \vec{1}_{2L-1}$. Then $\vecsc{r}_{y'_i,y'_j} = \mat{D}\mat{R}_{c_i,c_i} \vecsc{r}_{x}$. Now let $\vecsc{r}_y$ and $\vec{R}$ be such that
+\subsection{Limiting Process}
+Note that in the obtained equation only $\vec{b}_x/KLN$, $\vec{b}_y/KL$ and $\vec{w}$ depend on $K$. Now let $K \to \infty$. We see that
+\begin{align*}
+    \left(\frac{\vec{b}_y}{KL}\right) \odot \vecsc{r}_{y'_i,y'_j} \to \vec{1}_{2L-1}\odot \vecsc{r}_{y'_i,y'_j} = \vecsc{r}_{y'_i,y'_j}
+\end{align*}
+and
+\begin{align*}
+    \vec{w} \odot \mat{D}\mat{R}_{c_i,c_i} \left[\left(\frac{\vec{b}_x}{KLN}\right) \odot \vecsc{r}_{x}\right] &\to \vec{1}_{2L-1} \odot \mat{D}\mat{R}_{c_i,c_j} \left[\vec{1}_{2LN-1} \odot \vecsc{r}_{x}\right] \\
+    &= \mat{D}\mat{R}_{c_i,c_j} \vecsc{r}_x.
+\end{align*}
+Therefore $\vecsc{r}_{y'_i,y'_j} = \mat{D}\mat{R}_{c_i,c_i} \vecsc{r}_{x}$. Now let $\vecsc{r}_y$ and $\vec{R}$ be such that
 \begin{align*}
     \vecsc{r}_y = \begin{bmatrix}
         \vecsc{r}_{y'_1,y'_1} \\ \vdots \\ \vecsc{r}_{y'_M,y'_M}
@@ -194,10 +198,40 @@ To eliminate these effects, we assume that $R_X[i]=0$ for $i \ge LN$ and $i \le 
         \mat{D}\mat{R}_{c_1,c_1} \\ \vdots \\ \mat{R}_{c_M,c_M}
     \end{bmatrix} \vecsc{r}_x = \mat{R} \vecsc{r}_x.
 \end{align*}
+
+\subsection{Limiting Support}
+Assume that
+\begin{align*}
+    R_{Y'_i,Y'_j}[m] = 0 \text{ for }-KL+1 \le m \le -L,L \le m \le KL-1.
+\end{align*}
+The proof of \cref{th:conv-corr} then shows that
+\begin{align*}
+    R_{Y_i,Y_j}[m]=0 \text{ for }-KLN+N \le m \le -LN,LN \le m \le KLN-N,
+\end{align*}
+which implies that
+\begin{align*}
+    [E(\vec{r}_{y_i,y_j})]_{m}=0 \text{ for } 2N-1 \le m \le KLN - LN + N - 1,\pushline \pushright{KLN +LN + N - 1 \le m \le 2KLN -1.}
+\end{align*}
+\vspace{-3.5em} \\
+Since $\vec{r}_{y_i,y_j} = \vec{r}_{c} \ast \vec{r}_x$,
+\begin{align*}
+    [E(\vec{r}_x)]_m=0 \text{ for } 1 \le m \le KLN - LN + N - 1,\pushline \pushright{KLN + LN - N + 1 \le m \le 2KLN - 1,}
+\end{align*}
+\vspace{-3.5em} \\
+which yields that
+\begin{align*}
+    R_X[m]=0 \text{ for }-KLN + 1\le m \le -LN+N-1,\pushline \pushright{LN-N+1 \le m \le KLN - 1.}
+\end{align*}
+\vspace{-3.5em} \\
+Therefore
+\begin{align*}
+    (\vecsc{r}_x)_m = 0 \text{ for } 1 \le m \le N-1, 2LN-N+1 \le 2LN-1.
+\end{align*}
+Finally, the limited support of $\vecsc{r}_x$ yields that
+\begin{align*}
+    \vecsc{r}_y = \mat{R}[N,2LN-N] \vecsc{r}_x[N,2LN-N].
+\end{align*}
 This concludes the main analysis.
-
-Consider \cref{th:deci-corr}. Here $[E(N \vec{r}_{y'_i,y'_j})]_{m + L}$ is an estimator of $R_{Y'_i,Y'_j}[m]$ for $m = -L+1,L-1$. Since one is only able to estimate $R_{Y'_i,Y'_j}[m]$ for $m=-L+1,L-1$, it is often assumed that $R_{Y'_i,Y'_j}[m]=0$ for $m \le -L$ and $m \ge L$. But then $R_{Y'_i,Y'_j}[m]=0$ for $m \le -LN$ and $m \ge LN$, which implies that $E[(\vec{r}_{y_i,y_j})]_{m+LN + N-1}=0$ for $m \le -LN$ and $m \ge LN$. Therefore the first and last $N-1$ elements of $E[(\vec{r}_{y_i,y_j})]$ are zero. By the structure of $\mat{R}_{c_i,c_j}$, the first $N-1$ elements of $E(\vec{r}_x)$ consist of the first $N-1$ elements of $\vec{r}_{y_i,y_j}$, which are zero. Therefore, the first $N-1$ elements of $E(\vec{r}_x)$ are zero. Similarly, the last $N-1$ elements of $E(\vec{r}_x)$ are zero.
-
 
 
 % So $\vec{r}_y'$ is an unbiased estimator of $\mat{R} E(\hat{\vec{r}}_x)$, which we can use to determine $E(\hat{\vec{r}}_x)$. Denote $\vec{x}_m = \vec{x}[(m-1)N+1,mN]$ for $m = 1,\ldots,L$. Thus $\vec{x}_m$ corresponds to the $m$'th interval of $N$ samples of $\vec{x}$. Finally, note that

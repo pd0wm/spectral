@@ -7,7 +7,13 @@
 \begin{document}
 
 \chapter{Reconstruction}
-This chapter introduces a reconstruction method which is largely based on \cite{ariananda2012compressive}. However, \cite{ariananda2012compressive} considers the reconstruction from a statistical perspective, where we choose a deterministic point of view.
+This chapter introduces a method to reconstruct the power spectral density of a signal which is sampled at sub-Nyquist frequencies. The method is largely based on \cite{ariananda2012compressive}. However, \cite{ariananda2012compressive} considers the reconstruction from a statistical perspective, where we choose a deterministic point of view.
+
+Besides novelty and innovation, there are a few pratical reasons for taking this point of view. First of all, \cite{ariananda2012compressive} starts the analysis of the time-domain reconstruction approach assuming that the autocorrelation of the signal is given. They then proceed to discuss an unbiased estimator of this autocorrelation. However, this unbiased estimator may not be sufficient in the case that too few samples are available. One may then use a biased estimator, whose mean squared error can be less \cite{percival1993univariate}. From the time-domain reconstruction method described in \cite{ariananda2012compressive}, it is not clear if the reconstruction method should change if a biased estimator is used. Also, it is not clear what the effects of using a biased estimator are. In this chapter we study a reconstruction method based on this biased estimator. It turns out that our method can also be used for the unbiased estimator, which is convenient.
+
+Second, in the study of the biased estimator, we obtain a relationship which connects the effects caused by the use of this biased estimator. By having knowledge of this relationship, the effects can be either compensated for, or they can be used to one's advantage.
+
+Finally, in the study of our reconstruction method, we make use of operators that are often available in software used for digital signal processing, such as MATLAB. This makes the analysis easy to follow and the algorithm easy to implement. Besides, since these operators are used in many other applications, some of the results obtained using these operators are also applicable to these applications. 
 
 \subimport{reconstruction/preliminaries/}{preliminaries}
 \subimport{reconstruction/overview_of_variables/}{overview_of_variables}

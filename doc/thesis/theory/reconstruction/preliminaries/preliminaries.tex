@@ -1,4 +1,5 @@
 %!TEX program = xelatex
+%!TEX root = ../../theory.tex
 
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../../includes/preamble.tex}
@@ -31,7 +32,7 @@ We will also need notation to denote two uncommon vector operations.
     Let $\mat{A}$ be an $M \times N$ matrix. Then $\mat{A}[a,b]$ denotes the $M \times b-a+1$ matrix $\mat{B}$ such that $(\mat{B})_{i,j}=(\mat{A})_{i,j+a-1}$ for $i = 1,\ldots,N$ and $j = 1,\ldots,b-a+1$.
 \end{blockDefinition}
 
-Note that subvectors and submatrices include both boundary elements.
+Subvectors and submatrices are found in MATLAB in a very similar way. For example, if \texttt{x} represents a vector $\vec{x}$ in MATLAB, then \texttt{x(a:b)} is equivalent to $\vec{x}[a,b]$. Note that subvectors and submatrices include both boundary elements.
 
 \begin{blockDefinition}[Reverse of Vector]
     Let $\vec{x} \in \mathbb{C}^N$. Then the reverse of $\vec{x}$ denotes a vector $\vec{y} \in \mathbb{C}^N$ such that $(\vec{y})_i = (\vec{x})_{N-i+1}$ for $i = 1,\ldots,N$.
@@ -61,14 +62,16 @@ The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also def
     where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
 \end{blockDefinition}
 
-Furthermore, we define the Hadamard product as a closed binary operation on vector.
+It is important to notice that the convolution operator and deterministic cross-correlation operator are equivalent to respectively \texttt{conv} and \texttt{xcorr} in MATLAB. Also, the deterministic cross-correlation turns out to be a biased estimator of the cross-correlation. We furthermore define the Hadamard product as a closed binary operation on vector.
 
 \begin{blockDefinition}[Hadamard Product]
     Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$. Then $\vec{x} \odot \vec{y}$ denotes a vector $\vec{z} \in \mathbb{C}^N$ such that $(\vec{z})_i = (\vec{x})_i (\vec{y})_i$ for $i = 1,\ldots,N$.
 \end{blockDefinition}
 
-Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related.
+Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related. Also, the Hadamard product is equivalent to element-wise multiplication in MATLAB.
 The following theorem identifies the expected value of the correlation operator.
+
+TODO: switch
 
 \begin{blockTheorem} \lab{th:correlation-bias}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Furthermore, let $r[n]$ be a discrete signal such that $r[i] = (\vec{x} \circ \vec{y})_{i+M}$ for $i = -M+1,\ldots,N-1$. Then $r[i]$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where

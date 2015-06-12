@@ -27,7 +27,7 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-L = 2
+L = 3
 a = 5
 b = 7
 N = 61
