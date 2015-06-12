@@ -22,7 +22,7 @@ Vectors are denoted by lower-case bold-faced letters and matrices are denoted by
     Let $\vec{x} \in \{1\}^N$. Then $\vec{1}_N$ denotes $\vec{x}$.
 \end{blockDefinition}
 
-We will also need notation to denote two uncommon vector operations.
+We also need notation to denote two uncommon vector operations.
 
 \begin{blockDefinition}[Subvector]
     Let $\vec{x} \in \mathbb{C}^N$. Then $\vec{x}[a,b]$ denotes a vector $\vec{z} \in \mathbb{C}^{b-a+1}$ such that $(\vec{z})_i = (\vec{x})_{i+a-1}$ for $i = 1,\ldots,b-a+1$.
@@ -45,7 +45,7 @@ We now define the convolution operator as a closed binary operation on vectors. 
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\vec{y})_{i-k+1}
     \end{align*}
-    where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
+    where $(\vec{x})_i=0$ for $i \le 0$ and $i \ge N+1$ and $(\vec{y})_i=0$ for $i \le 0$ and $i \ge M+1$.
 \end{blockDefinition}
 
 \begin{blockTheorem}[Commutativity of Convolution] \label{th:conv-comm}
@@ -59,7 +59,7 @@ The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also def
     \begin{align*}
         (\vec{z})_i = \sum_{k=1}^{N} (\vec{x})_k (\conj{\vec{y}})_{M-i+k}
     \end{align*}
-    where $(\vec{x})_i=0$ for $i < 1$ and $i > N$ and $(\vec{y})_i=0$ for $i < 1$ and $i > M$.
+    where $(\vec{x})_i=0$ for $i \le 0$ and $i \ge N+1$ and $(\vec{y})_i=0$ for $i \le 0$ and $i \ge M+1$.
 \end{blockDefinition}
 
 It is important to notice that the convolution operator and deterministic cross-correlation operator are equivalent to respectively \texttt{conv} and \texttt{xcorr} in MATLAB. Also, the deterministic cross-correlation turns out to be a biased estimator of the cross-correlation. We furthermore define the Hadamard product as a closed binary operation on vector.
@@ -71,13 +71,11 @@ It is important to notice that the convolution operator and deterministic cross-
 Note that $\odot$ is similar to $\cdot$, since the inner product and Hadamard product are closely related. Also, the Hadamard product is equivalent to element-wise multiplication in MATLAB.
 The following theorem identifies the expected value of the correlation operator.
 
-TODO: switch
-
 \begin{blockTheorem} \lab{th:correlation-bias}
     Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$. Furthermore, let $r[n]$ be a discrete signal such that $r[i] = (\vec{x} \circ \vec{y})_{i+M}$ for $i = -M+1,\ldots,N-1$. Then $r[i]$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where
     \begin{align*}
         W[i] = \begin{cases}
-            i + M & \text{if } -M + 1 \le i \le -M + K, \\
+            M + i & \text{if } -M + 1 \le i \le -M + K, \\
             K & \text{if } -M + K < i < N - K, \\
             N - i & \text{if } N - K \le i \le N - 1, \\
             0 & \text{elsewhere,}
