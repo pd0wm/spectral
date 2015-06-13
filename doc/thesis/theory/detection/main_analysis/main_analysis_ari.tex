@@ -23,7 +23,13 @@ Note that
 
 and therefore the distribution of $\mathcal{P}(\omega)$ depends on the distribution of \emph{all} elements of the autocorrelation. Furthermore, the elements of the autocorrelation, can in general not be regarded as independent random variables. 
 
-In the rest of this section we will show that under the assumption that $\vec{x}$ is circular complex gaussian noise and $L-1 \ll KL$, the elements of $\vec{s}_x$ are approximately gaussian distributed.
+Let $(\vec{s}_x) = \mat{F} \vec{\hat{r}}_x$, where $\mat{F}$ denotes the $2LN-1 \times 2LN-1$ DFT matrix, denote the vector containing the elements of the power spectral density of $\vec{x}$.
+
+\begin{blockTheorem}[Distribution of power spectral density elements]
+Under the assumption that $\vec{x}$ is circular complex gaussian noise and $L-1 \ll KL$, the elements of $\vec{s}_x$ are approximately gaussian distributed.
+\end{blockTheorem}
+
+PROOF:
 
 First notice that if the elements of $\vec{\hat{r}}_x$ have a gaussian distribution, then so will have the elements of $\vec{s}_x$ as they are a linear combination of the elements in $\vec{\hat{r}}_x$.
 
@@ -43,27 +49,59 @@ That is, we'd like to show that the elements of $\vec{\hat{r}}'_{y_i,y_j}$ are a
 &= \sum_{l=1}^N\sum_{m-1}^N \left(\vec{c}_i\right)_l \left(\vec{\overline{c}}_j\right)_m \sum_{k=1}^{KL} (\vec{x})_{kN-l+1} \cdot (\vec{\overline{x}})_{(k-u+L)N - m+1}
 \end{align*}
 
-As $\vec{c}_i$ and $\vec{c}_j$ are constant vectors, we will only have to focus on the last term. Notice that if
+As $\vec{c}_i$ and $\vec{c}_j$ are constant vectors, we will only have to focus on the last term. Let us introduce the helper variable $a =  \sum_{k=1}^{KL} (\vec{x})_{kN-l+1} \cdot (\vec{\overline{x}})_{(k-u+L)N - m+1}$. Notice that if
 
 \begin{enumerate}
-	\item $u=L, l=m$, then $\sum_{k=1}^{KL}\vec{x}_{kN-l+1}\vec{\overline{x}}_{kN-l+1}$. This term follows a $\chi^2$ distribution (by definition). As with the convential energy detector, we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
-	\item $l \neq m$, in this case 
-	\begin{align*}\{(\vec{x})_{kN-l+1} : 1 \leq k \leq KL\} \cap 
-	\{(\vec{x})_{(k-u+L)N - m+1} : 1 \leq k \leq KL\}  &= \emptyset
+	\item $u=L, l=m$, then $a = \sum_{k=1}^{KL}\vec{x}_{kN-l+1}\vec{\overline{x}}_{kN-l+1}$. That is, $a$ follows a $\chi^2$ distribution (by definition). As with the convential energy detector, we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+	\item $l \neq m$. Notice that as 
+	% \begin{align*}\{(\vec{x})_{kN-l+1} : 1 \leq k \leq KL\} \cap 
+	% \{(\vec{x})_{(k-u+L)N - m+1} : 1 \leq k \leq KL\}  &= \emptyset
+	% \end{align*}
+
+	\begin{align*}
+	\bmod(kN-l+1,N) &= \bmod(-l+1, N)
 	\end{align*}
-	That is, all products in the sum have absolutely no terms in common. However, as each element of $\vec{x}$ has the same distribution, the product of two distinct elements in $\vec{x}$ will always yield the same distribution (whatever it may be). By the Central Limit Theorem we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
-	\item $u\neq L, l=m$ In this case, the product in the sum contains elements of $\vec{x}$ with a minimum displacement of $N$ in their indices. Unlike case 2, the specified sets \emph{do} have elements in common (but only if $KL \geq N$). To see why, consider Figure TODO TIKZ PRO. Notice, that the dependence of a product in the sum on other products is limited is limited. Therefore, if $KL$ is large enough we can again regard the distribution of the sum as a whole as gaussian.			
+	and
+	\begin{align*}
+	\bmod((k-u+L)N - m+1,N) &= \bmod(-m+1, N)
+	\end{align*}
+	the product in the sum
+	That is $(\vec{x})_{kN-l+1}$  can never equal  $(\vec{x})_{(k-u+L)N - m+1}$ in $a$. Because each element of $\vec{x}$ has the same distribution, the product of two distinct elements in $\vec{x}$ will always yield the same distribution (whatever it may be). By the Central Limit Theorem we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+
+	\item $u\neq L, l=m$ In this case, the product in the sum contains elements of $\vec{x}$ with a minimum displacement of $N$ in their indices. Unlike case 2, the specified sets \emph{can} have elements in common. To see why, consider \cref{fig:ex_dep}. Notice, that the dependence of a product in the sum on other products is limited: for each element of $\vec{x}$ there will be a maximum of two terms in $a$ dependent on that element. Notice that as $u\neqL$ the first $L-u$ multiplicands in $a$ can \emph{never} appear as multiplier in $a$. The first $L-u$ multipliers, however \emph{can} appear as multiplicand in $a$.  Using this observation we rewrite $a$ using two sums, which alternatingly sum $L-u$ consecutive terms (which guarantees that the multiplicands in the sum can never equal the multiplier) of the original sum in $a$: 
+
+	\begin{align*}
+	a &= \sum_{q=1}^{\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor} \sum_{r=1}^{L-u} \vec{x}_{((2q-1)(L-u)+r)N-l+1}\vec{\overline{x}}_{((2q-1)(L-u)+r)N-l+1} \\
+	   & \;+ \sum_{s=1}^{\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor} \sum_{t=1}^{L-u} \vec{x}_{(2s(L-u)+t)N-l+1}\vec{\overline{x}}_{(2s(L-u)+t)N-l+1}
+	\end{align*}
+	Note that we tacitly assumed that $L-u \geq 0$. This does not pose a problem as similar analysis for $L-u < 0$ is possible. 
+	Therefore, if $\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor$ is large enough, $a$ is the sum of two approximately gaussian distributed variables, and therefore itself is approximately gaussian distributed.			
 \end{enumerate}
+
+\begin{figure}
+\begin{tikzpicture}
+\node (species1) {
+\begin{tabular}{|c|c|c|c|c|c|c|c|}\hline
+    $(\vec{x})_{2N-l+1}$ & $\ldots$  & $(\vec{x})_{3N-l+1}$ & $\ldots$ & $(\vec{x})_{4N-l+1}$ & $\ldots$ & $(\vec{x})_{5N-l+1}$  & $\ldots$ \\ \hline 
+    \end{tabular}
+  
+};
+\node (species2) [below right= 0.2cm and -14.5cm of species1] {
+      \begin{tabular}{|c|c|c|c|c|c|c|c|}\hline
+    $(\vec{x})_{N-l+1}$ & $\ldots$  & $(\vec{x})_{2N-l+1}$ & $\ldots$ & $(\vec{x})_{3N-l+1}$ & $\ldots$ & $(\vec{x})_{4N-l+1}$  & $\ldots$ \\ \hline 
+    \end{tabular}
+};
+\end{tikzpicture}
+\caption{Example illustrating dependence, $u=L-1$}
+\label{fig:ex_dep}
+\end{figure}
+
+
+Using this approximation, it is possible to determine the distribution of the elements  of $\vec{s}_x$: by determining the expected value ($\mu_{\omega}$) and the variance $\sigma_{\omega}^2$ for each element of $\vec{s}_x$, the distribution is completely specified.
 
 To compute the variance of each element of $(\vec{s})_x$, we first observe that the Covariance matrix $C_{sx}$ of $\vec{s}_x$ contains the variance of each element  on the diagonal.
 
-Furthermore as:
-
-\begin{align*}
-\vec{s_x} = F
-\end{align*}
-
-Using this approximation, it is possible to determine the distribution of the elements  of $\vec{s}_x$: by determining the expected value ($\mu_{\omega}$) and the variance $\sigma_{\omega}^2$ for each element of $\vec{s}_x$, the distribution is completely specified.
+as $\vec{s}_x = \mat{F}\vec{\hat{r}}_x$ 
 
 Using the Neyman Pearson Test statistic, we obtain that our threshold $\gamma_{\omega}$ given a false alarm probability $p_{fa}$ should be set to $Q^{-1}(p_{fa})\sigma_{\omega} + \mu_{\omega}$.
 
