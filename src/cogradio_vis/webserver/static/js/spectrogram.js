@@ -54,7 +54,7 @@ SpectroGram.prototype.rescale = function(fft_data, length) {
     var fft_data_length = fft_data.length;
 
     for (i = 0; i < length; i++) {
-        fft_data_scaled[i] = fft_data[Math.round(parseFloat(i)/length*fft_data_length)];
+        fft_data_scaled[i] = fft_data[Math.round(parseFloat(i)/length*(fft_data_length-1))];
     }
 
     return fft_data_scaled;

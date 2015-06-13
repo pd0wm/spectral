@@ -1,5 +1,5 @@
 /**
- * Handles everything related to visualisation.
+ * Handles everything related to control.
  */
 
  var Control = function() {
