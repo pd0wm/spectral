@@ -7,7 +7,7 @@
 
 \begin{document}
 \section{Overview of Variables}
-\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis. Note that the hat symbol represents a truncated variable and that the prime symbol respresents a decimated variable.
+\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis. Note that the hat symbol is often used to represent a truncated variable and that the prime symbol is often used to respresent a decimated variable.
 
 \begin{table}[H]
     \centering
@@ -16,14 +16,13 @@
         Number of samples & $L$ & $1$ \\
         Downsampling factor & $N$ & $1$ \\
         Number of cosets & $M$ & $1$ \\
-        Input signal & $\vec{x}$ & $LN$ \\
+        Input signal & $\vec{x}$ & $KLN$ \\
         Deterministic correlation of input signal & $\vec{r}_x$ & $2KLN - 1$ \\
         Truncated deterministic correlation of input signal & $\hat{\vec{r}}_x$ & $2LN - 1$ \\
         Autocorrelation of input signal & $\vecsc{r}_x$ & $2LN - 1$ \\
         Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
-        Sampling vector of coset $i$ reversed & $\vec{d}_i$ & $N$ \\
         Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
-        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN+2N-3 \times 2LN-1$ \\
+        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN-2N+1 \times 2LN-1$ \\
         Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
         Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2KLN + 2N - 3$ \\
         Truncated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}_{y_i,y_j}$ & $2LN - 2N + 1$ \\
