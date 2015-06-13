@@ -10,6 +10,8 @@
 
 We assume that if our signal $x[n]$ purely contains noise, the elements of $\vec{x}$ are i.i.d. circular complex gaussian distributed; $(\vec{x})_i \sim \mathcal{CN}(0,\sigma_n)$. 
 
+In this section we will analyze how the elements of the PSD can serve as the test statistic as used in the Neyman-Pearson test. 
+
 \subsection{Distribution of PSD elements}
 To employ the Neyman-Pearson theorem to determine the threshold at frequency $\omega$, it is necessary that one knows the distribution of $\mathcal{P}\left(\omega\right)$. Only if this distribution is known, the threshold $\eta_{\omega}$ can correctly be set to yield the desired false alarm probability.
 
@@ -44,14 +46,22 @@ That is, we'd like to show that the elements of $\vec{\hat{r}}'_{y_i,y_j}$ are a
 As $\vec{c}_i$ and $\vec{c}_j$ are constant vectors, we will only have to focus on the last term. Notice that if
 
 \begin{enumerate}
-	\item $u=L, l=m$, then $\sum_{k=1}^{KL}\vec{x}_{kN-l+1}\vec{\overline{x}}_{kN-l+1}$. This term follows a $\chi^2$ distribution (by definition).
+	\item $u=L, l=m$, then $\sum_{k=1}^{KL}\vec{x}_{kN-l+1}\vec{\overline{x}}_{kN-l+1}$. This term follows a $\chi^2$ distribution (by definition). As with the convential energy detector, we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
 	\item $l \neq m$, in this case 
 	\begin{align*}\{(\vec{x})_{kN-l+1} : 1 \leq k \leq KL\} \cap 
 	\{(\vec{x})_{(k-u+L)N - m+1} : 1 \leq k \leq KL\}  &= \emptyset
 	\end{align*}
-	That is, all products in the sum have absolutely no terms in common. However, as each element of $\vec{x}$ has the same distribution, the product of two distinct elements in $\vec{x}$ will always yield the same distribution (whatever it may be). 
-	\item $u\neq L, l=m$ In this case, the product in the sum contains elements of $\vec{x}$ with a minimum displacement of $N$ in their indices. Unlike case 2, the specified sets \emph{do} have elements in common (but only if $KL \geq N$). To see why, consider Figure TODO TIKZ PRO.			
+	That is, all products in the sum have absolutely no terms in common. However, as each element of $\vec{x}$ has the same distribution, the product of two distinct elements in $\vec{x}$ will always yield the same distribution (whatever it may be). By the Central Limit Theorem we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+	\item $u\neq L, l=m$ In this case, the product in the sum contains elements of $\vec{x}$ with a minimum displacement of $N$ in their indices. Unlike case 2, the specified sets \emph{do} have elements in common (but only if $KL \geq N$). To see why, consider Figure TODO TIKZ PRO. Notice, that the dependence of a product in the sum on other products is limited is limited. Therefore, if $KL$ is large enough we can again regard the distribution of the sum as a whole as gaussian.			
 \end{enumerate}
+
+To compute the variance of each element of $(\vec{s})_x$, we first observe that the Covariance matrix $C_{sx}$ of $\vec{s}_x$ contains the variance of each element  on the diagonal.
+
+Furthermore as:
+
+\begin{align*}
+\vec{s_x} = F
+\end{align*}
 
 Using this approximation, it is possible to determine the distribution of the elements  of $\vec{s}_x$: by determining the expected value ($\mu_{\omega}$) and the variance $\sigma_{\omega}^2$ for each element of $\vec{s}_x$, the distribution is completely specified.
 
