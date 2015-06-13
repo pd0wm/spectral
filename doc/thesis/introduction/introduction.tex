@@ -12,5 +12,16 @@
 
 \begin{document}
 \chapter{Introduction}
+Nowadays we cannot imagine a world without wireless technologies. The enormous increase in wireless applications has lead to a situation in which it has become increasingly difficult to find a piece of the wireless spectrum that is yet unused -- or at least unlicensed -- and therefore can be used for new technologies or to increase the capacity of existing ones. This so-called spectrum-scarcity problem makes it valuable to be able to gain insight in the use of the radio spectrum in a fast and efficient way.
+
+In this thesis we present a technology that can be used to accomplish just that: \emph{Compressive Sensing}. Compressive sensing is a technique that exploits the sparsity of a given signal to obtain a reconstruction of that signal by sampling at sub-Nyquist rates (i.e. requiring less samples than required by the Shannon-Nyquist sampling theorem). Obtaining samples at a lower rate implies that cheaper and less energy-hungry hardware may be used to obtain the same results as with conventional sampling or, conversely, that using the same hardware, reconstructions of signals with higher bandwidths can be reconstructed than with conventional techniques. It goes without saying that these effects can be beneficial in a number of applications.
+
+As required by our assignment, we have divided this work into two major parts, both of which are written by a separate set of authors and cover a different part of our total work. Before getting into either part, we will give a more in-depth description of the problem we are trying to solve, along with a general overview of our solution, which should help to put our work into the right context. This introduction should also enable the reader to understand both parts, independent of each other.
+
+In part one, a theoretical introduction to the subject of compressive sensing is given, which should provide a mathematical basis in order to understand the inner workings of the used technologies. Algorithms will be formulated to reconstruct the power spectral density (PSD) of a signal that was sampled at a sub-Nyquist rate (reconstruction) and to distinguish any information that may be present in the reconstructed PSD from noise (detection). This theory is based on some very recent scientific works \cite{ariananda2011multicoset, ariananda2012compressive}.
+
+Part two describes the implementation of these techniques using two Universal Software Radio Peripherals (USRPs), which are a type of software defined radio (SDR). The focus will be on the design of a software architecture that allows for high-performance digital signal processing using the USRPs and the design of a graphical user interface (GUI) that allows for visual verification and control of the entire system. The performance of the system will also be reviewed.
+
+The thesis will be concluded with an overall conclusion and reflection, along with a description of possible future work regarding the subject of compressive sensing and its applications.
 
 \end{document}
