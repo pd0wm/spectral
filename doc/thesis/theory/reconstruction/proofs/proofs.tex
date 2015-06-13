@@ -1,4 +1,5 @@
 %!TEX program = xelatex
+%!TEX root = ../../theory.tex
 
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../../includes/preamble.tex}
@@ -9,7 +10,7 @@
 
 \section{Proofs}
 \label{sec:proofs}
-In this section the stated theorems will be proven.
+This section will discuss the proof of the theorems used in the main analysis.
 
 \begin{blockProofTheorem}{\ref{th:conv-comm}}
     A change of index yields that
@@ -25,28 +26,35 @@ In this section the stated theorems will be proven.
 \begin{blockProofTheorem}{\ref{th:correlation-bias}}
     Without loss of generality, assume that $M \le N$. Suppose that $1 \le i \le M$, then
     \begin{align*}
-        E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}
-        })_{M-i+k}] \\
+        [E(\vec{x} \circ \vec{y})]_i &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}})_{M-i+k}] \\
+        &= E[(\vec{x})_1 (\conj{\vec{y}})_{M-i+1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \pushline
+        \pushright{+~E[(\vec{x})_{i+1} (\conj{\vec{y}})_{M+1}] + \ldots + E[(\vec{x})_{N} (\conj{\vec{y}})_{M-i+N}]}
         &= E[(\vec{x})_1 (\conj{\vec{y}})_{M-i+1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
         &= E(X[1] \conj{Y}[M-i+1]) + \ldots + E(X[i] \conj{Y}[M])  \\
-        &= i R_{X,Y}[i-M]
+        &= i R_{X,Y}[i-M].
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(i+M)R_{X,Y}[i]$ for $-M + 1\le i \le -M+M$. Now suppose that $M < i < N$, then
+    So $E(r[i])=(i+M)R_{X,Y}[i]$ for $-M + 1\le i \le -M+M$. Now suppose that $M < i < N$, then
     \begin{align*}
-        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
+        [E(\vec{x} \circ \vec{y})]_i &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}})_{M-i+k}] \\
+        &= E[(\vec{x})_1 (\conj{\vec{y}})_{M-i+1}] + \ldots + E[(\vec{x})_{i-M} (\conj{\vec{y}})_{0}]+E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] \pushline
+        \pushright{+~\ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}]+E[(\vec{x})_{i+1} (\conj{\vec{y}})_{M+1}] + \ldots + E[(\vec{x})_{N} (\conj{\vec{y}})_{M-i+N}]}
+        &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
         &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[i] \conj{Y}[M]) \\  
         &= M R_{X,Y}[i-M]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $N \le i \le N +M - 1$, then
+    So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $N \le i \le N +M - 1$, then
     \begin{align*}
-        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}] \\
+        [E(\vec{x} \circ \vec{y})]_i &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}})_{M-i+k}] \\
+        &= E[(\vec{x})_1 (\conj{\vec{y}})_{M-i+1})] + \ldots + E[(\vec{x})_{i-M} (\conj{\vec{y}})_{0}] \pushline
+        \pushright{+~E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}]}
+        &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}] \\
         &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[N] \conj{Y}[M-i+N]) \\
         &= (N+M-i) R_{X,Y}[i-M]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(N-i)R_{X,Y}[i]$ for $N-M<i\le N-1$.
+    So $E(r[i])=(N-i)R_{X,Y}[i]$ for $N-M<i\le N-1$.
 \end{blockProofTheorem}
 
-\begin{blockProofTheorem}{\ref{th:conv-corr}}
+\begin{blockProofTheorem}{\ref{th:convolution-correlation}}
     Note that
     \begin{align*}
         (\vec{y}_i \circ \vec{y}_j)_m
@@ -88,7 +96,7 @@ In this section the stated theorems will be proven.
     where
     \begin{align*}
         NW_1[m] &= \begin{cases}
-            mN+KLN & \text{if } -KL+1 \le m \le 0, \\
+            KLN+mN & \text{if } -KL+1 \le m \le 0, \\
             KLN-mN & \text{if } 0 \le m \le KL - 1, \\
             0 & \text{elsewhere}.
         \end{cases} \\
@@ -103,34 +111,34 @@ In this section the stated theorems will be proven.
         %     0 & \text{elsewhere}.
         % \end{cases}
     \end{align*}
-    Also note that
+    Similarly note that
     \begin{align*}
-        E[(\hat{\vec{r}}_{y_i,y_j})_{mN+LN-N+1}] &= E[(\vec{r}_{y_i,y_j})_{mN+LN-N+1 +(KLN-LN+2N-1) - 1}] \\
-        &=E[(\vec{r}_{y_i,y_j})_{mN+KLN+N-1}] \\
+        [E(\hat{\vec{r}}_{y_i,y_j})]_{mN+LN-N+1} &= [E(\vec{r}_{y_i,y_j})]_{mN+LN-N+1 +(KLN-LN+2N-1) - 1} \\
+        &=[E(\vec{r}_{y_i,y_j})]_{mN+KLN+N-1}\\
         &= W_2[mN] R_{Y_i,Y_j}[mN]
     \end{align*}
     where
     \begin{align*}
         W_2[mN] &= \begin{cases}
-            mN+KLN+N-1 & \text{if } -KLN-N+2 \le mN \le 0, \\
+            KLN+N-1+mN & \text{if } -KLN-N+2 \le mN \le 0, \\
             KLN+N-1-mN& \text{if } 0 \le mN \le KLN+N-2, \\
             0 & \text{elsewhere.}
         \end{cases} \\
         &= \begin{cases}
-            mN+KLN+N-1 & \text{if } -KL\le m \le 0, \\
+            KLN+N-1+mN & \text{if } -KL\le m \le 0, \\
             KLN+N-1-mN& \text{if } 0 \le m \le KL, \\
             0 & \text{elsewhere.}
         \end{cases}
     \end{align*}
     Let
     \begin{align*}
-        W_{1 \to 2}[m] &= \begin{cases}
-            (mN+KLN+N-1)/(mN+KLN) & \text{if } -KL+1 \le m \le 0, \\
+        W_{2/1}[m] &= \begin{cases}
+            (KLN+N-1+mN)/(KLN+mN) & \text{if } -KL+1 \le m \le 0, \\
             (KLN+N-1-mN)/(KLN-mN) & \text{if } 0 \le m \le KL-1, \\
             0 & \text{elsewhere.}
         \end{cases}
     \end{align*}
-    Then $W_{1 \to 2}[m] N W_1[m] = W_2[mN]$ for $m = -KL+1,\ldots,KL-1$. To this end, let $\vec{w} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w})_{i+L}=W_{1 \to 2}[i]$ for $i = -L+1,\ldots,L-1$. So
+    Then $W_{2/1}[m] N W_1[m] = W_2[mN]$ for $m = -KL+1,\ldots,KL-1$. To this end, let $\vec{w} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w})_{i+L}=W_{1 \to 2}[i]$ for $i = -L+1,\ldots,L-1$. So
     \begin{align*}
         \vec{w} = \begin{bmatrix}
             KLN+(-L+2)N-1 \\
@@ -142,7 +150,7 @@ In this section the stated theorems will be proven.
             \vdots \\
             KLN+(-L+3)N-1 \\
             KLN+(-L+2)N-1
-         \end{bmatrix}^T \odot \begin{bmatrix}
+         \end{bmatrix} \odot \begin{bmatrix}
             [KLN+(-L+1)N]^{-1} \\
             [KLN+(-L+2)N]^{-1} \\
             \vdots \\
@@ -152,12 +160,12 @@ In this section the stated theorems will be proven.
             \vdots \\
             [KLN+(-L+2)N]^{-1} \\
             [KLN+(-L+1)N]^{-1}
-         \end{bmatrix}^T.
+         \end{bmatrix}.
     \end{align*}
     We then recognise that
     \begin{align*}
-        [E(\vec{w} \odot N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L} &= E[(\hat{\vec{r}}_{y_i,y_j})_{mN+LN-N+1}] \\
-        &= E[(\hat{\vec{r}}_{y_i,y_j})_{(m+L-1)N+1}] \\
+        [E(\vec{w} \odot N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L} &= [E(\hat{\vec{r}}_{y_i,y_j})]_{mN+LN-N+1} \\
+        &= [E(\hat{\vec{r}}_{y_i,y_j})]_{(m+L-1)N+1} \\
         &= [E(\mat{D} \hat{\vec{r}}_{y_i,y_j})]_{m+L} \\
         &= [E(\hat{\vec{r}}'_{y_i,y_j})]_{m+L}.
         % (m+L+1)N-1 = mN + LN + N - 1

@@ -13,9 +13,9 @@ parser = argparse.ArgumentParser(description='Cognitive radio compressive sensin
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-L', metavar='L', type=int, default=40)
-parser.add_argument('-source', metavar='source', type=str, default='sinusoidal')
+parser.add_argument('-source', metavar='source', type=str, default='dump')
 parser.add_argument('-snr', metavar='snr', type=str, default=None)
-parser.add_argument('-dump', metavar='file', type=str, default='dumps/twotone.dmp')
+parser.add_argument('-dump', metavar='file', type=str, default='dumps/ofdm.dmp')
 args = parser.parse_args()
 
 ip = args.ip
@@ -27,11 +27,11 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-L = 15
-a = 4
-b = 3
-N = a * b
-upscale_factor = 50  # Warning: greatly diminishes performance
+L = 3
+a = 5
+b = 7
+N = 61
+upscale_factor = 2000  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
 settings = Pyro4.Proxy("PYRONAME:cg.settings")
@@ -51,8 +51,8 @@ elif source_type == "sinusoidal":
     source = cg.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
 
 
-# sampler = cg.sampling.Coprime(a, b)
-sampler = cg.sampling.MultiCoset(N)
+sampler = cg.sampling.Coprime(a, b)
+# sampler = cg.sampling.MultiCoset(N)
 
 
 reconstructor = cg.reconstruction.Wessel(L, sampler.get_C())

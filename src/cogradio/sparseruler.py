@@ -20,7 +20,9 @@ def sparseruler(i):
         18: (0, 1, 4, 7, 10, 13, 16, 18),
         19: (0, 1, 2, 3, 4, 9, 14, 19),
         23: (0, 1, 2, 11, 15, 18, 21, 23),
-        29: (0, 1, 2, 14, 18, 21, 24, 27, 29)
+        29: (0, 1, 2, 14, 18, 21, 24, 27, 29),
+        50: (0, 1, 7, 9, 12, 31, 35, 45),
+        60: (0, 1, 4, 6, 10, 22, 30, 37, 48)
     }
     if (i - 1) not in sparseruler:
         raise NotImplementedError("Values other than " + str(sparseruler.keys()) + " not implemented.")

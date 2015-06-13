@@ -1,4 +1,5 @@
 %!TEX program = xelatex
+%!TEX root = ../../theory.tex
 
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../../includes/preamble.tex}
@@ -6,7 +7,7 @@
 
 \begin{document}
 \section{Overview of Variables}
-\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis.
+\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis. Note that the hat symbol represents a truncated variable and that the prime symbol respresents a decimated variable.
 
 \begin{table}[H]
     \centering
@@ -16,21 +17,23 @@
         Downsampling factor & $N$ & $1$ \\
         Number of cosets & $M$ & $1$ \\
         Input signal & $\vec{x}$ & $LN$ \\
-        $m$'th interval of $N$ samples of the input signal & $\vec{x}_m$ & $N$ \\
-        Deterministic correlation of input & $\vec{r}_x$ & $2LN - 1$ \\
+        Deterministic correlation of input signal & $\vec{r}_x$ & $2KLN - 1$ \\
+        Truncated deterministic correlation of input signal & $\hat{\vec{r}}_x$ & $2LN - 1$ \\
+        Autocorrelation of input signal & $\vecsc{r}_x$ & $2LN - 1$ \\
         Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
         Sampling vector of coset $i$ reversed & $\vec{d}_i$ & $N$ \\
-        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN+2N-3 \times 2LN-1$ \\
         Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
+        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN+2N-3 \times 2LN-1$ \\
         Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
-        Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2LN + 2N - 3$ \\
-        Decimated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}'_{y_i,y_j}$  & $2L-1$ \\
+        Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2KLN + 2N - 3$ \\
+        Truncated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}_{y_i,y_j}$ & $2LN - 2N + 1$ \\
+        Decimated truncated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}'_{y_i,y_j}$  & $2L-1$ \\
         Output of coset $i$ & $\vec{y}'_i$ & $L$ \\
         Deterministic correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
+        Crosscorrelation of outputs of cosets $i$ and $j$ & $\vecsc{r}_{y'_i,y'_j}$ & $2L - 1$ \\
         Stacked convolution matrices of cosets & $\vec{R}$ & $M^2(2L - 1) \times (2LN - 1)$ \\
-        Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN + 2N - 3$ \\
-        Stacked deterministic correlation of outputs of cosets & $\vec{r}'_y$ & $M^2(2L-1)$ \\
-        Output of all cosets in interval $m$ & $\vec{w}_m$ & $M^2$
+        Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN - 2N + 1$ \\
+        Stacked crosscorrelation of outputs of cosets & $\vecsc{r}_y$ & $M^2(2L-1)$ \\
     \end{tabularx}
     \caption{Overview of the variables used in the main analysis}
     \label{tab:overview-vars-main-analysis}

@@ -28,7 +28,7 @@ class Wessel(Reconstructor):
 
     # Given M decimated channels, try to estimate the PSD
     def reconstruct(self, signal):
-        ry = self.N * self.cross_correlation_signals(signal)
+        ry = self.cross_correlation_signals(signal)
         ry_stacked = ry.ravel()
         rx = self.R_pinv.dot(ry_stacked)
         return rx
@@ -52,7 +52,8 @@ class Wessel(Reconstructor):
         for i in range(0, self.M):
             for j in range(0, self.M):
                 cross_correlations[i * self.M + j, :] = cg.cross_correlate(self.C[i, :],
-                                                                           self.C[j, :])
+                                                                           self.C[j, :],
+                                                                           unbiased=False)
         return cross_correlations
 
     def constructR(self):

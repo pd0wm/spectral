@@ -1,10 +1,14 @@
 import numpy as np
+import scipy as sp
 import scipy.signal
 
 
 def signal_power(signal):
     return np.linalg.norm(signal) ** 2 / len(signal)
 
+
+def hermitian(array):
+    return np.conjugate(np.transpose(array))
 
 def fft(signal):
     return np.abs(np.fft.fftshift(np.fft.fft(signal)))
@@ -30,23 +34,36 @@ def psd(signal):
     return fft(auto_correlation(signal))
 
 
-def cross_correlate(a, b, maxlag=None):
+def remove_bias(signal):
+    window = sp.signal.triang(len(signal))
+    window = window / min(window)
+    return signal / window
+
+
+def add_bias(signal):
+    window = sp.signal.triang(len(signal))
+    window = window / min(window)
+    return signal * window
+
+
+def cross_correlate(a, b, maxlag=None, unbiased=True):
     if len(a) != len(b):
         raise ValueError("a and b must be of same size.")
-
     size = len(a)
-    cross_corr = scipy.signal.fftconvolve(a, np.conj(b[::-1]), mode='full')
+    cross_corr = sp.signal.fftconvolve(a, np.conj(b[::-1]), mode='full')
+
+    if unbiased:
+        cross_corr = remove_bias(cross_corr)
 
     if maxlag is not None:
         if not(1 < maxlag < (size + 1)):
             raise ValueError("maglag needs to be none or strictly positive and smaller then {}".format(size))
-        return cross_corr[size - maxlag - 1:size + maxlag]
-    else:
-        return cross_corr
+        cross_corr = cross_corr[size - maxlag - 1:size + maxlag]
+    return cross_corr
 
 
-def auto_correlation(signal, maxlag=None):
-    return cross_correlate(signal, signal, maxlag=maxlag)
+def auto_correlation(signal, maxlag=None, unbiased=True):
+    return cross_correlate(signal, signal, maxlag=maxlag, unbiased=unbiased)
 
 
 def build_sparse_ruler_sampling_matrix(sparseruler, N):

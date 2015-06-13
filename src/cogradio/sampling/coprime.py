@@ -11,16 +11,16 @@ class Coprime(Sampler):
         self.a = a
         self.b = b
         self.C = self.generate_C()
+        self.N = self.C.shape[1]
 
-    def sample(self, signal):
-        chunk_size = self.a * self.b
-        output_chunk_size = self.a + self.b - 1
-        chunks = int(np.floor(len(signal) / chunk_size))
-        output = np.zeros((output_chunk_size, chunks), dtype=np.complex64)
-
-        for i, j in enumerate(range(0, chunks * chunk_size, chunk_size)):
-            output[:, i] = np.dot(np.fliplr(self.C), signal[j:j + chunk_size])
-        return output
+    def sample(self, x):
+        length = x.shape[0]
+        offset = length % self.N
+        if offset != 0:
+            x = x[:-offset]
+        x = np.reshape(x.T, (self.N, -1), order='F')
+        y = np.dot(self.C, x)
+        return y
 
     def generate_C(self):
         C = np.zeros((self.a + self.b - 1, self.a * self.b))

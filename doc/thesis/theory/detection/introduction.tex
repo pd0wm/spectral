@@ -1,0 +1,30 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\begin{document}
+
+\chapter{Reconstruction}
+This chapter introduces a method to reconstruct the power spectral density of a signal which is sampled at sub-Nyquist frequencies. The method is largely based on \cite{ariananda2012compressive}. However, \cite{ariananda2012compressive} considers the reconstruction from a statistical perspective, where we choose a deterministic point of view.
+
+Besides novelty and innovation, there are a few pratical reasons for taking this point of view. First of all, \cite{ariananda2012compressive} starts the analysis of the time-domain reconstruction approach assuming that the autocorrelation of the signal is known. They then proceed to discuss an unbiased estimator of this autocorrelation. However, this unbiased estimator may not be sufficient in the case that too few samples are available. One may then use a biased estimator, whose mean squared error can be less \cite{percival1993univariate}. From the time-domain reconstruction method described in \cite{ariananda2012compressive}, it is not clear if the reconstruction method should change if a biased estimator is used. Also, it is not clear what the effects of using a biased estimator are. In this chapter we study a reconstruction method based on this biased estimator. It turns out that our method can also be used for the unbiased estimator, which is convenient.
+
+Second, in the study of the biased estimator, we obtain a relationship which connects the effects caused by the use of this biased estimator. By having knowledge of this relationship, the effects can be either compensated for, or they can be used to one's advantage.
+
+Finally, in the study of our reconstruction method, we make use of operators that are often available in software used for digital signal processing, such as MATLAB. This makes the analysis easy to follow and the algorithm easy to implement. Besides, since these operators are used in many other applications, some of the results obtained using these operators are also applicable to these applications.
+
+
+\chapter{Detection}
+This chapter describes a method that, given a reconstructed power density, estimates which frequencies are occupied by a PU signal. This method, as described in \cite{ariananda2012compressive} is adapted to work in combination with our reconstruction method. By calculating a frequency dependent threshold, all frequencies in the PSD with a power above this threshold are considered as ``occupied''. 
+
+Besides the low complexity of this method  (providing high-performance detection), this method also incorporates characteristics of the reconstruction methods. Conventional energy detectors, for example as described in \cite{???}, are agnostic to the reconstruction method. Furthermore these detectors can only detect whether a signal is present or not; this requires the use of a bandpass filter to detect the presence of  a signal in a certain frequency band, whereas our detection method can directly apply its threshold to the reconstructed power spectral density.
+
+Furthermore, as our detection method does not depend on specific signal characteristics it can be regarded as a ``generalized'' detector. It can therefore be used to detect a variety of signal. This, however, comes at a price: at low Signal-to-Noise-ratio's the detectors performance is poor \cite{???} compared to other detection methods that do take signal characteristics into account. A common detection method that does use signal characteristics, cyclostationary detection, is characterized by its high computational cost and long sensing time and is therefore less suited for high performance sensing (TODO find general statement for these prior information detectors). 
+
+% \subimport{detection/preliminaries/}{preliminaries}
+% \subimport{detection/main_analysis/}{main_analysis}
+% \subimport{detection/algorithm/}{algorithm}
+% \subimport{detection/proofs/}{proofs}
+\end{document}
