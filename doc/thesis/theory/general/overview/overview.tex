@@ -1,0 +1,38 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\title{Introduction}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+
+\section{Overview}
+
+\todo[inline, author=kees]{dit is nog niet leeswaardig}
+
+The block diagram of compressive sensing is displayed in figure \ref{tkz:blockdiagram}
+
+\begin{figure}[H]\label{tkz:blockdiagram}
+\begin{tikzpicture}
+\draw [{]-]}] (-3,0) rectangle (0,-1) node[pos=.5]{sampler};
+\draw [{]-]}] (1,0) rectangle (4,-1) node[pos=.5]{reconstructor};
+\draw [{]-]}] (5,0) rectangle (8,-1) node[pos=.5]{detector};
+\node (v1) at (0,-.5) {};
+\node (v2) at (1,-.5) {};
+\node (v3) at (4,-.5) {};
+\node (v4) at (5,-.5) {};
+\draw [{->}] (v1) edge (v2);
+\draw [{->}] (v3) edge (v4);
+\end{tikzpicture}
+\caption{block diagram of compressive sensing}
+\end{figure}
+
+The sampler has to sample in such a way that all information to calculate the power spectral density is preserved, for the biggest bandwidth possible. The reconstructor has to pick all available information from the sampler and reconstruct the power spectral density. The detector has to detect signals in the reconstructed power spectral density.
+
+\end{document}
