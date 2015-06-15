@@ -7,10 +7,15 @@
 \begin{document}
 
 
-\section{The Algorithm}
-This section will discuss an algorithm to estimate $E(\vec{r}_x)$ given the correlation vectors of all cosets
-\subsection{Algorithm}
+\section{Algorithm}
+This section will discuss an algorithm to estimate to autocorrelation of an signal sampled by multi-coset sampling described in \cref{xx}. We consider $M$ and $N$ such as described in the chapter on multi-coset sampling. Furthermore, we make use of notation which will be introduced in \cref{sec:reconstruction-preliminaries}.
+
+Let $X[n]$ be a wide sense stationary stochastic process representing the input signal. Let $\vecsc{r}_x \in \mathbb{C}^{2LN-1}$ be such that $(\vecsc{r}_x)_{i+LN} = R_X[i]$ for $i = -LN + 1, LN-1$.  Then $\vecsc{r}_x$ respresents the autocorrelation of the input signal.
+
+Let the $Y'_i[n]$ be a wide sense stationary stochastic process representing the output of a coset. Let $\vecsc{r}_{y'_i,y'_j} \in \mathbb{C}^{2L-1}$ be such that $(\vecsc{r}_{y'_i,y_j})_{m+L}$ for $m = -L+1,L-1$. Then $\vecsc{r}_{y'_i,y'_j}$ represents the cross-correlation of the outputs of cosets $i$ and $j$.
+
 TODO: cut support and guarantee full column rank, include oversampling
+
 
 Proceed as follows:
 \begin{enumerate}
