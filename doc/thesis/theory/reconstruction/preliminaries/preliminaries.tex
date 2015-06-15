@@ -137,7 +137,7 @@ The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also def
                 }
                 \draw [black, thick, >=latex, ->] (-2.05+#1-1,-1.25) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-3.45,-1.25);
                 \draw [black, thick] (-5,-1) -- (-5,-1.5) -- (-3.5,-1.5) -- (-3.5,-1) -- (-5,-1);
-                \draw (-4.25,-1.25) node[black] {$(\vec{x} \odot \vec{y})_{#1}$};
+                \draw (-4.25,-1.25) node[black] {$(\vec{x} \circ \vec{y})_{#1}$};
             \end{scope}
         }
         \drawitem{1}{0}{0}
@@ -147,10 +147,9 @@ The proof of \cref{th:conv-comm} will be given in \cref{sec:proofs}. We also def
         \drawitem{5}{2}{3}
         \drawitem{6}{3}{3}
     \end{tikzpicture}
-    \caption{Visualisation of $\vec{x} \odot \vec{y}$ where $\vec{x} \in \mathbb{C}^4$ and $\vec{y} \in \mathbb{C}^3$}
+    \caption{Visualisation of $\vec{x} \circ \vec{y}$ where $\vec{x} \in \mathbb{C}^4$ and $\vec{y} \in \mathbb{C}^3$}
     \label{fig:vis-correlation}
 \end{figure}
-
 
 It is important to notice that the convolution operator and deterministic cross-correlation operator are equivalent to respectively the functions \texttt{conv} and \texttt{xcorr} in MATLAB. We furthermore define the Hadamard product as a closed binary operation on vectors.
 
@@ -162,19 +161,14 @@ Note that $\odot$ is similar to $\cdot$. This similarity makes sense, since the 
 The following theorem identifies the expected value of the correlation operator.
 
 \begin{blockTheorem} \lab{th:correlation-bias}
-    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^M$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,M$.  Then $(\vec{x} \circ \vec{y})_{i+M}$ is an unbiased estimator of $W[i]R_{X,Y}[i]$ where
-    \begin{align*}
-        W[i] = \begin{cases}
-            M + i & \text{if } -M + 1 \le i \le -M + K, \\
-            K & \text{if } -M + K < i < N - K, \\
-            N - i & \text{if } N - K \le i \le N - 1, \\
-            0 & \text{elsewhere,}
-        \end{cases}
-    \end{align*}
-    and $K = \min\{N,M\}$.
+    Let $X[n]$ and $Y[n]$ be wide sense stationary stochastic processes. Let $\vec{x} \in \mathbb{C}^N$ and $\vec{y} \in \mathbb{C}^N$ be such that $(\vec{x})_i = X[i]$ for $i=1,\ldots,N$ and $(\vec{y})_i = Y[i]$ for $i=1,\ldots,N$.  Then
+
+    \makebox[\linewidth]{
+        $\displaystyle [E(\vec{x} \circ \vec{y})]_{i+N} = (N-|i|)R_{X,Y}[i]$.
+    } \nolinebreak
 \end{blockTheorem}
 
-\cref{th:correlation-bias} shows that the correlation operator is a biased estimator of the cross-correlation. \cref{fig:vis-wi} visualises this bias.
+\cref{th:correlation-bias} shows that the correlation operator is a biased estimator of the cross-correlation. \cref{fig:vis-bias} visualises this bias.
 
 \begin{figure}
     \centering
@@ -182,22 +176,21 @@ The following theorem identifies the expected value of the correlation operator.
         \draw [thick,black] (-5,0) -- (5,0);
         \draw [thick,black] (-5,-0.1) -- (-5,0.1);
         \draw [thick,black] (5,-0.1) -- (5,0.1);
-        \draw [thick,black] (1,-0.1) -- (1,0.1);
-        \draw [thick,black] (-1,-0.1) -- (-1,0.1);
+        \draw [thick,black] (0,-0.1) -- (0,0.1);
+        % \draw [thick,black] (-1,-0.1) -- (-1,0.1);
         \draw [thick,black] (-4,0.1) -- (-4,-0.1);
         \draw [thick,black] (4,-0.1) -- (4,0.1);
         \draw [dashed] (-5,0.6) -- (5,0.6);
-        \draw [black,thick] (-4,0) -- (-4,0.6) -- (-1,1.5) -- (1,1.5) -- (4,0.6) -- (4,0);
+        \draw [black,thick] (-4,0) -- (-4,0.6) -- (0,1.5) -- (4,0.6) -- (4,0);
         \draw [dashed] (-5,1.5) -- (5,1.5);
-        \draw (6,1.5) node[black] {$K$};
-        \draw (6,0.6) node[black] {$1$};
-        \draw (-4,-0.4) node[black] {$W[-M+1]$};
-        \draw (-1,-0.4) node[black] {$W[-M+K]$};
-        \draw (1,-0.4) node[black] {$W[N-K]$};
-        \draw (4,-0.4) node[black] {$W[N-1]$};
+        \draw (5.5,1.5) node[black] {$N$};
+        \draw (5.5,0.6) node[black] {$1$};
+        \draw (-4,-0.4) node[black] {$R_{X,Y}[-N+1]$};
+        \draw (0,-0.4) node[black] {$R_{X,Y}[0]$};
+        \draw (4,-0.4) node[black] {$R_{X,Y}[N-1]$};
     \end{tikzpicture}
-    \caption{Visualisation of $W[i]$ from \cref{th:correlation-bias}}
-    \label{fig:vis-wi}
+    \caption{Visualisation of the bias from \cref{th:correlation-bias}}
+    \label{fig:vis-bias}
 \end{figure}
 
 Finally, we extend the use of dots to denote finite sequences.
