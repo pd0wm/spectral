@@ -1,8 +1,6 @@
 import json
-import Pyro4
-from multiprocessing import Queue
-from autobahn.twisted.websocket import WebSocketServerFactory, \
-                                       WebSocketServerProtocol
+import cogradio_vis as vis
+from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 
 class ServerProtocolData(WebSocketServerProtocol):
@@ -18,7 +16,7 @@ class ServerProtocolData(WebSocketServerProtocol):
     center_freq = 2.4e9
 
     def __init__(self):
-        self.settings = Pyro4.Proxy("PYRONAME:cg.settings")
+        self.settings = vis.get_settings_object()
 
         WebSocketServerProtocol.__init__(self)
 

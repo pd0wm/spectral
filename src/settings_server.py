@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 import Pyro4
-import cogradio as cg
+import cogradio_vis as vis
 from multiprocessing import Process
 
 
 def settings_server():
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = cg.Settings()
+    settings = vis.settings.Settings()
     uri = daemon.register(settings)
     ns.register("cg.settings", uri)
-    print "started settings server"
     daemon.requestLoop()
 
 
@@ -18,7 +17,7 @@ def safe_start_name_server():
     try:
         Pyro4.locateNS()
     except Pyro4.errors.NamingError:
-        print "Starting nameserver"
+        print "Starting naming server"
         p = Process(target=Pyro4.naming.startNSloop)
         p.start()
 

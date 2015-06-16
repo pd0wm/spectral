@@ -1,8 +1,5 @@
 import cogradio as cg
-
 import cProfile
-import pstats
-import StringIO
 
 N = 6
 L = 40
@@ -24,9 +21,9 @@ def gen_profiling_report(obj, args, method=None, constructor=False):
     ret = method(*args)
 
     pr.disable()
-    s = StringIO.StringIO()
-    sortby = 'cumulative'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    # s = StringIO.StringIO()
+    # sortby = 'cumulative'
+    # ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
     if constructor:
         pr.dump_stats("profiler_reports/{}_{}.prof".format(obj.__name__, "init"))
     else:
@@ -61,6 +58,3 @@ for obj, args in zip(reconstructors, reconstructors_init_args):
 #  signals = []
 #  for obj, args in zip(init_sources, sources_gen_args):
 #      signals.append(gen_profiling_report(obj, args, obj.generate))
-#  
-#  
-#  
