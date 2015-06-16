@@ -10,9 +10,15 @@
 
 \section{Main Analysis}
 
-Let $L$, $N$ and $M$ be integer parameters and $K \in \mathbb{R}$ such that $KL$ is integer. Now $M$ cosets provide $KL$ out of $KLN$ samples of the input signal. This means that $KLN$ samples of the input signal are required. Let the input signal be denoted by $\vec{x} \in \mathbb{C}^{KLN}$.
+Let $L,N,M$ be integer parameters. Let $K\ge1$ be such that $KL$ is integer. Now $M$ cosets provide $KL$ out of $KLN$ samples of the input signal. Let $X[n]$ be a wide sense stationary stochastic process representing the input signal. Then let $\vec{x} \in \mathbb{C}^{KLN}$ be such that $(\vec{x})_i = X[i]$ for $i = 1,\ldots,KLN$. Let the deterministic correlation of $\vec{x}$ be given by $\vec{r}_x = \vec{x} \circ \vec{x}$.
 
-$K$ will be used as a parameter which turns out to be related to the bias of the estimator of the autocorrelation of the input signal. Eventually, we will let $K \to \infty$, which will allow us to study the case in which an unbiased estimatior is used.
+During the main analysis, we will make use of two assumptions. Assume that
+\begin{enumerate}
+    \item[(1)] $X[i]=0$ for $ KLN-N+1 \le i \le KLN$ and
+    \item[(2)] $R_X[i]=0$ for $|i| \ge LN-N$.
+\end{enumerate}
+
+The parameter $K$ will turn out to be related to the bias of the estimator of the autocorrelation of the input signal. Eventually, we will let $K \to \infty$, which will allow us to study the case in which an unbiased estimatior is used.
 
 Let the sampling vector of coset $i$ be given by $\vec{c}_i \in \mathbb{C}^{N}$. The sampling vector relates the input signal to the output of a coset. Let the pseudo output of coset $i$ be given by $\vec{y}_i = \vec{c}_i \ast \vec{x}$. Let the output of coset $i$ be given by $\vec{y}'_i \in \mathbb{C}^{KL}$ such that $(\vec{y}'_i)_m=(\vec{y}_i)_{mN}$ for $m=1,\ldots,KL$. Then
 \begin{align*}
@@ -149,7 +155,6 @@ and a truncated version of $\vec{r}_x$ by
     \hat{\vec{r}}_x = \vec{r}_x [KLN-LN+1,KLN+LN-1].
 \end{align*}
 The truncated versions of $\vec{r}_x$ and $\vec{r}_{y_i,y_j}$ are visualised in \cref{fig:vis-trun}.
-
 \usetikzlibrary{decorations.pathreplacing}
 \begin{figure}
     \centering
@@ -195,8 +200,6 @@ The truncated versions of $\vec{r}_x$ and $\vec{r}_{y_i,y_j}$ are visualised in 
     \caption{Visualisation of $\hat{\vec{r}}_x$ and $\hat{\vec{r}}_{y_i,y_j}$}
     \label{fig:vis-trun}
 \end{figure}
-
-
 Then
 \begin{align*}
     \hat{\vec{r}}_{y_i,y_j}
@@ -207,48 +210,42 @@ Then
 where $\mat{R}_{c_i,c_j}$ denotes the matrix
 \begin{align*}
     \begin{bmatrix}
-        (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots &(\vec{r}_{c_i,c_j})_{1} & 0 & \cdots  \\
-        0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_{2} & (\vec{r}_{c_i,c_j})_{1} & \cdots \\
-        && \multicolumn{2}{c}{\ddots} \\
-        \cdots & (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_{1} & 0 \\
-        \cdots & 0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots &(\vec{r}_{c_i,c_j})_{2} & (\vec{r}_{c_i,c_j})_{1} 
+        (\vec{r}_{c_i,c_j})_{2N-1} & (\vec{r}_{c_i,c_j})_{2N-2} & \cdots & (\vec{r}_{c_i,c_j})_{1 }& 0 &  \cdots  \\
+        0 & (\vec{r}_{c_i,c_j})_{2N-1} & \cdots & (\vec{r}_{c_i,c_j})_{2}& (\vec{r}_{c_i,c_j})_{1}  &\cdots  \\
+        &&\multicolumn{2}{c}{\ddots} \\
+        \cdots&(\vec{r}_{c_i,c_j})_{2N-1}&(\vec{r}_{c_i,c_j})_{2N-2}& \cdots & (\vec{r}_{c_i,c_j})_{1} & 0 \\
+        \cdots&0&(\vec{r}_{c_i,c_j})_{2N-1}& \cdots & (\vec{r}_{c_i,c_j})_{2} & (\vec{r}_{c_i,c_j})_{1}
     \end{bmatrix}.
 \end{align*}
 
-Since we have related $\hat{\vec{r}}_{y_i,y_j}$ to $\hat{\vec{r}}_x$, we now make effort to relate a subvector of $\vec{r}_{y'_i,y'_j}$ to $\hat{\vec{r}}_{y_i,y_j}$. To this end, let the $2L-1\times 2LN-2N+1$ decimation matrix be defined by $(\mat{D})_{i,(i-1)N+1} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. Let the decimated truncated correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\hat{\vec{r}}'_{y_i,y_j} = \mat{D} \hat{\vec{r}}_{y_i,y_j}$. Denote a truncated version of $\vec{r}_{y'_i,y'_j}$ by $\hat{\vec{r}}_{y'_i,y'_j}=\vec{r}_{y'_i,y'_j}[KL-L+1,KL+L-1]$. The following theorem relates $\hat{\vec{r}}_{y'_i,y'_j}$ to $\hat{\vec{r}}'_{y_i,y_j}$.
+Since we have related $\hat{\vec{r}}_{y_i,y_j}$ to $\hat{\vec{r}}_x$, we now make effort to relate a subvector of $\vec{r}_{y'_i,y'_j}$ to $\hat{\vec{r}}_{y_i,y_j}$. To this end, let the $2L-1\times 2LN-2N+1$ decimation matrix be defined by $(\mat{D})_{i,(i-1)N+1} = 1$ for $i=1,\ldots,2L-1$ and otherwise zero. Let the decimated truncated correlation of the pseudo outputs of cosets $i$ and $j$ be given by $\hat{\vec{r}}'_{y_i,y_j} = \mat{D} \hat{\vec{r}}_{y_i,y_j}$. Denote a truncated version of $\vec{r}_{y'_i,y'_j}$ by
+\begin{align*}
+    \hat{\vec{r}}_{y'_i,y'_j}=\vec{r}_{y'_i,y'_j}[KL-L+1,KL+L-1].
+\end{align*}
+The following theorem relates $\hat{\vec{r}}_{y'_i,y'_j}$ to $\hat{\vec{r}}'_{y_i,y_j}$.
 
-\begin{blockTheorem} \lab{th:deci-corr}
-    Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=1,\ldots,KLN+N-1$. Furthermore, let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=1,\ldots,KL$. Then $N\hat{\vec{r}}_{y'_i,y'_j}$ is an unbiased estimator of $\vec{w} \odot E(\hat{\vec{r}}'_{y_i,y_j})$ where
-
-    \makebox[\textwidth]{\centering
-        $\vec{w} = \begin{bmatrix}
-            KLN+(-L+2)N-1 \\
-            KLN+(-L+3)N-1 \\
-            \vdots \\
-            KLN+0\cdot N-1 \\
-            KLN+1\cdot N-1 \\
-            KLN+0\cdot N-1 \\
-            \vdots \\
-            KLN+(-L+3)N-1 \\
-            KLN+(-L+2)N-1
-         \end{bmatrix} \odot \begin{bmatrix}
-            [KLN+(-L+1)N]^{-1} \\
-            [KLN+(-L+2)N]^{-1} \\
-            \vdots \\
-            (KLN -1 \cdot N)^{-1} \\
-            (KLN+ 0 \cdot N)^{-1} \\
-            (KLN -1 \cdot N)^{-1} \\
-            \vdots \\
-            [KLN+(-L+2)N]^{-1} \\
-            [KLN+(-L+1)N]^{-1}
-         \end{bmatrix}.$
-    }
+\begin{blockTheorem} \lab{th:decimation-correlation}
+    % Let $Y_i[n]$ and $Y_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}_i)_m = Y_i[m]$ and $(\vec{y}_j)_m = Y_j[m]$ for $m=1,\ldots,KLN$. Furthermore, let $Y'_i[n]$ and $Y'_j[n]$ be wide sense stationary stochastic processes such that $(\vec{y}'_i)_m = Y'_i[m]$ and $(\vec{y}'_j)_m = Y'_j[m]$ for $m=1,\ldots,KL$.
+    % Assume that $\vec{x}$ is zero for the last $N-1$ elements.
+    \makebox[\linewidth]{
+        $\displaystyle E(N\hat{\vec{r}}_{y'_i,y'_j}) = E(\hat{\vec{r}}'_{y_i,y_j}).$
+    } \nolinebreak
 \end{blockTheorem}
 
 Finally, we relate $\hat{\vec{r}}_x$ to the autocorrelation of the input signal and $\hat{\vec{r}}_{y'_i,y'_j}$ to the cross-correlation of the outputs of cosets $i$ and $j$. To do this, we identify the expected value of $\hat{\vec{r}}_x$ and $\hat{\vec{r}}_{y'_i,y'_j}$.
 
-Let $X[n]$ be a wide sense stationary stochastic process such that $(\vec{x})_i = X[i]$ for $i = 1,\ldots,KLN$. Also, let $\vecsc{r}_x \in \mathbb{C}^{2LN-1}$ be such that $(\vecsc{r}_x)_{i+LN} = R_X[i]$ for $i = -LN + 1, LN-1$ and let $\vecsc{r}_{y'_i,y'_j} \in \mathbb{C}^{2L-1}$ be such that $(\vecsc{r}_{y'_i,y'_j})_{i+L}=R_{Y'_i,Y'_j}[i]$ for $i = -L+1,L-1$.
-Note that $\vecsc{r}_x$ represents the autocorrelation of the input signal and that $\vecsc{r}_{y'_i,y'_j}$ represents the cross-correlation of the outputs of cosets $i$ and $j$. Then by \cref{th:correlation-bias}, $E(\hat{\vec{r}}_x) = \vec{b}_x \odot \vecsc{r}_x$ and $E(\hat{\vec{r}}_{y'_i,y'_j})=\vec{b}_{y'} \odot \vecsc{r}_{y'_i,y'_j}$ where
+Let $\vecsc{r}_x \in \mathbb{C}^{2LN-1}$ be such that $(\vecsc{r}_x)_{i+LN} = R_X[i]$ for $i = -LN + N, LN-N$ and let $\vecsc{r}_{y'_i,y'_j} \in \mathbb{C}^{2L-1}$ be such that $(\vecsc{r}_{y'_i,y'_j})_{i+L}=R_{Y'_i,Y'_j}[i]$ for $i = -L+1,L-1$.
+Note that $\vecsc{r}_x$ represents the autocorrelation of the input signal and that $\vecsc{r}_{y'_i,y'_j}$ represents the cross-correlation of the outputs of cosets $i$ and $j$.
+
+By \cref{th:correlation-bias},
+\begin{align*}
+    E(\hat{\vec{r}}_x)[N,2LN-N] = \vec{b}_x \odot \vecsc{r}_x
+\end{align*}
+and
+\begin{align*}
+    E(\hat{\vec{r}}_{y'_i,y'_j}) =\vec{b}_{y'} \odot \vecsc{r}_{y'_i,y'_j}
+\end{align*}
+where
 \begin{align*}
     \vec{b}_{x} =  \begin{bmatrix}
         (K-1)LN+1 \\
@@ -258,7 +255,7 @@ Note that $\vecsc{r}_x$ represents the autocorrelation of the input signal and t
         \vdots \\
         (K-1)LN+2 \\
         (K-1)LN+1
-    \end{bmatrix},\vec{b}_{y'} = \begin{bmatrix}
+    \end{bmatrix} \text{ and }\vec{b}_{y'} = \begin{bmatrix}
         (K-1)L + 1 \\
         (K-1)L + 2 \\
         \vdots \\
@@ -270,37 +267,40 @@ Note that $\vecsc{r}_x$ represents the autocorrelation of the input signal and t
 \end{align*}
 Now $E(N\hat{\vec{r}}_{y'_i,y'_i}) = N\vec{b}_{y'} \odot \vecsc{r}_{y'_i,y'_i}$, whilst also
 \begin{align*}
-    E(N\hat{\vec{r}}_{y'_i,y'_i}) = \vec{w} \odot E(\hat{\vec{r}}'_{y_i,y_i}) = \vec{w} \odot \mat{D}\mat{R}_{c_i,c_j} E(\hat{\vec{r}}_x) = \vec{w} \odot \mat{D}\mat{R}_{c_i,c_i} (\vec{b}_x \odot \vecsc{r}_{x}).
+    E(N\hat{\vec{r}}_{y'_i,y'_i}) &= E(\hat{\vec{r}}'_{y_i,y_i}) \\
+    &= \mat{D}\mat{R}_{c_i,c_j} E(\hat{\vec{r}}_x) \\
+    &= (\mat{D}\mat{R}_{c_i,c_i})[N,2LN-N] E(\hat{\vec{r}}_x)[N,2LN-N] \\
+    &= (\mat{D}\mat{R}_{c_i,c_i})[N,2LN-N] (\vec{b}_x \odot \vecsc{r}_{x})
 \end{align*}
-Therefore equating and dividing by $KLN$ yields that
+since, by \cref{th:correlation-bias}, $R_X[i]=0$ for $|i| \ge LN-N$ implies that $[E(\vec{r}_x)]_{m+KLN}=0$ for $|i| \ge LN-N$. Therefore equating and dividing by $KLN$ yields that
 \begin{align*} 
-    \left(\frac{\vec{b}_{y'}}{KL}\right) \odot \vecsc{r}_{y'_i,y'_j} = \vec{w} \odot \mat{D}\mat{R}_{c_i,c_i} \left[\left(\frac{\vec{b}_x}{KLN}\right) \odot \vecsc{r}_{x}\right],
+    \left(\frac{\vec{b}_{y'}}{KL}\right) \odot \vecsc{r}_{y'_i,y'_j} =(\mat{D}\mat{R}_{c_i,c_i})[N,LN-N] \left[\left(\frac{\vec{b}_x}{KLN}\right) \odot \vecsc{r}_{x}\right].
 \end{align*}
-or equivalently
+Equivalently,
 \begin{align} \label{eq:bias-relationship}
-    \vecsc{b}_{y'} \odot \vecsc{r}_{y'_i,y'_j} = \mat{D} \mat{R}_{c_i,c_j} (\vecsc{b}_x \odot \vecsc{r}_x)
+    \vecsc{b}_{y'} \odot \vecsc{r}_{y'_i,y'_j} = (\mat{D} \mat{R}_{c_i,c_j})[N,LN-N] (\vecsc{b}_x \odot \vecsc{r}_x)
 \end{align}
-where $(\vecsc{b}_x)_i = (\vec{b}_x)_i/KLN$ for $i = 1,\ldots,2LN-1$ and $(\vecsc{b}_{y'})_i = (\vec{b}_{y'})_i/[KL (\vec{w})_i]$ for $i = 1,\ldots,2L-1$. This equation relates the autocorrelation of the input signal to the cross-correlation of the outputs of cosets $i$ and $j$. However, this relationship involves element-wise multiplication, which shows that a biased estimate of $\vecsc{r}_{y'_i,y'_j}$ is related to a biased estimate of $\vecsc{r}_x$.
+where $(\vecsc{b}_x)_i = (\vec{b}_x)_i/KLN$ for $i = 1,\ldots,2LN-1$ and $(\vecsc{b}_{y'})_i = (\vec{b}_{y'})_i/KL$ for $i = 1,\ldots,2L-1$. This equation relates the autocorrelation of the input signal to the cross-correlation of the outputs of cosets $i$ and $j$. However, this relationship involves element-wise multiplication, which shows that a biased estimate of $\vecsc{r}_{y'_i,y'_j}$ is related to a biased estimate of $\vecsc{r}_x$.
 
 We now aggregate \cref{eq:bias-relationship} for all combinations of cosets. Let $\vecsc{b}_y$, $\vecsc{r}_y$ and $\vec{R}$ be such that
 \begin{align}
-    \begin{bmatrix}
-        \vecsc{b}_{y'} \odot \vecsc{r}_{y'_1,y'_1} \\ \vdots \\ \vecsc{b}_{y'} \odot \vecsc{r}_{y'_M,y'_M}
-    \end{bmatrix} &= \begin{bmatrix}
+    \vecsc{b}_y \odot \vecsc{r}_y \nonumber &= \begin{bmatrix}
         \vecsc{b}_{y'} \\ \vdots \\ \vecsc{b}_{y'}
     \end{bmatrix} \odot \begin{bmatrix}
         \vecsc{r}_{y'_1,y'_1} \\ \vdots \\ \vecsc{r}_{y'_M,y'_M}
     \end{bmatrix} \nonumber \\
-    &= \vecsc{b}_y \odot \vecsc{r}_y \nonumber \\
+    &= \begin{bmatrix}
+        \vecsc{b}_{y'} \odot \vecsc{r}_{y'_1,y'_1} \\ \vdots \\ \vecsc{b}_{y'} \odot \vecsc{r}_{y'_M,y'_M}
+    \end{bmatrix} \nonumber \\
     &= \begin{bmatrix}
         \mat{D}\mat{R}_{c_1,c_1} \\ \vdots \\ \mat{D}\mat{R}_{c_M,c_M}
-    \end{bmatrix} (\vecsc{b}_x \odot \vecsc{r}_x) \nonumber \\
+    \end{bmatrix}[LN-N] (\vecsc{b}_x \odot \vecsc{r}_x) \nonumber \\
     &= \mat{R} (\vecsc{b}_x \odot \vecsc{r}_x). \label{eq:relationship-biased-aggregated}
 \end{align}
-It is important to notice that $\mat{R}$ in an $M^2(2L-1)\times 2LN-1$ matrix. This means that the relationship may be invertible, which depends on whether $\mat{R}$ has full column rank.
+It is important to notice that $\mat{R}$ in an $M^2(2L-1)\times 2LN-2N+1$ matrix. This means that \cref{eq:relationship-biased-aggregated} may be invertible, dependent on whether $\mat{R}$ has full column rank.
 
 
-\subsection{Limiting Process}
+\subsection{Aymptotic}
 It is important to notice that in \cref{eq:relationship-biased-aggregated} only $\vecsc{b}_x$ and $\vecsc{b}_y$ depend on $K$. This is remarkable, since this implies that $\mat{R}$ can be used to relate the estimates of $\vecsc{r}_x$ and $\vecsc{r}_{y}$ biased by $\vecsc{b}_x$ and $\vecsc{b}_y$ for any $K$. Furthermore, this means that the relationship still holds when $K \to \infty$. Let $K \to \infty$. Then $\vecsc{b}_x \to \vec{1}_{2LN-1}$ and $\vecsc{b}_y \to \vec{1}_{2L-1}$. Therefore, we see that
 \begin{align*}
     \vecsc{b}_y \odot \vecsc{r}_{y} \to \vec{1}_{2L-1}\odot \vecsc{r}_{y} = \vecsc{r}_{y}
@@ -309,42 +309,10 @@ and
 \begin{align*}
     \mat{R} (\vecsc{b}_x \odot \vecsc{r}_x)\to \mat{R} (\vec{1}_{2LN-1} \odot \vecsc{r}_x) = \mat{R} \vecsc{r}_x.
 \end{align*}
-So $\vecsc{r}_{y} = \mat{R} \vecsc{r}_{x}$.
-
-\subsection{Limiting Support}
-It is often assumed that $R_{Y'_i,Y'_j}$ is limited in support. This assumption turns out to be helpful later on. Therefore, assume that $R_{Y'_i,Y'_j}[m] = 0$ for 
-\begin{align*}
-     -KL+1 \le m \le -L \text{ and } L \le m \le KL-1.
-\end{align*}
-The proof of \cref{th:convolution-correlation} then shows that $R_{Y_i,Y_j}[m]=0$ for 
-\begin{align*}
-    -KLN+N \le m \le -LN \text{ and } LN \le m \le KLN-N,
-\end{align*}
-which implies that $[E(\vec{r}_{y_i,y_j})]_{m}=0 $ for 
-\begin{align*}
-    2N-1 \le m \le KLN - LN + N - 1
-\end{align*}
-and
-\begin{align*}
-    KLN +LN + N - 1 \le m \le 2KLN -1.
-\end{align*}
-Since $\vec{r}_{y_i,y_j} = \vec{r}_{c} \ast \vec{r}_x$, $[E(\vec{r}_x)]_m=0$ for 
-\begin{align*}
-    1 \le m \le KLN - LN + N - 1 \text{ and } KLN + LN - N + 1 \le m \le 2KLN - 1,
-\end{align*}
-which yields that $R_X[m]=0$ for 
-\begin{align*}
-    -KLN + 1\le m \le -LN+N-1 \text{ and } LN-N+1 \le m \le KLN - 1.
-\end{align*}
-Therefore $(\vecsc{r}_x)_m = 0$ for 
-\begin{align*}
-    1 \le m \le N-1 \text{ and } 2LN-N+1 \le 2LN-1.
-\end{align*}
-The limited support of $\vecsc{r}_x$ now yields that
-\begin{align} \label{eq:unbiased-relationship}
-    \vecsc{b}_y \odot \vecsc{r}_y &= \mat{R}[N,2LN-N] (\vecsc{b}_x \odot \vecsc{r}_x)[N,2LN-N], \\
-    \vecsc{r}_y &= \mat{R}[N,2LN-N] \vecsc{r}_x[N,2LN-N].
+So
+\begin{align} \label{eq:relationship-unbiased}
+    \vecsc{r}_{y} = \mat{R} \vecsc{r}_{x}.
 \end{align}
-These equations conclude the main analysis.
+This concludes the main analysis.
 
 \end{document}
