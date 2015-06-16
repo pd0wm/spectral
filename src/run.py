@@ -13,8 +13,8 @@ parser = argparse.ArgumentParser(description='Cognitive radio compressive sensin
 parser.add_argument('-ip', metavar='ip', type=str, default='192.168.10.2')
 parser.add_argument('-f_samp', metavar='f_samp', type=int, default=10e6)
 parser.add_argument('-L', metavar='L', type=int, default=40)
-parser.add_argument('-source', metavar='source', type=str, default='dump')
-parser.add_argument('-snr', metavar='snr', type=str, default=None)
+parser.add_argument('-source', metavar='source', type=str, default='sinusoidal')
+parser.add_argument('-snr', metavar='snr', type=float, default=None)
 parser.add_argument('-dump', metavar='file', type=str, default='dumps/ofdm.dmp')
 args = parser.parse_args()
 
