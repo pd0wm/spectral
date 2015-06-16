@@ -8,17 +8,6 @@ from twisted.internet import reactor
 from cogradio_vis.websocket import *
 
 
-class JammerQueue(object):
-    def __init__(self):
-        self.jam = None
-
-    def read(self):
-        return self.jam
-
-    def send(self, update):
-        self.jam = update
-
-
 def send_to_websocket(queue, data, dtype):
     container = WebsocketDataContainer(dtype, data)
     container.enqueue(queue)
@@ -85,12 +74,3 @@ def run_websocket_control():
     factory.protocol = ServerProtocolControl
     reactor.listenTCP(port, factory)
     reactor.run()
-
-
-def run_jam_queue():
-    daemon = Pyro4.Daemon()
-    ns = Pyro4.locateNS()
-    jamq = JammerQueue()
-    uri = daemon.register(jamq)
-    ns.register("jamqueue", uri)
-    daemon.requestLoop()

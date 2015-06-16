@@ -83,10 +83,8 @@ if __name__ == '__main__':
                  args=())
     p6 = Process(target=run_websocket_data,
                  args=(websocket_src_queue, websocket_rec_queue, websocket_det_queue, sample_freq))
-    p7 = Process(target=run_jam_queue,
-                 args=())
 
-    processes = [p1, p2, p3, p4, p5, p6, p7]
+    processes = [p1, p2, p3, p4, p5, p6]
 
     try:
         [p.start() for p in processes]
