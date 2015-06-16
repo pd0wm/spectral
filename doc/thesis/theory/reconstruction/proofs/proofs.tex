@@ -1,4 +1,5 @@
 %!TEX program = xelatex
+%!TEX root = ../../theory.tex
 
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../../includes/preamble.tex}
@@ -9,7 +10,7 @@
 
 \section{Proofs}
 \label{sec:proofs}
-In this section the stated theorems will be proven.
+This section will discuss the proof of the theorems used in the main analysis.
 
 \begin{blockProofTheorem}{\ref{th:conv-comm}}
     A change of index yields that
@@ -23,30 +24,32 @@ In this section the stated theorems will be proven.
 \end{blockProofTheorem}
 
 \begin{blockProofTheorem}{\ref{th:correlation-bias}}
-    Without loss of generality, assume that $M \le N$. Suppose that $1 \le i \le M$, then
+    Suppose that $1 \le i \le N$, then
     \begin{align*}
-        E[(\vec{x} \circ \vec{y})_i] &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}
-        })_{M-i+k}] \\
-        &= E[(\vec{x})_1 (\conj{\vec{y}})_{M-i+1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
-        &= E(X[1] \conj{Y}[M-i+1]) + \ldots + E(X[i] \conj{Y}[M])  \\
-        &= i R_{X,Y}[i-M]
+        [E(\vec{x} \circ \vec{y})]_i &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}})_{N-i+k}] \\
+        &= E[(\vec{x})_1 (\conj{\vec{y}})_{N-i+1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{N}] \\
+        &= i R_{X,Y}[i-N] \\
+        &= (N-|i-N|) R_{X,Y}[i-N]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(i+M)R_{X,Y}[i]$ for $-M + 1\le i \le -M+M$. Now suppose that $M < i < N$, then
+    Therefore
     \begin{align*}
-        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_i (\conj{\vec{y}})_{M}] \\
-        &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[i] \conj{Y}[M]) \\  
-        &= M R_{X,Y}[i-M]
+        [E(\vec{x} \circ \vec{y})]_{i+N} = (N-|i|) R_{X,Y}[i]
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=M R_{X,Y}[i]$ for $-M+M<i<N-M$. Finally suppose that $N \le i \le N +M - 1$, then
+    for $-N + 1\le i \le 1$. Now suppose that $N < i \le 2N-1$, then
     \begin{align*}
-        E[(\vec{x} \circ \vec{y})_i] &= E[(\vec{x})_{i-M+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_N (\conj{\vec{y}})_{M-i+N}] \\
-        &= E(X[i-M+1] \conj{Y}[1]) + \ldots + E(X[N] \conj{Y}[M-i+N]) \\
-        &= (N+M-i) R_{X,Y}[i-M]
+        [E(\vec{x} \circ \vec{y})]_i &= \sum_{k=1}^N E[(\vec{x})_k (\conj{\vec{y}})_{N-i+k}] \\
+        &= E[(\vec{x})_{i-N+1} (\conj{\vec{y}})_{1}] + \ldots + E[(\vec{x})_{N} (\conj{\vec{y}})_{2N-i}] \\
+        &= (2N-i) R_{X,Y}[i-N] \\
+        &= (N-|i-N|) R_{X,Y}[i-N].
     \end{align*}
-    since $X[n]$ and $Y[n]$ are wide sense stationary. So $E(r[i])=(N-i)R_{X,Y}[i]$ for $N-M<i\le N-1$.
+    Therefore
+    \begin{align*}
+        [E(\vec{x} \circ \vec{y})]_{i+N} = (N-|i|) R_{X,Y}[i]
+    \end{align*}
+    for $1 < i \le N-1$.
 \end{blockProofTheorem}
 
-\begin{blockProofTheorem}{\ref{th:conv-corr}}
+\begin{blockProofTheorem}{\ref{th:convolution-correlation}}
     Note that
     \begin{align*}
         (\vec{y}_i \circ \vec{y}_j)_m
@@ -67,8 +70,8 @@ In this section the stated theorems will be proven.
     \end{align*}
 \end{blockProofTheorem}
 
-\begin{blockProofTheorem}{\ref{th:deci-corr}}
-    Note that
+\begin{blockProofTheorem}{\ref{th:decimation-correlation}}
+    Since $\vec{y}_i = \vec{c}_i \ast \vec{x}$ and $\vec{x}$ represents a wide sense stationary stochastic random process, $\vec{y}_i$ and therefore $\vec{y}'_i$ also represent wide sense stationary stochastic random processes. Therefore, there exist wide sense stationary stochastic random processes $Y_i[n]$ and $Y'_i[n]$ such that $(\vec{y}_i)_m=Y_i[m]$ for $m=1,\ldots,KLN+N-1$ and $(\vec{y}'_i)_m=Y'_i[m]$ for $m=1,\ldots,KL$. Then
     \begin{align*}
         R_{Y'_i,Y'_j}[m]
         &= E(\conj{Y}'_i[k]Y'_j[k+m]) \\
@@ -77,90 +80,32 @@ In this section the stated theorems will be proven.
         &= E(\conj{Y}_i[kN]Y_j[kN+mN]) \\
         &= R_{Y_i,Y_j}[mN].
     \end{align*}
-    Therefore
+    Therefore, by \cref{th:correlation-bias},
     \begin{align*}
         [E(N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L}
-        &= [E(N\vec{r}_{y'_i,y'_j})]_{m+L+(KL-L+1)-1} \\
-        &= [E(N\vec{r}_{y'_i,y'_j})]_{m+KL} \\
-        &= N W_1[m] R_{Y'_i,Y'_j}[m] \\
-        &= N W_1[m] R_{Y_i,Y_j}[mN]
+        &= N[E(\vec{r}_{y'_i,y'_j})]_{m+L+(KL-L+1)-1} \\
+        &= N[E(\vec{r}_{y'_i,y'_j})]_{m+KL} \\
+        &= N (KL-|m|) R_{Y'_i,Y'_j}[N] \\
+        &= (KLN -|mN|) R_{Y_i,Y_j}[mN].
     \end{align*}
-    where
+    Furthermore, note that
     \begin{align*}
-        NW_1[m] &= \begin{cases}
-            mN+KLN & \text{if } -KL+1 \le m \le 0, \\
-            KLN-mN & \text{if } 0 \le m \le KL - 1, \\
-            0 & \text{elsewhere}.
-        \end{cases} \\
-        % &= \begin{cases}
-        %     mN+LN & \text{if } -LN+N \le mN \le 0, \\
-        %     LN-mN & \text{if } 0 \le mN \le LN - N,\\
-        %     0 & \text{elsewhere}.
-        % \end{cases} \\
-        % &= \begin{cases}
-        %     mN+LN & \text{if } -LN+1 \le iN \le 0, \\
-        %     LN-mN & \text{if } 0 \le iN \le LN - 1, \\
-        %     0 & \text{elsewhere}.
-        % \end{cases}
+        [E(\hat{\vec{r}}_{y_i,y_j})]_{mN+LN-N+1} &= [E(\vec{r}_{y_i,y_j})]_{mN+LN-N+1 +(KLN-LN+2N-1) - 1} \\
+        &=[E(\vec{r}_{y_i,y_j})]_{mN+KLN+N-1}.
     \end{align*}
-    Also note that
+    Since $X[i]=0$ for $KLN-N+1 \le i \le KLN$, $\vec{x}$ is zero for the last $N-1$ elements. Therefore $\vec{y}_i$ is zero for the last $N-1$ elements. Since these last $N-1$ elements are zero, they contribute do not to the elements expected value of $\vec{r}_{y_i,y_j}$. Therefore, similar to the proof of \cref{th:correlation-bias}, we obtain that
     \begin{align*}
-        E[(\hat{\vec{r}}_{y_i,y_j})_{mN+LN-N+1}] &= E[(\vec{r}_{y_i,y_j})_{mN+LN-N+1 +(KLN-LN+2N-1) - 1}] \\
-        &=E[(\vec{r}_{y_i,y_j})_{mN+KLN+N-1}] \\
-        &= W_2[mN] R_{Y_i,Y_j}[mN]
+        [E(\hat{\vec{r}}_{y_i,y_j})]_{mN+LN-N+1}
+        &= [(KLN + N - 1) - (N - 1) - |mN|] R_{Y_i,Y_j}[mN] \\
+        &= (KLN - |mN|) R_{Y_i,Y_j}.
     \end{align*}
-    where
+    Finally,
     \begin{align*}
-        W_2[mN] &= \begin{cases}
-            mN+KLN+N-1 & \text{if } -KLN-N+2 \le mN \le 0, \\
-            KLN+N-1-mN& \text{if } 0 \le mN \le KLN+N-2, \\
-            0 & \text{elsewhere.}
-        \end{cases} \\
-        &= \begin{cases}
-            mN+KLN+N-1 & \text{if } -KL\le m \le 0, \\
-            KLN+N-1-mN& \text{if } 0 \le m \le KL, \\
-            0 & \text{elsewhere.}
-        \end{cases}
-    \end{align*}
-    Let
-    \begin{align*}
-        W_{1 \to 2}[m] &= \begin{cases}
-            (mN+KLN+N-1)/(mN+KLN) & \text{if } -KL+1 \le m \le 0, \\
-            (KLN+N-1-mN)/(KLN-mN) & \text{if } 0 \le m \le KL-1, \\
-            0 & \text{elsewhere.}
-        \end{cases}
-    \end{align*}
-    Then $W_{1 \to 2}[m] N W_1[m] = W_2[mN]$ for $m = -KL+1,\ldots,KL-1$. To this end, let $\vec{w} \in \mathbb{C}^{2L-1}$ be such that $(\vec{w})_{i+L}=W_{1 \to 2}[i]$ for $i = -L+1,\ldots,L-1$. So
-    \begin{align*}
-        \vec{w} = \begin{bmatrix}
-            KLN+(-L+2)N-1 \\
-            KLN+(-L+3)N-1 \\
-            \vdots \\
-            KLN+0\cdot N-1 \\
-            KLN+1\cdot N-1 \\
-            KLN+0\cdot N-1 \\
-            \vdots \\
-            KLN+(-L+3)N-1 \\
-            KLN+(-L+2)N-1
-         \end{bmatrix}^T \odot \begin{bmatrix}
-            [KLN+(-L+1)N]^{-1} \\
-            [KLN+(-L+2)N]^{-1} \\
-            \vdots \\
-            (KLN -1 \cdot N)^{-1} \\
-            (KLN+ 0 \cdot N)^{-1} \\
-            (KLN -1 \cdot N)^{-1} \\
-            \vdots \\
-            [KLN+(-L+2)N]^{-1} \\
-            [KLN+(-L+1)N]^{-1}
-         \end{bmatrix}^T.
-    \end{align*}
-    We then recognise that
-    \begin{align*}
-        [E(\vec{w} \odot N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L} &= E[(\hat{\vec{r}}_{y_i,y_j})_{mN+LN-N+1}] \\
-        &= E[(\hat{\vec{r}}_{y_i,y_j})_{(m+L-1)N+1}] \\
+        [E(N\hat{\vec{r}}_{y'_i,y'_j})]_{m+L}
+        &= [E(\hat{\vec{r}}_{y_i,y_j})]_{mN+LN-N+1} \\
+        &= [E(\hat{\vec{r}}_{y_i,y_j})]_{(m+L-1)N+1} \\
         &= [E(\mat{D} \hat{\vec{r}}_{y_i,y_j})]_{m+L} \\
         &= [E(\hat{\vec{r}}'_{y_i,y_j})]_{m+L}.
-        % (m+L+1)N-1 = mN + LN + N - 1
     \end{align*}
 \end{blockProofTheorem}
 

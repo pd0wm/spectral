@@ -11,12 +11,81 @@
 \label{sec:proofs_detection}
 In this section the stated theorems will be proven.
 
-\begin{blockProofTheorem}{\ref{th:abs-psd}}
-    \begin{align*}
-        \exp \left [ \frac{2\pi j (N-1)}{2N-1} \right] \sum_{n=1}^{2N-1} r[n] \exp \left[ \frac{2\pi j (n-1)(k-1)}{2N-1}\right] \\
-        \sum_{n=1}^{2N-1} r[n] \exp \left[ \frac{2\pi j (n-N)(k-1)}{2N-1}\right] \\
-        \sum_{n=1}^{2N-1} \sum_{\tau=1}^{N} x[\tau - n] \overline{x}[n] \exp \left[ \frac{2\pi j (n-1)(k-1)}{2N-1}\right]  \\        
-    \end{align*}
+% \begin{blockProofTheorem}{\ref{th:abs-psd}}
+%     \begin{align*}
+%         \exp \left [ \frac{2\pi j (N-1)}{2N-1} \right] \sum_{n=1}^{2N-1} r[n] \exp \left[ \frac{2\pi j (n-1)(k-1)}{2N-1}\right] \\
+%         \sum_{n=1}^{2N-1} r[n] \exp \left[ \frac{2\pi j (n-N)(k-1)}{2N-1}\right] \\
+%         \sum_{n=1}^{2N-1} \sum_{\tau=1}^{N} x[\tau - n] \overline{x}[n] \exp \left[ \frac{2\pi j (n-1)(k-1)}{2N-1}\right]  \\        
+%     \end{align*}
+% \end{blockProofTheorem}
+
+\begin{blockProofTheorem}{\ref{th:psd_distr}}
+First notice that if the elements of $\vec{\hat{r}}_x$ have a gaussian distribution, then so will have the elements of $\vec{s}_x$ as they are a linear combination of the elements in $\vec{\hat{r}}_x$.
+
+To determine the distribution of the elements of $\vec{\hat{r}}_x$, we notice that 
+\begin{align*}
+\vec{\hat{r}}_x &= \mat{R}^{\dagger}\vec{\hat{r}'_y}.
+\end{align*}
+
+As $\mat{R}$ is constant, we will focus on $\vec{\hat{r}'_y}$. Again, if the elements of $\vec{\hat{r}}_x$ are to be gaussian distributed, then so are the elements of $\vec{\hat{r}'_y}$.
+
+That is, we'd like to show that the elements of $\vec{\hat{r}}'_{y_i,y_j}$ are approximately gaussian distributed.
+\begin{align*}
+(\vec{\hat{r}}'_{y_i,y_j})_{u+KL-L} &= \left(\left(\vec{c}_i\ast\vec{x}\right)' \circ \left(\vec{c}_j\ast\vec{x}\right)' \right)_{u+KL-L} \\
+&= \sum_{k=1}^{KL} \left(\vec{c}_i\ast\vec{x}\right)'_k \left(\vec{\overline{c}}_j\ast\vec{\overline{x}}\right)'_{KL-(u+KL-L)+k} \\
+&= \sum_{k=1}^{KL} \left(\vec{c}_i\ast\vec{x}\right)_{kN} \left(\vec{\overline{c}}_j\ast\vec{\overline{x}}\right)_{kN+KLN-N(u+KL-L)}\\
+&=  \sum_{k=1}^{KL} \left(\sum_{l=1}^N \left(\vec{c}_i\right)_l\left(\vec{x}\right)_{kN-l+1}\right) \cdot \left(\sum_{m=1}^{N} \left(\vec{\overline{c}_j}\right)_m\left(\vec{\overline{x}}\right)_{kN - Nu + NL - m+1}\right)\\
+&= \sum_{l=1}^N\sum_{m-1}^N \left(\vec{c}_i\right)_l \left(\vec{\overline{c}}_j\right)_m \sum_{k=1}^{KL} (\vec{x})_{kN-l+1} \cdot (\vec{\overline{x}})_{(k-u+L)N - m+1}
+\end{align*}
+
+As $\vec{c}_i$ and $\vec{c}_j$ are constant vectors, we will only have to focus on the last term. Let us introduce the helper variable $a =  \sum_{k=1}^{KL} (\vec{x})_{kN-l+1} \cdot (\vec{\overline{x}})_{(k-u+L)N - m+1}$. Notice that if
+
+\begin{enumerate}
+	\item $u=L, l=m$, then $a = \sum_{k=1}^{KL}\vec{x}_{kN-l+1}\vec{\overline{x}}_{kN-l+1}$. That is, $a$ follows a $\chi^2$ distribution (by definition). As with the convential energy detector, we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+	\item $l \neq m$. Notice that as 
+	% \begin{align*}\{(\vec{x})_{kN-l+1} : 1 \leq k \leq KL\} \cap 
+	% \{(\vec{x})_{(k-u+L)N - m+1} : 1 \leq k \leq KL\}  &= \emptyset
+	% \end{align*}
+
+	\begin{align*}
+	\bmod(kN-l+1,N) &= \bmod(-l+1, N)
+	\end{align*}
+	and
+	\begin{align*}
+	\bmod((k-u+L)N - m+1,N) &= \bmod(-m+1, N)
+	\end{align*}
+	the product in the sum
+	That is $(\vec{x})_{kN-l+1}$  can never equal  $(\vec{x})_{(k-u+L)N - m+1}$ in $a$. Because each element of $\vec{x}$ has the same distribution, the product of two distinct elements in $\vec{x}$ will always yield the same distribution (whatever it may be). By the Central Limit Theorem we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+
+	\item $u\neq L, l=m$ In this case, the product in the sum contains elements of $\vec{x}$ with a minimum displacement of $N$ in their indices. Unlike case 2, the specified sets \emph{can} have elements in common. To see why, consider \cref{fig:ex_dep}. Notice, that the dependence of a product in the sum on other products is limited: for each element of $\vec{x}$ there will be a maximum of two terms in $a$ dependent on that element. Without loss of generality, we will assume $L-u \geq 0$. This does not pose a problem as similar analysis for $L-u < 0$ is possible.  Notice that as $u\neq L$ the first $L-u$ multiplicands in $a$ can \emph{never} appear as multiplier in $a$. The first $L-u$ multipliers, however \emph{can} appear as multiplicand in $a$.  Using this observation it is possible to rewrite $a$ using two sums, which alternatingly sum $L-u$ consecutive terms (which guarantees that the multiplicands in the sum can never equal the multiplier) of the original sum in $a$:
+	
+	\begin{align*}
+	a &= \sum_{q=1}^{\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor} \sum_{r=1}^{L-u} \vec{x}_{((2q-1)(L-u)+r)N-l+1}\vec{\overline{x}}_{((2q-1)(L-u)+r)N-l+1} \\
+	   & \;+ \sum_{s=1}^{\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor} \sum_{t=1}^{L-u} \vec{x}_{(2s(L-u)+t)N-l+1}\vec{\overline{x}}_{(2s(L-u)+t)N-l+1}
+	\end{align*}
+	
+	Therefore, if $\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor$ is large enough, $a$ is the sum of two approximately gaussian distributed variables, and therefore itself is approximately gaussian distributed.			
+\end{enumerate}
+
+\begin{figure}
+\begin{tikzpicture}
+\node (species1) {
+\begin{tabular}{|c|c|c|c|c|c|c|c|}\hline
+    $(\vec{x})_{2N-l+1}$ & $\ldots$  & $(\vec{x})_{3N-l+1}$ & $\ldots$ & $(\vec{x})_{4N-l+1}$ & $\ldots$ & $(\vec{x})_{5N-l+1}$  & $\ldots$ \\ \hline 
+    \end{tabular}
+  
+};
+\node (species2) [below right= 0.2cm and -14.5cm of species1] {
+      \begin{tabular}{|c|c|c|c|c|c|c|c|}\hline
+    $(\vec{x})_{N-l+1}$ & $\ldots$  & $(\vec{x})_{2N-l+1}$ & $\ldots$ & $(\vec{x})_{3N-l+1}$ & $\ldots$ & $(\vec{x})_{4N-l+1}$  & $\ldots$ \\ \hline 
+    \end{tabular}
+};
+\end{tikzpicture}
+\caption{Example illustrating dependence, $u=L-1$}
+\label{fig:ex_dep}
+\end{figure}
+
+
 \end{blockProofTheorem}
 
 \end{document}

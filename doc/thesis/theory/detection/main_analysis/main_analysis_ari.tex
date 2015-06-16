@@ -1,0 +1,125 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Main analysis Ariananda}
+
+We assume that if our signal $x[n]$ purely contains noise, the elements of $\vec{x}$ are i.i.d. circular complex gaussian distributed; $(\vec{x})_i \sim \mathcal{CN}(0,\sigma_n)$. 
+
+In this section we will analyze how the elements of the power spectral density can serve as the test statistic as used in the Neyman-Pearson test. 
+
+\subsection{Distribution of PSD elements}
+To employ the Neyman-Pearson theorem to determine the threshold at frequency $\omega$, it is necessary that one knows the distribution of $\mathcal{P}\left(\omega\right)$. Only if this distribution is known, the threshold $\eta_{\omega}$ can correctly be set to yield the desired false alarm probability.
+
+Note that 
+
+\begin{align*}
+\mathcal{P}\left(\omega\right) &= \sum_{n=-\infty}^{\infty} r_{x}[n] \exp\left[-jn\omega\right]
+\end{align*}
+
+and therefore the distribution of $\mathcal{P}(\omega)$ depends on the distribution of \emph{all} elements of the autocorrelation. Furthermore, the elements of the autocorrelation, can in general not be regarded as independent random variables. This illustrates that the distribution of $\mathcal{P}(\omega)$, is not trivial to derive. 
+
+Let $(\vec{s}_x) = \mat{F} \vec{\hat{r}}_x$, where $\mat{F}$ denotes the $2LN-1 \times 2LN-1$ DFT matrix, denote the vector containing the elements of the power spectral density of $\vec{x}$. That is the element $\left(\vec{s}_{x}\right)_{i}$ denotes the component of the power spectral density at $\omega = \frac{2\pi (i-1)}{2LN-1}$.
+
+\begin{blockTheorem}[Distribution of power spectral density elements]\label{th:psd_distr}
+Under the assumption that $\vec{x}$ is circular complex gaussian noise and $L-1 \ll KL$, the elements of $\vec{s}_x$ are approximately gaussian distributed.
+\end{blockTheorem}
+
+Using this approximation, it is possible to determine the distribution of the elements  of $\vec{s}_x$: by determining the expected value ($\mu_{\omega}$) and the variance $\sigma_{\omega}^2$ for each element of $\vec{s}_x$, the distribution is completely specified.
+
+If $\mat{C}_{s_x}$ denotes the covariance matrix of $\vec{s}_x$, then the variance of a element of $\vec{s}_x$ can be found on its diagonal.
+Using the relation for $\vec{s}_x$, we can compute the covariance matrix $\mat{C}_{s_x}$ as:
+
+\begin{align*}
+\mat{C}_{s_x} &= E\left[\vec{s}_x\vec{s}_x^H\right] - E\left[\vec{s}\right]E\left[\vec{s}^H\right] \\
+&= E\left[\left(\mat{F} \mat{R}^{\dagger}\vec{r}_y\right) \left( \mat{F}\mat{R}^{\dagger}\vec{r}_y\right)^H\right] - E\left[\mat{F}\mat{R}^{\dagger}\vec{r}_y\right]E\left[\left(\mat{F}\mat{R}^{\dagger}\vec{r}_y\right)^H\right] \\
+&= \mat{F}\mat{R}^{\dagger} E\left[ \vec{r}_y\vec{r}_y^H\right]  \mat{R}^{\dagger H}\mat{F}^H -  \mat{F}\mat{R}^{\dagger} E\left[ \vec{r}_y\right] E\left[\vec{r}_y^H\right]   \mat{R}^{\dagger H}\mat{F}^H \\
+&= \mat{F}\mat{R}^{\dagger} \mat{C}_{r_y} \mat{R}^{\dagger H}\mat{F}^H
+\end{align*}
+
+Let $\mat{C}_{r_y}$ denote the covariance matrix of of $\vec{r}_y$, with its elements given by
+
+\begin{align}\label{eq:cov_ry}
+(\mat{C}_{r_y})_{i,j} &= \text{Cov}(\vec{r_{y_t,y_u}}_i,\vec{r_{y_v, y_w}}_j).
+\end{align}
+
+As stated in \cite{ariananda2012compressive}, under the assumption that the elements of $\vec{x}$ are i.i.d. circular complex gaussian distributed, the expression for the covariance in \cref{eq:cov_ry} simplifies to:
+
+\begin{align*}
+\text{Cov}(\vec{r_{y_t,y_u}}_i,\vec{r_{y_v, y_w}}_j) &= \frac{\sigma_n^4 \vec{r_{c_t,c_v}}_N \vec{\overline{r}_{c_u,c_w}}_N \delta \left[ j-i\right]}{d}
+\end{align*}.
+
+<<<<<<< HEAD
+As $\vec{c}_i$ and $\vec{c}_j$ are constant vectors, we will only have to focus on the last term. Let us introduce the helper variable $a =  \sum_{k=1}^{KL} (\vec{x})_{kN-l+1} \cdot (\vec{\overline{x}})_{(k-u+L)N - m+1}$. Notice that if
+
+\begin{enumerate}
+	\item $u=L, l=m$, then $a = \sum_{k=1}^{KL}\vec{x}_{kN-l+1}\vec{\overline{x}}_{kN-l+1}$. That is, $a$ follows a $\chi^2$ distribution (by definition). As with the convential energy detector, we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+	\item $l \neq m$. Notice that as 
+	% \begin{align*}\{(\vec{x})_{kN-l+1} : 1 \leq k \leq KL\} \cap 
+	% \{(\vec{x})_{(k-u+L)N - m+1} : 1 \leq k \leq KL\}  &= \emptyset
+	% \end{align*}
+
+	\begin{align*}
+	\bmod(kN-l+1,N) &= \bmod(-l+1, N)
+	\end{align*}
+	and
+	\begin{align*}
+	\bmod((k-u+L)N - m+1,N) &= \bmod(-m+1, N)
+	\end{align*}
+	the product in the sum
+	That is $(\vec{x})_{kN-l+1}$  can never equal  $(\vec{x})_{(k-u+L)N - m+1}$ in $a$. Because each element of $\vec{x}$ has the same distribution, the product of two distinct elements in $\vec{x}$ will always yield the same distribution (whatever it may be). By the Central Limit Theorem we can approximate the distribution of the sum as a whole as gaussian if $KL$ is large enough.
+
+	\item $u\neq L, l=m$ In this case, the product in the sum contains elements of $\vec{x}$ with a minimum displacement of $N$ in their indices. Unlike case 2, the specified sets \emph{can} have elements in common. To see why, consider \cref{fig:ex_dep}. Notice, that the dependence of a product in the sum on other products is limited: for each element of $\vec{x}$ there will be a maximum of two terms in $a$ dependent on that element. Notice that as $u\neq L$ the first $L-u$ multiplicands in $a$ can \emph{never} appear as multiplier in $a$. The first $L-u$ multipliers, however \emph{can} appear as multiplicand in $a$.  Using this observation we rewrite $a$ using two sums, which alternatingly sum $L-u$ consecutive terms (which guarantees that the multiplicands in the sum can never equal the multiplier) of the original sum in $a$: 
+
+	\begin{align*}
+	a &= \sum_{q=1}^{\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor} \sum_{r=1}^{L-u} \vec{x}_{((2q-1)(L-u)+r)N-l+1}\vec{\overline{x}}_{((2q-1)(L-u)+r)N-l+1} \\
+	   & \;+ \sum_{s=1}^{\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor} \sum_{t=1}^{L-u} \vec{x}_{(2s(L-u)+t)N-l+1}\vec{\overline{x}}_{(2s(L-u)+t)N-l+1}
+	\end{align*}
+	Note that we tacitly assumed that $L-u \geq 0$. This does not pose a problem as similar analysis for $L-u < 0$ is possible. 
+	Therefore, if $\left\lfloor{\frac{KL}{2(L-u)}}\right\rfloor$ is large enough, $a$ is the sum of two approximately gaussian distributed variables, and therefore itself is approximately gaussian distributed.			
+\end{enumerate}
+
+\begin{figure}
+\begin{tikzpicture}
+\node (species1) {
+\begin{tabular}{|c|c|c|c|c|c|c|c|}\hline
+    $(\vec{x})_{2N-l+1}$ & $\ldots$  & $(\vec{x})_{3N-l+1}$ & $\ldots$ & $(\vec{x})_{4N-l+1}$ & $\ldots$ & $(\vec{x})_{5N-l+1}$  & $\ldots$ \\ \hline 
+    \end{tabular}
+  
+};
+\node (species2) [below right= 0.2cm and -14.5cm of species1] {
+      \begin{tabular}{|c|c|c|c|c|c|c|c|}\hline
+    $(\vec{x})_{N-l+1}$ & $\ldots$  & $(\vec{x})_{2N-l+1}$ & $\ldots$ & $(\vec{x})_{3N-l+1}$ & $\ldots$ & $(\vec{x})_{4N-l+1}$  & $\ldots$ \\ \hline 
+    \end{tabular}
+};
+\end{tikzpicture}
+\caption{Example illustrating dependence, $u=L-1$}
+\label{fig:ex_dep}
+\end{figure}
+=======
+Now that we have analyzed how to compute the variance of each element of $\vec{s}_x$, we will analyze the expression of their expected value ($\mu$).
+>>>>>>> ce205588a6e12dc5693c1b9458a8c72e17f44173
+
+\begin{align*}
+E\left[\vec{s}_x\right] &= \mat{F}\mat{R}^{\dagger}E\left[\vec{r}_y\right] 
+\end{align*}.
+
+The elements of $(\vec{r}_y$ are given by 
+\begin{align*}
+\vec{r}_{y_i, y_j}[k] &= \vec{r}_{c_i,c_j} \ast \vec{r}_x & \text{\cref{th:convolution-correlation}} \\
+&=  \left( \vec{r}_{c_i,c_j}\right)_N  \vec{\delta}_N
+\end{align*}
+
+Now that we both know the variance and mean of each element, we obtain that our threshold $\gamma_{\omega}$ given a false alarm probability $p_{fa}$:
+
+\begin{align*}
+Q^{-1}(p_{fa})\sigma_{\omega} + \mu_{\omega}
+\end{align*}
+
+This concludes the main analysis.
+
+\end{document}

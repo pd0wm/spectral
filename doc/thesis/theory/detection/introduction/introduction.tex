@@ -1,0 +1,20 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\begin{document}
+
+\chapter{Detection}
+This chapter describes a method that, given a reconstructed power density, estimates which frequencies are occupied by a PU signal. This method, as described in \cite{ariananda2012compressive} is adapted to work in combination with our reconstruction method. By calculating a frequency dependent threshold, all frequencies in the PSD with a power above this threshold are considered as ``occupied''. 
+
+Besides the low complexity of this method  (providing high-performance detection), this method also incorporates characteristics of the reconstruction methods. Conventional energy detectors, for example as described in \cite{???}, are agnostic to the reconstruction method. Furthermore these detectors can only detect whether a signal is present or not; this requires the use of a bandpass filter to detect the presence of  a signal in a certain frequency band, whereas our detection method can directly apply its threshold to the reconstructed power spectral density.
+
+Furthermore, as our detection method does not depend on specific signal characteristics it can be regarded as a ``generalized'' detector. It can therefore be used to detect a variety of signal. This, however, comes at a price: at low Signal-to-Noise-ratio's the detectors performance is poor \cite{???} compared to other detection methods that do take signal characteristics into account. A common detection method that does use signal characteristics, cyclostationary detection, is characterized by its high computational cost and long sensing time and is therefore less suited for high performance sensing (TODO find general statement for these prior information detectors). 
+
+% \subimport{detection/preliminaries/}{preliminaries}
+% \subimport{detection/main_analysis/}{main_analysis}
+% \subimport{detection/algorithm/}{algorithm}
+% \subimport{detection/proofs/}{proofs}
+\end{document}

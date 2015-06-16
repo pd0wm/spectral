@@ -27,7 +27,7 @@ source_snr = args.snr
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-L = 2
+L = 3
 a = 5
 b = 7
 N = 61
@@ -36,6 +36,7 @@ block_size = N * upscale_factor * L
 
 settings = Pyro4.Proxy("PYRONAME:cg.settings")
 settings.update({
+    'source': source_type,
     'Pfa': 0.1,
     'center_freq': 2.4,  # GHz
     'num_bins': 150,
