@@ -2,7 +2,6 @@ from .reconstructor import Reconstructor
 import cogradio as cg
 import numpy as np
 import scipy as sp
-import scipy.io
 
 
 class Wessel(Reconstructor):
@@ -12,18 +11,10 @@ class Wessel(Reconstructor):
     def __init__(self, L, C):
         Reconstructor.__init__(self)
         self.L = L
-        if C is None:
-            sparseruler = cg.sparseruler(N)
-            self.C = cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
-        else:
-            self.C = C
-
+        self.C = C
         self.M = self.C.shape[0]
         self.N = self.C.shape[1]
-
         self.R = self.constructR()
-        # Force full column rank with slicing
-
         self.R_pinv = self.calc_pseudoinverse(self.R)
 
     # Given M decimated channels, try to estimate the PSD
