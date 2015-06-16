@@ -1,7 +1,7 @@
 %!TEX program = xelatex
 
 \documentclass[a4paper, openany, oneside]{memoir}
-\input{../../../includes/preamble.tex}
+\input{../../../../includes/preamble.tex}
 \addbibresource{../../includes/bibliography.bib}
 
 \title{Introduction}
@@ -13,10 +13,9 @@
 \begin{document}
 
 \section{Overview}
+In this section we will give an overview of the system as proposed in \textbf{verwijs}.
 
-\todo[inline, author=kees]{dit is nog niet leeswaardig}
-
-The block diagram of compressive sensing is displayed in figure \ref{tkz:blockdiagram}
+The block diagram of the complete system is given in \cref{tkz:blockdiagram}
 
 \begin{figure}[H]\label{tkz:blockdiagram}
 \begin{tikzpicture}
@@ -30,9 +29,14 @@ The block diagram of compressive sensing is displayed in figure \ref{tkz:blockdi
 \draw [{->}] (v1) edge (v2);
 \draw [{->}] (v3) edge (v4);
 \end{tikzpicture}
-\caption{block diagram of compressive sensing}
+\caption{Block diagram of complete system}
 \end{figure}
 
-The sampler has to sample in such a way that all information to calculate the power spectral density is preserved, for the biggest bandwidth possible. The reconstructor has to pick all available information from the sampler and reconstruct the power spectral density. The detector has to detect signals in the reconstructed power spectral density.
+\subsection{Sampler}
+The sampler samples the input signal. The sampler itself consists of multiple sampling devices and therefore the output of the sampler block consists of multiple sample streams.
+
+\subsection{Reconstruction}
+The input of the reconstructor consist of the multiple samples streams. 
+\subsection{Detection}
 
 \end{document}
