@@ -12,6 +12,19 @@
 
 \begin{document}
 \chapter{Introduction}
+In the this part of the thesis the implementation is outlined. There are a number of considerations that became clear at the start of the project:
+\begin{itemize}
+    \item The implementation needs to be fast. The products from our competitors are all high performance products. The advantage of compressive sensing is that less hardware can be used at the cost of more demanding computations.
+    \item The implementation needs to be modular in the sense that different kind of approaches to the problem (both in hardware and algorithms) can be implemented and require a minimal amount of adjustment in the software.
+    \item The implementation needs to flexible enough that it could be run on different computational platforms (distributed networks, embedded devices, etc.) with minimal amount of adjustment in the software.
+\end{itemize}
+For the software side of things there were two candidates, \matlab{} and Python. Taking the considerations of our project in consideration Python provides the best option. The reasons for picking python are:
+\begin{itemize}
+    \item The python libraries \lib{NumPy} and \lib{SciPy} use the same linear algebra libraries\footnote{Depending on OS this can be one of the many implementations. A few popular are \lib{openBLAS}, \lib{ATLAS}, \lib{Accelerate} on Apple machines or Intel's proprietary \lib{MKL}} that \matlab{} uses for the actual calculations, so the speed difference will be marginal.
+    \item Python is not proprietary code meaning it can be used in the final product.
+    \item Python provides libraries which allow distributed networking/computing \cite{pythonmp}.
+    \item Python is a full blown programming language meaning it has libraries for non-numerical applications such as web-frameworks which allow for more advanced visualization options.
+\end{itemize}
 
 
 \end{document}
