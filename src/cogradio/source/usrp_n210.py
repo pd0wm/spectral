@@ -1,6 +1,5 @@
 from .source import Source
 import numpy as np
-import time
 try:
     from gnuradio import uhd
 except ImportError:
