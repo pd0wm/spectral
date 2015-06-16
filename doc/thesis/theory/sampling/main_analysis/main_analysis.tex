@@ -1,0 +1,109 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Main analysis}
+
+Let $\vec{x} \in \mathbb{C}^{N}$ denote the received signal. 
+
+The algorithm must decide between to hypotheses:
+
+\begin{align}\label{eq:hypotheses}
+  \mathcal{H}_0&: \vec{x} = \vec{n}\\
+  \mathcal{H}_1&: \vec{x} = \vec{s} + \vec{n}
+\end{align}
+
+in which $\vec{n} \in \mathbb{C}^{N} $ denotes a noise signal and $\vec{s} \in \mathbb{C}^{N}$ denotes a signal as transmitted by a primary user.
+
+\subsection{Energy Detection}
+We assume that the noise samples are i.i.d. zero mean circular complex gaussian distributed; $(\vec{n})_i \sim \mathcal{CN}(0, \sigma_n^2)$. 
+We furthermore assume that the samples of the signal $\vec{s}$ can be modelled independently as circular complex gaussian $\mathcal{CN}(0, \sigma_s^2)$. % todo ref
+% dat dit aannemelijk maakt That is
+
+\begin{align*}
+(\vec{x}_i) \sim 
+    \begin{cases}
+        \mathcal{CN}(0, \sigma_n^2) & \text{under $\mathcal{H}_0$} \\
+        \mathcal{CN}(0, (\sigma_s^2 + \sigma_n^2)) & \text{under $\mathcal{H}_1$}
+    \end{cases}
+\end{align*} 
+
+The likelihood function $L(\vec{x})$ of the signal $\vec{x}$ is given by:
+
+\begin{align*}
+    L(\vec{x}) &= \prod_{i=1}^N f_{(\vec{x})_i}\\
+    &= \begin{cases}
+        \frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_0$} \\
+        \frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_1$}
+    \end{cases}
+\end{align*}
+
+Where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ in $\vec{x}$.  The test statistic $\Lambda(\vec{x})$ as used in the Neyman Pearson test is then given by:
+\begin{align*}
+\Lambda(\vec{x}) &=\frac{\frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{\frac{(\sigma_n^2 + \sigma_s^2)}{\pi^N } \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}
+\end{align*}
+
+
+By taking the logarithm of $\Lambda(x)$ we obtain a Log Likelihood Ratio test statistic $\Lambda'(x)$, given by
+
+\begin{align*}
+\Lambda(\vec{x}) &= \log \left(
+\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)\exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}\right) \\
+&= \log\left(\sigma_n^2\right) - \log\left(\sigma_n^2 + \sigma_s^2\right) +  (\sigma_s^2) \sum_{i=1}^N |x|^2. 
+\end{align*}
+
+Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic 
+
+\begin{align*}
+\Lambda''(\vec{x}) &= \sum_{i=1}^N |x|^2
+\end{align*} 
+
+is proportional to $\Lambda'(x)$. A detector using the test statistic $\Lambda''(x)$ is  referred to as the \emph{Energy detector}. 
+
+\subsubsection{Threshold}
+In this section we will determine the threshold $\eta$, for the energy detector test statistic $\Lambda''(x)$.
+%Without loss of generality, let $\sigma_n = N^2$ \footnote{To determine the threshold $\eta$ for $\sigma_n \neq N^2$, observe that we can normalize $(\vec{x})_i$, by dividing it by its standard deviation $\sigma_n$.}. 
+Under $\mathcal{H}_0$ the following applies\cite{teguigspectrum2014}  
+
+\begin{align}
+    \frac{2\Lambda''(x)}{\sigma_n^2} \sim \chi^2_{2N}.
+\end{align}
+
+% Sensing Throughput Tradeoff in Cognitive Radio, Y. C. Liang
+
+Therefore the false alarm probability $P_{fa}$ is given by \cite{rugini2013small}:
+
+\begin{align*}
+    P_{fa} &= P\left[(\Lambda''(\vec{x}) > \eta)\right] \\
+        &= 1-F_{2N} (\frac{2\eta}{\sigma_n^2})
+\end{align*}
+
+with $F_{2N}$ the CDF of a chi square distribution with $2N$ degrees of freedom. 
+
+If $N$ is large enough, we can approximate the test statistics' distribution by a gaussian distribution, using the Central Limit theorem:
+
+\begin{align*}
+F_{2N} \approx 1-Q(\frac{\frac{2\Lambda''(x)}{\sigma^2_n}-2N}{2\sqrt{N}}).
+\end{align*}
+
+$P_{fa}$ can then be approximated as 
+
+ \begin{align}
+ P_{fa} \approx Q\left(\frac{2\eta -2N}{2\sqrt{N}\sigma_n^2}\right).\label{eq:p_fa}
+ \end{align} \cite{
+ %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
+ }
+
+ and given a desired $P_{fa}$ the threshold $\eta$ is given by
+
+\begin{align}
+ \eta = Q^{-1}\left(P_{fa})\sqrt{N} + N\right) \sigma_n^2
+ \end{align} \cite{
+ %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
+ }
+ 
+\end{document}
