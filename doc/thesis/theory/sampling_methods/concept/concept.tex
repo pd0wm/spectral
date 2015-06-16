@@ -7,8 +7,43 @@
 \begin{document}
 
 \section{Concept}
-hier moet iets over we hebben alle lags nodig.\\
-\\
-We will look at three different approaches where multi-coset sampling is used to obtain the information needed: \textit{circular sparse ruler sampling}, \textit{coprime sampling} and \textit{collaborative sampling}. Each sampling method imposes different restrictions to the device
+The reconstruction poses two specifications for the sampling methods:
+\begin{enumerate}
+\item all lags in $\mathbb{Z}$ must be available
+\item the sampling method must be described by sampling matrix $\mathbf{C}$
+\end{enumerate}
+We will propose three methods to handle these specifications:
+\begin{itemize}
+\item \textit{circular sparse ruler}
+\item \textit{collaborative sampling}
+\item \textit{coprime sampling}
+\end{itemize}
+each of these techniques impose their own restrictions to the sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple device with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. 
+
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \def\N{7}
+        \draw [thick, black] circle[radius=2.5cm] (0,0);
+        \foreach \i in {1,...,\N} {
+            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,black,thick] plot ({\x*sin(360*(\i-1)/\N)},{\x*cos(360*(\i-1)/\N)});
+            \draw [black,thick,dashed] (0,0) -- ({2.5*sin(360*(\i-1)/\N)},{2.5*cos(360*(\i-1)/\N)});
+            \node[black] at ({3*sin(360*(\i-1)/\N)},{3*cos(360*(\i-1)/\N)}) {$\i$};
+        }
+        \foreach \i in {0,1,3} {
+            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,red,line width=1mm] plot ({\x*sin(360*\i/\N)},{\x*cos(360*\i/\N)});
+        }
+        \draw [scale=1,domain=0.1:0.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 1
+        \draw [scale=1,domain=1.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 2
+        \draw [scale=1,domain=3.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 4
+        \draw [scale=1,domain=0.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1.5*sin(360*\x/\N)},{1.5*cos(360*\x/\N)}); % 3
+        \draw [scale=1,domain=3.1:7.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1*sin(360*\x/\N)},{1*cos(360*\x/\N)}); % 5
+        \draw [scale=1,domain=1.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({0.5*sin(360*\x/\N)},{0.5*cos(360*\x/\N)}); % 6
+    \end{tikzpicture}
+    \caption{Minimal circular ruler for $N=7$}
+    \label{fig:circular-ruler}
+\end{figure}
+
 \end{document}
 
