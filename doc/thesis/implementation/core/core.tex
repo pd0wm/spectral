@@ -12,15 +12,27 @@
 
 \begin{document}
 \chapter{Functional Core}
+In this chapter we will discuss the functional core of our system. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
 
 \section{Sampling}
 \label{sec:sampling}
+In this section we will describe sampling, the process of periodic measurements of the voltage levels that enter our system. We will begin with discussing the hardware, the low level communication with the hardware and the abstractions we made in our final system.
 
-\subsection{GnuRadio}
-\label{sec:gnuradio}
+\subsection{USRP N210}
+\label{sec:usrp-n210}
+The hardware samplers used in our system was a USRP N210, a software defined radio (SDR) produced by \textit{Ettus Research}. This radio is equipped with the SBX front-end, which has frequency range of \SIrange{400}{4400}{\mega\hertz} that can both transmit and receive. This signal that enters the radio is first amplified and then mixed down by a two local oscillators with a \SI{90}{\degree} phase shift. Then the resulting two signals are sampled by two \SI{100}{\mega\sample\per\second} ADCs resulting in an I and a Q signal. Because the local oscillators have a \SI{90}{\degree} phase shift the resulting signal is quadrature/IQ sampled. With the information from both signals we measure the complex envelope of the signal.
 
-\subsection{UHD Drivers}
-\label{sec:uhd-drivers}
+The USRPs can also be used as a transmitter using the DAC and the same local oscillators. We used this during the testing of our design to generate test signals. However this is not used in our final design.
+
+These radios are connected to a PC by using gigabit Ethernet, thus limiting the effective sample rate to \SI{25}{\mega\sample\per\second} with a 16 bit resolution or \SI{50}{\mega\sample\per\second} with an 8 bit resolution. If you want to use the full potential of the internal ADC (2x \SI{100}{\mega\sample\per\second}) and DAC (2x \SI{400}{\mega\sample\per\second}) you have to write your own firmware for the internal FPGA\@.
+
+For our implementation of co-prime sampling we needed to synchronise the sampling of two USRPs. This can be accomplished by connection them with a special MIMO cable. This allows them to internally synchronise their sampling clock. It even allows them to schedule commands at exactly the same time, so they can start sampling at exactly the same moment.
+
+\subsection{Drivers}
+\label{sec:drivers}
+The communication between the USRPs and our software is handled by the UHD driver\footnote{The code for this driver can be found online at: \url{https://github.com/EttusResearch/uhd}} written by \textit{Ettus Research}.
+
+In the first version of our software we built everything using \lib{GNU Radio}. We used the \lib{gnuradio-uhd} blocks to get samples from our USRPs. Soon we switched to a pure Python version, we still used the \lib{gnuradio-uhd} library to retrieve our samples. We used a specific helper function \func{gnuradio.uhd.finite\_acquisition(n)} from the GNU Radio libraries. This helper function started a low level stream, waits for n samples, closes the stream and returns the samples to the caller.
 
 
 

@@ -185,7 +185,7 @@
 \newcommand{\pushline}{\hskip \textwidth minus \textwidth}
 \newcommand{\matlab}{\textsc{Matlab}}
 \newcommand{\lib}[1]{\textsf{#1}}
-\newcommand{\func}[1]{{\ttfamily #1}}
+\newcommand{\func}[1]{\texttt{\small #1}}
 
 % Setup actiepunten
 \newenvironment{important}[1][]{%
@@ -211,3 +211,7 @@
 
 % Allow page breaks in display environments
 \allowdisplaybreaks
+
+
+% S unit for use in Mega Samples per second
+\DeclareSIUnit\sample{S}
