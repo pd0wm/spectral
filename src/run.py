@@ -36,6 +36,7 @@ block_size = N * upscale_factor * L
 
 settings = Pyro4.Proxy("PYRONAME:cg.settings")
 settings.update({
+    'source': source_type,
     'Pfa': 0.1,
     'center_freq': 2.4,  # GHz
     'num_bins': 150,

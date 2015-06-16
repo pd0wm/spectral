@@ -12,6 +12,7 @@ class ServerProtocolData(WebSocketServerProtocol):
     SRC_DATA = 'src_data'
     REC_DATA = 'rec_data'
     DET_DATA = 'det_data'
+    datatypes = (SRC_DATA, REC_DATA, DET_DATA)
 
     sample_freq = 10e6
     center_freq = 2.4e9
@@ -110,9 +111,7 @@ class WebsocketDataContainer:
     """Class containing the data that is used by the websocket for plotting"""
 
     def __init__(self, dtype, data):
-        if (dtype != ServerProtocolData.SRC_DATA) and \
-                (dtype != ServerProtocolData.REC_DATA) and \
-                (dtype != ServerProtocolData.DET_DATA):
+        if dtype not in ServerProtocolData.datatypes:
             raise ValueError("Invalid datatype passed to websocket datacontainer")
 
         self.dtype = dtype
