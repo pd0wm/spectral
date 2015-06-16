@@ -32,8 +32,9 @@
 
 \ifxetex{} % Fonts laden in het geval dat je met Xetex compiled
     \usepackage{fontspec}
-    \defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
+    \defaultfontfeatures{Scale=MatchLowercase, Ligatures=TeX} % To support LaTeX quoting style
     %\setromanfont{Palatino Linotype} % Tover ergens in Font mapje in root.
+    \setsansfont{Avenir Next}
     \setromanfont{Adobe Caslon Pro} % Tover ergens in Font mapje in root.
     \setmonofont{Source Code Pro}
 \else % Terug val in standaard pdflatex tool chain. Geen ondersteuning voor OTT fonts
@@ -185,7 +186,7 @@
 \newcommand{\pushline}{\hskip \textwidth minus \textwidth}
 \newcommand{\matlab}{\textsc{Matlab}}
 \newcommand{\lib}[1]{\textsf{#1}}
-\newcommand{\func}[1]{\texttt{\small #1}}
+\newcommand{\func}[1]{\texttt{#1}}
 
 % Setup actiepunten
 \newenvironment{important}[1][]{%
