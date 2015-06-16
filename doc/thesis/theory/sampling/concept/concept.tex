@@ -6,9 +6,74 @@
 
 \begin{document}
 
-\section{Concept}
-hier moet iets over we hebben alle lags nodig.\\
-\\
-We will look at three different approaches where multi-coset sampling is used to obtain the information needed: \textit{circular sparse ruler sampling}, \textit{coprime sampling} and \textit{collaborative sampling}. Each sampling method imposes different restrictions to the device
+% \section{Concept}
+The first step of spectrum sensing is sampling the signal. Conventional methods sample at a uniform sample rate to ensure complete reconstruction of the signal. With uniform sampling, every consecutive sample has an equal delay in time. This is illustrated by \cref{tkz:uniform}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\draw [fill=gray]  (-2,0) rectangle (-1,-1);
+\draw [fill=gray]  (-1,0) rectangle (0,-1);
+\draw [fill=gray]  (0,0) rectangle (1,-1);
+\draw [fill=gray]  (1,0) rectangle (2,-1);
+\draw [fill=gray]  (2,0) rectangle (3,-1);
+\draw [fill=gray]  (3,0) rectangle (4,-1);
+\draw [fill=gray]  (4,0) rectangle (5,-1);
+\draw [fill=gray]  (5,0) rectangle (6,-1);
+\draw [fill=gray]  (6,0) rectangle (7,-1);
+\draw [fill=gray]  (7,0) rectangle (8,-1);
+\draw [fill=gray]  (8,0) rectangle (9,-1);
+
+\node (v1) at (-2.5,-.5) {};
+\node (v2) at (9.5,-.5) {};
+\draw  (v1) node {\dots} ;
+\draw  (v2) node {\dots} ;
+
+\node (v3) at (1,.25) {};
+\node (v4) at (2,.25) {};
+\draw  [<->] (v3) edge (v4);
+
+\node (v5) at (1.5,.5) {};
+\draw  (v5) node {T} ;
+\end{tikzpicture}
+\caption{Uniform sampling with sample period T. Gray blocks are sampled}\label{tkz:uniform}
+\end{figure}
+
+When one wants to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate \todo{ref}. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum. Non uniform sampling has no restriction on delays of consecutive samples. This is illustrated in \cref{tkz:nonuniform}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\draw  (-2,0) rectangle (-1,-1);
+\draw [fill=gray]  (-1,0) rectangle (0,-1);
+\draw [fill=gray]  (0,0) rectangle (1,-1);
+\draw  (1,0) rectangle (2,-1);
+\draw [fill=gray] (2,0) rectangle (3,-1);
+\draw  (3,0) rectangle (4,-1);
+\draw  (4,0) rectangle (5,-1);
+\draw [fill=gray]  (5,0) rectangle (6,-1);
+\draw  (6,0) rectangle (7,-1);
+\draw  [fill=gray] (7,0) rectangle (8,-1);
+\draw  (8,0) rectangle (9,-1);
+
+\node (v1) at (-2.5,-.5) {};
+\node (v2) at (9.5,-.5) {};
+\draw  (v1) node {\dots} ;
+\draw  (v2) node {\dots} ;
+
+\node (v3) at (1,.25) {};
+\node (v4) at (2,.25) {};
+\draw  [<->] (v3) edge (v4);
+
+\node (v5) at (1.5,.5) {};
+\draw  (v5) node {T} ;
+\end{tikzpicture}
+\caption{Non-uniform sampling with sample period T. Gray blocks are sampled}\label{tkz:nonuniform}
+\end{figure} 
+
+This is however not trivial to implement on a device. To perform non-uniform sampling we introduce multi-coset sampling. Multi-coset sampling is a set of sampling methods that use multiple samplers, or cosets, to sample the spectrum. In the reconstruction we will deduce criteriums on the sampling that will further specify the samplers. In the section sampling methods we will then get back to multi-coset sampling to link it to the reconstruction and optimize performance.
+
 \end{document}
 
