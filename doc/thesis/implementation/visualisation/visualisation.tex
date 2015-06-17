@@ -32,18 +32,21 @@ The back-end's tasks can be summarized briefly as follows:
 \begin{itemize}
 	\item Handle client connections;
 	\item Serve the web-application to any client that connects;
-	\item Manage system-wide settings;
-	\item Keep system-wide settings synchronised between clients and;
-	\item Serving data-streams to each client on-demand.
+	% \item Manage system-wide settings;
+	% \item Keep system-wide settings synchronised between clients and;
+	% \item Serving data-streams to each client on-demand.
 \end{itemize}
 
-The first two tasks are largely handled by the Python package \lib{Flask}, which was introduced in \cref{sec:flask}.
+The first two tasks are largely handled by the Python package \lib{Flask}, which was introduced in \cref{sec:flask}. Using \lib{Flask}, a series of routes may be defined. Clients can then send a request to one or more of these routes, for example to request a web page like the visualisation front-end. \lib{Flask} will execute the code that is associated with the specified route upon receiving a request, like rendering the visualisation front-end, after which the result of this execution is sent back to the client.
 
-\subsection{Elements}
-\label{sec:elements}
 
 \subsection{Templating}
 \label{sec:templating}
+For rendering a web page, like the front-end, \lib{Flask} makes use of yet another Python package called \lib{Jinja2}. This package is a so-called \emph{templating engine}, which renders a web page using a predefined layout, containing some static content, but also an arbitrary number of expressions that are interpreted and executed by \lib{Jinja2} upon receiving a request to generate dynamic content.
+
+\subsection{Elements}
+\label{sec:elements}
+\lib{Jinja2} can be used to generate an entire web page at once, but also to render a single element of the page, such as a slider or a plot. In the design of the visualisation package, it was deemed preferable to easily swap in and out specific elements. The web-application is therefore set up as a skeleton containing for examzple the page header and footer, as well as a grid-like body that is used to hold the chosen page elements. This way the front-end is completely modular. The programmer only has to pick a certain element, configure it to display and/or modify the correct data or setting and place it in the grid. The templating engine will render each element individually and then insert them into the page body. This way the entire front-end is constructed.
 
 \section{Front-end}
 \label{sec:clientside}
