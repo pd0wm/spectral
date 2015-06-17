@@ -14,7 +14,7 @@
 \chapter{Functional Core}
 In this chapter we will discuss the functional core of our system. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
 
-\section{Sampling}
+\section{Source}
 \label{sec:sampling}
 In this section we will describe sampling, the process of periodic measurements of the voltage levels that enter our system. We will begin with discussing the hardware, the low level communication with the hardware and the abstractions we made in our final system.
 
@@ -34,8 +34,9 @@ The communication between the USRPs and our software is handled by the UHD drive
 
 In the first version of our software we built everything using \lib{GNU Radio}. We used the \lib{gnuradio-uhd} blocks to get samples from our USRPs. Soon we switched to a pure Python version, we still used the \lib{gnuradio-uhd} library to retrieve our samples. We used a specific helper function \func{gnuradio.uhd.finite\_acquisition(n)} from the GNU Radio libraries. This helper function started a low level stream, waits for n samples, closes the stream and returns the samples to the caller.
 
+The USRPs have an automatic calibration for the DC offset introduced by the local oscillator after the mixer. However due to a bug in the USRPs, every time a stream is started this DC calibration is reset. This makes the \func{finite\_acquisition} unusable for our purposes.
 
-
+To solve this we had to rewrite the complete code
 
 \section{Reconstruction}
 \label{sec:reconstruction}
