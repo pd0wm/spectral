@@ -12,25 +12,51 @@
 
 \begin{document}
 \chapter{Visualisation}
+\label{ch:visualisation}
+The second half of the system design consists of a graphical user interface (GUI), which allows for easy control and visual verification of the system and its status. This chapter will deal with the various design choices that were considered which ultimately led to the system in its final form.
 
-\section{Websockets}
-\label{sec:websockets}
+The GUI can be roughly divided into a server-side part (or \emph{back-end}) and a client-side part (or \emph{front-end}). The server-side system, written in Python, communicates with the functional core and prepares the obtained data for display on the client-side. The client-side system is a web-application, written in JavaScript, that handles the actual presentation of the data, as well as any action the end-user might perform which should have an effect back in the core.
 
-\section{Webserver}
+The major advantage of using a GUI in the form of a web-application is its (almost) guaranteed cross-platform support, as well as relatively easy development and debugging, since most browsers are shipped with sufficient development tools.
+The choice for Python to write the back-end in is explained quite easily. Communication between two separate Python processes (i.e. program core and visualisation back-end) is easily achieved. Moreover, the use of the \lib{Flask} Python package allows the programmer to quickly set up a simple web-server to serve the web-application.
+The front-end itself is developed in JavaScript, which is the de-facto scripting language for client-side web-development.
+
+This chapter describes each of the individual parts of the visualisation software.
+First, the web-server (back-end) is dealt with, an indispensable component that makes the web-application accessible within the network for whoever wants to connect. This section will describe how the web-interface is constructed by the server before being presented to the user and will touch on subjects like the communication between the functional core and visualisation component and the use of templating and predefined elements to generate a web-page.
+Then, the switch to client-side is made. This section will uncover the inner workings of the front-end as it is presented to the user, in terms of both visualisation and control.
+Finally, the communication between front- and back-end is treated. Since there is a constant stream of data exchanged between server and client (multiple streams even, as it turns out), a form of networking is required that is suitable for this.
+
+\section{Back-end}
 \label{sec:webserver}
+The back-end's tasks can be summarized briefly as follows:
 
-\subsection{UI Elements}
-\label{sec:ui-elements}
+\begin{itemize}
+	\item Handle client connections;
+	\item Serve the web-application to any client that connects;
+	% \item Manage system-wide settings;
+	% \item Keep system-wide settings synchronised between clients and;
+	% \item Serving data-streams to each client on-demand.
+\end{itemize}
+
+The first two tasks are largely handled by the Python package \lib{Flask}, which was introduced in \cref{sec:flask}. Using \lib{Flask}, a series of routes may be defined. Clients can then send a request to one or more of these routes, for example to request a web page like the visualisation front-end. \lib{Flask} will execute the code that is associated with the specified route upon receiving a request, like rendering the visualisation front-end, after which the result of this execution is sent back to the client.
+
 
 \subsection{Templating}
 \label{sec:templating}
+For rendering a web page, like the front-end, \lib{Flask} makes use of yet another Python package called \lib{Jinja2}. This package is a so-called \emph{templating engine}, which renders a web page using a predefined layout, containing some static content, but also an arbitrary number of expressions that are interpreted and executed by \lib{Jinja2} upon receiving a request to generate dynamic content.
 
+\subsection{Elements}
+\label{sec:elements}
+\lib{Jinja2} can be used to generate an entire web page at once, but also to render a single element of the page, such as a slider or a plot. In the design of the visualisation package, it was deemed preferable to easily swap in and out specific elements. The web-application is therefore set up as a skeleton containing for examzple the page header and footer, as well as a grid-like body that is used to hold the chosen page elements. This way the front-end is completely modular. The programmer only has to pick a certain element, configure it to display and/or modify the correct data or setting and place it in the grid. The templating engine will render each element individually and then insert them into the page body. This way the entire front-end is constructed.
 
-\section{Clientside}
+\section{Front-end}
 \label{sec:clientside}
 
 \subsection{Plotting}
 \label{sec:plotting}
+
+\section{Connecting both ends}
+\label{sec:websockets}
 
 
 

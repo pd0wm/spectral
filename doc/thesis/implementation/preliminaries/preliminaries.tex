@@ -10,46 +10,71 @@
 
 \raggedbottom
 
+% TODO
+% Cite all packages/libraries
+% Cross-reference other chapters
+
 \begin{document}
 \chapter{Preliminaries}
+There are a number of aspects that were considered at the start of the project:
+\begin{itemize}
+    \item The implementation needs to be fast. The products from our competitors are all high performance products. The advantage of compressive sensing is that less hardware can be used at the cost of more demanding computations.
+    \item The implementation needs to be modular in the sense that different kinds of approaches to the problem (both in hardware and algorithms) can be implemented and require a minimal amount of adjustment in the software.
+    \item The implementation needs to flexible enough that it could be run on different computational platforms (distributed networks, embedded devices, etc.) with minimal amount of adjustment in the software.
+\end{itemize}
 
 \section{Libraries}
 \label{sec:libraries}
+In this section we will discuss a number of libraries used and the advantages these have over other libraries/frameworks.
 
 \subsection{Python}
 \label{sec:python}
+Initially, two platforms were considered for development: \matlab{} and Python. Taking our project preliminaries in account, Python provides the best option. Reasons for picking Python are:
+\begin{itemize}
+    \item The Python libraries \lib{NumPy} and \lib{SciPy} use the same linear algebra libraries\footnote{Depending on OS this can be one of the many implementations. A few popular are \lib{openBLAS}, \lib{ATLAS}, \lib{Accelerate} on Apple machines or Intel's proprietary \lib{MKL}} that \matlab{} uses for the actual calculations, so the speed difference will be marginal.
+    \item Python is a non-proprietary platform, meaning it can be used commercially in the final product without additional charge.
+    \item Python provides many libraries that allow for distributed networking/computing \cite{pythonmp}.
+    \item Python is a full-blown programming language, meaning it has libraries for non-numerical applications such as web-frameworks, that allow for more advanced visualisation options.
+\end{itemize}
 
 \subsection{Numpy}
 \label{sec:numpy}
+\lib{NumPy} is Python's standard numerical calculations library, providing a faster (multi-dimensional) array and high level bindings for a variety of linear algebra routines, amongst other. \lib{NumPy} is licensed under the new-BSD\footnoteref{fn:bsd} license.
 
 \subsection{Scipy}
 \label{sec:scipy}
+\lib{SciPy} is Python's replacement for a lot of default functions that are included in \matlab{}. Relying on \lib{NumPy} data structures, it gives a variety of libraries (such as \lib{signal}, their DSP-library) providing another means of quickly implementing advanced calculations. \lib{SciPy} is licensed under the new-BSD\footnote{\label{fn:bsd}The BSD 3-Clause license is free for commercial and non-commercial for more info and the template see \cite{bsdlic}.} license.
 
 \subsection{Flask}
 \label{sec:flask}
+\lib{Flask} micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license.
 
 \subsection{Pyro}
 \label{sec:pyro}
+A popular remote-object library. It allows us to do application programming over the network. In the future it could be an easy means of doing distributed networking but as of now it functions as a simple means of inter-process communication. \lib{Pyro4} is licensed under the MIT\footnote{\label{fn:mit}Software under the MIT license is free for both commercial and non-commercial use. For more info see \cite{mitlic}.} license.
 
 \subsection{Bootstrap}
 \label{sec:bootstrap}
+\lib{Bootstrap} is a front-end CSS (Cascading Style Sheets, a language for styling web pages) framework developed by Twitter. It implements a number of primitives, much like a GUI framework does on X11 (the display server used in many Linux distributions), allowing us to quickly implement a portable GUI. It suits our demands to be able to render both on mobile and desktop views, without much effort. \lib{Bootstrap} is licensed under the MIT\footnoteref{fn:mit} license.
 
 \subsection{Highcharts}
 \label{sec:highcharts}
+\lib{Highcharts} is a JavaScript plotting library capable of fulfilling all front-end plotting needs. This library was picked because of its customisability and ease-of-use. One major side note is that it is only free for non-commercial use.
 
 \section{Workflow}
 \label{sec:workflow}
+Our workflow consisted of a rather standard software development environment.
 
 \subsection{Version Control}
 \label{sec:version-control}
+For version control git was used. Git as a rather standard distributed version control system enabling non-linear development in the form of branching. This allows us to maintain a stable master branch, which is used to maintain a stable version of our product, a development branch in which features can be combined and minor bugs can be fixed and several feature branches for larger feature implementations.
 
 \subsection{Testing}
 \label{sec:testing}
 
+
 \subsection{Profiling}
 \label{sec:profiling}
-
-
-
+For profiling the standard \lib{cProfile} library was used. This is included in the standard Python distribution and is the standard method. For the call graph diagrams included later in this report the library \lib{pycallgraph} was used. This is a simple wrapper around a number of tools including the archaic \lib{GraphViz}.
 
 \end{document}
