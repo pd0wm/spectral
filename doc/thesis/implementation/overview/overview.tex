@@ -19,7 +19,7 @@ For the implementation of our system two libraries were written to support our c
 The design of our system can best be described by a model-view-presenter (MVP) architectural pattern. It is a variation on the well known model-view-controller pattern. The components consist of the following:
 \begin{description}
     \item[Model] This encompasses the library \lib{cogradio}, that holds all the functional parts of our library. This means it contains the theoretical sources, the samplers, the reconstructors and the detectors.
-    \item[Presenter] This encompasses part of the library \lib{cogradio\_vis}, that contains the Settings remote object and websockets.
+    \item[Presenter] This encompasses part of the library \lib{cogradio\_vis}, that contains the Settings remote object and websockets. It functions as a driver for the model, taking the input from the view.
     \item[View] This encompasses part of the library \lib{cogradio\_vis}, that contains the GUI elements.
 \end{description}
 An overview can be seen in \cref{fig:MVP}.
@@ -27,7 +27,7 @@ An overview can be seen in \cref{fig:MVP}.
 \begin{figure}
     \centering
     \input{./figures/mvp}
-    \caption{Illustration of the MVP pattern as an hierarchical wa.}
+    \caption{Illustration of the MVP pattern as an hierarchical way of separating our system.}
     \label{fig:MVP}
 \end{figure}
 
@@ -39,7 +39,6 @@ A side effect of writing code this way is that it makes our code modular. This m
 
 \subsection{View}
 \label{sec:view}
-
 
 \subsection{Controller}
 \label{sec:controller}
