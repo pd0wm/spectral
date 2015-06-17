@@ -4,7 +4,7 @@
 
 var FFTplot = function(wrapper_id, data_type){
     this.N = 10;
-    this.wrapper_id = wrapper_id
+    this.wrapper_id = wrapper_id;
     this.container_id = wrapper_id + "-container";
     this.data_type = data_type;
 
