@@ -211,8 +211,11 @@
 }
 
 % Allow page breaks in display environments
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
 \allowdisplaybreaks
-
-
 % S unit for use in Mega Samples per second
 \DeclareSIUnit\sample{S}
