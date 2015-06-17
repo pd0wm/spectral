@@ -40,7 +40,7 @@ The first step of spectrum sensing is sampling the signal. Conventional methods 
 \caption{Uniform sampling with sample period T. Gray blocks are sampled}\label{tkz:uniform}
 \end{figure}
 
-When one desires to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate \todo{ref}. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum. Non uniform sampling has no restriction on delays of subsequent samples. This is illustrated in \cref{tkz:nonuniform}.
+When one desires to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate \todo{ref}. However, we don't need a full recovery of the signal, but are only interested in certain properties of the signal. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum, and efficiently recover the information we are looking for. Non uniform sampling has no restriction on delays of subsequent samples as is illustrated in \cref{tkz:nonuniform}.
 
 \begin{figure}[H]
 \centering
@@ -106,7 +106,7 @@ This is however not trivial to implement on a device. To perform non-uniform sam
 \caption{schematic multi-coset sampling with $m$ cosets}\label{tkz:multicoset}
 \end{figure}
 
-In the reconstruction section we will deduce criteriums on the sampling that will further specify the samplers. In the sampling section methods we will then get back to multi-coset sampling to link it to the reconstruction and optimize performance.
+In the reconstruction section we will deduce criteria on the sampling that will further specify the samplers. In the sampling section methods we will then get back to multi-coset sampling to link it to the reconstruction and optimize performance.
 
 \end{document}
 
