@@ -11,9 +11,9 @@
 \raggedbottom
 
 \begin{document}
-\chapter{Functional Core}
+\chapter{Model - Cogradio}
 \label{cha:model}
-In this chapter we will discuss the functional core of our system. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
+In this chapter we will discuss the model part of our system. All the software discussed in this chapter is contained in \lib{cogradio} in the source. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
 
 \section{Source}
 \label{sec:source}
@@ -78,7 +78,15 @@ The hardware coprime sampler does not get one vector with input samples, but two
 
 \section{Reconstruction}
 \label{sec:reconstruction}
-Two different kind of reconstruction methods are implemented. One similar to the one specified in \cite{ariananda2012compressive} the other is discussed in Part 1 of this thesis. Both reconstructors implement the interface \func{reconstructor} which has a contract for one method named \func{reconstruct(signal)}.
+Two different kind of reconstruction methods are implemented. One similar to the one specified in \cite{ariananda2012compressive} the other is discussed in Part 1 of this thesis. Both reconstructors implement the interface \func{reconstructor} which has a contract for one method named \func{reconstruct(signal)}. Both classes make use of the shared function \func{calc\_pseudoinverse(R)}. This is a wrapper around \lib{SciPy's} \func{pinv}, which calculates the pseudoinverse. Because this operation is quite time consuming for larger systems a caching mechanism was introduced to lower startup times.
+
+\subsection{CrossCorrelation}
+\label{sub:crosscorrelation}
+The CrossCorrelation class implementation is based on \cite{ariananda2012compressive}. Its constructor generates its pseudoinverse similarly to how it is described in the paper. It's implementation of \func{reconstruct(signal)} is rather straightforward using a simple matrix multiplication to solve the system.
+
+\subsection{Wessel}
+\label{sub:wessel}
+Wessels reconstructor is a variation on CrossCorrelation. The theory is thoroughly described in the first part of this thesis.
 
 \begin{figure}
     \centering

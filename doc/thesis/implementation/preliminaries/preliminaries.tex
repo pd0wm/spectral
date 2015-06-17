@@ -16,6 +16,7 @@
 
 \begin{document}
 \chapter{Preliminaries}
+\label{cha:impl:preliminaries}
 There are a number of aspects that were considered at the start of the project:
 \begin{itemize}
     \item The implementation needs to be fast. The products from our competitors are all high performance products. The advantage of compressive sensing is that less hardware can be used at the cost of more demanding computations.
@@ -51,10 +52,11 @@ Initially, two platforms were considered for development: \matlab{} and Python. 
 
 \subsection{Twisted}
 \label{sub:twisted}
+\lib{Twisted} is Python's event-driven network programming framework. It was used in conjunction with \lib{Autobahn}. \lib{Twisted} is licensed under the MIT\footnoteref{fn:mit} license.
 
 \subsection{Autobahn}
 \label{sub:autobahn}
-
+\lib{Autobahn} is a real-time framework for websockets. It was used as a means of sending data to the GUI. It is written on top of \lib{Twisted} and \lib{asyncio} and is licensed under the MIT\footnoteref{fn:mit} license.
 
 \subsection{Pyro}
 \label{sec:pyro}

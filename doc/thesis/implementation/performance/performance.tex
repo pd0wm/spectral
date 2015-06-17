@@ -12,33 +12,35 @@
 
 \begin{document}
 \chapter{Performance}
+In this chapter we will discuss a variety of performance optimalisations. These are crucial to our product because of the performance requirements discussed in \cref{cha:impl:preliminaries}.
+
+\section{Algorithms}
+A first major step in speeding up our application involved tuning our algorithms to be more specialized towards our application.
+
+\subsection{Sparse matrices}
+\label{sec:sparse-matrices}
+A first major speedup involved changing the data structure used for a number of matrices most notably the pseudoinverse in the reconstructor. By inspection we noticed that these matrices are all very sparse. By making use of \lib{SciPy's} sparse data structures we were able to speed up the reconstruct calculations by a large factor.
+
+\subsection{Vectorisation}
+\label{sec:vectorisation}
+Another way we were able to achieve a higher speed is to vectorize a number of correlations. Namely the signal cross-correlations are considerably faster when written out as a matrix multiplication. This allows us to use \lib{NumPy's} speed.
 
 \section{Multiprocessing}
 \label{sec:multiprocessing}
+
 
 \subsection{GIL}
 \label{sec:gil}
 
 \subsection{Multi-core}
 \label{sec:multi-core}
-
-\subsection{Distributed}
-\label{sec:distributed}
+Each major part of the model (Source\&Sampling, Reconstruction, Detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU.
 
 \section{Profiling}
 \label{sec:profiling}
 
 \section{Results \& Improvements}
 \label{sec:results}
-
-\subsection{Sparse matrices}
-\label{sec:sparse-matrices}
-
-\subsection{Vectorisation}
-\label{sec:vectorisation}
-
-
-
 
 
 \end{document}
