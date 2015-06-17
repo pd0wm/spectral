@@ -49,6 +49,13 @@ Initially, two platforms were considered for development: \matlab{} and Python. 
 \label{sec:flask}
 \lib{Flask} micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license.
 
+\subsection{Twisted}
+\label{sub:twisted}
+
+\subsection{Autobahn}
+\label{sub:autobahn}
+
+
 \subsection{Pyro}
 \label{sec:pyro}
 A popular remote-object library. It allows us to do application programming over the network. In the future it could be an easy means of doing distributed networking but as of now it functions as a simple means of inter-process communication. \lib{Pyro4} is licensed under the MIT\footnote{\label{fn:mit}Software under the MIT license is free for both commercial and non-commercial use. For more info see \cite{mitlic}.} license.
@@ -67,10 +74,27 @@ Our workflow consisted of a rather standard software development environment.
 
 \subsection{Version Control}
 \label{sec:version-control}
-For version control git was used. Git as a rather standard distributed version control system enabling non-linear development in the form of branching. This allows us to maintain a stable master branch, which is used to maintain a stable version of our product, a development branch in which features can be combined and minor bugs can be fixed and several feature branches for larger feature implementations.
+For version control git was used. Git as a rather standard distributed version control system enabling non-linear development in the form of branching. This allows us to maintain a stable master branch, which is used to maintain a stable version of our product, a development branch in which features can be combined and minor bugs can be fixed and several feature branches for larger feature implementations. This specific workflow with git is called Git Flow\cite{driessen2010successful} and is pictured in \cref{fig:gitflow}.
+
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth]{Git-branching-model.pdf}
+    \caption{Git Flow}
+    \label{fig:gitflow}
+\end{figure}
 
 \subsection{Testing}
 \label{sec:testing}
+To verify the correctness of our code we used two kinds of testing: unit tests and integration tests.
+
+\subsubsection{Unit tests}
+Unit tests are small tests that test on a function level. They test if each function returns the right values, and tests for edge cases. These unit tests should be fast and be ran often while writing code. This way you can verify the correctness of your code at all times. When the tests pass, you know the code works according to the specifications. This becomes particularity important when working on a large project with multiple people. When your codes breaks some other part of the codebase written by someone else, you immediately become aware of this. Writing unit tests also forces you to think more about your code and stimulates modular design.
+
+It is also possible to write the tests before the implementation of a function. This is called test driven development (TDD). In our design we decided not to you use this, because the specifications of our code were not clear when we started writing code. When would do a complete rewrite of the code we would certainly use TDD.
+
+\subsubsection{Integration tests}
+Integration tests are tests that encompass a large part of the system. In our case we wrote tests where a couple of functions were tested at the same time. The output data was then compared by the output of a Matlab script that we knew was correct.
 
 
 \subsection{Profiling}

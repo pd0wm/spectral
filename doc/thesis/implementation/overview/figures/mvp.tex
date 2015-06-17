@@ -1,0 +1,70 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+\raggedbottom
+
+\begin{document}
+\begin{tikzpicture}
+    \usetikzlibrary{arrows,automata,calc}
+    \tikzset{
+        state/.style={
+            rectangle,
+            draw=black, very thick,
+            minimum height=2em,
+            inner sep=2pt,
+            text centered,
+            anchor=north,
+        },
+    }
+    \tikzstyle{dashedd} = [anchor=north, rectangle, inner sep=5pt, draw=black, very thick, dashed]
+    \tikzstyle{fancyarrow} = [draw=black, very thick, ->, auto]
+    \tikzstyle{textnodes} = [align=center]
+    \node[dashedd] (model) at (0, 0) {
+        \begin{tikzpicture}
+            \node at (0,1) {\textbf{Model}};
+            \node[state] (cogradio) {
+                \begin{tabular}{l}
+                    \textbf{cogradio}\\
+                    \midrule
+                    Source \\
+                    Sampling \\
+                    Reconstruction \\
+                    Detection \\
+            \end{tabular}};
+        \end{tikzpicture}
+    };
+
+    \node[dashedd] (presenter) at (4.5, 0) {
+        \begin{tikzpicture}
+            \node at (0,1) {\textbf{Presenter}};
+            \node[state] (run) at (0,0) {
+                \begin{tabular}{l}
+                    \textbf{run}\\
+                    \midrule
+                    Settings \\
+                    Websocket \\
+            \end{tabular}};
+        \end{tikzpicture}
+    };
+
+    \node[dashedd] (view) at (9.5, 0) {
+        \begin{tikzpicture}
+            \node at (0,1) {\textbf{View}};
+            \node[state] (vis) at (0,0){
+                \begin{tabular}{l}
+                    \textbf{cogradio\_vis}\\
+                    \midrule
+                    Client-side JS/CSS \\
+                    Web-server
+            \end{tabular}};
+        \end{tikzpicture}
+    };
+    \draw[fancyarrow,anchor=north] (model) -- node[textnodes]{data\\(IPC)} (model-|presenter.west);
+    \draw[fancyarrow,anchor=south] (presenter) -- node[textnodes]{options} (presenter-|model.east);
+
+    \draw[fancyarrow,anchor=north] ($(presenter.east)-(0,0.5)$) -- node[textnodes]{data\\(websocket)} ($(presenter-|view.west)-(0,0.5)$);
+    \draw[fancyarrow,anchor=south] (view) -- node[textnodes]{user input} (view-|presenter.east);
+\end{tikzpicture}
+\end{document}
