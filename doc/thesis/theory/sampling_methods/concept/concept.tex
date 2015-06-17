@@ -7,43 +7,21 @@
 \begin{document}
 
 \section{Concept}
-The reconstruction poses two specifications for the sampling methods:
+The reconstruction imposes two specifications for the sampling methods:
 \begin{enumerate}
 \item all lags in $\mathbb{Z}$ must be available
 \item the sampling method must be described by sampling matrix $\mathbf{C}$
 \end{enumerate}
 We will propose three methods to handle these specifications:
 \begin{itemize}
-\item \textit{circular sparse ruler}
+\item \textit{circular sparse sampling}
 \item \textit{collaborative sampling}
 \item \textit{coprime sampling}
 \end{itemize}
-each of these techniques impose their own restrictions to the sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple device with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. 
+each of these techniques impose their own restrictions to the sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple device with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each of these approaches have their advantages for certain situations.
 
-
-% \begin{figure}[H]
-%     \centering
-%     \begin{tikzpicture}
-%         \def\N{7}
-%         \draw [thick, black] circle[radius=2.5cm] (0,0);
-%         \foreach \i in {1,...,\N} {
-%             \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,black,thick] plot ({\x*sin(360*(\i-1)/\N)},{\x*cos(360*(\i-1)/\N)});
-%             \draw [black,thick,dashed] (0,0) -- ({2.5*sin(360*(\i-1)/\N)},{2.5*cos(360*(\i-1)/\N)});
-%             \node[black] at ({3*sin(360*(\i-1)/\N)},{3*cos(360*(\i-1)/\N)}) {$\i$};
-%         }
-%         \foreach \i in {0,1,3} {
-%             \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,red,line width=1mm] plot ({\x*sin(360*\i/\N)},{\x*cos(360*\i/\N)});
-%         }
-%         \draw [scale=1,domain=0.1:0.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 1
-%         \draw [scale=1,domain=1.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 2
-%         \draw [scale=1,domain=3.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 4
-%         \draw [scale=1,domain=0.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1.5*sin(360*\x/\N)},{1.5*cos(360*\x/\N)}); % 3
-%         \draw [scale=1,domain=3.1:7.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1*sin(360*\x/\N)},{1*cos(360*\x/\N)}); % 5
-%         \draw [scale=1,domain=1.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({0.5*sin(360*\x/\N)},{0.5*cos(360*\x/\N)}); % 6
-%     \end{tikzpicture}
-%     \caption{Minimal circular ruler for $N=7$}
-%     \label{fig:circular-ruler}
-% \end{figure}
+\subsection{Circular sparse sampling}
+Circular sparse sampling uses samplers with equal sampling frequency $NT$. where $T$ is the sampling frequency of the signal to be reconstructed, and $N$ the down-sampling factor. This property ensures that the accumulated samples have a period of $N$. This is illustrated in \cref{tkz:circsparseruler}. In the example $N = 7$
 
 \begin{figure}[H]
 \centering
@@ -132,104 +110,91 @@ each of these techniques impose their own restrictions to the sampling. Circular
 \draw  [fill=cyan](8,-3) rectangle (8.5,-3.5);
 \draw  (8.5,-3) rectangle (9,-3.5);
 
-\draw [->] (-.25,0) to (-.25,-1);
-\draw [->] (3.25,0) to (3.25,-1);
-\draw [->] (6.75,0) to (6.75,-1);
+\draw [>=latex,->] (-.25,0) to (-.25,-1);
+\draw [>=latex,->] (3.25,0) to (3.25,-1);
+\draw [>=latex,->] (6.75,0) to (6.75,-1);
 
-\draw [->] (.25,0) to (.25,-2);
-\draw [->] (3.75,0) to (3.75,-2);
-\draw [->] (7.25,0) to (7.25,-2);
+\draw [>=latex,->] (.25,0) to (.25,-2);
+\draw [>=latex,->] (3.75,0) to (3.75,-2);
+\draw [>=latex,->] (7.25,0) to (7.25,-2);
 
-\draw [->] (1.25,0) to (1.25,-3);
-\draw [->] (4.75,0) to (4.75,-3);
-\draw [->] (8.25,0) to (8.25,-3);
+\draw [>=latex,->] (1.25,0) to (1.25,-3);
+\draw [>=latex,->] (4.75,0) to (4.75,-3);
+\draw [>=latex,->] (8.25,0) to (8.25,-3);
 
 \end{tikzpicture}
 \caption{circular sparse ruler sampling with three samplers}\label{tkz:circsparseruler}
 \end{figure}
 
+The hardware implementation of this sampling method is illustrated in \cref{tkz:sc_circsparseruler}. 
+
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
-\draw  [fill=gray](-1,0.5) rectangle (-0.5,0);
-\draw  (-0.5,0.5) rectangle (0,0);
-\draw  (0,0.5) rectangle (0.5,0);
-\draw  [fill=gray](0.5,0.5) rectangle (1,0);
-\draw  (1,0.5) rectangle (1.5,0);
-\draw  [fill=gray](1.5,0.5) rectangle (2,0);
-\draw  [fill=gray](2,0.5) rectangle (2.5,0);
-\draw  (2.5,0.5) rectangle (3,0);
-\draw  (3,0.5) rectangle (3.5,0);
-\draw  [fill=gray](3.5,0.5) rectangle (4,0);
-\draw [fill=gray] (4,0.5) rectangle (4.5,0);
-\draw  (4.5,0.5) rectangle (5,0);
-\draw  [fill=gray](5,0.5) rectangle (5.5,0);
-\draw  (5.5,0.5) rectangle (6,0);
-\draw  (6,0.5) rectangle (6.5,0);
-\draw [fill=gray](6.5,0.5) rectangle (7,0);
-\draw  (7,0.5) rectangle (7.5,0);
-\draw  (7.5,0.5) rectangle (8,0);
-\draw  [fill=gray](8,0.5) rectangle (8.5,0);
-\draw  (8.5,0.5) rectangle (9,0);
+\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x[n]$};
+\draw  (-1.5,1.5) -- (0.5,1.5);
+\draw  (-0.5,3) -- (0.5,3);
+\draw (-0.5,3) -- (-0.5,-0.5);
 
-\draw  [fill=orange](-1,-1) rectangle (-0.5,-1.5);
-\draw  (-0.5,-1) rectangle (0,-1.5);
-\draw  (0,-1) rectangle (0.5,-1.5);
-\draw  [fill=orange](0.5,-1) rectangle (1,-1.5);
-\draw  (1,-1) rectangle (1.5,-1.5);
-\draw  (1.5,-1) rectangle (2,-1.5);
-\draw  [fill=orange](2,-1) rectangle (2.5,-1.5);
-\draw  (2.5,-1) rectangle (3,-1.5);
-\draw  (3,-1) rectangle (3.5,-1.5);
-\draw  [fill=orange](3.5,-1) rectangle (4,-1.5);
-\draw  (4,-1) rectangle (4.5,-1.5);
-\draw  (4.5,-1) rectangle (5,-1.5);
-\draw  [fill=orange](5,-1) rectangle (5.5,-1.5);
-\draw  (5.5,-1) rectangle (6,-1.5);
-\draw  (6,-1) rectangle (6.5,-1.5);
-\draw  [fill=orange](6.5,-1) rectangle (7,-1.5);
-\draw  (7,-1) rectangle (7.5,-1.5);
-\draw  (7.5,-1) rectangle (8,-1.5);
-\draw  [fill=orange](8,-1) rectangle (8.5,-1.5);
-\draw  (8.5,-1) rectangle (9,-1.5);
+\node at (4.5,-1) {\vdots};
+\node at (0.75,-1) {\vdots};
+\node at (-0.5,-1) {\vdots};
+\node at (2.5,-1) {\vdots};
 
-\draw  [fill=green](-1,-2) rectangle (-0.5,-2.5);
-\draw  (-0.5,-2) rectangle (0,-2.5);
-\draw  (0,-2) rectangle (0.5,-2.5);
-\draw  (0.5,-2) rectangle (1,-2.5);
-\draw  (1,-2) rectangle (1.5,-2.5);
-\draw [fill=green] (1.5,-2) rectangle (2,-2.5);
-\draw  (2,-2) rectangle (2.5,-2.5);
-\draw  (2.5,-2) rectangle (3,-2.5);
-\draw  (3,-2) rectangle (3.5,-2.5);
-\draw  (3.5,-2) rectangle (4,-2.5);
-\draw  [fill=green](4,-2) rectangle (4.5,-2.5);
-\draw  (4.5,-2) rectangle (5,-2.5);
-\draw  (5,-2) rectangle (5.5,-2.5);
-\draw  (5.5,-2) rectangle (6,-2.5);
-\draw  (6,-2) rectangle (6.5,-2.5);
-\draw [fill=green] (6.5,-2) rectangle (7,-2.5);
-\draw  (7,-2) rectangle (7.5,-2.5);
-\draw  (7.5,-2) rectangle (8,-2.5);
-\draw  (8,-2) rectangle (8.5,-2.5);
-\draw  (8.5,-2) rectangle (9,-2.5);
+\draw (-0.5,-1.5) -- (-0.5,-2);
+\draw (-0.5,0) -- (0.5,0);
+\draw (-0.5,-2) -- (0.5,-2);
+\draw[ very thick](0.5,3)-- +(30:0.46);
+\draw[ very thick](0.5,1.5)-- +(30:0.46);
+\draw[ very thick](0.5,0)-- +(30:0.46);
+\draw[ very thick](0.5,-2)-- +(30:0.46);
 
-\draw [->] (-.75,0) to (-.75,-1);
-\draw [->] (.75,0) to (.75,-1);
-\draw [->] (2.25,0) to (2.25,-1);
-\draw [->] (3.75,0) to (3.75,-1);
-\draw [->] (5.25,0) to (5.25,-1);
-\draw [->] (6.75,0) to (6.75,-1);
-\draw [->] (8.25,0) to (8.25,-1);
+\draw  (1,3) -- (2,3);
+\draw  (1,1.5) -- (2,1.5);
+\draw  (1,0) -- (2,0);
+\draw  (1,-2) -- (2,-2);
 
-\draw [->] (-.75,0) to (-.75,-2);
-\draw [->] (1.75,0) to (1.75,-2);
-\draw [->] (4.25,0) to (4.25,-2);
-\draw [->] (6.75,0) to (6.75,-2);
+%\draw  (3,2) rectangle (2,1) node[pos=.5]{N$\,\downarrow$};
+%\draw  (3,0.5) rectangle (2,-0.5) node[pos=.5]{N$\,\downarrow$};
+%\draw  (3,-1.5) rectangle (2,-2.5) node[pos=.5]{N$\,\downarrow$};
+%\draw  (3,3.5) rectangle (2,2.5) node[pos=.5]{N$\,\downarrow$};
+
+\draw  (2.5,3) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,1.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,0) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,-2) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+
+\draw  (3,3) -- (4,3);
+\draw  (3,1.5) -- (4,1.5);
+\draw  (3,0) -- (4,0);
+\draw  (3,-2) -- (4,-2);
+
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1[k]$};
+\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2[k]$};
+\draw  (5,-1.5) rectangle (4,-2.5) node[pos=.5]{$y_m[k]$};
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0[k]$};
 
 \end{tikzpicture}
-\caption{coprime sampling with $m=3,n=5$}\label{tkz:coprime}
+\caption{schematic of circular sparse ruler implementation}\label{tkz:sc_circsparseruler}
 \end{figure}
+
+The switches are samplers that sample and hold the signal $x[n]$ at a given time. The N$\,\downarrow$ is an integrate and dump with a factor $N$. $N$ samples are added together and dumped at the output. The signal $y_i[k]$ has therefore $N$ times less samples than $x[n]$. Now that we have the sampling down, we need to tell the reconstructor how the sampling was done to enpower the reconstructor to calculate the autocorrelation of the input signal $x[n]$. We do this by supplying a vector $\mathbf{c_i}$ for every coset that describes the configuration of the sampler of the coset in such a way that \todo{formule moet beter}
+$$
+\sum_{n=kN}^{(k+1)N-1}(\mathbf{x}\mathbf{c_i})[n] = y_i[k].
+$$
+For example the vectors $\mathbf{c_i}$ in \cref{tkz:circsparseruler} would  look like:
+
+\begin{itemize}
+\item $\color{orange} \mathbf{c_1}$ = [1,0,0,0,0,0,0]
+\item $\color{green} \mathbf{c_2}$ = [0,1,0,0,0,0,0]
+\item $\color{cyan} \mathbf{c_3}$ = [0,0,0,1,0,0,0]
+\end{itemize}
+
+The way these vectors are chosen has a big influence on performance, but this will we discussed in a later section.
+
+\subsection{Collaborative sampling}
+
+Collaborative sampling is fairly similar to circular sparse sampling. Except for the fact that circular sparse sampling is restricted to only one device, and collaborative sampling to multiple devices. Collabroative sampling is illustrated in \cref{tkz:collaborative}, where we use two devices with each three samplers, and a netto downsampling factor of $N=13$.
 
 \begin{figure}[H]
 \centering
@@ -318,14 +283,14 @@ each of these techniques impose their own restrictions to the sampling. Circular
 \draw  [fill=cyan](8,-2.5) rectangle (8.5,-3);
 \draw  (8.5,-2.5) rectangle (9,-3);
 
-\draw [->] (-0.25,-4) to (-0.25,-1);
-\draw [->] (6.25,-4) to (6.25,-1);
+\draw [>=latex,->] (-0.25,-4) to (-0.25,-1);
+\draw [>=latex,->] (6.25,-4) to (6.25,-1);
 
-\draw [->] (0.25,-4) to (0.25,-2);
-\draw [->] (6.75,-4) to (6.75,-2);
+\draw [>=latex,->] (0.25,-4) to (0.25,-2);
+\draw [>=latex,->] (6.75,-4) to (6.75,-2);
 
-\draw [->] (1.75,-4) to (1.75,-3);
-\draw [->] (8.25,-4) to (8.25,-3);
+\draw [>=latex,->] (1.75,-4) to (1.75,-3);
+\draw [>=latex,->] (8.25,-4) to (8.25,-3);
 
 \draw  (-1,-5) rectangle (-0.5,-5.5);
 \draw  [fill=gray](-0.5,-5) rectangle (0,-5.5);
@@ -411,16 +376,179 @@ each of these techniques impose their own restrictions to the sampling. Circular
 \draw  (8,-8.5) rectangle (8.5,-9);
 \draw  (8.5,-8.5) rectangle (9,-9);
 
-\draw [->] (-0.25,-5.5) to (-0.25,-6.5);
-\draw [->] (6.25,-5.5) to (6.25,-6.5);
+\draw [>=latex,->] (-0.25,-5.5) to (-0.25,-6.5);
+\draw [>=latex,->] (6.25,-5.5) to (6.25,-6.5);
 
-\draw [->] (0.75,-5.5) to (0.75,-7.5);
-\draw [->] (7.25,-5.5) to (7.25,-7.5);
+\draw [>=latex,->] (0.75,-5.5) to (0.75,-7.5);
+\draw [>=latex,->] (7.25,-5.5) to (7.25,-7.5);
 
-\draw [->] (3.25,-5.5) to (3.25,-8.5);
+\draw [>=latex,->] (3.25,-5.5) to (3.25,-8.5);
 
 \end{tikzpicture}
 \caption{collaborative sampling with two devices with each three samplers}\label{tkz:collaborative}
+\end{figure}
+
+ With collaborative sampling, we let each device be responsible for only a part of the autocorrelation. This poses an interesting new problem: how do you reconstruct only parts of the autocorrelation, with the proposed reconstruction algorithm. This will be further discussed in a later section.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x_1[n]$};
+\draw  (-1.5,1.5) -- (0.5,1.5);
+\draw  (-0.5,3) -- (0.5,3);
+\draw (-0.5,3) --(-.5,0) ;
+
+\draw (-0.5,0) -- (0.5,0);
+
+\draw  (1,3) -- (2,3);
+\draw  (1,1.5) -- (2,1.5);
+\draw  (1,0) -- (2,0);
+
+\draw[ very thick](0.5,3)-- +(30:0.46);
+\draw[ very thick](0.5,1.5)-- +(30:0.46);
+\draw[ very thick](0.5,0)-- +(30:0.46);
+
+\draw  (2.5,3) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,1.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,0) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+
+\draw  [>=latex,->] (5,3) -- (6,3);
+\draw  [>=latex,->] (5,1.5) -- (6,1.5);
+\draw  [>=latex,->] (5,0) -- (6,0);
+
+\draw  (3,3) -- (4,3);
+\draw  (3,1.5) -- (4,1.5);
+\draw  (3,0) -- (4,0);
+
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0[k]$};
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1[k]$};
+\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2[k]$};
+
+\draw  (-2.5,-4) rectangle (-1.5,-5) node[pos=.5]{$x_2[n]$};
+\draw  (-1.5,-4.5) -- (0.5,-4.5);
+\draw  (-0.5,-3) -- (0.5,-3);
+\draw (-0.5,-3) --(-0.5,-6) ;
+
+\draw (-0.5,-6) -- (0.5,-6);
+
+\draw  (1,-3) -- (2,-3);
+\draw  (1,-4.5) -- (2,-4.5);
+\draw  (1,-6) -- (2,-6);
+
+\draw[ very thick](0.5,-3)-- +(30:0.46);
+\draw[ very thick](0.5,-4.5)-- +(30:0.46);
+\draw[ very thick](0.5,-6)-- +(30:0.46);
+
+\draw  (2.5,-3) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,-4.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,-6) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+
+\draw  (3,-3) -- (4,-3);
+\draw  (3,-4.5) -- (4,-4.5);
+\draw  (3,-6) -- (4,-6);
+
+\draw  [>=latex,->] (5,-3) -- (6,-3);
+\draw  [>=latex,->] (5,-4.5) -- (6,-4.5);
+\draw  [>=latex,->] (5,-6) -- (6,-6);
+
+\draw  (5,-2.5) rectangle (4,-3.5) node[pos=.5]{$y_0[k]$};
+\draw  (5,-4) rectangle (4,-5) node[pos=.5]{$y_1[k]$};
+\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$y_2[k]$};
+
+\draw  (6,3.5) rectangle (8.5,-.5) node[pos=.5]{reconstructor};
+\draw  (6,-2.5) rectangle (8.5,-6.5) node[pos=.5]{reconstructor};
+
+\draw  (6,-1) rectangle (8.5,-2) node[pos=.5]{combiner};
+\draw [>=latex,->] (7.25,-2.5) -- (7.25,-2);
+\draw [>=latex,->] (7.25,-.5) -- (7.25,-1);
+
+\end{tikzpicture}
+\caption{schematic of collaborative sampling implementation}\label{tkz:sc_collaborative}
+\end{figure}
+
+\subsection{Coprime sampling}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\draw  [fill=gray](-1,0.5) rectangle (-0.5,0);
+\draw  (-0.5,0.5) rectangle (0,0);
+\draw  (0,0.5) rectangle (0.5,0);
+\draw  [fill=gray](0.5,0.5) rectangle (1,0);
+\draw  (1,0.5) rectangle (1.5,0);
+\draw  [fill=gray](1.5,0.5) rectangle (2,0);
+\draw  [fill=gray](2,0.5) rectangle (2.5,0);
+\draw  (2.5,0.5) rectangle (3,0);
+\draw  (3,0.5) rectangle (3.5,0);
+\draw  [fill=gray](3.5,0.5) rectangle (4,0);
+\draw [fill=gray] (4,0.5) rectangle (4.5,0);
+\draw  (4.5,0.5) rectangle (5,0);
+\draw  [fill=gray](5,0.5) rectangle (5.5,0);
+\draw  (5.5,0.5) rectangle (6,0);
+\draw  (6,0.5) rectangle (6.5,0);
+\draw [fill=gray](6.5,0.5) rectangle (7,0);
+\draw  (7,0.5) rectangle (7.5,0);
+\draw  (7.5,0.5) rectangle (8,0);
+\draw  [fill=gray](8,0.5) rectangle (8.5,0);
+\draw  (8.5,0.5) rectangle (9,0);
+
+\draw  [fill=orange](-1,-1) rectangle (-0.5,-1.5);
+\draw  (-0.5,-1) rectangle (0,-1.5);
+\draw  (0,-1) rectangle (0.5,-1.5);
+\draw  [fill=orange](0.5,-1) rectangle (1,-1.5);
+\draw  (1,-1) rectangle (1.5,-1.5);
+\draw  (1.5,-1) rectangle (2,-1.5);
+\draw  [fill=orange](2,-1) rectangle (2.5,-1.5);
+\draw  (2.5,-1) rectangle (3,-1.5);
+\draw  (3,-1) rectangle (3.5,-1.5);
+\draw  [fill=orange](3.5,-1) rectangle (4,-1.5);
+\draw  (4,-1) rectangle (4.5,-1.5);
+\draw  (4.5,-1) rectangle (5,-1.5);
+\draw  [fill=orange](5,-1) rectangle (5.5,-1.5);
+\draw  (5.5,-1) rectangle (6,-1.5);
+\draw  (6,-1) rectangle (6.5,-1.5);
+\draw  [fill=orange](6.5,-1) rectangle (7,-1.5);
+\draw  (7,-1) rectangle (7.5,-1.5);
+\draw  (7.5,-1) rectangle (8,-1.5);
+\draw  [fill=orange](8,-1) rectangle (8.5,-1.5);
+\draw  (8.5,-1) rectangle (9,-1.5);
+
+\draw  [fill=green](-1,-2) rectangle (-0.5,-2.5);
+\draw  (-0.5,-2) rectangle (0,-2.5);
+\draw  (0,-2) rectangle (0.5,-2.5);
+\draw  (0.5,-2) rectangle (1,-2.5);
+\draw  (1,-2) rectangle (1.5,-2.5);
+\draw [fill=green] (1.5,-2) rectangle (2,-2.5);
+\draw  (2,-2) rectangle (2.5,-2.5);
+\draw  (2.5,-2) rectangle (3,-2.5);
+\draw  (3,-2) rectangle (3.5,-2.5);
+\draw  (3.5,-2) rectangle (4,-2.5);
+\draw  [fill=green](4,-2) rectangle (4.5,-2.5);
+\draw  (4.5,-2) rectangle (5,-2.5);
+\draw  (5,-2) rectangle (5.5,-2.5);
+\draw  (5.5,-2) rectangle (6,-2.5);
+\draw  (6,-2) rectangle (6.5,-2.5);
+\draw [fill=green] (6.5,-2) rectangle (7,-2.5);
+\draw  (7,-2) rectangle (7.5,-2.5);
+\draw  (7.5,-2) rectangle (8,-2.5);
+\draw  (8,-2) rectangle (8.5,-2.5);
+\draw  (8.5,-2) rectangle (9,-2.5);
+
+\draw [>=latex,->] (-.75,0) to (-.75,-1);
+\draw [>=latex,->] (.75,0) to (.75,-1);
+\draw [>=latex,->] (2.25,0) to (2.25,-1);
+\draw [>=latex,->] (3.75,0) to (3.75,-1);
+\draw [>=latex,->] (5.25,0) to (5.25,-1);
+\draw [>=latex,->] (6.75,0) to (6.75,-1);
+\draw [>=latex,->] (8.25,0) to (8.25,-1);
+
+\draw [>=latex,->] (-.75,0) to (-.75,-2);
+\draw [>=latex,->] (1.75,0) to (1.75,-2);
+\draw [>=latex,->] (4.25,0) to (4.25,-2);
+\draw [>=latex,->] (6.75,0) to (6.75,-2);
+
+\end{tikzpicture}
+\caption{coprime sampling with $m=3,n=5$}\label{tkz:coprime}
 \end{figure}
 
 \end{document}
