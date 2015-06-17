@@ -34,7 +34,7 @@ In the first version of our software we built everything using \lib{GNU Radio}. 
 
 The USRPs have an automatic calibration for the DC offset introduced by the local oscillator after the mixer. However due to a bug in the USRPs, every time a stream is started this DC calibration is reset. This makes the \func{finite\_acquisition} unusable for our purposes.
 
-To solve this we had to write our own low level code to stream samples from the device. We wrote C++ code to connect to the USRPs, synchronise them and start a stream. The received samples are then send through a socket to the rest of the system for further processing. This was not an easy task, but has the added benefit that our system no longer depends on \lib{GNU Radio} and we have very low level control over the precise operation of the USRPs.
+To solve this we had to write our own low level code to stream samples from the device. We wrote \CC~code to connect to the USRPs, synchronise them and start a stream. The received samples are then send through a socket to the rest of the system for further processing. This was not an easy task, but has the added benefit that our system no longer depends on \lib{GNU Radio} and we have very low level control over the precise operation of the USRPs.
 
 \section{Jammer}
 \label{sec:jammer}
