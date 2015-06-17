@@ -6,7 +6,14 @@
 
 \begin{document}
 
-\section{Theory}
+\section{Optimalization}
+In this section we will look at each sampling method and examine ways to optimalize each of them.
+
+\todo[inline, author=Kees]{hier moet een stuk dat wessels stuk linkt aan het oplossen van simpele wiskunde problemen}
+
+\subsection{Circular sparse ruler}
+In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$. Now for a given amount of samplers, we search for an $N$ as high as possible, while still having all required lags. This problem is called the circuler sparse ruler problem: one makes a circle, with $N$ marks on it. Now these marks can be occupied by samplers. One has to place the samplers in such a way that all distances $1$ to $N-1$ can be made \todo{N lags naar alle lags?}. This is illustrated by \cref{fig:circular-ruler}, where $N=7$, and the samplers occupy the locations $\{1,2,4\}$.
+
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -30,6 +37,8 @@
     \caption{Minimal circular ruler for $N=7$}
     \label{fig:circular-ruler}
 \end{figure}
+
+D.Ariananda and G.Leus \todo{ref}
 
 
 \end{document}
