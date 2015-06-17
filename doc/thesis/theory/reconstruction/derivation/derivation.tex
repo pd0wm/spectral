@@ -1,0 +1,269 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Derivation}
+Consider the input signal to be a random stochastic process. Let the input signal be denoted by $x[n]$. Let the number of cosets by given by $M$. We denote the output of a coset $i$ by $y_i[n]$. To relate the output of a coset to the input signal, we need some mathematical constructs.
+
+\subsection{Construction of the output of a coset}
+Every coset $i$ is associated to a signal $c_i[n]$ such that $c_i[n] = 0$ for $n \le -1$ and $n \ge N$. Then let
+\begin{align*}
+    z_i[n] = (x \ast c_i)[n]
+\end{align*}
+where $\ast$ denotes the convolution operator. The definition of the convolution operator yields that
+\begin{align*}
+    z_i[n] &= \sum_{k=\infty}^{\infty}x[k] c_i[nN-k] \\
+    &= \sum_{k=n-N+1}^{n} x[k] c_i[n-k],
+\end{align*}
+since $c_i[n-k]=0$ for $k < n-N+1$ and $k > n$. \cref{fig:visualisation-zi} shows how $z_i[n]$, $x[n]$ and $c_i[n]$ are related in the case that $N=4$.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        % \newcommand{\drawitem}[3]{
+        %     \begin{scope}[shift={(0,#1*-3)}]
+        \foreach \n in {0,1,2} {
+            \begin{scope}[shift={(0,-2.5*\n)}]
+                \draw [black] (-5,0.5) -- (5,0.5);
+                \draw [black] (-5,0) -- (5,0);
+
+                \draw [black] (-4+\n,-1) -- (0+\n,-1);
+                \draw [black] (-4+\n,-0.5) -- (0+\n,-0.5);
+                \foreach \i in {-5,...,5} {
+                    \draw [black] (\i, 0) -- (\i, 0.5);
+                }
+                \foreach \i in {-4,...,5} {
+                    \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
+                }
+
+                \foreach \i in {-4,...,0} {
+                    \draw [black] (\i+\n, -0.5) -- (\i+\n, -1);
+                }
+                \foreach \i in {0,...,3} {
+                    \draw ({(3-\i)-3.5+\n},-0.75) node[black] {$c_i[\i]$};
+                }
+
+                \foreach \i in {-4,...,-1} {
+                    \draw (\i+0.5+\n,-0.25) node {$\times$};
+                }
+
+                \draw [black, >=latex, ->] (-4.05+\n,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
+                \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
+                \draw (-6.5,-0.75) node[black] {$z_i[\n]$};
+                \draw (-5.5,0.25) node {$\cdots$};
+                \draw (5.5,0.25) node {$\cdots$};
+            \end{scope}
+        }
+    \end{tikzpicture}
+    \caption{Relationship between $z_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
+    \label{fig:visualisation-zi}
+\end{figure}
+We now relate the output of a coset to the input signal by
+\begin{align*}
+    y_i[n]=z_i[nN].
+\end{align*}
+Using the expression for $z_i[n]$, we obtain that 
+\begin{align*}
+    y_i[n]=\sum_{k=(n-1)N+1}^{nN} x[k]c_i[nN-k].
+\end{align*}
+Thus $y_i[n]$ consists of the sum of $x[(n-1)N+1]$ multiplied by $c_i[N-1]$ to $x[nN]$ multiplied by $c_i[0]$. \cref{fig:visualisation-yi} shows how $y_i[n]$ is constructed in the case that $N=4$.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [black] (-5,0.5) -- (5,0.5);
+        \draw [black] (-5,0) -- (5,0);
+
+        \draw [black] (-4,-1) -- (0,-1);
+        \draw [black] (-4,-0.5) -- (0,-0.5);
+        \draw [black] (0,-1.5) -- (4,-1.5);
+        \draw [black] (0,-1) -- (4,-1);
+        \foreach \i in {-5,...,5} {
+            \draw [black] (\i, 0) -- (\i, 0.5);
+        }
+        \foreach \i in {-4,...,5} {
+            \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
+        }
+
+        \foreach \i in {-4,...,0} {
+            \draw [black] (\i, -0.5) -- (\i, -1);
+        }
+        \foreach \i in {0,...,3} {
+            \draw ({(3-\i)-3.5},-0.75) node[black] {$c_i[\i]$};
+        }
+
+        \foreach \i in {0,...,4} {
+            \draw [black] (\i, -1.5) -- (\i, -1);
+        }
+        \foreach \i in {0,...,3} {
+            \draw ({(3-\i)+0.5},-1.25) node[black] {$c_i[\i]$};
+        }
+
+        \foreach \i in {-4,...,-1} {
+            \draw (\i+0.5,-0.25) node {$\times$};
+        }
+        \foreach \i in {0,...,3} {
+            \draw [black, >=latex, ->] (\i+0.5,-0.05)  -- node[pos=0.45,fill=white] {$\times$} (\i+0.5,-0.95);
+        }
+
+        \draw [black, >=latex, ->] (-4.05,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
+        \draw [black, >=latex, ->] (-0.05,-1.25) -- node[pos=0.825,fill=white] {\tiny$\sum$} (-5.95,-1.25);
+        \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
+        \draw [black] (-7,-1) -- (-7,-1.5) -- (-6,-1.5) -- (-6,-1) -- (-7,-1);
+        \draw (-6.5,-0.75) node[black] {$y_i[0]$};
+        \draw (-6.5,-1.25) node[black] {$y_i[1]$};
+        \draw (-5.5,0.25) node {$\cdots$};
+        \draw (5.5,0.25) node {$\cdots$};
+        \draw (-6.5,-1.75) node {$\vdots$};
+        \draw (-6.5,0) node {$\vdots$};
+    \end{tikzpicture}
+    \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
+    \label{fig:visualisation-yi}
+\end{figure}
+Therefore, if $c_i[n]=1$ for a single $n$ and otherwise zero, $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualisation-yi-example} helps in understanding this concept. This summarises the relationship between $y_i[n]$, $x[n]$ and $c_i[n]$.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [black] (-5,0.5) -- (5,0.5);
+        \draw [black] (-5,0) -- (5,0);
+
+        \draw [black] (-4,-1) -- (0,-1);
+        \draw [black] (-4,-0.5) -- (0,-0.5);
+        \draw [black] (0,-1.5) -- (4,-1.5);
+        \draw [black] (0,-1) -- (4,-1);
+        \foreach \i in {-5,...,5} {
+            \draw [black] (\i, 0) -- (\i, 0.5);
+        }
+        \foreach \i in {-4,...,5} {
+            \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
+        }
+
+        \foreach \i in {-4,...,0} {
+            \draw [black] (\i, -0.5) -- (\i, -1);
+        }
+        \draw (-3.5, -0.75) node[black] {$0$};
+        \draw (-2.5, -0.75) node[black] {$0$};
+        \draw (-1.5, -0.75) node[black] {$1$};
+        \draw (-0.5, -0.75) node[black] {$0$};
+
+        \foreach \i in {0,...,4} {
+            \draw [black] (\i, -1.5) -- (\i, -1);
+        }
+        \draw (0.5, -1.25) node[black] {$0$};
+        \draw (1.5, -1.25) node[black] {$0$};
+        \draw (2.5, -1.25) node[black] {$1$};
+        \draw (3.5, -1.25) node[black] {$0$};
+
+
+        \foreach \i in {-4,...,-1} {
+            \draw (\i+0.5,-0.25) node {$\times$};
+        }
+        \foreach \i in {0,...,3} {
+            \draw [black, >=latex, ->] (\i+0.5,-0.05)  -- node[pos=0.45,fill=white] {$\times$} (\i+0.5,-0.95);
+        }
+
+        \draw [black, >=latex, ->] (-4.05,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
+        \draw [black, >=latex, ->] (-0.05,-1.25) -- node[pos=0.825,fill=white] {\tiny$\sum$} (-5.95,-1.25);
+        \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
+        \draw [black] (-7,-1) -- (-7,-1.5) -- (-6,-1.5) -- (-6,-1) -- (-7,-1);
+        \draw (-6.5,-0.75) node[black] {$x[-1]$};
+        \draw (-6.5,-1.25) node[black] {$x[3]$};
+        \draw (-5.5,0.25) node {$\cdots$};
+        \draw (5.5,0.25) node {$\cdots$};
+        \draw (-6.5,-1.75) node {$\vdots$};
+        \draw (-6.5,0) node {$\vdots$};
+    \end{tikzpicture}
+    \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$ and $c_i[n]=1$ for $n=1$ and otherwise zero}
+    \label{fig:visualisation-yi-example}
+\end{figure}
+
+\subsection{Autocorrelation and cross-correlation}
+The goal of the reconstruction method is to reconstruct the autocorrelation of the input signal given the output of all cosets. The autocorrelation of the input signal is given by
+\begin{align*}
+    r_x[n,m] = E(x[n]\conj{x}[n+m]).
+\end{align*}
+We assume that $x[n]$ is a wide sense stationary process. This means that $r_x[n,m]$ is independent of $n$. We therefore omit the $n$ in $r_x[n,m]$ and denote $r_x[n,m]=r_x[m]$. The cross-correlation of $z_i[n]$ and $z_j[n]$ is given by
+\begin{align*}
+    r_{z_i,z_j}[n,m]=E(z_i[n]\conj{z}_j[n+m])
+\end{align*} and the cross-correlation of $y_i[n]$ and $y_j[n]$ is given by
+\begin{align*}
+    r_{y_i,y_j}[n,m]=E(y_i[n]\conj{y}_j[n+m]).
+\end{align*}
+
+\subsection{Relating the autocorrelation of the input signal}
+
+Since $x[n]$ is a wide sense stationary process, Theorem 11.5 of stoch boek yields that
+\begin{align*}
+    r_{z_i,z_j}[n,m] = (r_{x} \ast c_{i,j})[n]
+\end{align*}
+where
+\begin{align*}
+    c_{i,j}[n] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+n].
+\end{align*}
+This shows that $r_{z_i,z_j}[n,m]$ is also independent of $n$. The independence implies that
+\begin{align*}
+    r_{z_i,z_j}[mN] &= E(z_i[n]\conj{z}_j[n+mN]) \\
+    &= E(z_i[nN]\conj{z}_j[nN+mN]) \\
+    &= E(y_i[n]\conj{y}_j[n+m]) \\
+    &= r_{y_i,y_j}[m],
+\end{align*}
+since we defined that $z_i[n]=y_i[nN]$. Therefore
+\begin{align*}
+    r_{y_i,y_j}[m] &= (r_{x} \ast c_{i,j})[mN].
+\end{align*}
+We know that $c_i[n]=0$ for $n \le -1$ and $n \ge N$. The definition of $c_{i,j}[n]$ then yields that $c_{i,j}[n]=0$ for $|n| \ge N-1$, since $c_i[k]c_j[k+n]$ must be zero for $|n| \ge N-1$. So
+\begin{align*}
+    r_{y_i,y_j}[m] &= \sum_{k=-\infty}^{\infty}r_{x}[k]c_{i,j}[k-mN] \\
+    &= \sum_{k=(m-1)N+1}^{(m+1)N-1}r_{x}[k]c_{i,j}[k-mN].
+\end{align*}
+This is the desired equation which relates the cross-correlation of the outputs of cosets $i$ and $j$ to the autocorrelation of the input signal. We see that $r_{y_i,y_j}[m]$ is linearly dependent on $r_x[k]$ for specific $k$. This
+\usetikzlibrary{calc}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \foreach \i in {-8,...,8} {
+            \draw (-4.1,\i/2) -- (4, \i/2);
+            \draw (\i/2, -4.1) -- (\i/2, 4);
+            \draw (\i/2, -4.4) node {\small \num{\i}};
+            \draw (-4.4, \i/2) node {\small \num{\i}};
+        }
+
+        \foreach \i in {-6,...,6} {
+            \draw (\i/2, -4.4) node[red] {\small \num{\i}};
+        }
+        \foreach \i in {-2,...,2} {
+            \draw (\i/2, -4.4) node[blue] {\small \num{\i}};
+        }
+        \foreach \i in {-4,...,4} {
+            \draw (-4.4, \i/2) node[blue] {\small \num{\i}};
+        }
+
+        \draw [blue, thick, line width=1.5pt] (-4.1, -2) -- (-3, -2) -- (-3, -4.1);
+        \draw [red, thick, line width=1.5pt] (-4.1, -2.5) -- (-1.5, -2.5) -- (-1.5, -4.1);
+        \draw [blue, thick, line width=1.5pt] (-4.1, 2) -- (3, 2) -- (3, -4.1);
+        \draw [red, thick, line width=1.5pt] (-4.1, 2.5) -- (1.5, 2.5) -- (1.5, -4.1);
+
+
+        \foreach \i in {-2,...,2} {
+            \foreach \j in {-8,...,8} {
+                \draw [fill=black] (\j/2, {max(min(\i/2+\j/2, 4), -4)}) circle[radius=0.075,black];
+            }
+        }
+        \draw (-5.4,0) node {$r_{y_i,y_j}[n]$};
+        \draw (0,-5) node {$r_x[n]$};
+    \end{tikzpicture}
+\end{figure}
+
+
+\subsection{Estimating the autocorrelation of the input signal}
+Assume that $r_{y_i,y_j}[m]=0$ for $m \le -L-1$ and $m \ge L+1$. Observe that
+\begin{align*}
+    r_{y_i,y_j}[L+1] &= \sum_{k=LN+1}^{(L+1)N-1} r_x[k] c_{i,j}[k-(L+1)N].
+\end{align*}
+Since $c_{i,j}[m]$ is not necessarily zero, $r_{y_i,y_j}[L+1]=0$ yields that $r_x[m]$ must be zero for $LN+1 \le m \le (L+1)N-1$. Further evaluating $r_{y_i,y_j}[m]=0$ in a similar way yields that $r_x[m]=0$ for $m \le -LN-1$ and $m \ge LN + 1$.
+
+
+
+\end{document}
