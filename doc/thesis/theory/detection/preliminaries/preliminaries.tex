@@ -8,9 +8,9 @@
 
 \section{Preliminaries}
 
-% \begin{blockDefinition}[Likelihood function under Hypothesis]
-% Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$, then $L_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
-% \end{blockDefinition}
+\begin{blockDefinition}[Likelihood function under Hypothesis]
+Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$, then $L_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
+\end{blockDefinition}
 
 \begin{blockDefinition}[Complex Gaussian Random Variable]
 Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed.
@@ -28,7 +28,7 @@ and
 it follows that $Z$  has an expectation value of zero ($E\left[Z\right] = 0$) and that %$E\left[Z^2\right]= E\left[X^2 - Y^2 + 2jXY] = 0$.  
 This implies that $E\left[X\right] = E\left[Y\right] = 0$ and that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$. That is, $X$ and $Y$ are gaussian distributed
 with zero mean and equal variance. 
-A circular complex gaussian random variable $Z$ is referred to as $Z \sim \mathcal{CN}(0,\sigma)$ with $\sigma= E\left[Z\overline{Z}\right] = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$. 
+A circular complex gaussian random variable $Z$ is referred to as $Z \sim \mathcal{CN}(0,\sigma^2)$ with $\sigma^2= E\left[Z\overline{Z}\right] = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$. 
 \end{blockDefinition}
 
 \begin{blockDefinition}[Circular Complex Gaussian Random Vector]
@@ -42,12 +42,12 @@ The probability density function of a circular complex gaussian vector $\vec{Z}\
 \end{align*}
 \end{blockDefinition}
 
-% \begin{blockDefinition}[Chi-square distribution of circular complex gaussian random variables]
-% Given a random vector $\vec{Z} \in \mathbb{C}^N$, with $(\vec{Z})_i \sim \mathcal{CN}(0, 2)$ then the random variable $\mathbf{X}$ defined as
+\begin{blockDefinition}[Chi-square distribution for complex random variables]
+Given a random vector $\vec{Z} \in \mathbb{C}^N$, with $\vec{Z}i \sim \mathcal{CN}(0, 2\mathbf{I})$ then the random variable $\mathbf{X}$ defined as
 
-% \begin{align*}
-% 	\mathbf{X} &= \sum_{n=1}^N \left|(\vec{Z})_n\right|^2 % http://dsp-book.narod.ru/DSPMW/60.PDF
-% \end{align*}
+\begin{align*}
+	\mathbf{X} &= \sum_{n=1}^N \left|(\vec{Z})_n\right|^2 % http://dsp-book.narod.ru/DSPMW/60.PDF
+\end{align*}
 
 % % https://books.google.nl/books?id=KwkgAwAAQBAJ&pg=PA158&lpg=PA158&dq=circular+complex+gaussian+chi+square&source=bl&ots=9e7czQCFaN&sig=yuMXCjiFC21c_0EgmSM_yzefVFk&hl=nl&sa=X&ei=MbB2VfTXBsizswGi34DgCw&ved=0CFIQ6AEwBg#v=onepage&q=circular%20complex%20gaussian%20chi%20square&f=false
 
@@ -59,9 +59,9 @@ The probability density function of a circular complex gaussian vector $\vec{Z}\
 
 % % http://www.ifp.illinois.edu/~pramodv/Chapters_PDF/Fundamentals_Wireless_Communication_AppendixA.pdf
 
-% follows a chi-square distribution with $2N$ degrees of freedom, denoted by $\mathbf{X} \sim \chi^2_{2N}$.
-% Its expected value is equal to $E[\frac{\Lambda''(x)}{N}] = 2N$ and its variance is equal to $\text{Var}[\frac{\Lambda''(x)}{N}] = 4N$.
-% \end{blockDefinition}
+follows a chi-square distribution with $2N$ degrees of freedom, denoted by $\mathbf{X} \sim \chi^2_{2N}$.
+$E[X] = 2N$ and $\text{Var}[X] = 4N$.
+\end{blockDefinition}
 
 \begin{blockDefinition}[Neyman-Pearson Test]
 Given a continous random vector $\vec{X}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that the realization of $\vec{X}$, $\vec{x}$, has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$
