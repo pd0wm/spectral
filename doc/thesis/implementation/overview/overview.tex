@@ -12,15 +12,30 @@
 
 \begin{document}
 \chapter{System Overview}
+For the implementation of our system two libraries were written to support our code. 
 
-\section{Design Patterns}
-\label{sec:design-patterns}
-
-\section{Model View Controller}
+\section{Model-View-Presenter }
 \label{sec:model-view-contr}
+The design of our system can best be described by a model-view-presenter architectural pattern a variation on model-view-controller. The components consist of the following:
+\begin{description}
+    \item[Model] This encompasses the library \lib{cogradio}, that holds all the functional parts of our library. This means it contains the theoretical sources, the samplers, the reconstructors and the detectors.
+    \item[Presenter] This encompasses part of the library \lib{cogradio\_vis}, that contains the Settings remote object and websockets.
+    \item[View] This encompasses part of the library \lib{cogradio\_vis}, that contains the GUI elements.
+\end{description}
+An overview can be seen in \cref{fig:MVP}.
+
+\begin{figure}
+    \centering
+    \input{./figures/mvp}
+    \caption{Illustration of the MVP pattern applied to our project.}
+    \label{fig:MVP}
+\end{figure}
 
 \subsection{Model}
 \label{sec:model}
+The goal was to implement enough primitives in these libraries that a large number of configurations can quickly be constructed together. This is to account for the variety of configurations in which this product can be used. It also allows us to test different kind of sampling techniques with reconstruction methods.
+
+A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. 
 
 \subsection{View}
 \label{sec:view}
@@ -28,6 +43,8 @@
 \subsection{Controller}
 \label{sec:controller}
 
+\section{Design Patterns}
+\label{sec:design-patterns}
 
 
 \end{document}
