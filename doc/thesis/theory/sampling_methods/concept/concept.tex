@@ -194,7 +194,7 @@ The way these vectors are chosen has a big influence on performance, but this wi
 
 \subsection{Collaborative sampling}
 
-Collaborative sampling is fairly similar to circ
+Collaborative sampling is fairly similar to circular sparse sampling. Except for the fact that circular sparse sampling is restricted to only one device, and collaborative sampling to multiple devices. Collabroative sampling is illustrated in \cref{tkz:collaborative}, where we use two devices with each three samplers, and a netto downsampling factor of $N=13$.
 
 \begin{figure}[H]
 \centering
@@ -388,7 +388,85 @@ Collaborative sampling is fairly similar to circ
 \caption{collaborative sampling with two devices with each three samplers}\label{tkz:collaborative}
 \end{figure}
 
+ With collaborative sampling, we let each device be responsible for only a part of the autocorrelation. This poses an interesting new problem: how do you reconstruct only parts of the autocorrelation, with the proposed reconstruction algorithm. This will be further discussed in a later section.
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x_1[n]$};
+\draw  (-1.5,1.5) -- (0.5,1.5);
+\draw  (-0.5,3) -- (0.5,3);
+\draw (-0.5,3) --(-.5,0) ;
+
+\draw (-0.5,0) -- (0.5,0);
+
+\draw  (1,3) -- (2,3);
+\draw  (1,1.5) -- (2,1.5);
+\draw  (1,0) -- (2,0);
+
+\draw[ very thick](0.5,3)-- +(30:0.46);
+\draw[ very thick](0.5,1.5)-- +(30:0.46);
+\draw[ very thick](0.5,0)-- +(30:0.46);
+
+\draw  (2.5,3) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,1.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,0) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+
+\draw  [>=latex,->] (5,3) -- (6,3);
+\draw  [>=latex,->] (5,1.5) -- (6,1.5);
+\draw  [>=latex,->] (5,0) -- (6,0);
+
+\draw  (3,3) -- (4,3);
+\draw  (3,1.5) -- (4,1.5);
+\draw  (3,0) -- (4,0);
+
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0[k]$};
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1[k]$};
+\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2[k]$};
+
+\draw  (-2.5,-4) rectangle (-1.5,-5) node[pos=.5]{$x_2[n]$};
+\draw  (-1.5,-4.5) -- (0.5,-4.5);
+\draw  (-0.5,-3) -- (0.5,-3);
+\draw (-0.5,-3) --(-0.5,-6) ;
+
+\draw (-0.5,-6) -- (0.5,-6);
+
+\draw  (1,-3) -- (2,-3);
+\draw  (1,-4.5) -- (2,-4.5);
+\draw  (1,-6) -- (2,-6);
+
+\draw[ very thick](0.5,-3)-- +(30:0.46);
+\draw[ very thick](0.5,-4.5)-- +(30:0.46);
+\draw[ very thick](0.5,-6)-- +(30:0.46);
+
+\draw  (2.5,-3) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,-4.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (2.5,-6) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+
+\draw  (3,-3) -- (4,-3);
+\draw  (3,-4.5) -- (4,-4.5);
+\draw  (3,-6) -- (4,-6);
+
+\draw  [>=latex,->] (5,-3) -- (6,-3);
+\draw  [>=latex,->] (5,-4.5) -- (6,-4.5);
+\draw  [>=latex,->] (5,-6) -- (6,-6);
+
+\draw  (5,-2.5) rectangle (4,-3.5) node[pos=.5]{$y_0[k]$};
+\draw  (5,-4) rectangle (4,-5) node[pos=.5]{$y_1[k]$};
+\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$y_2[k]$};
+
+\draw  (6,3.5) rectangle (8.5,-.5) node[pos=.5]{reconstructor};
+\draw  (6,-2.5) rectangle (8.5,-6.5) node[pos=.5]{reconstructor};
+
+\draw  (6,-1) rectangle (8.5,-2) node[pos=.5]{combiner};
+\draw [>=latex,->] (7.25,-2.5) -- (7.25,-2);
+\draw [>=latex,->] (7.25,-.5) -- (7.25,-1);
+
+\end{tikzpicture}
+\caption{schematic of collaborative sampling implementation}\label{tkz:sc_collaborative}
+\end{figure}
+
+\subsection{Coprime sampling}
 
 \begin{figure}[H]
 \centering
