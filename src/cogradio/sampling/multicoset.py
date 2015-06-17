@@ -7,15 +7,14 @@ class MultiCoset(Sampler):
 
     """Multi coset sampler implementation"""
 
-    def __init__(self, N, C=None):
+    def __init__(self, N):
         super(MultiCoset, self).__init__()
-        if C is not None:
-            self.C = C
-        else:
-            sparseruler = cg.sparseruler(N)
-            self.C = cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
-
+        self.C = self.generate_C(N)
         self.N = self.C.shape[1]
+
+    def generate_C(self, N):
+        sparseruler = cg.sparseruler(N)
+        return cg.build_sparse_ruler_sampling_matrix(sparseruler, N)
 
     def sample(self, x):
         length = x.shape[0]

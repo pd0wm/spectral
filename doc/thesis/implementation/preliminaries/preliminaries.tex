@@ -16,6 +16,7 @@
 
 \begin{document}
 \chapter{Preliminaries}
+\label{cha:impl:preliminaries}
 There are a number of aspects that were considered at the start of the project:
 \begin{itemize}
     \item The implementation needs to be fast. The products from our competitors are all high performance products. The advantage of compressive sensing is that less hardware can be used at the cost of more demanding computations.
@@ -47,18 +48,19 @@ Initially, two platforms were considered for development: \matlab{} and Python. 
 
 \subsection{Flask}
 \label{sec:flask}
-\lib{Flask} micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license.
+\lib{Flask} is a micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license.
 
 \subsection{Twisted}
 \label{sub:twisted}
+\lib{Twisted} is Python's event-driven network programming framework. It was used in conjunction with \lib{Autobahn}. \lib{Twisted} is licensed under the MIT\footnoteref{fn:mit} license.
 
 \subsection{Autobahn}
 \label{sub:autobahn}
-
+\lib{Autobahn} is a real-time framework for websockets. It was used as a means of sending data to the GUI. It is written on top of \lib{Twisted} and \lib{asyncio} and is licensed under the MIT\footnoteref{fn:mit} license.
 
 \subsection{Pyro}
 \label{sec:pyro}
-A popular remote-object library. It allows us to do application programming over the network. In the future it could be an easy means of doing distributed networking but as of now it functions as a simple means of inter-process communication. \lib{Pyro4} is licensed under the MIT\footnote{\label{fn:mit}Software under the MIT license is free for both commercial and non-commercial use. For more info see \cite{mitlic}.} license.
+\lib{Pyro} is a popular remote-object library. It allows us to do application programming over the network. In the future it could be an easy means of doing distributed networking but as of now it functions as a simple means of inter-process communication. \lib{Pyro4} is licensed under the MIT\footnote{\label{fn:mit}Software under the MIT license is free for both commercial and non-commercial use. For more info see \cite{mitlic}.} license.
 
 \subsection{Bootstrap}
 \label{sec:bootstrap}
