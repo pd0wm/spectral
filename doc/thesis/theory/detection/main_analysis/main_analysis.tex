@@ -107,11 +107,5 @@ $P_{fa}$ can then be approximated as
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
  }
  
- \section{Energy detection in the frequency domain}
- Notice that our test statistic $\Lambda''(\vec{x})$ is an estimate of the average power of the signal $x$. By definition of the power spectral
- density, the integral over the power spectral density gives the expected average power. Therefore, once we have computed our power spectral density estimate, we can obtain an estimate of the average power (and therefore we have evaluated our test statistic $\Lambda''(\vec{x})$). This can then be directly compared to the threshold as given  in \cref{eq:ed_threshold}.
-
- Notice that if $x[n] \sim \mathcal{CN}(0, \sigma_n^2$ then the autocorrelation function $r_x[n] = \sigma_n^2\delta[n]$. Therefore the power spectral density of $\mathcal{P}_x(\omega) = \sum_{n=-\infty}^{\infty}r_x[n]e^{-jn\omega} = \sigma_n^2$; it is flat. In the case that we want to detect the presence of a signal in a certain frequency band with bandwidth $W$, we can make use of this characteristic. By summating the power spectral density $P_{x}(\omega)$ over that band we obtain an average power of $\frac{W}{2\pi}$ times the average power obtained by summating over the whole power spectral density. Therefore if we are to use the sum over the frequency band as a test statistic, we have to use the threshold in \cref{eq:ed_threshold} multiplied by the proportionality factor $\frac{W}{2\pi}$.
-
 
 \end{document}

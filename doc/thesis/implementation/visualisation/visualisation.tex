@@ -12,6 +12,7 @@
 
 \begin{document}
 \chapter{Visualisation}
+\label{ch:visualisation}
 The second half of the system design consists of a graphical user interface (GUI), which allows for easy control and visual verification of the system and its status. This chapter will deal with the various design choices that were considered which ultimately led to the system in its final form.
 
 The GUI can be roughly divided into a server-side part (or \emph{back-end}) and a client-side part (or \emph{front-end}). The server-side system, written in Python, communicates with the functional core and prepares the obtained data for display on the client-side. The client-side system is a web-application, written in JavaScript, that handles the actual presentation of the data, as well as any action the end-user might perform which should have an effect back in the core.
