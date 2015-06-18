@@ -7,7 +7,8 @@
 \begin{document}
 
 \section{Derivation}
-Consider the input signal to be a random stochastic process. Let the input signal be denoted by $x[n]$. Let the number of cosets by given by $M$. We denote the output of a coset $i$ by $y_i[n]$. To relate the output of a coset to the input signal, we need some mathematical constructs.
+\label{sec:reconstruction-derivation}
+Consider the input signal to be a random stochastic process. To relate the output of a coset to the input signal, we need some mathematical constructs.
 
 \subsection{Construction of the output of a coset}
 In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yield one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
