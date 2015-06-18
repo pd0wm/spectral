@@ -29,7 +29,7 @@ The threshold $\gamma$ depends on the expected noise power $\sigma_n^2$ and the 
 \end{align*}
 
 where $Q^{-1}$ denotes the the inverse tail probability function of the standard normal distribution and $p_{fa}$ is the desired false alarm probability.
-Using a bandpass filter $H(f)$ one can filter the signal $x[n]$ such that it can be used to detect a signal in a particular frequency band. This whole process is depicted
+Using a band-pass filter $H(f)$ one can filter the signal $x[n]$ such that it can be used to detect a signal in a particular frequency band. This whole process is depicted
 in \cref{tkz:conv_ed}
 \begin{figure}[H]
 \centering
@@ -91,7 +91,7 @@ The test statistic $\Lambda'$, however, still does not allow for detection in a 
 denote the test statistic to detect a signal in the frequency band W.
  If we would integrate the power spectral density of noise over $W$ we obtain an average power of  $\frac{W}{2\pi} \sigma_n^2$. Therefore if we are to use $\Lambda''$ as test statistic, we have to use the modified threshold $\gamma'' = \frac{W}{2\pi} \gamma'$.
 
- By applying the fourier transform to the autocorrelation one can use this test statistic to apply the detection process to several frequency bands, as depicted in \cref{tkz:my_ed}.
+ By applying the Fourier transform to the autocorrelation one can use this test statistic to apply the detection process to several frequency bands, as depicted in \cref{tkz:my_ed}.
 
  \begin{figure}[H]
 \centering
@@ -151,6 +151,7 @@ r_x[n] = \frac{1}{N-|n|}\sum_{m=\max(0,n)}^{N-1+\min(0,n)} x[m]\overline{x}[m-n]
 \end{equation}
 
 By \cref{eq:acf_est} we have that $r_x[0] = \sum_{n=0}^{N-1} |x[n]|^2 = \Lambda$. That is, $N$ should be the amount of samples needed to estimate $r_x[0]$ in case that \cref{eq:acf_est} is used. However, the reconstructor does not use \cref{eq:acf_est}, instead it combines samples from multiple cosets, which obscures what the value of $N$ should be. 
+\todo{Derive threshold based on distribution of $r_x[0]$}
 
 % \subsection{Noise variance}
 % As indicated, knowledge of the noise variance is necessary for the energy detector to work. In practical situations this noise variance may be estimated from a reference measurement in an empty frequency band. 
@@ -183,7 +184,7 @@ The problem with the conventional energy detector described above is that the pa
 \caption{Energy detection with knowledge of the reconstructor}\label{tkz:ed_ari_overview}
 \end{figure}
 
- To determine the threshold $\gamma_{\omega}$ for each element, the signal $x[n]$ is assumed to contain purely additive circular complex gaussian noise. The distribution of the elements of the reconstructed power spectral density is then approximated as a normal distribution, see Appendix \textbf{TODO} for a derivation.
+ To determine the threshold $\gamma_{\omega}$ for each element, the signal $x[n]$ is assumed to contain purely additive circular complex Gaussian noise. The distribution of the elements of the reconstructed power spectral density is then approximated as a normal distribution, see Appendix \textbf{TODO} for a derivation.
 
 \begin{figure}[H]
 \centering
@@ -314,7 +315,7 @@ The process of the CAV detector as depicted  in \cref{tkz:cav} consist out of 5 
 	\item Take the absolute value of all elements of this toeplitz matrix
 	\item Calculate $T_1 = \sum_{n=1}^{L-1}\sum_{m=1}^{L-1} C_{nm}$
 	\item Calculate $T_2 = \text{Tr}(\mat{C})$
-	\item Compare $\frac{T1}{T2}$ to a threshold $\gamma$. In case that $\frac{T_1}{T_2} > \gamma$ it is decided that $\mathcal{H}_1$ is true, otherwhise $\mathcal{H}_0$ is regarded as the true hypothesis. 
+	\item Compare $\frac{T1}{T2}$ to a threshold $\gamma$. In case that $\frac{T_1}{T_2} > \gamma$ it is decided that $\mathcal{H}_1$ is true, otherwise $\mathcal{H}_0$ is regarded as the true hypothesis. 
 \end{enumerate}
 
 \subsection{Explanation}
@@ -359,8 +360,4 @@ $p_{fa}$ is derived in \textbf{cite} to be
 \gamma &= \frac{(1+(L-1)\sqrt{\frac{2}{N\pi}}}{1-Q^{-1}(p_{fa})\sqrt{\frac{2}{N}}}
 \end{align*} 
 
-% \subimport{detection/preliminaries/}{preliminaries}
-% \subimport{detection/main_analysis/}{main_analysis}
-% \subimport{detection/algorithm/}{algorithm}
-% \subimport{detection/proofs/}{proofs}
 \end{document}
