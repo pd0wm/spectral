@@ -1,32 +1,17 @@
-import numpy as np
-from .sampling import Sampler
+from .multicoset import MultiCoset
 
 
-class Coprime(Sampler):
+class Coprime(MultiCoset):
 
     """Coprime coset sampler implementation"""
 
     def __init__(self, a, b):
-        Sampler.__init__(self)
         self.a = a
         self.b = b
-        self.C = self.generate_C()
-        self.N = self.C.shape[1]
-
-    def sample(self, x):
-        length = x.shape[0]
-        offset = length % self.N
-        if offset != 0:
-            x = x[:-offset]
-        x = np.reshape(x.T, (self.N, -1), order='F')
-        y = np.dot(self.C, x)
-        return y
-
-    def generate_C(self):
-        C = np.zeros((self.a + self.b - 1, self.a * self.b))
-        for i, j in enumerate(self.coprime_multiples(self.a, self.b)):
-            C[i, j] = 1
-        return C
+        intervals = self.coprime_multiples(a, b)
+        N = a * b
+        M = a + b - 1
+        super(Coprime, self).__init__(intervals, N, M)
 
     def coprime_multiples(self, a, b):
         mult_a = a

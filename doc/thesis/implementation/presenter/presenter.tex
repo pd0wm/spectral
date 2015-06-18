@@ -23,7 +23,11 @@ In our implementation, the presenter is concerned with the following tasks:
 	\item Update the view using current model data.
 \end{itemize}
 
-Coordinating both model and view is primarily handled by the Python script \lib{run}. This script may be executed with a number of command-line arguments:
+Control of model and view will be described in \cref{sec:control}. After this, the subject of system-wide execution parameters will be dealt with in \cref{sec:settings_server}. Finally, we will get into the matter of model-view interaction regarding settings and data in \cref{sec:websockets}.
+
+\section{Primary control}
+\label{sec:control}
+Coordinating both model and view is primarily handled by the Python script \lib{run.py}. This script may be executed with a number of command-line arguments:
 
 \begin{description}
 	\item[ip] Specifies the IP-address of the USRP that should be used for data-acquisition.
@@ -32,24 +36,54 @@ Coordinating both model and view is primarily handled by the Python script \lib{
 	\item[source] Specifies what module should be used as a data source for the system, choices are the USRP, various theoretical sources such as a sinusoidal and a locally saved dump that was previously recorded.
 	\item[snr] When a theoretical source is selected, this specifies the amount of Gaussian noise that should be added to the signal. Used to test the system's performance.
 	\item[dump] When a local data dump is selected as source, this specifies where the dump file is located.
-	\item[controlport] Specifies the port at which the Websocket (see \cref{ch:presenter}) that handles control of the system should connect.
-	\item[dataport] Specifies the port at which the Websocket that handles the data streams for external access should connect.
+	\item[controlport] Specifies the port at which the WebSocket (see \cref{sec:websockets}) that handles control of the system should connect.
+	\item[dataport] Specifies the port at which the WebSocket that handles the data streams for external access should connect.
 \end{description}
 
-Using the parameters set by the user, or a set of predefined defaults, \lib{run} will initialise each subcomponent in a separate process (using Python's \lib{Process}, see \cref{sec:multiprocessing}), allowing tasks to be handled concurrently. Each of these processes performs a single task:
+Using the parameters set by the user or a set of predefined defaults, The presenter will initialise each subcomponent in a separate process (using Python's \lib{Process}, see \cref{sec:multiprocessing}), allowing tasks to be handled concurrently. The current implementation runs six processes alongside each other, whose behaviour is defined in the \lib{processes} Python script:
 
-% \begin{description}
-% 	\item[generator] Also source or sampler, this process  
-% \end{description}
+\begin{enumerate}
+	\item The generator and sampler, this can be any combination of one of the sources in \cref{sec:source} and one of the samplers in \cref{sec:sampling}.
+	\item The reconstructor, from \cref{sec:reconstruction}.
+	\item The detector, from \cref{sec:detection}.
+	\item The web server, an important component of the view, as will be described in \cref{ch:view}.
+	\item The control WebSocket server, which exposes the model's settings so that they can be modified from external applications (like the view).
+	\item The data WebSocket server, which exposes the model's currently processed data for external applications.
+\end{enumerate}
 
-% \lib{run} will also set-up a number of Python \lib{Queues}, which allow for inter-process communication ()
+These processes need to be able to exchange data. For example, the reconstructor needs data generator by the generation process to perform reconstruction on. This is implemented using a number of Python \lib{Queue}s, wrapped in a class that implements safe queueing and de-queueing by means of locks.
 
-\paragraph{Todo:}
-\begin{itemize}
-	\item Include a list of all six processes and a description for each
-	\item Touch on the subject of inter-process queues
-	\item Introduce \lib{Pyro4} and the role it plays in the system managing system settings
-	\item Introduce both websockets and the central role they fulfil in exposing model data to external applications like the view
-\end{itemize}
+\section{Settings Server}
+\label{sec:settings_server}
+Managing system-wide settings and allowing the user to modify them at runtime are also tasks of the presenter. System settings, or runtime parameters are made available between different Python processes using the Python package \lib{Pyro4}.
+
+% TODO: More Pyro4 here %
+
+\section{WebSockets}
+\label{sec:websockets}
+To expose model settings and result data to external applications the system makes use of the WebSocket-protocol. The WebSocket protocol defines a full-duplex single socket connection that can be used to send messages between a client and server. The WebSocket specification was initially implemented in JavaScript, but nowadays interfaces are available in many other programming languages as well, including Python. Multiple packages even exist, of which \lib{Autobahn} was used.
+
+\subsection{Factories and Protocols}
+\label{sub:autobahn}
+\lib{Autobahn} implements the WebSocket specification using another widely used Python package called \lib{Twisted}, which is an event-driven network engine. When using \lib{Autobahn}, a WebSocket server is defined by a factory object and a protocol object. A factory is, simply put, an object that can create other objects, which is a basic object-oriented programming (OOP) concept. A factory is created for both the WebSocket servers once, at runtime, when their respective processes (defined by \func{run\_websocket\_data} and \func{run\_websocket\_settings}) start. From that point, either factory will create a protocol object for every client that connects to the server. The factory will perform some initialisation on the protocol and pass a reference of itself along with it, so every protocol instance shares the same factory object, more or less like a parent.
+
+The protocols themselves define the behaviour of the WebSocket server upon various events. Both protocols handle the same events, which are relatively straight-forward:
+\begin{description}
+	\item[\func{onConnect}] Triggered when a client tries to connect to the server.
+	\item[\func{onOpen}] Triggered after a connection has been successfully established.
+	\item[\func{onMessage}] Triggered when the server receives a message from the client.
+	\item[\func{onClose}] Triggered when a connection with a client is closed.
+\end{description}
+
+\subsection{Settings}
+\label{sub:websocket_settings}
+The settings WebSocket server, contained in \lib{websocket\_control.py}, uses \lib{Pyro4} to access the model's settings and makes them available to any client that connects at request.
+Whenever a client connects (consecutively triggering \func{onConnect} and \func{onOpen}), the protocol will register itself with the parent factory. It will also send the connected client a message containing every current setting, so that the client may initialise itself correctly. Whenever a client sends an updated setting over the WebSocket connection (triggering \func{onMessage}), the protocol forwards the update via the \lib{Pyro4} settings object and makes sure any other client is notified of the changed setting by invoking the parent factory's \func{relay} method, which relays the message to all clients that are currently registered by the factory. Finally, when a client disconnects, its associated protocol will unregister itself with the factory before going out of scope.
+
+\subsection{Data}
+\label{sub:websocket_data}
+The data WebSocket server, contained in \lib{websocket\_data.py} functions in a similar manner, but maintains a direct data connection with the model using queues as described in \cref{sec:control}. The generator, reconstructor and detector processes each have their own queue to which they push the currently processed data, so that it can be made available on the WebSocket. The queues and buffers are both held by the parent factory, so every protocol will read the same data.
+The data WebSocket server does take any action when a client connects. Registering itself with the parent factory is not needed because connected clients do not interact with each other.
+Any connected client may send the server a request for a certain data type. When this happens, the associated protocol will ask the parent factory to update its data buffer of the given type with the latest data by invoking its \func{deque} method. After obtaining the raw data, the protocol will wrap it in an object (\func{PlotDataContainer}) containing the data itself, along with some meta-data that might by useful for the client, such as the current sampling frequency. Finally the container will be encoded into a string using JSON \footnote{JavaScript Object Notation, a standardised way to express objects by a string} and sent to the client.
 
 \end{document}

@@ -66,11 +66,5 @@ def auto_correlation(signal, maxlag=None, unbiased=True):
     return cross_correlate(signal, signal, maxlag=maxlag, unbiased=unbiased)
 
 
-def build_sparse_ruler_sampling_matrix(sparseruler, N):
-    M = len(sparseruler)
-    C = np.zeros((M, N))
-    for i in range(0, M):
-        C[i, sparseruler[i]] = 1
-    return C
 
 CACHE_DIR = "cache/"
