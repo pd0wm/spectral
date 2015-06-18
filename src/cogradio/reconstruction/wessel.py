@@ -37,7 +37,7 @@ class Wessel(Reconstructor):
 
     def build_rcc(self, cross_correlation):
         Rcc_dim = 2 * self.N * self.L - 1
-        toeplitz_array = np.zeros((Rcc_dim - 1+ len(cross_correlation)), dtype=np.complex64)
+        toeplitz_array = np.zeros((Rcc_dim - 1+ len(cross_correlation)), dtype=np.complex128)
         toeplitz_array[:len(cross_correlation)] = cross_correlation
         Rcc = np.tril(sp.linalg.toeplitz(toeplitz_array))[:, :Rcc_dim]
         return Rcc
