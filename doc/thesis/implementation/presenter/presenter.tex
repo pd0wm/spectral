@@ -55,7 +55,7 @@ These processes need to be able to exchange data. For example, the reconstructor
 
 \section{Settings Server}
 \label{sec:settings_server}
-Managing system-wide settings and allowing the user to modify them at runtime are also tasks of the presenter. System settings, or runtime parameters are made available between different Python processes using the Python package \lib{Pyro4}.
+Managing system-wide settings and allowing the user to modify them at runtime are also tasks of the presenter. System settings, or runtime parameters are made available between different Python processes using the Python package \lib{Pyro4}. This package enables us to use Remote Procedure Calls, which means we can use objects over sockets. In our system it functions mainly as a local server, but in theory it could be used as a central settings object from which a distributed network of computational machines get their settings and a number of views can push their settings to.
 
 % TODO: More Pyro4 here %
 
