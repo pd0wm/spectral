@@ -6,9 +6,9 @@
 
 \begin{document}
 
-\section{Implementation}
+\section{Implementation details}
 \label{sec:reconstruction-implementation}
-This section will discuss some details of the algorithm which are relevant when implementing the algorithm.
+This section will discuss some details of the algorithm which are useful when implementing the algorithm.
 
 \subsection{Estimation of the cross-correlations and autocorrelation}
 \label{sub:reconstruction-estimation}
@@ -28,13 +28,93 @@ Then $E(\hat{\vec{r}}_{y_i,y_j})=\vec{r}_{y_i,y_j}$, which means that $\hat{\vec
 \end{align*}
 Thus $\hat{\vec{r}}_{y_i,y_j}$ can be used to estimate $\vec{r}_x$. Denote this estimation of $\vec{r}_x$ by $\hat{\vec{r}}_x$.
 
-\subsection{Sparsity of the matrices}
+\subsection{Sparsity}
 \label{sub:reconstruction-sparsity}
-- sparsity 
+Operations on large matrices can be computationally intensive. If a matrix is sparse, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation, we argued that every row of $\mat{R}$ has exactly one nonzero element. Since $\mat{R}$ has $2LN+1$ columns, the fration of nonzero elements of $\mat{R}$ is given by
+\begin{align*}
+    \rho_{\text{nz}}=\frac{1}{2LN+1}.
+\end{align*}
+Since $LN$ determines the resolution of the estimated power spectral density of the input signal, the product $LN$ is usually chosen large. This means that $\mat{R}$ is usually a very sparse matrix.
 
 \subsection{Efficient generation of the matrices}
 \label{sub:reconstruction-generation}
-- generation of R
+It turns out that $\mat{R}_{i,j}$ can be generated efficiently using commonly available functions. To generate $\mat{R}_{i,j}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. Given a vector, $\operatorname{toeplitz}$ generates a Toeplitz matrix from this vector. Also, given a matrix, $\operatorname{tril}$ keeps the lower triangular matrix of this matrix and sets the other elements to zero. Their operation is illustrated with two examples.
+\begin{align*}
+    \operatorname{toeplitz}\left(\begin{bmatrix}
+        1 & 2 & 3 & 4
+    \end{bmatrix}\right) = \begin{bmatrix}
+        1 & 2 & 3 & 4 \\
+        2 & 1 & 2 & 3 \\
+        3 & 2 & 1 & 2 \\
+        4 & 3 & 2 & 1
+    \end{bmatrix},
+\end{align*}
+\begin{align*}
+    \operatorname{tril}\left(\begin{bmatrix}
+        1 & 2 & 3 & 4 \\
+        2 & 1 & 2 & 3 \\
+        3 & 2 & 1 & 2 \\
+        4 & 3 & 2 & 1
+    \end{bmatrix}\right) = \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        2 & 1 & 0 & 0 \\
+        3 & 2 & 1 & 0 \\
+        4 & 3 & 2 & 1
+    \end{bmatrix}.
+\end{align*}
+To illustrate the way $\mat{R}_{i,j}$ can be generated efficiently, we consider an example. Suppose that $N=2$ and $L=1$. Then
+\begin{align*}
+    \mat{R}_{i,j} = \begin{bmatrix}
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 \\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] \\
+    \end{bmatrix}.
+\end{align*}
+Now notice that
+\begin{align*}
+    \operatorname{tril}\left[\operatorname{toeplitz}\left(\begin{bmatrix}
+        c_{i,j}[1] & c_{i,j}[0] & c_{i,j}[-1] & 0 & 0 & 0
+    \end{bmatrix}\right)\right] = \\ \begin{bmatrix}
+        c_{i,j}[1] & 0 & 0 & 0 & 0 & 0\\
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 & 0\\
+        c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0\\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0\\
+        0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] \\
+    \end{bmatrix}.
+\end{align*}
+We can construct $\mat{R}_{i,j}$ by omitting several rows and columns. First omit the first $N-1$ rows and last $N-1$ columns. Then
+\begin{align*}
+    \begin{bmatrix}
+        \color{red}c_{i,j}[1] & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}0\\
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 & \color{red}0\\
+        c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & \color{red}0\\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & \color{red}0\\
+        0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & \color{red}0 \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & \color{red}c_{i,j}[1] \\
+   \end{bmatrix}   
+\end{align*}
+remains. The red elements represent the omitted elements. Now keep rows $1,N+1,\ldots,2LN+1$. Then
+\begin{align*}
+    \begin{bmatrix}
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0\\
+        \color{red}c_{i,j}[-1] & \color{red}c_{i,j}[0] & \color{red}c_{i,j}[1] & \color{red}0 & \color{red}0\\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0\\
+        \color{red}0 & \color{red}0 & \color{red}c_{i,j}[-1] & \color{red}c_{i,j}[0] & \color{red}c_{i,j}[1] \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0]\\
+   \end{bmatrix}
+\end{align*}
+remains, which is exactly $\mat{R}_{i,j}$. In general, the algorithm to construct $\mat{R}_{i,j}$ is as follows.
 
+\begin{tabularx}{\textwidth}{rY}
+    Step 1: & Let $\vec{c} = \begin{bmatrix}
+                c_{i,j}[N-1] & \cdots c_{i,j}[-N+1]
+            \end{bmatrix}$. \\ \\
+    Step 2: & Append $\vec{c}$ with $2(L-1)N+1$ zeros. \\ \\
+    Step 3: & Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$. \\ \\
+    Step 4: & Omit the first $N-1$ rows and the last $N-1$ columns. \\ \\
+    Step 5: & Keep rows $1,N,\ldots,2LN+1$. The resulting matrix is $\mat{R}_{i,j}$. \\
+\end{tabularx}
 
+The advantage is that this algorithm can take advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 and 5 can be vectorised.
 \end{document}

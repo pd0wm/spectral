@@ -131,9 +131,9 @@ This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualis
 \end{figure}
 
 To analyse \cref{eq:yi}, we need a helper variable. Let
-\begin{align*}
+\begin{align} \label{eq:cij-rx}
     z_i[n] = (c_i \ast x)[n]
-\end{align*}
+\end{align}
 where $\ast$ denotes the convolution operator. The definition of the convolution operator yields that
 \begin{align} \label{eq:zi}
     z_i[n] &= \sum_{k=\infty}^{\infty}x[k] c_i[n-k] \\
@@ -338,11 +338,11 @@ which can be conveniently written as the matrix equation
         r_{y_i,y_j}[-L]
     \end{bmatrix} = \begin{bmatrix}
         c_{i,j}[0] & \vec{c}^+_{i,j} \\
-        \vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
+        & \vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
         % &\vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
-        &&\ddots \\
-        &&\vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
-        &&&\vec{c}^{-}_{i,j} & c_{i,j}[0]
+        &&&\ddots \\
+        &&&\vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
+        &&&&&\vec{c}^{-}_{i,j} & c_{i,j}[0]
     \end{bmatrix} \begin{bmatrix}
         r_x[LN] \\
         r_x[LN-1] \\
