@@ -10,7 +10,7 @@
 Consider the input signal to be a random stochastic process. Let the input signal be denoted by $x[n]$. Let the number of cosets by given by $M$. We denote the output of a coset $i$ by $y_i[n]$. To relate the output of a coset to the input signal, we need some mathematical constructs.
 
 \subsection{Construction of the output of a coset}
-In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, the cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ to a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. Here $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yield one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
+In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yield one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -63,17 +63,14 @@ In the chapter on sampling we have seen that every coset samples the input signa
     \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
     \label{fig:visualisation-yi}
 \end{figure}
-More mathematically,
+Mathematically,
 \begin{align} \label{eq:yi}
     y_i[n]=\sum_{k=(n-1)N+1}^{nN} x[k]c_i[nN-k].
 \end{align}
 \Cref{eq:yi} precisely relates the output of coset $i$ to the input signal.
 
-Consider the case that $c_i[n]=1$ for $n=S_i$ and otherwise zero. Then $y_i[n]$ consists of every $N-S_i$'th sample of every group of $N$ samples of $x[n]$. This is seen by substituting $c_i[n]$'s definition in \cref{eq:yi}, which yields that
-\begin{align*}
-    y_i[n]=\left.x[k]\right|_{nN-k=S_i}=x[nN-S_i].
-\end{align*}
-Notice that $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualisation-yi-example} illustrates this concept in the case that $N=4$ and $S_i=1$.
+Consider the case that $c_i[n]=1$ for a single $n$ and otherwise zero. Then $y_i[n]$ consists of the sample of every group of $N$ samples of $x[n]$.
+This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualisation-yi-example} illustrates this concept in the case that $N=4$ and $c_i[n]=1$ for $n=1$ and otherwise zero.
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -210,7 +207,7 @@ where
 \begin{align} \label{eq:cij}
     c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
 \end{align}
-This shows that $r_{z_i,z_j}[n,m]$ is independent of $n$, we means we once more omit the $n$ in $r_{z_i,z_j}[n,m]$. Now the independence implies that
+This shows that $r_{z_i,z_j}[n,m]$ is independent of $n$, we means that we omit the $n$ in $r_{z_i,z_j}[n,m]$  once more. Now the independence of $n$ implies that
 \begin{align*}
     r_{z_i,z_j}[mN] &= E(z_i[n]\conj{z}_j[n+mN]) \\
     &= E(z_i[nN]\conj{z}_j[nN+mN]) \\
@@ -226,57 +223,68 @@ Consider \cref{eq:cij}. We know that $c_i[n]=0$ for $n < 0$ and $n > N-1$, which
     r_{y_i,y_j}[m] &= \sum_{k=-\infty}^{\infty}r_{x}[k]c_{i,j}[mN-k] \nonumber \\
     &= \sum_{k=(m-1)N+1}^{(m+1)N-1}r_{x}[k]c_{i,j}[mN-k].
 \end{align}
-This is the desired equation which relates the cross-correlation of the outputs of cosets $i$ and $j$ to the autocorrelation of the input signal. We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r_x[m]$ in a linear way. Consider the case that $N=3$. Then $c_{i,j}[m]=0$ for $|m| > 2$. \cref{fig:visualisation-ryiyj-rx} now illustrates the dependencies defined by \cref{eq:ryiyj-rx}.
+This is the desired equation which relates the cross-correlation of the outputs of cosets $i$ and $j$ to the autocorrelation of the input signal.
+We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r_x[m]$. \cref{fig:visualisation-ryiyj-rx} illustrates these dependencies.
 \begin{figure}
     \centering
     \begin{tikzpicture}
-        \foreach \i in {-8,...,8} {
-            \draw (-4.1,\i/2) -- (4, \i/2);
-            \draw (\i/2, -4.1) -- (\i/2, 4);
-            \draw (\i/2, -4.4) node {\small \num{\i}};
-            \draw (-4.4, \i/2) node {\small \num{\i}};
-        }
+        \draw [black] (-6.5,0) -- (6.5,0);
+        \draw [black] (-3,-0.1) -- (-3,0.1);
+        \draw [black] (-6,-0.1) -- (-6,0.1);
+        \draw [black] (0,-0.1) -- (0,0.1);
+        \draw [black] (3,-0.1) -- (3,0.1);
+        \draw [black] (6,-0.1) -- (6,0.1);
+        \draw (0,-0.4) node {$r_{y_i,y_j}[L]$};
+        \draw (6.5,0) node[fill=white] {$\cdots$};
+        \draw (-6.5,0) node[fill=white] {$\cdots$};
+        \draw (-3,-0.4) node {$r_{y_i,y_j}[L-1]$};
+        \draw (-6,-0.4) node {$r_{y_i,y_j}[L-2]$};
+        \draw (3,-0.4) node {$r_{y_i,y_j}[L+1]$};
+        \draw (6,-0.4) node {$r_{y_i,y_j}[L+2]$};        
 
-        % \foreach \i in {-6,...,6} {
-        %     \draw (\i/2, -4.4) node[red] {\small \num{\i}};
-        % }
-        % \foreach \i in {-2,...,2} {
-        %     \draw (\i/2, -4.4) node[blue] {\small \num{\i}};
-        % }
-        \foreach \i in {-4,...,4} {
-            \draw (-4.4, \i/2) node[blue] {\small \num{\i}};
-        }
+        \begin{scope}[shift={(0,2)}]
+            \draw [black] (-6.5,0) -- (6.5,0);
+            \draw [black] (-3,-0.1) -- (-3,0.1);
+            \draw [black] (-6,-0.1) -- (-6,0.1);
+            \draw [black] (0,-0.1) -- (0,0.1);
+            \draw [black] (3,-0.1) -- (3,0.1);
+            \draw [black] (6,-0.1) -- (6,0.1);
+            \draw [decorate,decoration={brace,amplitude=10pt,mirror},yshift=0pt] (0.5,-1) -- (3,-1) node [black,midway,yshift=-0.55cm] {\footnotesize
+            $N-1$};
+            \draw [densely dashed] (0.5,0) -- (0.5,-1);
+            \draw [densely dashed] (3,0) -- (3,-1);
+            \draw (0,0.4) node {$r_x[LN]$};
+            \draw (6.5,0) node[fill=white] {$\cdots$};
+            \draw (-6.5,0) node[fill=white] {$\cdots$};
+            \draw (-3,0.4) node {$r_x[(L-1)N]$};
+            \draw (-6,0.4) node {$r_{x}[(L-2)N]$};
+            \draw (3,0.4) node {$r_{x}[(L+1)N]$};
+            \draw (6,0.4) node {$r_{x}[(L+2)N]$}; 
+            \draw (-0.5,0.1) -- (-0.5,-0.1);
+            \draw (0.5,0.1) -- (0.5,-0.1);
+            \draw (-0.5+3,0.1) -- (-0.5+3,-0.1);
+            \draw (0.5+3,0.1) -- (0.5+3,-0.1);
+            \draw (-0.5-3,0.1) -- (-0.5-3,-0.1);
+            \draw (0.5-3,0.1) -- (0.5-3,-0.1);
+            \draw (-5.5,-0.1) -- (-5.5,0.1);
+            \draw (5.5,-0.1) -- (5.5,0.1);
+            \draw (-1.5,0) node[fill=white] {$\cdots$};
+            \draw (1.5,0) node[fill=white] {$\cdots$};
+            \draw (-4.5,0) node[fill=white] {$\cdots$};
+            \draw (4.5,0) node[fill=white] {$\cdots$};
+        \end{scope}
 
-        \draw [blue, thick, line width=1.5pt] (-4.1, -2) -- (-3, -2) -- (-3, -4.1);
-        \draw [red, thick, line width=1.5pt] (-4.1, -2.5) -- (-1.5, -2.5) -- (-1.5, -4.1);
-        \draw [blue, thick, line width=1.5pt] (-4.1, 2) -- (3, 2) -- (3, -4.1);
-        \draw [red, thick, line width=1.5pt] (-4.1, 2.5) -- (1.5, 2.5) -- (1.5, -4.1);
-
-
-        \foreach \i in {-2,...,2} {
-            \foreach \j in {-8,...,8} {
-                \draw [fill=black] (\j/2, {max(min(\i/2+\j/2, 4), -4)}) circle[radius=0.075,black];
-            }
-        }
-        \draw (-5.4,0) node {$r_{y_i,y_j}[m]$};
-        \draw (0,-5) node {$r_x[m]$};
+        \fill [fill=black, fill opacity=0.1] (0,0) -- (2.5,2) -- (-2.5,2) -- cycle;
+        \fill [fill=black, fill opacity=0.1] (3,0) -- (5.5,2) -- (0.5,2) -- cycle;
+        \fill [fill=black, fill opacity=0.1] (-3,0) -- (-5.5,2) -- (-0.5,2) -- cycle;
     \end{tikzpicture}
-    \caption{Illustration of the dependencies between the elements $r_{y_i,y_j}[m]$ and the elements of $r_x[m]$ introduced by \cref{eq:ryiyj-rx} in the case that $N=3$. The numbers at the axes represent the elements of the associated signal. A dot at the intersection of two lines represents a dependency between the associated elements. The coloured lines are used to discuss an example in \cref{subsec:estimating}.}
+    \caption{Dependencies between $r_{y_i,y_j}[m]$ and $r_x[m]$ defined by \cref{eq:ryiyj-rx}}
     \label{fig:visualisation-ryiyj-rx}
 \end{figure}
 
 
 \subsection{Estimating the autocorrelation of the input signal}
-\label{subsec:estimating}
-Before moving on in the derivation, we consider an example. Suppose that $N=3$. Also suppose that $r_{y_i,y_j}[m]$ is known for $|m| \le 4$. Furthermore, assume that $r_{y_i,y_j}[m]=0$ for $|m| \ge 5$. Since \cref{eq:ryiyj-rx} relates $r_{y_i,y_j}[m]$ to $r_x[m]$, we can use the known elements of $r_{y_i,y_j}[m]$ to solve for $r_x[m]$. In this example we investigate which elements of $r_x[m]$ can be solved for.
-
-Again consider \cref{fig:visualisation-ryiyj-rx}. The known elements of $r_{y_i,y_j}[m]$ are depicted in blue. If we follow the blue lines, we can find out which elements of $r_x[m]$ are related to the known elements of $r_{y_i,y_j}[m]$. Therefore, the picture shows that given $r_{y_i,y_j}[m]$ for $|m| \le 4$, we should be able to solve $r_x[m]$ for $|m| \le 6$. However, we have to be careful, since we assumed that $r_{y_i,y_j}[m]=0$ for $|m| \ge 5$. If we follow the red lines, we find out that $r_{y_i,y_j}[m]=0$ for $|m| \ge 5$ implies that $r_x[m]$ can only be non-zero for $|m| \le 2$, since $r_{y_i,y_j}[m]$ would not zero for all $|m| \ge 5$ otherwise. Therefore, although we related $r_x[m]$ for $|m| \le 6$, we can only solve $r_x[m]$ for $|m| \le 2$.
-
-We look at this problem in a more general way. Assume that $r_{y_i,y_j}[m]=0$ for $|m| > L$. Then observe that
-\begin{align*}
-    r_{y_i,y_j}[L+1] &= \sum_{k=LN+1}^{(L+1)N-1} r_x[k] c_{i,j}[k-(L+1)N].
-\end{align*}
-Since $c_{i,j}[m]$ is arbitrary, $r_{y_i,y_j}[L+1]=0$ implies that $r_x[m]=0$ for $LN+1 \le m \le (L+1)N-1$. Therefore, if we evaluate $r_{y_i,y_j}[m]=0$ for all $|m| > L$ in a similar way, then we obtain that $r_x[m]=0$ for $|m| > LN$.
+To estimate the autocorrelation of the input signal, we assume that $r_{y_i,y_j}[m]=0$ for $|m| > L$. This assumption will be discussed at a later moment. If we inspect \cref{fig:visualisation-ryiyj-rx}, we see that $r_{y_i,y_j}[L+1]$ depends on $r_x[LN+1]$ to $r_x[(L+2)N-1]$. Since we have chosen $c_{i,j}[m]$ arbitrarily, $r_{y_i,y_j}[L+1]=0$ implies that $r_x[LN+1]$ to $r_x[(L+2)N-1]$ must be zero, since $r_{y_i,y_j}[L+1]$ is not necessarily zero otherwise. Consequently, if we evaluate $r_{y_i,y_j}[m]=0$ for all $|m| > L$ in a similar way, we obtain that $r_x[m]=0$ for $|m| > LN$.
 
 Since $r_x[m]=0$ for $|m| > LN$, all that remains is estimating $r_x[m]$ for $|m| \le LN$. Aggregating \cref{eq:ryiyj-rx} for $|m| \le L$ yields that
 \begin{align*}
@@ -288,7 +296,7 @@ Since $r_x[m]=0$ for $|m| > LN$, all that remains is estimating $r_x[m]$ for $|m
     r_{y_i,y_j}[-L+1] &= \sum_{k=-LN+1}^{(-L+2)N-1}r_{x}[k]c_{i,j}[(-L+1)N-k], \\
     r_{y_i,y_j}[-L] &= \sum_{k=(-L-1)N+1}^{(-L+1)N-1}r_{x}[k]c_{i,j}[-LN-k] = \sum_{k=-LN}^{(-L+1)N-1}r_{x}[k]c_{i,j}[-LN-k]. \\
 \end{align*}
-Here we used that $r_x[m]=0$ for $|m| > LN$ in reducing the limits of the sums in $r_{y_i,y_j}[L]$ and $r_{y_i,y_j}[-L]$. Although these equations look complicated, they can be written more compactly. To do this, let
+In reducing the limits of the sums in $r_{y_i,y_j}[L]$ and $r_{y_i,y_j}[-L]$ we used that $r_x[m]=0$ for $|m| > LN$. Although these equations look complicated, they can be written more compactly. To do this, let
 \begin{align*}
     \vec{r}_x[k] =& \begin{bmatrix}
         r_x[(k+1)N-1] & \cdots & r_x[kN+1]
