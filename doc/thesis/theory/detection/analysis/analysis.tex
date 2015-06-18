@@ -11,59 +11,77 @@
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
-
-\node at (-6,2) {$x(t)$};
-\node at (1.8,2) {$\mathcal{H}_0 \lor \mathcal{H}_1$};
-
-\draw [>=latex, ->] (-5.5,2) -- (-5,2);
-\draw (-5,2.5) rectangle (-4,1.5) node[pos=.5]{$H(f)$};
-
-\draw [>=latex, ->] (-4,2) -- (-3.5,2);
-\draw (-3.5,2.5) rectangle (-2.5,1.5) node[pos=.5]{$|\cdot|^2$};
-
-\draw [>=latex, ->] (-2.5,2) -- (-2,2);
-\draw (-2,2.5) rectangle (-1,1.5) node[pos=.5]{$\sum$};
-
-\draw [>=latex, ->] (-1,2) -- (-0.5,2); 
-\draw (-0.5,2.5) rectangle (0.5,1.5) node[pos=.5]{$_<^ > \gamma$};
-
-\draw [>=latex, ->] (0.5,2) -- (1,2);
-
+\node at (-5,3) {$x(t)$};
+\node at (4.3,3) {$\mathcal{H}_0 \text{ or } \mathcal{H}_1$};
+\draw [>=latex, ->] (-3,3) -- (-2.5,3);
+\draw (-4,3.5) rectangle (-3,2.5) node[pos=.5]{$H(f)$};
+\draw [>=latex, ->] (-4.5,3) -- (-4,3);
+\draw (-2.5,3.5) rectangle (-1.5,2.5) node[pos=.5]{ADC};
+\draw [>=latex, ->] (-1.5,3) -- (-1,3);
+\draw (-1,3.5) rectangle (0,2.5) node[pos=.5]{$|\cdot|^2$};
+\draw [>=latex, ->] (0,3) -- (0.5,3);
+\draw (0.5,3.5) rectangle (1.5,2.5) node[pos=.5]{$\sum$};
+\draw [>=latex, ->] (1.5,3) -- (2,3); 
+\draw (2,3.5) rectangle (3,2.5) node[pos=.5]{$_<^ > \gamma$};
+\draw [>=latex, ->] (3,3) -- (3.5,3);
 \end{tikzpicture}
 \caption{Conventional Energy Detector}\label{tkz:conv_ed}
 \end{figure}
-
 A standard digital energy detector is a detector that consists of a lowpass filter $H(f)$ that filters the analog input signal $x(t)$ such
 that only the frequency band of interest remains. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). The detector estimates the energy $\Lambda$ of the signal during a period of $N$ samples as follows
-
 \begin{align}\label{eq:test_ed}
 	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
 \end{align}
-
 This estimate is then compared to a threshold $\gamma$ to decide whether a signal other than noise is present in $x[n]$. That is, $\Lambda$ serves as test statistic for the binary hypothesis problem
-
 \begin{align*}
 	\begin{cases}
 		\mathcal{H}_0 & \text{if } \Lambda < \gamma \\
 		\mathcal{H}_1 & \text{if } \Lambda > \gamma.
 	\end{cases}
 \end{align*}
- 
-
 The threshold $\gamma$ depends on the noise power $\sigma_n^2$  and the desired false alarm probability $p_{fa}$: the probability that the detector decides that hypothesis 2 is true, while hypothesis 1 is the true hypothesis. The derivation of $\gamma$ (see Appendix ...) gives the following result
-
 \begin{align*}
 \gamma = \left[Q^{-1}(p_{fa})\sqrt{N} + N\right]2\sigma_n^2
 \end{align*}
-
 where $Q^{-1}$ denotes the the inverse tail probability function of the standard normal distribution and $p_{fa}$ is the desired false alarm probability.
-
 % As can be seen from  \cref{eq:test_ed} the test statistic used by the conventional energy detector does not take into account that the signal to be detected resides in a certain frequency band. Therefore it is necessary that the input signal $x[n]$ is filtered before $\Lambda$ is computed.
-
- \begin{figure}[H]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
+\node at (-2,3) {$r_x[n]$};
+\node at (4.3,3) {$\mathcal{H}_0 \text{ or } \mathcal{H}_1$};
+\draw [>=latex, ->] (-1.5,3) -- (-1,3);
+\draw (-1,3.5) rectangle (0,2.5) node[pos=.5]{FFT};
+\draw [>=latex, ->] (0,3) -- (0.5,3);
+\draw (0.5,3.5) rectangle (1.5,2.5) node[pos=.5]{$\sum$};
+\draw [>=latex, ->] (1.5,3) -- (2,3); 
+\draw (2,3.5) rectangle (3,2.5) node[pos=.5]{$_<^ > \gamma$};
+\draw [>=latex, ->] (3,3) -- (3.5,3);
+\end{tikzpicture}
+\caption{Energy detector in frequency domain}
+\label{tkz:ed_psd}
+\end{figure}
 
+As can be seen from \cref{eq:test_ed} the test statistic $\Lambda$ depends on the signal itself, not on the autocorrelation or the power spectral density which serves as input of our detector. We will now establish this relation by modifying the test statistic $\Lambda$.
+Let 
+\begin{align*}
+\Lambda' &= \frac{\Lambda}{N}\\
+	&= \frac{\sum_{n=0}^{N-1} |x[n]|^2}{N},
+\end{align*}
+then $\Lambda'$ is an estimate of the average power $E\left[|x[n]|^2\right]$ of the signal $x$. We can use $\Lambda'$ as test statistic by using a modified threshold $\gamma' = \frac{\gamma}{N}$. To relate the power spectral density, which serves as input of our detector, to $\Lambda'$  we notice that by definition the integral over the power spectral density equals the expected average power:
+\begin{align}\label{eq:average_power_psd}
+E\left[\left|x[n]\right|^2\right] = \frac{1}{2\pi} \int_{-\pi}^{\pi}\mathcal{P}_x(\omega) \text{d}\omega.
+\end{align}
+Furthermore, by the Wiener-Khinchin theorem we have, if $x[n]$ is wide-sense stationary, that
+\begin{align}\label{eq:wiener_psd}
+	\mathcal{P}_x(\omega) &= \mathcal{F}(r_x[n]) \\
+	&= \sum_{n=-\infty}^{\infty} r_x[n] \exp [2\pi j\omega],
+\end{align}
+where the $\mathcal{F}(\cdot)$ denotes the Discrete Time Fourier Transform. 
+By combining \cref{eq:average_power_psd} and \cref{eq:wiener_psd} we can also relate the autocorrelation function to the test statistic $\Lambda'$. A energy detector using the test statistic is depicted in \cref{tkz:ed_psd}\footnote{it is assumed that $r_x[n]$ is based on an appropriate filtered signal}. A discrete power spectral density is estimated by applying the Fast Fourier Transform to $r_x[n]$. By summating over the obtained discrete power spectral density, an estimate of the average power is obtained. This estimate may then be compared with the threshold $\gamma'$.  
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
 \node at (-6.5,2.5) {$r_x[n]$};
 
 \draw [>=latex, ->] (-6,2.5) -- (-5.5,2.5);
@@ -108,28 +126,6 @@ where $Q^{-1}$ denotes the the inverse tail probability function of the standard
 \end{tikzpicture}
 \caption{Energy detection, multiple frequency bands}\label{tkz:my_ed}
 \end{figure}
-
-As can be seen from \cref{eq:test_ed} the test statistic $\Lambda$ depends on the signal itself, not on the autocorrelation or the power spectral density which serves as input of our detector. We will now establish this relation by modifying the test statistic $\Lambda$.
-Let 
-\begin{align*}
-\Lambda' &= \frac{\Lambda}{N}\\
-	&= \frac{\sum_{n=0}^{N-1} |x[n]|^2}{N},
-\end{align*}
-
-then $\Lambda'$ is an estimate of the average power $E\left[|x[n]|^2\right]$ of the signal $x$. We can use $\Lambda'$ as test statistic by using a modified threshold $\gamma' = \frac{\gamma}{N}$. To relate the power spectral density, which serves as input of our detector, to $\Lambda'$  we notice that by definition the integral over the power spectral density equals the expected average power:
-
-\begin{align}\label{eq:average_power_psd}
-E\left[\left|x[n]\right|^2\right] = \frac{1}{2\pi} \int_{-\pi}^{\pi}\mathcal{P}_x(\omega) \text{d}\omega.
-\end{align}
-
-Furthermore, by the Wiener-Khinchin theorem we have, if $x[n]$ is wide-sense stationary, that
-\begin{align}\label{eq:wiener_psd}
-	\mathcal{P}_x(\omega) &= \mathcal{F}(r_x[n]) \\
-	&= \sum_{n=-\infty}^{\infty} r_x[n] \exp [2\pi j\omega],
-\end{align}
-where the $\mathcal{F}(\cdot)$ denotes the Discrete Time Fourier Transform. 
-By combining \cref{eq:average_power_psd} and \cref{eq:wiener_psd} we can also relate the autocorrelation function to the test statistic $\Lambda'$. A energy detector using the test statistic is depicted in ????\footnote{it is assumed that $r_x[n]$ is based on an appropriate filtered signal}. A discrete power spectral density is estimated by applying the Fast Fourier Transform to $r_x[n]$. By summating over the obtained discrete power spectral density, an estimate of the average power is obtained. This estimate may then be compared with the threshold $\gamma'$.  
-
 The implementations of the energy detector proposed up until now do not allow for detection in multiple frequency bands. We will now propose a such an energy detector, which is depicted in \cref{tkz:my_ed}. By integrating over a specific band $W$ in the PSD an estimate of the average power in that band is obtained. This estimate is then compared to a threshold $\gamma''$ to determine the presence of a signal in that band.
 
 Notice that if $x[n]$ contains only white noise, then its autocorrelation function equals a delta function: $r_x[n] = \sigma_n^2\delta[n]$, with $\sigma_n^2$ the noise power. Therefore the power spectral density of $x[n]$, denoted by $\mathcal{P}(\omega)$ equals  
@@ -137,7 +133,6 @@ Notice that if $x[n]$ contains only white noise, then its autocorrelation functi
  \mathcal{P}_x(\omega) &= \mathcal{F}(r_x[n])\\
   &= \sigma_n^2.
  \end{align*} The power spectral density is constant. If we want to detect the presence of a signal in a certain frequency band $W$, we can make use of this characteristic. Let
-
  \begin{align*}
  \Lambda'' &= \int_W \mathcal{P}(\omega) \text{d}\omega
  \end{align*}
@@ -150,20 +145,16 @@ denote the test statistic to detect a signal in the frequency band $W$.
 Furthermore, note that this detector also depends on the amount of samples $N$ that were used to calculate $\Lambda$. However, this poses a problem if the detector uses the estimated autocorrelation of the reconstructor: what is $N$?
 
 In signal processing the autocorrelation function $r_x[n]$ is usually estimated by 
-
 \begin{equation}\label{eq:acf_est}
 r_x[n] = \frac{1}{N-|n|}\sum_{m=\max(0,n)}^{N-1+\min(0,n)} x[m]\overline{x}[m-n]
 \end{equation}
-
 By \cref{eq:acf_est} we have that $r_x[0] = \sum_{n=0}^{N-1} |x[n]|^2 = \Lambda$. That is, $N$ should be the amount of samples needed to estimate $r_x[0]$ in case that \cref{eq:acf_est} is used. 
 The reconstructor does not use \cref{eq:acf_est}, instead it combines samples from multiple cosets, which obscures what the value of $N$ should be. 
 % \todo{Derive threshold based on distribution of $r_x[0]$}
 
 % \subsection{Noise variance}
 % As indicated, knowledge of the noise variance is necessary for the energy detector to work. In practical situations this noise variance may be estimated from a reference measurement in an empty frequency band. 
-\subsection{Energy detection with knowledge of the reconstructor}
-The problem with the multi-band energy detector as described above is that the parameter $N$ is not straightforward to determine. Furthermore, the threshold $\gamma''$ will not yield the correct false alarm probability. The energy detector as described in \cite{ariananda2012compressive} does use per-frequency detection. Each element of an estimate of the discrete power spectral density is compared to a (possibly) frequency dependent threshold $\gamma_{\omega}$. This detector is depicted in \cref{tkz:ed_ari_overview}.  
-
+\subsection{Energy detection with knowledge of the reconstructor}  
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
@@ -189,26 +180,58 @@ The problem with the multi-band energy detector as described above is that the p
 \end{tikzpicture}
 \caption{Energy detection with knowledge of the reconstructor}\label{tkz:ed_ari_overview}
 \end{figure}
+The problem with the multi-band energy detector as described above is that the parameter $N$ is not straightforward to determine. Furthermore, the threshold $\gamma''$ will not yield the correct false alarm probability. This section will be concerned with analyzing the energy detector as proposed in \cite{ariananda2012compressive}. This energy detector calculates an estimate of the power spectral density by applying a Fast Fourier transform on an estimate of the autocorrelation $r_x[n]$. It then performs an element-wise comparison on the power spectral density with a frequency dependent threshold. This detector is depicted in \cref{tkz:ed_ari_overview}.
 
-Let denote $\vec{s}_x[k] \in \mathbb{R}^{2LN+1}$ the discrete power spectral density vector obtained by applying the $(2LN+1)$ point Discrete Fourier Transform to $\vec{r}_x$. The vector $\vec{s}_x$ is then given by
+Let $\vec{s}_x \in \mathbb{R}^{2LN+1}$ denote the discrete power spectral density vector obtained by applying the $(2LN+1)$ point Discrete Fourier Transform to $\vec{r}_x$. 
 
+The vector $\vec{s}_x$ is then given by
 \begin{align}
 \vec{s}_x &= F_{(2NL+1)}\vec{r}_x
 \end{align}
-
 where $F_{(2NL+1)}$ denotes the $(2LN+1)\times (2LN+1)$ DFT matrix. 
 
 To determine the threshold $\gamma_{k}$ for each element of the $\vec{s}_x$, the signal $x[n]$ is assumed to contain only white noise. The distribution of the elements of the reconstructed power spectral density can then be approximated as a gaussian distribution \footnote{For the interested reader, see the Appendix \textbf{TODO} for a derivation}, which we will denote as $(\vec{s}_x)_k \sim \mathcal{N}(\mu_k, \sigma_k^2)$.
-To obtain $\mu_k = E\left((\vec{s}_x)_k\right)$ notice that
-
+Given $\mu_k$ and $\sigma^2_k$, the threshold for each frequency $\omega$ given a false alarm probability $p_{fa}$ can be calculated as by noting that:
+\begin{align}\label{eq:pfa_ari}
+p_{fa} &= P\left(E(s_k) > \gamma_k \big| \mathcal{H}_0\right) \\
+&= P\left(0 > \frac{\gamma_k -E(s_k)}{\Var(s_k)} \big| \mathcal{H}_0\right) \nonumber \\
+&= Q(\frac{\gamma_k -E(s_k)}{\Var(s_k)}) \nonumber.
+\end{align}
+The threshold $\gamma_k$ can then be obtained by solving \cref{eq:pfa_ari} for $\gamma_k$
 \begin{align*}
-E\left(\vec{s}_x\right) &= \mat{F}\mat{R}^{\dagger}E\left(\vec{r}_y\right).
-\end{align*} and that the elements of $(\vec{r}_y$ are given by 
-\begin{align*}
-\vec{r}_{y_i, y_j}[k] &= \vec{r}_{c_i,c_j} \ast \vec{r}_x & \text{\cref{th:convolution-correlation}} \\
-&=  \left( \vec{r}_{c_i,c_j}\right)_N  \vec{\delta}_N
+\gamma_k &= Q^{-1}(p_{fa})\sigma_k + \mu_k.
 \end{align*}
-
+To obtain $\mu_k = E\left((\vec{s}_x)_k\right)$ notice that
+\begin{align}\label{eq:exp_sx}
+E\left(\vec{s}_x\right) &= \mat{F}\mat{R}^{\dagger}E\left(\vec{r}_y\right).
+\end{align} where the elements of $\vec{r}_y$ are given by 
+\begin{align}\label{eq:exp_ry}
+\vec{r}_{y_i, y_j}[k] &= (c_{i,j} \ast r_x)[mN]& \text{\cref{eq:cij-rx}} \\
+&= c_{i,j}[0]\delta[k]. \nonumber
+\end{align}
+Therefore $\mu_k$ can be obtained by evaluating the $k^{th}$ element of $E\left(\vec{s}_x\right)$ using \cref{eq:exp_sx} and \cref{eq:exp_ry}.
+Now that we have found $\mu_k$ we turn to the problem of finding $\sigma^2_k$. Let the covariance matrix of a vector $\vec{a}$ be defined as
+\begin{align}\label{eq:cov_mat}
+\mat{C}_a &= E(\vec{a}\vec{a}^H) - E(\vec{a})E(\vec{a}^H),
+\end{align}
+then element $C_{ij}$ is given by
+\begin{align}\label{eq:elem_cov_mat}
+C_{a_{ij}}&= \begin{cases}
+\Var(a_i, a_i) & \text{if } i=j\\
+\Cov (a_i, a_j) & \text{if } i\neq j.
+\end{cases}
+\end{align}
+Notice that the diagonal elements of a covariance matrix equal the variances of its corresponding vector. We will therefore compute the covariance matrix of $\vec{s}_x$ to obtain $\sigma_k^2$. Let the covariance matrix of $\vec{s}_x$ be denote by $\mat{C}_s$, then
+\begin{align*}
+\mat{C}_{s} &= E\left[\vec{s}_x\vec{s}_x^H\right] - E\left[\vec{s}\right]E\left[\vec{s}^H\right] \\
+&= E\left[\left(\mat{F} \mat{R}^{\dagger}\vec{r}_y\right) \left( \mat{F}\mat{R}^{\dagger}\vec{r}_y\right)^H\right] - E\left[\mat{F}\mat{R}^{\dagger}\vec{r}_y\right]E\left[\left(\mat{F}\mat{R}^{\dagger}\vec{r}_y\right)^H\right] \\
+&= \mat{F}\mat{R}^{\dagger} E\left[ \vec{r}_y\vec{r}_y^H\right]  \mat{R}^{\dagger H}\mat{F}^H -  \mat{F}\mat{R}^{\dagger} E\left[ \vec{r}_y\right] E\left[\vec{r}_y^H\right]   \mat{R}^{\dagger H}\mat{F}^H \\
+&= \mat{F}\mat{R}^{\dagger} \mat{C}_{r_y} \mat{R}^{\dagger H}\mat{F}^H
+\end{align*}
+where $\mat{C}_{r_y}$ denotes the covariance matrix of $\vec{r}_y$. The elements of $\mat{C}_{r_y}$ are given by\cite{ariananda2012compressive}
+\begin{align}\label{eq:elem_cov_ry}
+	\Cov(r_{y_{rs}}[t], r_{y_{uv}}[w]) &= \frac{\sigma_n^4 c_{ru}[0]\conj{c}_{sv}[0]\delta[w-t]}{K-|t|}
+\end{align}
 
 % \begin{figure}[H]
 % \centering
@@ -233,52 +256,6 @@ E\left(\vec{s}_x\right) &= \mat{F}\mat{R}^{\dagger}E\left(\vec{r}_y\right).
 % \end{tikzpicture}
 % \caption{Energy detection with power spectral density}\label{tkz:ed_ari}
 % \end{figure}
-
-Given $\mu (\omega) = E[\mathcal{P}(\omega)]$ and $\sigma^2 (\omega) = \text{Var}(\mathcal{P}(\omega))$, a threshold for each frequency $\omega$ given a false alarm probability can be calculated as:
-
-\begin{align*}
-\gamma(\omega) &= Q^{-1}(p_{fa})\sigma (\omega) + \mu (\omega) 
-\end{align*}
-
-%  \subsection{Determining $\mu(\omega)$ and $\sigma^2(\omega)$}
-% In this section we will describe how $\mu(\omega$ and $\sigma^2(\omega)$ can be derived given a reconstructed autocorrelation.
-
-% Let $\mat{F}$ denote the $(2NL+1) \times (2NL+1) $ DFT matrix, then
-% \begin{align*}
-% \vec{s}_x = \mat{F}\mat{R}^{\dagger}\vec{r}_y
-% \end{align*}
-% denotes the vector containing the elements of the reconstructed power spectral density of $x[n]$. That is the element $\left(\vec{s}_{x}\right)_{i}$ denotes the component of the power spectral density at $\omega = \frac{2\pi (i-1)}{2LN-1}$.
-
-% To obtain $\text{Var}(\vec{s}_x)_i$ for each element in $\vec{s}_x$, we compute the covariance matrix $\mat{C}_{s_x}$ of $\vec{s}_x$ as 
-
-% \begin{align*}
-% 	\mat{C}_{s_x} &= E\left[\vec{s}\vec{s}^H\right] - E\left[\vec{s}\right]E\left[\vec{s}^H\right]
-% \end{align*} 
-
-% The variance $\sigma^2$ of the elements of $\vec{s}_x$ will then given by the diagonal of $\mat{C}_{s_x}$.
-% We can express $\mat{C}_{s_x}$ as
-
-% \begin{align*}
-% \mat{C}_{s_x} &= E\left[\vec{s}_x\vec{s}_x^H\right] - E\left[\vec{s}\right]E\left[\vec{s}^H\right] \\
-% &= E\left[\left(\mat{F} \mat{R}^{\dagger}\vec{r}_y\right) \left( \mat{F}\mat{R}^{\dagger}\vec{r}_y\right)^H\right] - E\left[\mat{F}\mat{R}^{\dagger}\vec{r}_y\right]E\left[\left(\mat{F}\mat{R}^{\dagger}\vec{r}_y\right)^H\right] \\
-% &= \mat{F}\mat{R}^{\dagger} E\left[ \vec{r}_y\vec{r}_y^H\right]  \mat{R}^{\dagger H}\mat{F}^H -  \mat{F}\mat{R}^{\dagger} E\left[ \vec{r}_y\right] E\left[\vec{r}_y^H\right]   \mat{R}^{\dagger H}\mat{F}^H \\
-% &= \mat{F}\mat{R}^{\dagger} \mat{C}_{r_y} \mat{R}^{\dagger H}\mat{F}^H.
-% \end{align*}
-
-% $\mat{C}_{r_y}$ denotes the covariance matrix of $\vec{r}_y$ and is defined as
-
-% \begin{align*}
-%  E\left[\vec{r}_y\vec{r}_y^H\right] - E\left[\vec{r}_y\right]E\left[\vec{r}_y^H\right]
-% \end{align*}
-
-% In case that $x[n]$ contains white noise with variance $\sigma_n$, the elements of $\mat{C}_{r_y}$ are given by
-
-% \begin{align*}
-% \text{Cov}\left(r_{y_r,y_s}[t],r_{y_u,y_v}[w]\right) &= \sigma_n^4 r_{c_r,c_u}[0]r_{c_s,c_v}[0]\delta[w-t]
-% \end{align*}
-
-% That is, by computing the theoretical covariance $C_{r_y}$ in the case that $x[n]$ contains only noise, we can compute $\mat{C}_{s_x}$.
-% By taking the diagonal of $\mat{C}_{s_x}$ we obtain the vector $[\sigma^2(\frac{2\pi k}{d} $
 
 \section{Covariance absolute value method}
 The covariance absolute value detection method as introduced does \emph{not} depend on the noise power. Its test statistic is based on the structure of the autocorrelation function $r_x[n]$. 
@@ -305,7 +282,7 @@ The covariance absolute value detection method as introduced does \emph{not} dep
 
 \draw (0.5,3.5) rectangle (1.5,2.5) node[pos=.5]{Tr($\cdot$)};
 
-\node at (4.8,4.5) {$\mathcal{H}_0 \lor \mathcal{H}_1$};
+\node at (4.8,4.5) {$\mathcal{H}_0 \text{ or } \mathcal{H}_1$};
 
 \draw (0,4.5) -- (0,3);
 \draw (2,4.5) -- (2,3);
