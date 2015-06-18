@@ -32,16 +32,17 @@ An overview can be seen in \cref{fig:MVP}.
 \end{figure}
 
 \subsection{Model}
-\label{sec:model}
+\label{sub:model}
 The goal was to implement enough primitives in these libraries that a large number of configurations can quickly be constructed together. This is to account for the variety of configurations in which this product can be used. It also allows us to test different kind of sampling techniques with reconstruction methods.
 
 A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this the Strategy design pattern\footnote{The strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}.} is used for all the models. This is further discussed in \cref{cha:model}.
 
 \subsection{View}
-\label{sec:view}
+\label{sub:view}
 
-\section{Presenter}
-\label{sec:presenter}
+\subsection{Presenter}
+\label{sub:presenter}
+
 
 
 
