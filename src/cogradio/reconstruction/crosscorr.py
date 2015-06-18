@@ -15,8 +15,6 @@ class CrossCorrelation(Reconstructor):
         self.N = self.C.shape[1]
         self.L = L            # Length of input vector
         self.R = self.cross_correlation_filters()
-        print "Shape", self.R.shape
-        print "Rank", np.linalg.matrix_rank(self.R)
         if cache:
             self.R_pinv = self.calc_pseudoinverse(self.R)
         else:

@@ -40,17 +40,19 @@ To solve this we had to write our own low level code to stream samples from the 
 \subsection{Introduction}
 For our business plan we considered building a smart jammer. When the signals that are present in the spectrum are identified a list of frequencies that need to be jammed can be generated. To do the actual jamming we decided to build a simple device to block one programmable frequency. The number of transmitters should scale with the number of expected signals in the frequency range that needs to be jammed.
 
-In this section we will discuss the working of this jammer. We will begin with a block diagram of the transmitter, and we will then present the complete schematics and the PCB. Unfortunately, because this was a small side project, we did not have enough time to actually finish the design and build it.
+In this section we will discuss the working of this jammer. We will begin with a block diagram of the transmitter, and we will then present the complete schematics and the PCB\@. Unfortunately, because this was a small side project, we did not have enough time to actually finish the design and build it.
 
 \subsection{Block diagram}
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{block_diagram.jpg}
-    \caption{Block diagram of the jammer}
+    \caption{Block diagram of the jammer TODO: draw in tikz}
     \label{fig:block_diagram_jammer}
 \end{figure}
 
 The block diagram of the jammer can be found in \cref{fig:block_diagram_jammer}. The jammer works by generation a square wave with a programmable clock generator IC\@. These ICs are much cheaper than a solution with a very broadband voltage controller oscillator and a PLL\@. We chose a specific IC with a frequency range of \SIrange{3}{416}{\mega\hertz}. In this example we want to jam the band including the \SI{446}{\mega\hertz} frequency of licence free radios. Our oscillator only operates up to a frequency of \SI{416}{\mega\hertz}, therefore we need to select a high harmonic, in this case the third, and filter all of the other components of the square wave. In this case we use a bandpass filter that spans the \SIrange{405}{675}{\mega\hertz}. The bandwidth is determined by the frequency of the fifth harmonic. At \SI{405}{\mega\hertz} the base frequency is \SI{135}{\mega\hertz}, and the fifth harmonic \SI{675}{\mega\hertz}. We created a small script to generate a complete table of needed filters to span the whole range of \SI{3}{\mega\hertz} to \SI{3}{\giga\hertz}. These results can be found in \cref{tbl:filter_freqs}.
+
+After that the filtered signal is mixed with a band-limited noise source, and then amplified and filtered again. This should produce a band limited signal with noise at the desired frequency.
 
 \begin{table}[h]
 \centering
@@ -78,9 +80,54 @@ The block diagram of the jammer can be found in \cref{fig:block_diagram_jammer}.
 \subsection{Schematics}
 The schematics can be found in the appendix.
 
+
+\subsubsection{Filter design}
+For this implementation we chose a frequency range of \SIrange{405}{675}{\mega\hertz}. We designed\footnote{Designed with \url{http://www-users.cs.york.ac.uk/~fisher/lcfilter/}} a sixth order Chebyshev bandpass filter, with a ripple of \SI{1.0}{\decibel} in the passband, a characteristic impedance of \SI{50}{$\Omega$}. We also designed a matching network to match the \SI{50}{$\Omega$} of the filter to the \SI{180}{$\Omega$} input impedance of the mixer. The schematics of the filter can be found in \cref{fig:filter}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{filter.png}
+    \caption{The designed bandpass filter}
+    \label{fig:filter}
+\end{figure}
+
+\subsubsection{Noise source}
+
+\subsubsection{Microcontroller}
+
 \subsection{Simulations}
+To verify the working of the system we built a SPICE simulation of a simplified version of the schematic. We also simulated the filters to check if those were designed correctly.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{sim_schematic.pdf}
+    \caption{Schematic of the filter and matching network used in the simulation}
+    \label{fig:sim_schematic}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{bode.pdf}
+    \caption{Bode plot of the simulations}
+    \label{fig:sim_bode}
+\end{figure}
+
+
+
+
+
+\subsection{Filters}
+
+
+
 
 \subsection{PCB}
+Coming soon\ldots
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{pcb.png}
+    \caption{3D view of the designed PCB}
+    \label{fig:pcb_3d}
+\end{figure}
 
 \end{document}
