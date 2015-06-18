@@ -7,18 +7,13 @@
 \begin{document}
 
 \section{Concept}
-The reconstruction imposes two specifications for the sampling methods:
-\begin{enumerate}
-\item all lags in $\mathbb{Z}$ must be available \todo{matchen aan wessels beschrijving van lags}
-\item the sampling method must be described by sampling matrix $\mathbf{C}$
-\end{enumerate}
-We will propose three methods to handle these specifications:
+We will propose three difdferent sampling methods
 \begin{itemize}
 \item \textit{circular sparse sampling}
 \item \textit{collaborative sampling}
 \item \textit{coprime sampling}
 \end{itemize}
-each of these techniques impose their own restrictions to the sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple devices with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each of these approaches have their advantages in certain situations.
+each of these techniques impose their own restrictions on sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple devices with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each sampling method is designed to perform well in situations where their restrictions are in order.
 
 \subsection{Circular sparse sampling}
 Circular sparse sampling uses samplers with equal sampling period $NT$. where $T$ is the sampling period of the signal to be reconstructed, and $N$ the down-sampling factor. This is illustrated in \cref{tkz:circsparseruler} where $N = 7$.
