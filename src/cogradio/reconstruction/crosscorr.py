@@ -1,13 +1,14 @@
 from .reconstructor import Reconstructor
 import cogradio as cg
 import numpy as np
+import scipy as sp
 
 
 class CrossCorrelation(Reconstructor):
 
     """Implementation of ariananda2012 algorithm"""
 
-    def __init__(self, L, C):
+    def __init__(self, L, C, cache=True):
         Reconstructor.__init__(self)
         self.C = C
         self.M = self.C.shape[0]
@@ -16,7 +17,10 @@ class CrossCorrelation(Reconstructor):
         self.R = self.cross_correlation_filters()
         print "Shape", self.R.shape
         print "Rank", np.linalg.matrix_rank(self.R)
-        self.R_pinv = self.calc_pseudoinverse(self.R)
+        if cache:
+            self.R_pinv = self.calc_pseudoinverse(self.R)
+        else:
+            self.R_pinv = sp.linalg.pinv(self.R)
 
         # Caching mechanism
 
