@@ -17,7 +17,6 @@
 \label{sec:usrp-n210}
 
 \subsection{Introduction}
-\label{sec:introduction}
 The hardware samplers used in our system was a USRP N210, a software defined radio (SDR) produced by \textit{Ettus Research}. This radio is equipped with the SBX front-end, which has frequency range of \SIrange{400}{4400}{\mega\hertz} that can both transmit and receive. This signal that enters the radio is first amplified and then mixed down by a two local oscillators with a \SI{90}{\degree} phase shift. Then the resulting two signals are sampled by two \SI{100}{\mega\sample\per\second} ADCs resulting in an I and a Q signal. Because the local oscillators have a \SI{90}{\degree} phase shift the resulting signal is quadrature/IQ sampled. With the information from both signals we measure the complex envelope of the signal.
 
 The USRPs can also be used as a transmitter using the DAC and the same local oscillators. We used this during the testing of our design to generate test signals. However this is not used in our final design.
@@ -27,7 +26,6 @@ These radios are connected to a PC by using gigabit Ethernet, thus limiting the 
 For our implementation of co-prime sampling we needed to synchronise the sampling of two USRPs. This can be accomplished by connection them with a special MIMO cable. This allows them to internally synchronise their sampling clock. It even allows them to schedule commands at exactly the same time, so they can start sampling at exactly the same moment.
 
 \subsection{Drivers}
-\label{sec:drivers}
 The communication between the USRPs and our software is handled by the UHD driver\footnote{The code for this driver can be found online at: \url{https://github.com/EttusResearch/uhd}} written by \textit{Ettus Research}.
 
 In the first version of our software we built everything using \lib{GNU Radio}. We used the \lib{gnuradio-uhd} blocks to get samples from our USRPs. Soon we switched to a pure Python version, we still used the \lib{gnuradio-uhd} library to retrieve our samples. We used a specific helper function \func{gnuradio.uhd.finite\_acquisition(n)} from the GNU Radio libraries. This helper function started a low level stream, waits for n samples, closes the stream and returns the samples to the caller.
@@ -40,14 +38,49 @@ To solve this we had to write our own low level code to stream samples from the 
 \label{sec:jammer}
 
 \subsection{Introduction}
-\label{sec:introduction-1}
+For our business plan we considered building a smart jammer. When the signals that are present in the spectrum are identified a list of frequencies that need to be jammed can be generated. To do the actual jamming we decided to build a simple device to block one programmable frequency. The number of transmitters should scale with the number of expected signals in the frequency range that needs to be jammed.
 
+In this section we will discuss the working of this jammer. We will begin with a block diagram of the transmitter, and we will then present the complete schematics and the PCB. Unfortunately, because this was a small side project, we did not have enough time to actually finish the design and build it.
+
+\subsection{Block diagram}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{block_diagram.jpg}
+    \caption{Block diagram of the jammer}
+    \label{fig:block_diagram_jammer}
+\end{figure}
+
+The block diagram of the jammer can be found in \cref{fig:block_diagram_jammer}. The jammer works by generation a square wave with a programmable clock generator IC\@. These ICs are much cheaper than a solution with a very broadband voltage controller oscillator and a PLL\@. We chose a specific IC with a frequency range of \SIrange{3}{416}{\mega\hertz}. In this example we want to jam the band including the \SI{446}{\mega\hertz} frequency of licence free radios. Our oscillator only operates up to a frequency of \SI{416}{\mega\hertz}, therefore we need to select a high harmonic, in this case the third, and filter all of the other components of the square wave. In this case we use a bandpass filter that spans the \SIrange{405}{675}{\mega\hertz}. The bandwidth is determined by the frequency of the fifth harmonic. At \SI{405}{\mega\hertz} the base frequency is \SI{135}{\mega\hertz}, and the fifth harmonic \SI{675}{\mega\hertz}. We created a small script to generate a complete table of needed filters to span the whole range of \SI{3}{\mega\hertz} to \SI{3}{\giga\hertz}. These results can be found in \cref{tbl:filter_freqs}.
+
+\begin{table}[h]
+\centering
+\caption{Filter frequencies for frequency range of \SIrange{3}{3179}{\mega\hertz}}
+\label{tbl:filter_freqs}
+\begin{tabular}{rrrrr}
+\toprule
+   Harmonic &   Filter low [\si{\mega\hertz}] &   Filer high [\si{\mega\hertz}] &   LO low [\si{\mega\hertz}] &   LO high [\si{\mega\hertz}] \\
+\midrule
+          1 &            3 &            9 &        3 &         9 \\
+          1 &            9 &           27 &        9 &        27 \\
+          1 &           27 &           81 &       27 &        81 \\
+          1 &           81 &          243 &       81 &       243 \\
+          3 &          243 &          405 &       81 &       135 \\
+          3 &          405 &          675 &      135 &       225 \\
+          3 &          675 &         1125 &      225 &       375 \\
+          5 &         1125 &         1575 &      225 &       315 \\
+          7 &         1575 &         2025 &      225 &       289 \\
+          7 &         2025 &         2601 &      289 &       371 \\
+          9 &         2601 &         3179 &      289 &       353 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Schematics}
-\label{sec:schematics}
+The schematics can be found in the appendix.
+
+\subsection{Simulations}
 
 \subsection{PCB}
-\label{sec:pcb}
 
 
 \end{document}
