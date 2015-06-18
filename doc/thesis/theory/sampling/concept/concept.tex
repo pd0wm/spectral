@@ -7,7 +7,7 @@
 \begin{document}
 
 % \section{Concept}
-The first step of spectrum sensing is sampling the signal. Conventional methods sample at a uniform sample rate to ensure complete reconstruction of the signal. With uniform sampling, every subsequent sample has an equal delay in time. This is illustrated by \cref{tkz:uniform}.
+The first step of spectrum sensing is sampling the signal. Conventional methods sample at a uniform sampling rate to ensure complete reconstruction of the signal. With uniform sampling, every subsequent sample has an equal delay in time. This is illustrated by \cref{tkz:uniform}.
 
 \begin{figure}[H]
 \centering
@@ -37,7 +37,7 @@ The first step of spectrum sensing is sampling the signal. Conventional methods 
 \node (v5) at (1.5,.5) {};
 \draw  (v5) node {T} ;
 \end{tikzpicture}
-\caption{Uniform sampling with sample period T. Gray blocks are sampled}\label{tkz:uniform}
+\caption{Uniform sampling with sampling period $T$. Gray blocks are sampled}\label{tkz:uniform}
 \end{figure}
 
 When one desires to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate \todo{ref}. However, we don't need a full recovery of the signal, but are only interested in certain properties of the signal. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum, and efficiently recover the information we are looking for. Non uniform sampling has no restriction on delays of subsequent samples as is illustrated in \cref{tkz:nonuniform}.
@@ -70,7 +70,7 @@ When one desires to ensure full reconstruction of the signal with uniform sampli
 \node (v5) at (1.5,.5) {};
 \draw  (v5) node {T} ;
 \end{tikzpicture}
-\caption{Non-uniform sampling with sample period T. Gray blocks are sampled}\label{tkz:nonuniform}
+\caption{Non-uniform sampling with sampling period $T$. Gray blocks are sampled}\label{tkz:nonuniform}
 \end{figure} 
 
 This is however not trivial to implement on a device. To perform non-uniform sampling we introduce multi-coset sampling. Multi-coset sampling is a set of sampling methods that use multiple samplers, or cosets, to sample the spectrum. This is illustrated in \cref{tkz:multicoset}

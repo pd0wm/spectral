@@ -10,14 +10,14 @@
 In this section we will look at ways to map the different sampling methods on the reconstructor with as much performance as possible. The specifications that the reconstructor imposes are:
 
 \begin{enumerate}
-\item All lags required as described in ref \todo{ref} must be available
-\item The sampling must be presented as a set of samplers with an equal sample frequency.
+\item All lags required as described in ref \todo{ref} must be available.
+\item The sampling must be presented as a set of samplers with an equal sample frequency $N$.
 \end{enumerate} 
 
-\section{Circular sparse ruler}
-We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$. Then $\vec{r} \in \{0,1\}^N$. Also, $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.
+The first specification can be simplified furthur. When we see the time of a sample as an integer, we can see the lags as differences between integers. because of this we can let go of the concept odf sampling and of lags, and look at the distances between integers, which is a much more abstract problem. 
 
-A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $(\vec{r})_i = 1$, $(\vec{r})_j = 1$ and $|i-j| = d$ or  $N-|i-j| = d$. The ruler $\vec{r}$ is a circular ruler if it contains distances $ 1, \ldots, N - 1$. A circular ruler $\vec{r}$ is minimal if and only if $||\vec{r}||_1$ is minimal. A circular ruler can be depicted in a nice way. \Cref{fig:circular-ruler} shows a minimal circular ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
+\section{Circular sparse ruler}
+We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$, then vector $\mathbf{S}$ represents the locations on the ruler that are occupied by samplers. A circular sparse ruler contains a distance $d$ if there exist an $S_i$ and $S_j$ such that $|S_i-S_j| = d$ or  $N-|S_i-S_j| = d$. A solution to a circular ruler is correct if it contains lags $ 1, \ldots, N - 1$. \Cref{fig:circular-ruler} shows a circular sparse ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
 
 In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
 If we can make lag $L$ we can also make lag $L+kN$ with $k \in \mathbb{Z}$. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags in $\mathbb{Z}$. Because of this we only need to look at how to acquire the lags $\{0,1,\dots,N-1\}$. This problem is called circular sparse ruler. We construct a circle with $N$ marks on it. Every mark can be occupied by a sampler. Time on this circle passes as the hand of a clock. the distance between two samplers on the circle is equal to the lag one would get. This is illustrated in \cref{fig:circular-ruler}, where $N=7$, and the samplers occupy the locations $\{1,2,4\}$.
@@ -46,7 +46,7 @@ If we can make lag $L$ we can also make lag $L+kN$ with $k \in \mathbb{Z}$. Ther
     \label{fig:circular-ruler}
 \end{figure}
 
-The larger down-sampling factor $N$ with the same $M$ amount of samplers, the better the performance. Finding good solutions for this problem is therefore a convenient optimization for our device. D.Ariananda and G.Leus \todo{ref}, proposed a solution that uses linear sparse ruler to generate solution for the circular sparse ruler problem. The linear sparse ruler problem is identical to the circular sparse ruler, but the only one period is considered. Therefore the ends do not connect, as is illustrated in \cref{tkz:linear_sparse_ruler}.  
+Finding beneficial solutions for this problem is a convenient optimization for our device. D.Ariananda and G.Leus \todo{ref}, proposed a method that uses linear sparse ruler to generate solution for the circular sparse ruler problem. The linear sparse ruler problem is identical to the circular sparse ruler, but the only one period is considered. Therefore the ends do not connect, as is illustrated in \cref{tkz:linear_sparse_ruler}.  
 
 \begin{figure}[H]
 \centering
@@ -214,10 +214,13 @@ M=5,N=21 \quad S&=\{1,2,7,9, 19\}\\
 M=6,N=31 \quad S&=\{1,2,5,7,14,22\}\\
 M=7,N=39 \quad S&=\{1,2,5,7,14,21,31\}\\
 M=8,N=51 \quad S&=\{1,2,8,10,13,32,36, 46\}\\
-M=9,N=61 \quad S&=\{1,2,5,7,11,23,31, 38, 49\}
+M=9,N=65 \quad S&=\{1,2,5,7,15, 33, 43, 51, 54\}
 \end{align}
-This is 
+The results in this list can directly be used for devices with 2-9 samplers. 
 
+\todo[inline]{hier komt een plot die minimal linear sparse tegenover bovenstaande lijst zet}
 
+\subsection{Specify characterstics to reconstructor}\label{sub:ci-circ}
+insert blaatverhaal
 
 \end{document}
