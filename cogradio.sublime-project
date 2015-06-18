@@ -51,6 +51,7 @@
 				"*.psd",
 				"*.db",
 				"*.aux",
+				"*.bbl",
 				"*.synctex.gz",
 				"*-blx.bib",
 				"*.blg",
