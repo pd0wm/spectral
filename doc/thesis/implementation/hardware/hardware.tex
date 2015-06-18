@@ -42,13 +42,75 @@ For our business plan we considered building a smart jammer. When the signals th
 
 In this section we will discuss the working of this jammer. We will begin with a block diagram of the transmitter, and we will then present the complete schematics and the PCB\@. Unfortunately, because this was a small side project, we did not have enough time to actually finish the design and build it.
 
-\subsection{Block diagram}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{block_diagram.jpg}
-    \caption{Block diagram of the jammer TODO: draw in tikz}
-    \label{fig:block_diagram_jammer}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\draw [>=latex, ->] (-0.5,6) -- (0.5,6);
+\draw [>=latex, ->] (3.5,6) -- (4,6);
+\draw [>=latex, ->] (-0.5,4) -- (0,4);
+\draw [>=latex, ->] (0.8,4) -- (1.5,4);
+\draw [>=latex, ->] (4.8,6) -- (5.5,6);
+
+\draw [>=latex, ->] (3,4) -- (3,5.5);
+\draw (2.5,4) -- (3,4);
+
+\draw (7,6) -- (7,7);
+\draw (6.5,6) -- (7,6);
+
+\draw (6.5,7.8) -- (7,7) -- (7.5,7.8) -- (6.5,7.8);
+
+\draw (0.5,6.5) rectangle (1.5,5.5) node[pos=.5]{};
+\draw (0.7,5.8) -- (0.8,5.8);
+\draw (1.2,5.8) -- (1.3,5.8);
+\draw (0.8,5.8) -- (0.9,6.2);
+\draw (1.2,5.8) -- (1.1,6.2);
+\draw (0.9,6.2) -- (1.1,6.2);
+
+\draw (5.5,6.5) rectangle (6.5,5.5) node[pos=.5]{};
+\draw (5.7,5.8) -- (5.8,5.8);
+\draw (6.2,5.8) -- (6.3,5.8);
+\draw (5.8,5.8) -- (5.9,6.2);
+\draw (6.2,5.8) -- (6.1,6.2);
+\draw (5.9,6.2) -- (6.1,6.2);
+
+\draw (0,4.5) -- (0.8,4) -- (0,3.5) -- (0,4.5);
+\draw (4,6.5) -- (4.8,6) -- (4,5.5) -- (4,6.5);
+
+
+\draw (1.5,4.5) rectangle (2.5,3.5) node[pos=.5]{};
+
+\draw (2.1,3.8) -- (2.3,3.8);
+\draw (2.1,3.8) -- (1.9,4.2);
+\draw (1.7,4.2) -- (1.9,4.2);
+\draw [>=latex, ->] (1.5,6) -- (2.5,6);
+
+\draw  (-1,6) ellipse (.5 and .5) node{};
+\draw (-1.3,5.8) -- (-1.15,5.8);
+\draw (-1.15,6.2) -- (-1.15,5.8);
+\draw (-1.15,6.2) -- (-1,6.2);
+\draw (-1,5.8) -- (-0.85,5.8);
+\draw (-1,6.2) -- (-1,5.8);
+\draw (-0.85,6.2) -- (-0.7,6.2);
+\draw (-0.85,6.2) -- (-0.85,5.8);
+
+\draw  (-1,4) ellipse (.5 and .5);
+\node at (-1,3.97) {\LARGE$\sim$};
+
+\draw  (3,6) ellipse (.5 and .5) node{};
+\draw (2.65,5.65) -- (3.35,6.35);
+\draw (2.65,6.35) -- (3.35,5.65);
+
+\node at (1,6.7) {\scriptsize 405-675 MHz};
+\node at (6,6.7) {\scriptsize 405-675 MHz};
+\node at (2,4.7) {\scriptsize 5 MHz};
+\node at (-1,3.3) {\scriptsize Noise};
+\end{tikzpicture}
+\caption{Block diagram of the jammer}
+\label{fig:block_diagram_jammer}
 \end{figure}
+
+
 
 The block diagram of the jammer can be found in \cref{fig:block_diagram_jammer}. The jammer works by generation a square wave with a programmable clock generator IC\@. These ICs are much cheaper than a solution with a very broadband voltage controller oscillator and a PLL\@. We chose a specific IC with a frequency range of \SIrange{3}{416}{\mega\hertz}. In this example we want to jam the band including the \SI{446}{\mega\hertz} frequency of licence free radios. Our oscillator only operates up to a frequency of \SI{416}{\mega\hertz}, therefore we need to select a high harmonic, in this case the third, and filter all of the other components of the square wave. In this case we use a bandpass filter that spans the \SIrange{405}{675}{\mega\hertz}. The bandwidth is determined by the frequency of the fifth harmonic. At \SI{405}{\mega\hertz} the base frequency is \SI{135}{\mega\hertz}, and the fifth harmonic \SI{675}{\mega\hertz}. We created a small script to generate a complete table of needed filters to span the whole range of \SI{3}{\mega\hertz} to \SI{3}{\giga\hertz}. These results can be found in \cref{tbl:filter_freqs}.
 
@@ -82,7 +144,7 @@ The schematics can be found in the appendix.
 
 
 \subsubsection{Filter design}
-For this implementation we chose a frequency range of \SIrange{405}{675}{\mega\hertz}. We designed\footnote{Designed with \url{http://www-users.cs.york.ac.uk/~fisher/lcfilter/}} a sixth order Chebyshev bandpass filter, with a ripple of \SI{1.0}{\decibel} in the passband, a characteristic impedance of \SI{50}{$\Omega$}. We also designed a matching network to match the \SI{50}{$\Omega$} of the filter to the \SI{180}{$\Omega$} input impedance of the mixer. The schematics of the filter can be found in \cref{fig:filter}.
+For this implementation we chose a frequency range of \SIrange{405}{675}{\mega\hertz}. We designed\footnote{Designed with \url{http://www-users.cs.york.ac.uk/~fisher/lcfilter/}} a sixth order Chebyshev bandpass filter, with a ripple of \SI{1.0}{\decibel} in the passband, a characteristic impedance of $50\,\Omega$. We also designed a matching network to match the $50\,\Omega$ of the filter to the $180\,\Omega$ input impedance of the mixer. The schematics of the filter can be found in \cref{fig:filter}.
 
 \begin{figure}[h]
     \centering

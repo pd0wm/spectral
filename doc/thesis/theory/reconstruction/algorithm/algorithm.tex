@@ -8,21 +8,26 @@
 
 
 \section{Algorithm}
-This section will discuss an algorithm to estimate to autocorrelation of an signal sampled by multi-coset sampling described in \cref{xx}. We consider $M$ and $N$ such as described in the chapter on multi-coset sampling. Furthermore, we make use of notation which will be introduced in \cref{sec:reconstruction-preliminaries}.
+This section will discuss an algorithm to estimate the power spectral density of a signal which is sampled at sub-Nyquist frequencies. We consider multi-coset sampling such as described in \cref{cha:sampling}. The algorithm will be derived step-by-step in \cref{sec:reconstruction-derivation}.
 
-Let $X[n]$ be a wide sense stationary stochastic process representing the input signal. Let $\vecsc{r}_x \in \mathbb{C}^{2LN-1}$ be such that $(\vecsc{r}_x)_{i+LN} = R_X[i]$ for $i = -LN + 1, LN-1$.  Then $\vecsc{r}_x$ respresents the autocorrelation of the input signal.
-
-Let the $Y'_i[n]$ be a wide sense stationary stochastic process representing the output of a coset. Let $\vecsc{r}_{y'_i,y'_j} \in \mathbb{C}^{2L-1}$ be such that $(\vecsc{r}_{y'_i,y_j})_{m+L}$ for $m = -L+1,L-1$. Then $\vecsc{r}_{y'_i,y'_j}$ represents the cross-correlation of the outputs of cosets $i$ and $j$.
-
-TODO: cut support and guarantee full column rank, include oversampling
+Let the input signal sampled at the Nyquist-frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Every coset $i$ samples the input signal every $N$ samples. Let the output of coset $i$ be denoted by $y_i[n]$. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$. Therefore, our reconstruction method estimates the autocorrelation of $x[n]$.
 
 
-Proceed as follows:
-\begin{enumerate}
-    \item Construct $\mat{R}$.
-    \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
-    \item Construct $\vec{r}'_y$.
-    \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
-\end{enumerate}
+% This section will discuss an algorithm to estimate to autocorrelation of an signal sampled by multi-coset sampling described in \cref{xx}. We consider $M$ and $N$ such as described in the chapter on multi-coset sampling. Furthermore, we make use of notation which will be introduced in \cref{sec:reconstruction-preliminaries}.
+
+% Let $X[n]$ be a wide sense stationary stochastic process representing the input signal. Let $\vecsc{r}_x \in \mathbb{C}^{2LN-1}$ be such that $(\vecsc{r}_x)_{i+LN} = R_X[i]$ for $i = -LN + 1, LN-1$.  Then $\vecsc{r}_x$ respresents the autocorrelation of the input signal.
+
+% Let the $Y'_i[n]$ be a wide sense stationary stochastic process representing the output of a coset. Let $\vecsc{r}_{y'_i,y'_j} \in \mathbb{C}^{2L-1}$ be such that $(\vecsc{r}_{y'_i,y_j})_{m+L}$ for $m = -L+1,L-1$. Then $\vecsc{r}_{y'_i,y'_j}$ represents the cross-correlation of the outputs of cosets $i$ and $j$.
+
+% TODO: cut support and guarantee full column rank, include oversampling
+
+
+% Proceed as follows:
+% \begin{enumerate}
+%     \item Construct $\mat{R}$.
+%     \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
+%     \item Construct $\vec{r}'_y$.
+%     \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
+% \end{enumerate}
 
 \end{document}

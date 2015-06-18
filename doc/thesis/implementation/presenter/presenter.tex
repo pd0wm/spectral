@@ -1,0 +1,55 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+
+\title{Compressive Sensing - An Overview}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\chapter{Presenter - The Supervisor}
+\label{cha:presenter}
+In the model-view-presenter architectural pattern, the presenter forms the glue between the model and the view. The model notifies the presenter whenever its state changes, which will then trigger the presenter to update the view using the new data. At the same time, the view notifies the presenter whenever a user interacts with it, upon which the presenter will take the necessary actions to reflect this user-event in the model.
+
+In our implementation, the presenter is concerned with the following tasks:
+\begin{itemize}
+	\item Coordinate model and view actions.
+	\item Manage system-wide execution parameters during runtime.
+	\item Reflect user-interaction from the view in the model.
+	\item Update the view using current model data.
+\end{itemize}
+
+Coordinating both model and view is primarily handled by the Python script \lib{run}. This script may be executed with a number of command-line arguments:
+
+\begin{description}
+	\item[ip] Specifies the IP-address of the USRP that should be used for data-acquisition.
+	\item[f\_samp] Specifies the sampling frequency the USRPs should operate at.
+	\item[L] Specifies the L-parameter throughout the system, which determines the dimensions of various vectors and matrices.
+	\item[source] Specifies what module should be used as a data source for the system, choices are the USRP, various theoretical sources such as a sinusoidal and a locally saved dump that was previously recorded.
+	\item[snr] When a theoretical source is selected, this specifies the amount of Gaussian noise that should be added to the signal. Used to test the system's performance.
+	\item[dump] When a local data dump is selected as source, this specifies where the dump file is located.
+	\item[controlport] Specifies the port at which the Websocket (see \cref{ch:presenter}) that handles control of the system should connect.
+	\item[dataport] Specifies the port at which the Websocket that handles the data streams for external access should connect.
+\end{description}
+
+Using the parameters set by the user, or a set of predefined defaults, \lib{run} will initialise each subcomponent in a separate process (using Python's \lib{Process}, see \cref{sec:multiprocessing}), allowing tasks to be handled concurrently. Each of these processes performs a single task:
+
+% \begin{description}
+% 	\item[generator] Also source or sampler, this process  
+% \end{description}
+
+% \lib{run} will also set-up a number of Python \lib{Queues}, which allow for inter-process communication ()
+
+\paragraph{Todo:}
+\begin{itemize}
+	\item Include a list of all six processes and a description for each
+	\item Touch on the subject of inter-process queues
+	\item Introduce \lib{Pyro4} and the role it plays in the system managing system settings
+	\item Introduce both websockets and the central role they fulfil in exposing model data to external applications like the view
+\end{itemize}
+
+\end{document}

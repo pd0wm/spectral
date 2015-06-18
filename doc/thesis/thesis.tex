@@ -1,6 +1,6 @@
 %!TEX program = xelatex
 
-\documentclass[a4paper, openany, oneside]{memoir}
+\documentclass[a4paper, openany, oneside, report]{memoir}
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
@@ -26,8 +26,10 @@
 \subimport{introduction/}{introduction}
 
 \part{Theory}
+\label{prt:theory}
 \subimport{theory/}{theory}
 \part{Implementation}
+\label{prt:implementation}
 \subimport{implementation/}{implementation}
 
 \subimport{conclusions/}{conclusions}
