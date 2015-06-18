@@ -6,12 +6,16 @@
 
 \begin{document}
 
-\section{Optimization}
-In this section we will look at each sampling method and examine ways to optimalize each of them.
+\section{Optimisation}
+In this section we will look at each sampling method and examine ways to optimise each of them.
 
 \todo[inline, author=Kees]{hier moet een stuk dat wessels stuk linkt aan het oplossen van simpele wiskunde problemen}
 
-\subsection{Circular sparse ruler}
+\section{Circular sparse ruler}
+We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$. Then $\vec{r} \in \{0,1\}^N$. Also, $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.
+
+A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $(\vec{r})_i = 1$, $(\vec{r})_j = 1$ and $|i-j| = d$ or  $N-|i-j| = d$. The ruler $\vec{r}$ is a circular ruler if it contains distances $ 1, \ldots, N - 1$. A circular ruler $\vec{r}$ is minimal if and only if $||\vec{r}||_1$ is minimal. A circular ruler can be depicted in a nice way. \Cref{fig:circular-ruler} shows a minimal circular ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
+
 In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
 If we can make lag $L$ we can also make lag $L+kN$ with $k \in \mathbb{Z}$. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags in $\mathbb{Z}$. Because of this we only need to look at how to acquire the lags $\{0,1,\dots,N-1\}$. This problem is called circular sparse ruler. We construct a circle with $N$ marks on it. Every mark can be occupied by a sampler. Time on this circle passes as the hand of a clock. the distance between two samplers on the circle is equal to the lag one would get. This is illustrated in \cref{fig:circular-ruler}, where $N=7$, and the samplers occupy the locations $\{1,2,4\}$.
 
@@ -74,7 +78,7 @@ The larger down-sampling factor $N$ with the same $M$ amount of samplers, the be
 \caption{linear sparse ruler with $N=7$ and $M=4$}\label{tkz:linear_sparse_ruler}
 \end{figure}
 
-The proposed method in ref\todo{ref} is that a linear sparse solution for $N=x$ is also a circular sparse ruler solution for $N=2(x-1)$ when $x$ is even, and $N=2x-1$ when $x$ is odd. This can be readily seen, because for every lag $L_i<\lfloor\frac{N}{2}\rfloor$, there is also a lag $L_j = N-L_i$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} of $\{1,2,5,7\}$ with $N=7$, is therefore also a circular sparse ruler solution for $N=13$ as is illustrated in \cref{tkz:linear_sparse_ruler}. 
+The proposed method in ref \todo{ref}   is that a linear sparse solution for $N=x$ is also a circular sparse ruler solution for $N=2(x-1)$ when $x$ is even, and $N=2x-1$ when $x$ is odd. This can be readily seen, because for every lag $L_i<\lfloor\frac{N}{2}\rfloor$, there is also a lag $L_j = N-L_i$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} of $\{1,2,5,7\}$ with $N=7$, is therefore also a circular sparse ruler solution for $N=13$ as is illustrated in \cref{tkz:linear_sparse_ruler}. 
 
 \begin{figure}[H]
 \centering
@@ -106,13 +110,14 @@ The proposed method in ref\todo{ref} is that a linear sparse solution for $N=x$ 
 \draw [red, >=latex,<->](2,2) -- (3,2);
 \draw [red, >=latex,<->](.5,2.25) -- (2,2.25);
 \draw [red, >=latex,<->](0,2.5) -- (2,2.5);
-\draw [red, >=latex,<->](1.5,2.75) -- (3,2.75);
+\draw [red, >=latex,<->](.5,2.75) -- (3,2.75);
 \draw [red, >=latex,<->](0,3) -- (3,3);
 \draw [red, >=latex,<->](3,3.25) -- (6.5,3.25);
 \draw [red, >=latex,<->](3,3.5) -- (7,3.5);
-\draw [red, >=latex,<->](2,3.75) -- (7,3.75);
-\draw [red, >=latex,<->](3,4) -- (8.5,4);
-\draw [red, >=latex,<->](.5,4.25) -- (6.5,4.25);
+\draw [red, >=latex,<->](2,3.75) -- (6.5,3.75);
+\draw [red, >=latex,<->](2,4) -- (7,4);
+\draw [red, >=latex,<->](3,4.25) -- (8.5,4.25);
+\draw [red, >=latex,<->](.5,4.5) -- (6.5,4.5);
 
 \node at (0,0) {1};
 \node at (.5,0) {2};
@@ -137,6 +142,26 @@ The proposed method in ref\todo{ref} is that a linear sparse solution for $N=x$ 
 \caption{circular sparse solution for $N=13$}\label{tkz:circ_linear_sparse}
 \end{figure}
 
-This approach has one main advantage: solutions for linear sparse ruler can be recycled into circular sparse ruler solutions, and better linear sparse ruler solutions will also result in better circular sparse ruler solutions. Because linear sparse ruler is a well known problem, good solutions are easy to come by. However, the solutions generated are not necessarily optimal. There might be situations in which one can do better than with linear sparse ruler solutions. This problem is by no means trivial and requires clever algorithms to calculate.  
+This approach has one main advantage: solutions for linear sparse ruler can be recycled into circular sparse ruler solutions, and better linear sparse ruler solutions will also result in better circular sparse ruler solutions. Because linear sparse ruler is a well known problem, good solutions are easy to come by. However, the solutions generated are not necessarily optimal. There might be situations in which one can do better than with linear sparse ruler solutions. This problem is by no means trivial and requires clever algorithms to calculate. It is also interesting to look at the structure of the problem to decrease the solution space.
+
+\subsection{Structure of circular sparse ruler}
+We are looking for optimal circular sparse rulers. Optimal circular sparse rulers are circular sparse ruler solutions with $M$ sampler and a down-sampling factor of $N$, if and only if there exist no solution with the same $M$ samplers, but higher $N$. Optimal solutions ensure the highest performance possible for given amount of samplers. In similar fashion can one define optimal linear sparse ruler. 
+
+\begin{blockTheorem}[Upper bound circular sparse ruler]\label{th:upperbound}
+the down-sampling factor $N$ of a circular sparse ruler solution with $M$ devices cannot be more than $N=M(M-1)+1$. 
+\end{blockTheorem}
+
+To see why \cref{th:upperbound} holds, we take a look at the maximum amount of different combinations of $$m_i-m_j, \quad m_i, m_j \in M,$$ which is $M^2$. We know that for $M$ combinations we have $m_i=m_j$, resulting in lag 0. This means that we have at least $M-1$ double lags. $$M^2-M+1 = M(M-1)+1$$
+
+For example: observe that an optimal linear sparse ruler for $M=5$, is $\{1,2,5,8,10\}$ with $N=10$, resulting in a circular sparse ruler solution with $N=19$. However the circular sparse ruler solution $\{1,2,7,9,19\}$ with $N=21$ is better, and also optimal, because the upper bound for $M=5$ is $N=21$ as dictated in \cref{th:upperbound}. This example illustrates the potential for increased performance in circular sparse ruler. 
+
+One circular sparse ruler can be used to make $2N-1$ other circular sparse ruler solutions through translation and mirroring the solution. The first $N-1$ solutions can be made by translating all positions over the circle with $N$ positions. The other $N$ solutions can be made by first mirroring the solution on the circle, and then translating the new solution in similar fashion over the circle. To lose some redundancy we consider these variations to be identical.    
+
+\subsection{Recursive algorithm}
+
+\subsection{Integer linear programming (ILP)}
+
+\subsection{discussion}
+
 
 \end{document}
