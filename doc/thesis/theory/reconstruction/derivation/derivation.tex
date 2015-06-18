@@ -389,7 +389,7 @@ Consider $c_i[n]$ and $c_j[n]$. This means that $c_{i,j}[m]$ and $c_{j,i}[m]$ ex
     \item If $n_j-n_i \ge 0$, then \cref{fig:upper-left-Rij} shows that the $n_j-n_i+1$'th column is nonzero. Similarly, if $n_i - n_j \ge 0$, then the $n_i-n_j+1$'th column is nonzero. Either way, the $|n_i - n_j| + 1$'th column is nonzero.
     \item If $n_j-n_i \le 0$, then \cref{fig:upper-left-Rij} shows that the $N-(n_i-n_j)+1$'th column is nonzero. Similarly, if $n_i - n_j \le 0$, then the $N-(n_j-n_i)+1$'th column is nonzero. Either way, the $N-|n_i-n_j|+1$'th column is nonzero.
 \end{enumerate}
-We require that columns $1$ to $N$ are nonzero. This implies the following statement. If $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations $i$ and $j$ make up $0$ to $N-1$, then all columns of $\mat{R}$ are nonzero and $\mat{R}$ has full column rank. This restriction will be further discussed in \ref{cha:sampling_methods}.
+We require that columns $1$ to $N$ are nonzero. This implies the following statement. If $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ make up $0$ to $N-1$, then all columns of $\mat{R}$ are nonzero and $\mat{R}$ has full column rank. This restriction will be further discussed in \ref{cha:sampling_methods}.
 
 \begin{figure}
     \centering
@@ -403,8 +403,8 @@ We require that columns $1$ to $N$ are nonzero. This implies the following state
         \draw (0.5+4*1.5, -0.5-0*0.6) node {$0$};
         \draw (0.5+5*1.5, -0.5-0*0.6) node {$0$};
         \draw (0.5+6*1.5, -0.5-0*0.6) node {$\cdots$};
-        \draw (0.5+7*1.5, -0.5-0*0.6) node {$0$};
-        \draw (0.5+8*1.5, -0.5-0*0.6) node {$0$};
+        % \draw (0.5+7*1.5, -0.5-0*0.6) node {$0$};
+        % \draw (0.5+8*1.5, -0.5-0*0.6) node {$0$};
 
         \draw (0.5+0*1.5, -0.5-1*0.6) node {$0$};
         \draw (0.5+1*1.5, -0.5-1*0.6) node[red] {$c_{i,j}[-N+1]$};
@@ -413,8 +413,8 @@ We require that columns $1$ to $N$ are nonzero. This implies the following state
         \draw (0.5+4*1.5, -0.5-1*0.6) node {$c_{i,j}[0]$};
         \draw (0.5+5*1.5, -0.5-1*0.6) node {$c_{i,j}[1]$};
         \draw (0.5+6*1.5, -0.5-1*0.6) node {$\cdots$};
-        \draw (0.5+7*1.5, -0.5-1*0.6) node {$c_{i,j}[N-1]$};
-        \draw (0.5+8*1.5, -0.5-1*0.6) node {$0$};
+        % \draw (0.5+7*1.5, -0.5-1*0.6) node {$c_{i,j}[N-1]$};
+        % \draw (0.5+8*1.5, -0.5-1*0.6) node {$0$};
 
         \draw (0.5+0*1.5, -0.5-2*0.6) node {$0$};
         \draw (0.5+1*1.5, -0.5-2*0.6) node {$0$};
@@ -423,16 +423,16 @@ We require that columns $1$ to $N$ are nonzero. This implies the following state
         \draw (0.5+4*1.5, -0.5-2*0.6) node {$0$};
         \draw (0.5+5*1.5, -0.5-2*0.6) node {$c_{i,j}[-N+1]$};
         \draw (0.5+6*1.5, -0.5-2*0.6) node {$\cdots$};
-        \draw (0.5+7*1.5, -0.5-2*0.6) node {$c_{i,j}[-1]$};
-        \draw (0.5+8*1.5, -0.5-2*0.6) node {$c_{i,j}[0]$};
+        % \draw (0.5+7*1.5, -0.5-2*0.6) node {$c_{i,j}[-1]$};
+        % \draw (0.5+8*1.5, -0.5-2*0.6) node {$c_{i,j}[0]$};
 
         \draw (0.5+0*1.5,0.3) node {$1$};
         \draw (0.5+1*1.5,0.3) node {$2$};
         \draw (0.5+3*1.5,0.3) node {$N$};
         \draw (0.5+4*1.5,0.3) node {$N+1$};
         \draw (0.5+5*1.5,0.3) node {$N+2$};
-        \draw (0.5+7*1.5,0.3) node {$2N$};
-        \draw (0.5+8*1.5,0.3) node {$2N+1$};
+        % \draw (0.5+7*1.5,0.3) node {$2N$};
+        % \draw (0.5+8*1.5,0.3) node {$2N+1$};
     \end{tikzpicture}
     \caption{Upper left corner of $\mat{R}_{i,j}$. The column numbers are shown and the important elements are highlighted in red.}
     \label{fig:upper-left-Rij}
