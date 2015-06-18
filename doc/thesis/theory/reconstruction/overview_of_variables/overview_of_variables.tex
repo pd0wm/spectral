@@ -7,14 +7,34 @@
 
 \begin{document}
 \section{Overview of Variables}
-\Cref{tab:reconstruction-overview-variables} presents an overview of the variables which will be used in the derivation of the algorithm. The meaning of the name of each variable will become clear in during the derivation.
+\Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the rest of the chapter.
 
 \begin{table}[H]
     \centering
     \begin{tabularx}{\textwidth}{lY}
         \textbf{Variable} & \textbf{Description}\\ \hline
+        $M$ & Number of cosets \\
+        $N$ & Downsampling factor such that every coset samples the input signal once every $N$ samples \\
+        $L$ & Support of $r_{y_i,y_j}[m]$. This means that $r_{y_i,y_j}[m]=0$ for $|m| > L$. \\
+        $x[n]$ & Input signal \\
+        $r_x[m,n]$ & Autocorrelation of the input signal \\
+        $y_i[n]$ & Output of coset $i$ \\
+        $r_{y_i,y_j}[m,n]$ & Cross-correlation of the outputs of cosets $i$ and $j$ \\
+        $c_i[n]$ & Signal which determines the output of coset $i$ \\
+        $c_{i,j}[m]$ & Deterministic cross-correlation of $c_i[n]$ and $c_j[n]$ \\
+        $z_i[n]$ & Helper variable related to $x[n]$ and $y_i[n]$ \\
+        $r_{z_i,z_j}[m,n]$ & Cross-correlation of $z_i[n]$ and $z_j[n]$ \\
+        $\vec{r}_x[k]$ & Aggregation of $r_x[(k+1)N-1]$ to $r_x[kN+1]$ \\
+        $\vec{c}_{i,j}^-$ & Aggregation of $c_{i,j}[-N+1]$ to $c_{i,j}[-1]$ \\
+        $\vec{c}_{i,j}^+$ & Aggregation of $c_{i,j}[1]$ to $c_{i,j}[N-1]$ \\
+        $\vec{r}_{y_i,y_j}$ & Aggregation of $r_{y_i,y_j}[-L]$ to $r_{y_i,y_j}[L]$ \\
+        $\vec{r}_x$ & Aggregation of $r_x[-LN]$ to $r_x[LN]$ \\
+        $\mat{R}_{i,j}$ & Convolution matrix of $c_{i,j}[m]$ \\
+        $\vec{r}_y$ & Aggregation of $\vec{r}_{y_0,y_0}$ to $\vec{r}_{y_M,y_M}$ \\
+        $\mat{R}$ & Aggregation of $\mat{R}_{1,1}$ to $\mat{R}_{M,M}$ \\
+        $n_i$ & Variable such that $c_i[n]=1$ for $n=n_i$ and zero otherwise
     \end{tabularx}
-    \caption{Overview of the variables used in the derivation of the algorithm}
+    \caption{Overview of the variables used}
     \label{tab:reconstruction-overview-variables}
 \end{table}
 
