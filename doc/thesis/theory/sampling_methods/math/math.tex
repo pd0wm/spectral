@@ -7,10 +7,12 @@
 \begin{document}
 
 \section{Optimisation}
-In this section we will look at the 
+In this section we will look at ways to map the different sampling methods on the reconstructor with as much performance as possible. The specifications that the reconstructor imposes are:
 
-In this section we will look at each sampling method and examine ways to optimise each of them.
-
+\begin{enumerate}
+\item All lags required as described in ref \todo{ref} must be available
+\item The sampling must be presented as a set of samplers with an equal sample frequency.
+\end{enumerate} 
 
 \section{Circular sparse ruler}
 We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$. Then $\vec{r} \in \{0,1\}^N$. Also, $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. We will formulate the minimal circular ruler problem as an binary integer linear program.

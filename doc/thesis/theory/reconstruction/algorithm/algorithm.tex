@@ -10,7 +10,31 @@
 \section{Algorithm}
 This section will discuss an algorithm to estimate the power spectral density of a signal which is sampled at sub-Nyquist frequencies. We consider multi-coset sampling such as described in \cref{cha:sampling}. The algorithm will be derived step-by-step in \cref{sec:reconstruction-derivation}.
 
-Let the input signal sampled at the Nyquist-frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Every coset $i$ samples the input signal every $N$ samples. Let the output of coset $i$ be denoted by $y_i[n]$. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$. Therefore, our reconstruction method estimates the autocorrelation of $x[n]$.
+Let the input signal sampled at the Nyquist-frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Every coset $i$ samples the input signal every $N$ samples, which means that the output of a coset is an $N$-decimation of the input signal. Let the output of coset $i$ be denoted by $y_i[n]$. Our reconstruction method estimates the power spectral density of $x[n]$ by making use of the outputs of all cosets. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$. Therefore, our reconstruction method aims to estimate the autocorrelation of $x[n]$. Let the autocorrelation of the input signal be denoted by $r_x[m]$. Let the cross-correlation of the output of cosets $i$ and $j$ be denoted by $r_{y_i,y_j}[m]$. 
+
+It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. These methods are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. The parameter $L$ determines the support of $r_{y_i,y_j}[m]$\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} and influences the length of the estimated autocorrelation, which determines the resolution of the estimated power spectral density of $x[n]$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of several steps.
+
+\begin{table}
+    \centering
+    \begin{tabularx}{\textwidth}{llY}
+        \textbf{Type} & \textbf{Parameter} & \textbf{Description} \\
+        Input & $M$ & Number of cosets \\
+        Input & $N$ & Downsampling factor. Every coset samples the input signal once per $N$ samples. \\
+        Input & $y_i[n]$ & Output of coset $i$ \\
+        Input & $L$ & Support of $r_{y_i,y_j}[m]$. This parameter influences the resolution of the estimated power spectral density of $x[n]$. \\
+        Input & $K$ & Oversampling factor. This parameter influences the accuracy of the estimated power spectral density of $x[n]$, but increases the measurement time. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. \\
+        Output & $r_x[m]$ & Autocorrelation of $x[n]$. The autocorrelation $r_x[m]$ is estimated from $m=-LN$ to $m=LN$.
+    \end{tabularx}
+    \caption{Input and outputs of the reconstruction algorithm}
+    \label{tab:reconstruction-algorithm-inputs-outputs}
+\end{table}
+
+\begin{tabularx}{\textwidth}{rY}
+    Step 0: & lalal \newline blabal \\
+    Step 1: & lol \\
+    Step 2: & blabla
+\end{tabularx}
+
 
 
 % This section will discuss an algorithm to estimate to autocorrelation of an signal sampled by multi-coset sampling described in \cref{xx}. We consider $M$ and $N$ such as described in the chapter on multi-coset sampling. Furthermore, we make use of notation which will be introduced in \cref{sec:reconstruction-preliminaries}.
