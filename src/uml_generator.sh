@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 INP_DIR="./cogradio/";
-OUT_DIR="../doc/thesis/implementation/core/figures/";
+OUT_DIR="../doc/thesis/implementation/model/figures/"
 TOP_LEVEL="cogradio";
 
 DIR_MATCHER="*/"

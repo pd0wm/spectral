@@ -52,11 +52,11 @@ if source_type == "usrp":
 elif source_type == "dump":
     source = cg.source.File(dump_file_path)
 elif source_type == "sinusoidal":
-    source = cg.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
+    source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
 
 
 # sampler = cg.sampling.Coprime(a, b)
-sampler = cg.sampling.MultiCoset(N)
+sampler = cg.sampling.MinimalSparseRuler(N)
 
 reconstructor = cg.reconstruction.Wessel(L, sampler.get_C(), cache=False)
 # reconstructor = cg.reconstruction.CrossCorrelation(L, C=sampler.get_C())
