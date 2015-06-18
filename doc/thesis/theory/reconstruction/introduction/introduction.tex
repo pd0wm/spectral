@@ -6,13 +6,23 @@
 
 \begin{document}
 
+% - intro
+% - afweging methoden
+% - algoritme
+% - afleiding
+% - garantie full rank -> lags
+% - implementatie (generate + estimation)
+% - conclusion
+
+% ariananda
+% L1 candes
 
 \section{Introduction}
-This chapter introduces a method to reconstruct the power spectral density of a signal which is sampled at sub-Nyquist frequencies. The method is largely based on \cite{ariananda2012compressive}. However, \cite{ariananda2012compressive} considers the reconstruction from a statistical perspective, where we choose a deterministic point of view. Besides novelty and innovation, there are a few practical reason for taking this point of view.
+This chapter introduces a method to reconstruct the power spectral density of a signal which is sampled at sub-Nyquist frequencies. Usually, sampling at sub-Nyquist frequencies causes aliasing, which means that the signal is distorted. Our reconstruction method is able to reconstruct the power spectral density of the signal, despite the fact that is sampled signal is aliased. We focus on an accessible, yet complete explanation of the reconstruction method which discusses all details necessary for implementation.
 
-First of all, \cite{ariananda2012compressive} starts the analysis of its time-domain reconstruction approach assuming that the correlation of the output signal is known. They then proceed to discuss an unbiased estimator of this correlation. In statistics and signal processing, one commonly uses a minimum mean squared error estimator to estimate a quantity. Such an estimator minimises the mean squared error by optimally balancing the bias and the variance of the estimator. Ideally, we want to use a minimal mean squared error estimator to estimate the correlation of the output signal. However, from the time-domain reconstruction method described in \cite{ariananda2012compressive}, it is not clear whether the reconstruction method should change if a biased estimator is used. Also, it is not clear what the effects of using a biased estimator are. In this chapter we study a reconstruction method based on a biased estimator. This biased estimator can yield a better estimation of the correlation by having less variance. Also, it turns out that our reconstruction method can also be used when using an unbiased estimator. This makes the method more general and convenient to use.
+First of all, we will consider various methods which allow for reconstruction of the power spectral density of signal sampled at sub-Nyquist frequencies. We will then choose one of these methods, based on careful considerations. Next, we will discuss an algorithm based on this method. Afterwards, we will discuss a detailed derivation of the algorithm. This derivation will be accessible and easy to follow for people without highly technical background. After the derivation, we will discuss some details which turn out to be essential when implementing the algorithm.
 
-Second, in the study of our reconstruction method, we obtain an expression which summarises the effects caused by the bias of the estimator. By having knowledge of this relationship, the effects can be either compensated for, or they can be used to one's advantage.
+\section{Overview}
+There are various methods to reconstruct the power spectral density of a signal. These methods can be roughly divided in two groups. First, there are methodes based on $l_1$-optimisation, such as \cite{bayarkernel, candes2006robust, candes2007sparsity, candes2008introduction, kirolos2006analog, li2014gomp, polo2009compressive}, which can make use of computationally intensive methods, such as the MUSIC algorithm \cite{pal2011coprime}. Second, there are methods which do not make use of such optimisation, such as \cite{ariananda2011multicoset,ariananda2012compressive}.
 
-Finally, we make use of notation and operators which are often found implemented in software used for statistics and digital signal processing, such as MATLAB. This makes the analysis easy to follow and the method easy to implement.
 \end{document}
