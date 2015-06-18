@@ -8,11 +8,12 @@
 
 
 \section{Algorithm}
+\label{sec:reconstruction-algorithm}
 This section will discuss an algorithm to estimate the power spectral density of a signal which is sampled at sub-Nyquist frequencies. We consider multi-coset sampling such as described in \cref{cha:sampling}. The algorithm will be derived step-by-step in \cref{sec:reconstruction-derivation}.
 
 Let the input signal sampled at the Nyquist-frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Every coset $i$ samples the input signal every $N$ samples, which means that the output of a coset is an $N$-decimation of the input signal. Let the output of coset $i$ be denoted by $y_i[n]$. Our reconstruction method estimates the power spectral density of $x[n]$ by making use of the outputs of all cosets. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$. Therefore, our reconstruction method aims to estimate the autocorrelation of $x[n]$. Let the autocorrelation of the input signal be denoted by $r_x[m]$. Let the cross-correlation of the output of cosets $i$ and $j$ be denoted by $r_{y_i,y_j}[m]$. 
 
-It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. These methods are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. The parameter $L$ determines the support of $r_{y_i,y_j}[m]$\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} and influences the length of the estimated autocorrelation, which determines the resolution of the estimated power spectral density of $x[n]$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of several steps.
+It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. The parameter $L$ determines the support of $r_{y_i,y_j}[m]$\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} and influences the length of the estimated autocorrelation, which determines the resolution of the estimated power spectral density of $x[n]$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of several steps.
 
 \begin{table}
     \centering
@@ -29,29 +30,25 @@ It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cos
     \label{tab:reconstruction-algorithm-inputs-outputs}
 \end{table}
 
+The algoritm to estimate the autocorrelation is as follows.
+
 \begin{tabularx}{\textwidth}{rY}
-    Step 0: & lalal \newline blabal \\
-    Step 1: & lol \\
-    Step 2: & blabla
+    Step 1: & Determine $c_i[n]$ for every coset $i$.
+    \newline \newline
+    The signal $c_i[n]$ is defined in \cref{eq:yi}. This equation will be discussed in the derivation. The configuration determines $c_i[n]$ for every coset $i$. This is explained in \cref{sub:ci-circ,sub:ci-collab,sub:ci-coprime}.
+    \newline \\
+    Step 2: & Construct $\mat{R}$.
+    \newline \newline
+    The matrix $\mat{R}$ is defined in \cref{eq:ry-R-rx}. This equation will be discussed in the derivation.
+    \newline \\
+    Step 3: & Measure $y_i[n]$ for $KL$ samples for every coset $i$. \newline \\
+    Step 4: & Estimate $r_{y_i,y_j}[m]$ for every combination of cosets $i$ and $j$.
+    \newline \newline
+    \cref{sec:reconstruction-estimation} discusses how $KL$ samples of $y_i[n]$ can be used to estimate $r_{y_i,y_j}[m]$.
+    \newline \\
+    Step 5: & Construct $\vec{r}_y$ and solve \cref{eq:normal-rx} to estimate $\vec{r}_x$, which yields an estimation of $r_x[m]$.
+    \newline \newline
+    The vectors $\vec{r}_y$ and $\vec{r}_x$ are defined in respectively \cref{eq:ry-R-rx,eq:def-rx}. Once more, these equations will be discussed in the derivation.  \\
 \end{tabularx}
-
-
-
-% This section will discuss an algorithm to estimate to autocorrelation of an signal sampled by multi-coset sampling described in \cref{xx}. We consider $M$ and $N$ such as described in the chapter on multi-coset sampling. Furthermore, we make use of notation which will be introduced in \cref{sec:reconstruction-preliminaries}.
-
-% Let $X[n]$ be a wide sense stationary stochastic process representing the input signal. Let $\vecsc{r}_x \in \mathbb{C}^{2LN-1}$ be such that $(\vecsc{r}_x)_{i+LN} = R_X[i]$ for $i = -LN + 1, LN-1$.  Then $\vecsc{r}_x$ respresents the autocorrelation of the input signal.
-
-% Let the $Y'_i[n]$ be a wide sense stationary stochastic process representing the output of a coset. Let $\vecsc{r}_{y'_i,y'_j} \in \mathbb{C}^{2L-1}$ be such that $(\vecsc{r}_{y'_i,y_j})_{m+L}$ for $m = -L+1,L-1$. Then $\vecsc{r}_{y'_i,y'_j}$ represents the cross-correlation of the outputs of cosets $i$ and $j$.
-
-% TODO: cut support and guarantee full column rank, include oversampling
-
-
-% Proceed as follows:
-% \begin{enumerate}
-%     \item Construct $\mat{R}$.
-%     \item Determine $\vec{y}'_i$ for $i = 1,\ldots,M$.
-%     \item Construct $\vec{r}'_y$.
-%     \item Determine $E(\vec{r}_x)$ by $\mat{R}^\dagger\vec{r}'_y$.
-% \end{enumerate}
 
 \end{document}
