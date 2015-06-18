@@ -7,35 +7,35 @@
 
 \begin{document}
 \section{Overview of Variables}
-\Cref{tab:overview-vars-main-analysis} presents an overview of the variables which will be used in the main analysis. The meaning of the name of each variable will become clear in the main analysis. Note that the hat symbol is often used to represent a truncated variable and that the prime symbol is often used to respresent a decimated variable.
+\Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the rest of the chapter.
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{Xlp{4cm}}
-        \textbf{Name} & \textbf{Notation} & \textbf{Size} \\ \hline
-        Number of samples & $L$ & $1$ \\
-        Downsampling factor & $N$ & $1$ \\
-        Number of cosets & $M$ & $1$ \\
-        Input signal & $\vec{x}$ & $KLN$ \\
-        Deterministic correlation of input signal & $\vec{r}_x$ & $2KLN - 1$ \\
-        Truncated deterministic correlation of input signal & $\hat{\vec{r}}_x$ & $2LN - 1$ \\
-        Autocorrelation of input signal & $\vecsc{r}_x$ & $2LN - 1$ \\
-        Sampling vector of coset $i$ & $\vec{c}_i$ & $N$ \\
-        Deterministic correlation of sampling vectors of cosets $i$ and $j$ & $\vec{r}_{c_i,c_j}$  & $2N-1$ \\
-        Convolution matrix of cosets $i$ and $j$ & $\mat{R}_{c_i,c_j}$ & $2LN-2N+1 \times 2LN-1$ \\
-        Pseudo output of coset $i$ & $\vec{y}_i$ & $LN + N - 1$ \\
-        Deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\vec{r}_{y_i,y_j}$  & $2KLN + 2N - 3$ \\
-        Truncated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}_{y_i,y_j}$ & $2LN - 2N + 1$ \\
-        Decimated truncated deterministic correlation of pseudo outputs of cosets $i$ and $j$ & $\hat{\vec{r}}'_{y_i,y_j}$  & $2L-1$ \\
-        Output of coset $i$ & $\vec{y}'_i$ & $L$ \\
-        Deterministic correlation of outputs of cosets $i$ and $j$ & $\vec{r}_{y'_i,y'_j}$ & $2L-1$ \\
-        Crosscorrelation of outputs of cosets $i$ and $j$ & $\vecsc{r}_{y'_i,y'_j}$ & $2L - 1$ \\
-        Stacked convolution matrices of cosets & $\vec{R}$ & $M^2(2L - 1) \times (2LN - 1)$ \\
-        Decimation matrix & $\mat{D}$ & $2L-1 \times 2LN - 2N + 1$ \\
-        Stacked crosscorrelation of outputs of cosets & $\vecsc{r}_y$ & $M^2(2L-1)$ \\
+    \begin{tabularx}{\textwidth}{lY}
+        \textbf{Variable} & \textbf{Description}\\ \hline
+        $M$ & Number of cosets \\
+        $N$ & Downsampling factor such that every coset samples the input signal once every $N$ samples \\
+        $L$ & Support of $r_{y_i,y_j}[m]$. This means that $r_{y_i,y_j}[m]=0$ for $|m| > L$. \\
+        $x[n]$ & Input signal \\
+        $r_x[m,n]$ & Autocorrelation of the input signal \\
+        $y_i[n]$ & Output of coset $i$ \\
+        $r_{y_i,y_j}[m,n]$ & Cross-correlation of the outputs of cosets $i$ and $j$ \\
+        $c_i[n]$ & Signal which determines the output of coset $i$ \\
+        $c_{i,j}[m]$ & Deterministic cross-correlation of $c_i[n]$ and $c_j[n]$ \\
+        $z_i[n]$ & Helper variable related to $x[n]$ and $y_i[n]$ \\
+        $r_{z_i,z_j}[m,n]$ & Cross-correlation of $z_i[n]$ and $z_j[n]$ \\
+        $\vec{r}_x[k]$ & Aggregation of $r_x[(k+1)N-1]$ to $r_x[kN+1]$ \\
+        $\vec{c}_{i,j}^-$ & Aggregation of $c_{i,j}[-N+1]$ to $c_{i,j}[-1]$ \\
+        $\vec{c}_{i,j}^+$ & Aggregation of $c_{i,j}[1]$ to $c_{i,j}[N-1]$ \\
+        $\vec{r}_{y_i,y_j}$ & Aggregation of $r_{y_i,y_j}[-L]$ to $r_{y_i,y_j}[L]$ \\
+        $\vec{r}_x$ & Aggregation of $r_x[-LN]$ to $r_x[LN]$ \\
+        $\mat{R}_{i,j}$ & Convolution matrix of $c_{i,j}[m]$ \\
+        $\vec{r}_y$ & Aggregation of $\vec{r}_{y_0,y_0}$ to $\vec{r}_{y_M,y_M}$ \\
+        $\mat{R}$ & Aggregation of $\mat{R}_{1,1}$ to $\mat{R}_{M,M}$ \\
+        $n_i$ & Variable such that $c_i[n]=1$ for $n=n_i$ and zero otherwise
     \end{tabularx}
-    \caption{Overview of the variables used in the main analysis}
-    \label{tab:overview-vars-main-analysis}
+    \caption{Overview of the variables used}
+    \label{tab:reconstruction-overview-variables}
 \end{table}
 
 \end{document}

@@ -1,0 +1,40 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Implementation}
+\label{sec:reconstruction-implementation}
+This section will discuss some details of the algorithm which are relevant when implementing the algorithm.
+
+\subsection{Estimation of the cross-correlations and autocorrelation}
+\label{sub:reconstruction-estimation}
+In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[m]$ is known for $m = 0,\ldots,KL-1$. Since we assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$, it remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
+\begin{align*}
+    \hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|}\sum_{k=l}^{u}y_i[k]\conj{y}_j[k+m]
+\end{align*}
+where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. It is worthwhile to notice that $E(\hat{r}_{y_i,y_j}[m])=r_{y_i,y_j}[m]$, which means that $\hat{r}_{y_i,y_j}[m]$ is an unbiased estimator of $r_{y_i,y_j}[m]$. Similarly, we define
+\begin{align*}
+    \hat{\vec{r}}_{y_i,y_j} = \begin{bmatrix}
+        \hat{r}_{y_i,y_j}[L] & \cdots & \hat{r}_{y_i,y_j}[-L]
+    \end{bmatrix}.
+\end{align*}
+Then $E(\hat{\vec{r}}_{y_i,y_j})=\vec{r}_{y_i,y_j}$, which means that $\hat{\vec{r}}_{y_i,y_j}$ is an unbiased estimator of $\vec{r}_{y_i,y_j}$. Now consider \cref{eq:ry-R-rx}. Notice that
+\begin{align*}
+    E(\hat{\vec{r}}_{y_i,y_j}) = \vec{r}_{y_i,y_j} = \mat{R} \vec{r}_x.
+\end{align*}
+Thus $\hat{\vec{r}}_{y_i,y_j}$ can be used to estimate $\vec{r}_x$. Denote this estimation of $\vec{r}_x$ by $\hat{\vec{r}}_x$.
+
+\subsection{Sparsity of the matrices}
+\label{sub:reconstruction-sparsity}
+- sparsity 
+
+\subsection{Efficient generation of the matrices}
+\label{sub:reconstruction-generation}
+- generation of R
+
+
+\end{document}

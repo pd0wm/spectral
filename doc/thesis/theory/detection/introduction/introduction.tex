@@ -7,25 +7,8 @@
 \begin{document}
 
 \section{Introduction}
-The fundamental problem of detection is to discern noise from a signal. This problem can be formulated as a binary hypothesis test. Given a signal $x[n]$ a detector has to decide between the following two hypotheses:
+This chapter introduces several methods to perform the detection process on the output of the algorithm as described in \cref{sec:reconstruction-algorithm} instead of on the input signal itself. This algorithm produces an estimate of the power spectral density, or equivalently the autocorrelation of the input signal. The influence of using the output of this reconstruction method will be taken into account to produce a pragmatic description of several detection algorithms.  More in depth analysis will be included in Appendix ????.
 
-\begin{align*}
-	\begin{cases}
-		\mathcal{H}_0 & x[n] = w[n] \\
-		\mathcal{H}_1 & x[n] = w[n] + s[n]
-	\end{cases}
-\end{align*}
-
-where $w[n]$ denotes a noise signal and $s[n]$ a signal different from noise. Under $\mathcal{H}_0$ the signal $x[n]$ contains only noise. Under $\mathcal{H}_1$ another signal besides noise is present in $x[n]$.
-
-Besides this hypothesis test, the detector also has to deal with frequency bands: which frequency bands are occupied by some signal and which are unoccupied?
-
-This chapter examines two types of detectors that can be used in combination with our reconstructor:
-
-\begin{enumerate}
-	\item Energy detection;	  
-	\item Covariance absolute value detection (CAV).
-\end{enumerate}
-
+We will start this chapter with a global overview of detection methods available. Based on this overview we will motivate the analysis of two detection methods, which are described later on. Furthermore the performance of the two detection methods on the output of the reconstruction algorithm will be evaluated, which will lead to a discussion and conclusion of this chapter.
 
 \end{document}

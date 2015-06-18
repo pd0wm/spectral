@@ -371,9 +371,71 @@ Denote the aggregation of \cref{eq:ryiyji-R-rx} by
 \begin{align} \label{eq:ry-R-rx}
     \vec{r}_y = \mat{R} \vec{r}_x.
 \end{align}
-\Cref{eq:ry-R-rx} relates the cross-correlations of all combinations of outputs of cosets to the autocorrelation of the input signal. Note that $\mat{R}$ is an $M^2(2L+1) \times 2LN+1$ matrix. If $\mat{R}$ has full column-rank, then $\vec{r}_x$ can be solved for using least-squares, which involves solving the normal equations. These normal equations are given by
+\Cref{eq:ry-R-rx} relates the cross-correlations of all combinations of outputs of cosets to the autocorrelation of the input signal. Note that $\mat{R}$ is an $M^2(2L+1) \times 2LN+1$ matrix. If $\mat{R}$ has full column rank, then $\vec{r}_x$ can be solved for using least-squares, which involves solving the normal equations. These normal equations are given by
 \begin{align} \label{eq:normal-rx}
     \mat{R}^T \vec{r}_y = \mat{R}^T \mat{R} \vec{r}_x.
 \end{align}
 We can use \cref{eq:normal-rx} to estimate the autocorrelation of the input signal if $\vec{r}_y$ is known. This concludes the estimation of the autocorrelation of the input signal.
+
+\subsection{Unicity of the estimation}
+Since \cref{eq:normal-rx} is used to estimate the autocorrelation of the input signal, we have to make sure that $\mat{R}$ has full column rank. We will do this by inspecting the structure of $\mat{R}$. Since $\mat{R}$ depends on $c_i[n]$ solely, we start by analysing $c_i[n]$.
+
+In the construction of the output of a coset, we saw the output of coset $i$ is an $N$-decimation of the input signal if $c_i[n]=1$ for a single $n$ and otherwise zero. This is exactly what we want, since this matches the methods described in \cref{cha:sampling}. Therefore, assume that $c_i[n]=1$ for $n=n_i$ and otherwise zero. Now consider \cref{eq:cij}. Note that $c_{i,j}[m]=1$ if and only if $c_i[k]=1$ and $\conj{c}_j[k+m]=1$, which requires that $k = n_i$ and $k+m = n_j$. Equivalently, $c_{i,j}[m]=1$ if and only if $m = n_j - n_i$. This means that $c_{i,j}[m]$ consists of a single one. Now consider \cref{eq:ryiyji-R-rx}. Since $c_{i,j}[m]$ consists of a single one, two columns of $\mat{R}_{i,j}$ are linearly independent if they are nonzero. Therefore, if all columns of $\mat{R}$ are nonzero, then all columns are linearly indepedent and $\mat{R}$ has full column rank.
+
+Suppose that the first $N$ columns of $\mat{R}$ are nonzero. Consider \cref{eq:ryiyji-R-rx} in conjunction with \cref{fig:upper-left-Rij}. We see that the structure of $\mat{R}$ repeats itself in a diagonal way every $N$ samples. Therefore, if the first $N$ columns are nonzero, all columns are nonzero and thus $\mat{R}$ has full column rank. The problem now reduces to choosing $c_i[n]$ such that the first $N$ columns of $\mat{R}$ are nonzero.
+
+Consider $c_i[n]$ and $c_j[n]$. This means that $c_{i,j}[m]$ and $c_{j,i}[m]$ exist. We have seen that $c_{i,j}[m]=1$ if and only if $m=n_j-n_i$ and $c_{j,i}[m]=1$ if and only if $m=n_i-n_j$. We make the following observations.
+\begin{enumerate}
+    \item If $n_j-n_i \ge 0$, then \cref{fig:upper-left-Rij} shows that the $n_j-n_i+1$'th column is nonzero. Similarly, if $n_i - n_j \ge 0$, then the $n_i-n_j+1$'th column is nonzero. Either way, the $|n_i - n_j| + 1$'th column is nonzero.
+    \item If $n_j-n_i \le 0$, then \cref{fig:upper-left-Rij} shows that the $N-(n_i-n_j)+1$'th column is nonzero. Similarly, if $n_i - n_j \le 0$, then the $N-(n_j-n_i)+1$'th column is nonzero. Either way, the $N-|n_i-n_j|+1$'th column is nonzero.
+\end{enumerate}
+We require that columns $1$ to $N$ are nonzero. This implies the following statement. If $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ make up $0$ to $N-1$, then all columns of $\mat{R}$ are nonzero and $\mat{R}$ has full column rank. This restriction will be further discussed in \ref{cha:sampling_methods}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [thick] (-0.1,-0.5-3*0.6+0.3) -- (-.1,-.1) -- (.1,-.1);
+
+        \draw (0.5+0*1.5, -0.5-0*0.6) node[red] {$c_{i,j}[0]$};
+        \draw (0.5+1*1.5, -0.5-0*0.6) node[red] {$c_{i,j}[1]$};
+        \draw (0.5+2*1.5, -0.5-0*0.6) node[red] {$\cdots$};
+        \draw (0.5+3*1.5, -0.5-0*0.6) node[red] {$c_{i,j}[N-1]$};
+        \draw (0.5+4*1.5, -0.5-0*0.6) node {$0$};
+        \draw (0.5+5*1.5, -0.5-0*0.6) node {$0$};
+        \draw (0.5+6*1.5, -0.5-0*0.6) node {$\cdots$};
+        % \draw (0.5+7*1.5, -0.5-0*0.6) node {$0$};
+        % \draw (0.5+8*1.5, -0.5-0*0.6) node {$0$};
+
+        \draw (0.5+0*1.5, -0.5-1*0.6) node {$0$};
+        \draw (0.5+1*1.5, -0.5-1*0.6) node[red] {$c_{i,j}[-N+1]$};
+        \draw (0.5+2*1.5, -0.5-1*0.6) node[red] {$\cdots$};
+        \draw (0.5+3*1.5, -0.5-1*0.6) node[red] {$c_{i,j}[-1]$};
+        \draw (0.5+4*1.5, -0.5-1*0.6) node {$c_{i,j}[0]$};
+        \draw (0.5+5*1.5, -0.5-1*0.6) node {$c_{i,j}[1]$};
+        \draw (0.5+6*1.5, -0.5-1*0.6) node {$\cdots$};
+        % \draw (0.5+7*1.5, -0.5-1*0.6) node {$c_{i,j}[N-1]$};
+        % \draw (0.5+8*1.5, -0.5-1*0.6) node {$0$};
+
+        \draw (0.5+0*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+1*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+2*1.5, -0.5-2*0.6) node {$\cdots$};
+        \draw (0.5+3*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+4*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+5*1.5, -0.5-2*0.6) node {$c_{i,j}[-N+1]$};
+        \draw (0.5+6*1.5, -0.5-2*0.6) node {$\cdots$};
+        % \draw (0.5+7*1.5, -0.5-2*0.6) node {$c_{i,j}[-1]$};
+        % \draw (0.5+8*1.5, -0.5-2*0.6) node {$c_{i,j}[0]$};
+
+        \draw (0.5+0*1.5,0.3) node {$1$};
+        \draw (0.5+1*1.5,0.3) node {$2$};
+        \draw (0.5+3*1.5,0.3) node {$N$};
+        \draw (0.5+4*1.5,0.3) node {$N+1$};
+        \draw (0.5+5*1.5,0.3) node {$N+2$};
+        % \draw (0.5+7*1.5,0.3) node {$2N$};
+        % \draw (0.5+8*1.5,0.3) node {$2N+1$};
+    \end{tikzpicture}
+    \caption{Upper left corner of $\mat{R}_{i,j}$. The column numbers are shown and the important elements are highlighted in red.}
+    \label{fig:upper-left-Rij}
+\end{figure}
+
 \end{document}
