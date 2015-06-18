@@ -86,15 +86,15 @@ The CrossCorrelation class implementation is based on \cite{ariananda2012compres
 
 \subsection{Wessel}
 \label{sub:wessel}
-Wessels reconstructor is a variation on CrossCorrelation. The theory is thoroughly described in the first part of this thesis. The constructor takes 3 arguments (one optional):
+Wessel's reconstructor is a variation on the reconstruction technique implemented by \func{CrossCorrelation}. The theory is thoroughly described in the first part of this thesis. The constructor takes 3 arguments (one optional):
 \begin{description}
-    \item[L] determines the maximum lag estimated of crosscorrelation of the cosets.
-    \item[C] is the sample matrix used by one of the samplers. This is required for the reconstruction algorithm.
-    \item[cache] (default is True) is a boolean value that determines whether the pseudoinverse can be loaded and saved to the cache. Mainly used for test and profiling purposes.
+    \item[L] determines the maximum lag estimated of cross-correlation of the cosets.
+    \item[C] is the sampling matrix used by one of the samplers. This is required for the reconstruction algorithm.
+    \item[cache] (default is True) is a boolean value that determines whether the pseudo-inverse can be loaded and saved to the cache. Mainly used for test and profiling purposes.
 \end{description}
-The constructor gets the number of cosets and the downsampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions.
+The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions.
 
-The \func{reconstruct(signal)} takes the pseudoinverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector. This is the functionality as described in \cref{cha:reconstruction}.
+The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector. This is the functionality as described in \cref{cha:reconstruction}.
 
 \begin{figure}
     \centering
