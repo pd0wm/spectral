@@ -20,8 +20,6 @@ class CrossCorrelation(Reconstructor):
         else:
             self.R_pinv = sp.linalg.pinv(self.R)
 
-        # Caching mechanism
-
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
         y_stacked = cross_corr_mat.ravel(order='F')
@@ -29,8 +27,8 @@ class CrossCorrelation(Reconstructor):
         return rx
 
     def cross_correlation_filters(self):
-        Rc0 = np.zeros((self.M ** 2, self.N))
-        Rc1 = np.zeros((self.M ** 2, self.N))
+        Rc0 = np.zeros((self.M ** 2, self.N), np.complex128)
+        Rc1 = np.zeros((self.M ** 2, self.N), np.complex128)
         for i in range(self.M):
             for j in range(self.M):
                 rc = np.correlate(self.C[i, :],

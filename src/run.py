@@ -56,11 +56,11 @@ elif source_type == "sinusoidal":
     source = cg.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
 
 
-sampler = cg.sampling.Coprime(a, b)
-# sampler = cg.sampling.MultiCoset(N)
+# sampler = cg.sampling.Coprime(a, b)
+sampler = cg.sampling.MultiCoset(N)
 
 reconstructor = cg.reconstruction.Wessel(L, sampler.get_C(), cache=False)
-# reconstructor = cg.reconstruction.CrossCorrelation(N, L, C=sampler.get_C())
+# reconstructor = cg.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
 detector = cg.detection.noise_power()
 

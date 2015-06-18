@@ -25,6 +25,7 @@ class Wessel(Reconstructor):
     def reconstruct(self, signal):
         ry = self.cross_correlation_signals(signal)
         ry_stacked = ry.ravel()
+        #ry_stacked = ry.ravel()
         rx = self.R_pinv.dot(ry_stacked)
         return rx
 

@@ -31,15 +31,14 @@ class Reconstructor(object):
         max_lag = self.L - 1
         out = np.zeros((signal.shape[0] ** 2, 2 * self.L - 1), dtype=np.complex128)
         for lag in range(max_lag + 1):  # non-negative lags
-            all_lags = np.dot(signal[:, lag:(length)], cg.hermitian(signal[:, :(length - lag)]))
-            all_lags = all_lags.reshape((-1, 1), order='F') / float(length - lag)
-            out[:, lag + max_lag] = all_lags[:, 0]
+            all_lags = np.dot(signal[:, lag:length], cg.hermitian(signal[:, :(length - lag)]))
+            all_lags = all_lags.ravel(order='F') / float(length - lag)
+            out[:, lag + max_lag] = all_lags
         for lag in range(max_lag + 1):  # non-positive lags
             all_lags = np.dot(signal[:, :length - lag], cg.hermitian(signal[:, lag:length]))
-            all_lags = all_lags.reshape((-1, 1), order='F') / float(length - lag)
-            out[:, max_lag - lag] = all_lags[:, 0]
-
-        return out.T.reshape((-1, 1), order='F')
+            all_lags = all_lags.ravel(order='F') / float(length - lag)
+            out[:, max_lag - lag] = all_lags
+        return out
 
     def calc_pseudoinverse(self, R):
         R_pinv_accent = self.load_pseudoinverse()
