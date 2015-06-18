@@ -8,6 +8,8 @@
 
 \section{Derivation}
 \label{sec:reconstruction-derivation}
+In this section we derive the algorithm discussed in \cref{sec:reconstruction-derivation}. The derivation aims to be an accessible, yet complete explanation which discusses all details necessary for implementation.
+
 Consider the input signal to be a random stochastic process. To relate the output of a coset to the input signal, we need some mathematical constructs.
 
 \subsection{Construction of the output of a coset}
@@ -298,17 +300,17 @@ Since $r_x[m]=0$ for $|m| > LN$, all that remains is estimating $r_x[m]$ for $|m
     r_{y_i,y_j}[-L] &= \sum_{k=(-L-1)N+1}^{(-L+1)N-1}r_{x}[k]c_{i,j}[-LN-k] = \sum_{k=-LN}^{(-L+1)N-1}r_{x}[k]c_{i,j}[-LN-k]. \\
 \end{align*}
 In reducing the limits of the sums in $r_{y_i,y_j}[L]$ and $r_{y_i,y_j}[-L]$ we used that $r_x[m]=0$ for $|m| > LN$. Although these equations look complicated, they can be written more compactly. To do this, let
-\begin{align*}
+\begin{align} \label{eq:def-rx}
     \vec{r}_x[k] =& \begin{bmatrix}
         r_x[(k+1)N-1] & \cdots & r_x[kN+1]
     \end{bmatrix}^T, \\
     \vec{c}^{-}_{i,j} =& \begin{bmatrix}
         c_{i,j}[-N+1] & \cdots & c_{i,j}[-1]
-    \end{bmatrix} \text{ and } \\
+    \end{bmatrix} \text{ and } \nonumber \\
     \vec{c}^{+}_{i,j} =& \begin{bmatrix}
         c_{i,j}[1] & \cdots & c_{i,j}[N-1]
-    \end{bmatrix}.
-\end{align*}
+    \end{bmatrix}. \nonumber
+\end{align}
 If we look carefully, we see that
 \begin{align*}
     r_{y_i,y_j}[L] &= r_x[LN]c_{i,j}[0] + \sum_{k=(L-1)N+1}^{LN-1}r_x[k]c_{i,j}[LN-k] \\
