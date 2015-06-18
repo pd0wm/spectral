@@ -7,35 +7,12 @@
 \begin{document}
 
 \section{Energy detection}
-Conventional energy detection is a detection method that measures the energy of a signal $x[n]$, $\Lambda$, during a certain period. By comparing this measured energy to a threshold $\gamma$ the detector decides whether the input signal $x[n]$ contains only noise or that another signal besides noise is present in $x[n]$:
 
-\begin{align*}
-	\begin{cases}
-		\mathcal{H}_0 & \text{if } \Lambda < \gamma \\
-		\mathcal{H}_1 & \text{if } \Lambda > \gamma
-	\end{cases}
-\end{align*}
- 
-Given $N$ samples of $x[n]$, the measure of energy, $\Lambda$, which is used as test statistic is given by 
-
-\begin{align}\label{eq:test_ed}
-	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
-\end{align}
-
-The threshold $\gamma$ depends on the expected noise power $\sigma_n^2$ and the desired false alarm probability $p_{fa}$: the probability that the detector decides that hypothesis 2 is true, while hypothesis 1 is the true hypothesis. The derivation of $\gamma$ (see Appendix ...) gives the following result
-
-\begin{align*}
-\gamma = \left[Q^{-1}(p_{fa})\sqrt{N} + N\right]2\sigma_n^2
-\end{align*}
-
-where $Q^{-1}$ denotes the the inverse tail probability function of the standard normal distribution and $p_{fa}$ is the desired false alarm probability.
-Using a band-pass filter $H(f)$ one can filter the signal $x[n]$ such that it can be used to detect a signal in a particular frequency band. This whole process is depicted
-in \cref{tkz:conv_ed}
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
 
-\node at (-6,2) {$x[n]$};
+\node at (-6,2) {$x(t)$};
 \node at (1.8,2) {$\mathcal{H}_0 \lor \mathcal{H}_1$};
 
 \draw [>=latex, ->] (-5.5,2) -- (-5,2);
@@ -56,42 +33,32 @@ in \cref{tkz:conv_ed}
 \caption{Conventional Energy Detector}\label{tkz:conv_ed}
 \end{figure}
 
-% As can be seen from  \cref{eq:test_ed} the test statistic used by the conventional energy detector does not take into account that the signal to be detected resides in a certain frequency band. Therefore it is necessary that the input signal $x[n]$ is filtered before $\Lambda$ is computed.
+A standard digital energy detector is a detector that consists of a lowpass filter $H(f)$ that filters the analog input signal $x(t)$ such
+that only the frequency band of interest remains. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). The detector estimates the energy $\Lambda$ of the signal during a period of $N$ samples as follows
 
-As can be noted from \cref{eq:test_ed} the test statistic depends on the signal itself, not on the autocorrelation which serves as input of our detector.
-In the rest of this section, we will show how the test statistic can be modified
-such that the autocorrelation function can be used to detect the presence of  a signal in a certain frequency band.
+\begin{align}\label{eq:test_ed}
+	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
+\end{align}
 
-Let 
+This estimate is then compared to a threshold $\gamma$ to decide whether a signal other than noise is present in $x[n]$. That is, $\Lambda$ serves as test statistic for the binary hypothesis problem
+
 \begin{align*}
-\Lambda' &= \frac{\Lambda}{N}\\
-	&= \frac{\sum_{n=0}^{N-1} |x[n]|^2}{N},
+	\begin{cases}
+		\mathcal{H}_0 & \text{if } \Lambda < \gamma \\
+		\mathcal{H}_1 & \text{if } \Lambda > \gamma.
+	\end{cases}
 \end{align*}
-then $\Lambda'$ is an estimate of the average power $E\left[|x[n]|^2\right]$ of the signal $x$. We can use $\Lambda'$ as test statistic by using a modified threshold $\gamma' = \frac{\gamma}{N}$. By definition of the power spectral density we know that integral over the power spectral density equals the expected average power:
+ 
 
-\begin{align}\label{eq:average_power_psd}
-E\left[\left|x[n]\right|^2\right] = \frac{1}{2\pi} \int_{-\pi}^{\pi}\mathcal{P}_x(\omega) \text{d}\omega.
-\end{align}
-Furthermore, by the Wiener-Khinchin theorem we have that, if $x[n]$ is wide-sense stationary (as is assumed in the reconstructor),
-\begin{align}\label{eq:wiener_psd}
-	\mathcal{P}_x(\omega) = \sum_{n=-\infty}^{\infty} r_x[n] \exp [2\pi j\omega].
-\end{align}
-By combining \cref{eq:average_power_psd} and \cref{eq:wiener_psd} we can relate the autocorrelation function to the test statistic $\Lambda'$.
-The test statistic $\Lambda'$, however, still does not allow for detection in a certain frequency band.
+The threshold $\gamma$ depends on the noise power $\sigma_n^2$  and the desired false alarm probability $p_{fa}$: the probability that the detector decides that hypothesis 2 is true, while hypothesis 1 is the true hypothesis. The derivation of $\gamma$ (see Appendix ...) gives the following result
 
- Notice that if $x[n]=w[n]$, its autocorrelation function equals a delta function: $r_x[n] = \sigma_n^2\delta[n]$, with $\sigma_n^2$ the average noise power. 
- Therefore the power spectral density of $x[n]$, denoted by $\mathcal{P}(\omega)$ equals  
- \begin{align*}
- \mathcal{P}_x(\omega) = \sum_{n=-\infty}^{\infty}r_x[n]e^{-jn\omega} = \sigma_n^2.
- \end{align*} The power spectral density is constant. If we want to detect the presence of a signal in a certain frequency band $W$, we can make use of this characteristic. Let
+\begin{align*}
+\gamma = \left[Q^{-1}(p_{fa})\sqrt{N} + N\right]2\sigma_n^2
+\end{align*}
 
- \begin{align*}
- \Lambda'' &= \int_W \mathcal{P}(\omega) \text{d}\omega
- \end{align*}
-denote the test statistic to detect a signal in the frequency band W.
- If we would integrate the power spectral density of noise over $W$ we obtain an average power of  $\frac{W}{2\pi} \sigma_n^2$. Therefore if we are to use $\Lambda''$ as test statistic, we have to use the modified threshold $\gamma'' = \frac{W}{2\pi} \gamma'$.
+where $Q^{-1}$ denotes the the inverse tail probability function of the standard normal distribution and $p_{fa}$ is the desired false alarm probability.
 
- By applying the Fourier transform to the autocorrelation one can use this test statistic to apply the detection process to several frequency bands, as depicted in \cref{tkz:my_ed}.
+% As can be seen from  \cref{eq:test_ed} the test statistic used by the conventional energy detector does not take into account that the signal to be detected resides in a certain frequency band. Therefore it is necessary that the input signal $x[n]$ is filtered before $\Lambda$ is computed.
 
  \begin{figure}[H]
 \centering
@@ -142,7 +109,45 @@ denote the test statistic to detect a signal in the frequency band W.
 \caption{Energy detection, multiple frequency bands}\label{tkz:my_ed}
 \end{figure}
 
-Note that this detector depends on the amount of samples $N$ that were used to calculate $\Lambda$. However, this poses a problem if the detector uses the estimated autocorrelation of the reconstructor: what is $N$?
+As can be seen from \cref{eq:test_ed} the test statistic $\Lambda$ depends on the signal itself, not on the autocorrelation or the power spectral density which serves as input of our detector. We will now establish this relation by modifying the test statistic $\Lambda$.
+Let 
+\begin{align*}
+\Lambda' &= \frac{\Lambda}{N}\\
+	&= \frac{\sum_{n=0}^{N-1} |x[n]|^2}{N},
+\end{align*}
+
+then $\Lambda'$ is an estimate of the average power $E\left[|x[n]|^2\right]$ of the signal $x$. We can use $\Lambda'$ as test statistic by using a modified threshold $\gamma' = \frac{\gamma}{N}$. To relate the power spectral density, which serves as input of our detector, to $\Lambda'$  we notice that by definition the integral over the power spectral density equals the expected average power:
+
+\begin{align}\label{eq:average_power_psd}
+E\left[\left|x[n]\right|^2\right] = \frac{1}{2\pi} \int_{-\pi}^{\pi}\mathcal{P}_x(\omega) \text{d}\omega.
+\end{align}
+
+Furthermore, by the Wiener-Khinchin theorem we have, if $x[n]$ is wide-sense stationary, that
+\begin{align}\label{eq:wiener_psd}
+	\mathcal{P}_x(\omega) &= \mathcal{F}(r_x[n]) \\
+	&= \sum_{n=-\infty}^{\infty} r_x[n] \exp [2\pi j\omega],
+\end{align}
+where the $\mathcal{F}(\cdot)$ denotes the Discrete Time Fourier Transform. 
+By combining \cref{eq:average_power_psd} and \cref{eq:wiener_psd} we can also relate the autocorrelation function to the test statistic $\Lambda'$. A energy detector using the test statistic is depicted in ????\footnote{it is assumed that $r_x[n]$ is based on an appropriate filtered signal}. A discrete power spectral density is estimated by applying the Fast Fourier Transform to $r_x[n]$. By summating over the obtained discrete power spectral density, an estimate of the average power is obtained. This estimate may then be compared with the threshold $\gamma'$.  
+
+The implementations of the energy detector proposed up until now do not allow for detection in multiple frequency bands. We will now propose a such an energy detector, which is depicted in \cref{tkz:my_ed}. By integrating over a specific band $W$ in the PSD an estimate of the average power in that band is obtained. This estimate is then compared to a threshold $\gamma''$ to determine the presence of a signal in that band.
+
+Notice that if $x[n]$ contains only white noise, then its autocorrelation function equals a delta function: $r_x[n] = \sigma_n^2\delta[n]$, with $\sigma_n^2$ the noise power. Therefore the power spectral density of $x[n]$, denoted by $\mathcal{P}(\omega)$ equals  
+ \begin{align*}
+ \mathcal{P}_x(\omega) &= \mathcal{F}(r_x[n])\\
+  &= \sigma_n^2.
+ \end{align*} The power spectral density is constant. If we want to detect the presence of a signal in a certain frequency band $W$, we can make use of this characteristic. Let
+
+ \begin{align*}
+ \Lambda'' &= \int_W \mathcal{P}(\omega) \text{d}\omega
+ \end{align*}
+denote the test statistic to detect a signal in the frequency band $W$.
+ If we integrate the power spectral density of white noise over $W$ we obtain an average power of  $\frac{W}{2\pi} \sigma_n^2$. Therefore if we are to use $\Lambda''$ as test statistic, we have to use the modified threshold $\gamma'' = \frac{W}{2\pi} \gamma'$. 
+
+ If the power spectral density is estimated by a Fast Fourier Transform on $r_x[n]$, then an estimate of $\Lambda''$ can be obtained by summating
+ the estimate over the desired frequency band. This would in principle allow for per frequency detection. This detector, however, is flawed: note that by increasing the bandwidth one is summating over, one decreases the variance of the test statistic. Or the other way around: by decreasing the bandwidth to just one sample of the discrete power spectral density one increases the variance of the test statistic. Increasing the variance of the test statistic means that we cannot use $\gamma''$ to achieve our desired $p_{fa}$. 
+ 
+Furthermore, note that this detector also depends on the amount of samples $N$ that were used to calculate $\Lambda$. However, this poses a problem if the detector uses the estimated autocorrelation of the reconstructor: what is $N$?
 
 In signal processing the autocorrelation function $r_x[n]$ is usually estimated by 
 
@@ -150,13 +155,14 @@ In signal processing the autocorrelation function $r_x[n]$ is usually estimated 
 r_x[n] = \frac{1}{N-|n|}\sum_{m=\max(0,n)}^{N-1+\min(0,n)} x[m]\overline{x}[m-n]
 \end{equation}
 
-By \cref{eq:acf_est} we have that $r_x[0] = \sum_{n=0}^{N-1} |x[n]|^2 = \Lambda$. That is, $N$ should be the amount of samples needed to estimate $r_x[0]$ in case that \cref{eq:acf_est} is used. However, the reconstructor does not use \cref{eq:acf_est}, instead it combines samples from multiple cosets, which obscures what the value of $N$ should be. 
-\todo{Derive threshold based on distribution of $r_x[0]$}
+By \cref{eq:acf_est} we have that $r_x[0] = \sum_{n=0}^{N-1} |x[n]|^2 = \Lambda$. That is, $N$ should be the amount of samples needed to estimate $r_x[0]$ in case that \cref{eq:acf_est} is used. 
+The reconstructor does not use \cref{eq:acf_est}, instead it combines samples from multiple cosets, which obscures what the value of $N$ should be. 
+% \todo{Derive threshold based on distribution of $r_x[0]$}
 
 % \subsection{Noise variance}
 % As indicated, knowledge of the noise variance is necessary for the energy detector to work. In practical situations this noise variance may be estimated from a reference measurement in an empty frequency band. 
 \subsection{Energy detection with knowledge of the reconstructor}
-The problem with the conventional energy detector described above is that the parameter $N$ is not straightforward to determine. The energy detector as described in \cite{ariananda2012compressive} uses the power spectral density as test statistic. The power spectral density is estimated by applying the Discrete Fourier Transform to the estimate of the autocorrelation function. With a frequency specific threshold, $\gamma_{\omega}$, the detector decides per frequency whether $\mathcal{H}_0$ or $\mathcal{H}_1$ is true, as can be seen from \cref{tkz:ed_ari_overview}. This detector can actually be regarded as the detector in \cref{tkz:my_ed} where the discrete power spectral density used and $W=\frac{2\pi}{2LN+1}$.  
+The problem with the multi-band energy detector as described above is that the parameter $N$ is not straightforward to determine. Furthermore, the threshold $\gamma''$ will not yield the correct false alarm probability. The energy detector as described in \cite{ariananda2012compressive} does use per-frequency detection. Each element of an estimate of the discrete power spectral density is compared to a (possibly) frequency dependent threshold $\gamma_{\omega}$. This detector is depicted in \cref{tkz:ed_ari_overview}.  
 
 \begin{figure}[H]
 \centering
@@ -169,13 +175,13 @@ The problem with the conventional energy detector described above is that the pa
 \draw (-2,4.5) rectangle (-1,3.5) node[pos=.5]{FFT};
 
 \draw [>=latex, ->] (-1,4) -- (-0.5,4);
-\node at (0.3,4) {PSD[k]};
+\node at (0.3,4) {$PSD[k]$};
 
-\node at (-3.2,2.5) {$PSD[i]$};
+\node at (-3.2,2.5) {$PSD[k]$};
 
 \draw [>=latex, ->] (-2.5,2.5) -- (-2,2.5);
 
-\draw (-2,3) rectangle (-1,2) node[pos=.5]{$_<^ > \gamma_i$};
+\draw (-2,3) rectangle (-1,2) node[pos=.5]{$_<^ > \gamma_k$};
 
 \draw [>=latex, ->] (-1,2.5) -- (-0.5,2.5);
 \node at (0.3,2.5) {$\mathcal{H}_0 \text{ or } \mathcal{H}_1$};
@@ -184,31 +190,49 @@ The problem with the conventional energy detector described above is that the pa
 \caption{Energy detection with knowledge of the reconstructor}\label{tkz:ed_ari_overview}
 \end{figure}
 
- To determine the threshold $\gamma_{\omega}$ for each element, the signal $x[n]$ is assumed to contain purely additive circular complex Gaussian noise. The distribution of the elements of the reconstructed power spectral density is then approximated as a normal distribution, see Appendix \textbf{TODO} for a derivation.
+Let denote $\vec{s}_x[k] \in \mathbb{R}^{2LN+1}$ the discrete power spectral density vector obtained by applying the $(2LN+1)$ point Discrete Fourier Transform to $\vec{r}_x$. The vector $\vec{s}_x$ is then given by
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
+\begin{align}
+\vec{s}_x &= F_{(2NL+1)}\vec{r}_x
+\end{align}
 
-\draw [fill=lightgray] (-2,0) rectangle (1,-1);
-\draw (1,3) rectangle (3,-1);
-\draw [fill=cyan, opacity=0.2] (1,3) rectangle (3,-1);
-\draw [fill=lightgray](3,0) rectangle (9,-1);
+where $F_{(2NL+1)}$ denotes the $(2LN+1)\times (2LN+1)$ DFT matrix. 
+
+To determine the threshold $\gamma_{k}$ for each element of the $\vec{s}_x$, the signal $x[n]$ is assumed to contain only white noise. The distribution of the elements of the reconstructed power spectral density can then be approximated as a gaussian distribution \footnote{For the interested reader, see the Appendix \textbf{TODO} for a derivation}, which we will denote as $(\vec{s}_x)_k \sim \mathcal{N}(\mu_k, \sigma_k^2)$.
+To obtain $\mu_k = E\left((\vec{s}_x)_k\right)$ notice that
+
+\begin{align*}
+E\left(\vec{s}_x\right) &= \mat{F}\mat{R}^{\dagger}E\left(\vec{r}_y\right).
+\end{align*} and that the elements of $(\vec{r}_y$ are given by 
+\begin{align*}
+\vec{r}_{y_i, y_j}[k] &= \vec{r}_{c_i,c_j} \ast \vec{r}_x & \text{\cref{th:convolution-correlation}} \\
+&=  \left( \vec{r}_{c_i,c_j}\right)_N  \vec{\delta}_N
+\end{align*}
 
 
-\draw [>=latex,<->] (-2.1,-1) -- (-2.1,0);
-\node at (-2.4,-.5) {$\sigma^2_n$};
+% \begin{figure}[H]
+% \centering
+% \begin{tikzpicture}
 
-\draw [red] (-2,.1) -- (9.2,.1);
+% \draw [fill=lightgray] (-2,0) rectangle (1,-1);
+% \draw (1,3) rectangle (3,-1);
+% \draw [fill=cyan, opacity=0.2] (1,3) rectangle (3,-1);
+% \draw [fill=lightgray](3,0) rectangle (9,-1);
 
-\draw [>=latex,<->] (9.2,-1) -- (9.2,.1);
-\node at (9.4,-.4 ) {$\gamma$};
 
-\node at (-2,-1.5) {0 rad/s};
-\node at (9,-1.5) {$2\pi$ rad/s};
-\end{tikzpicture}
-\caption{Energy detection with power spectral density}\label{tkz:ed_ari}
-\end{figure}
+% \draw [>=latex,<->] (-2.1,-1) -- (-2.1,0);
+% \node at (-2.4,-.5) {$\sigma^2_n$};
+
+% \draw [red] (-2,.1) -- (9.2,.1);
+
+% \draw [>=latex,<->] (9.2,-1) -- (9.2,.1);
+% \node at (9.4,-.4 ) {$\gamma$};
+
+% \node at (-2,-1.5) {0 rad/s};
+% \node at (9,-1.5) {$2\pi$ rad/s};
+% \end{tikzpicture}
+% \caption{Energy detection with power spectral density}\label{tkz:ed_ari}
+% \end{figure}
 
 Given $\mu (\omega) = E[\mathcal{P}(\omega)]$ and $\sigma^2 (\omega) = \text{Var}(\mathcal{P}(\omega))$, a threshold for each frequency $\omega$ given a false alarm probability can be calculated as:
 
