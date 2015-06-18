@@ -1,0 +1,18 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Results}
+
+To test the three proposed detectors, we use a bandpass signal with bandwidth $-0.2\pi \leq \Omega \leq 0.2\pi$. This signal is constructed by applying a FIR filter with an impulse response of length $LN+1$ \footnote{To ensure limited correlation as is assumed in the reconstruction process} to circular complex gaussian noise. The detection probability for both energy
+detectors is evaluated in this band. The false alarm probability is evaluated in a band far enough way($0.6\pi \leq \Omega \leq 0.8\pi$) (to prevent detection in the passband of the filter).
+
+The false alarm probability of CAV is evaluated in a seperate run where there is no signal.
+
+\todo{Plot ROC for CAV, ED, ED ariananda}
+
+\end{document}

@@ -1,6 +1,145 @@
-\input{ComplexExponential_init}
-\input{Sinusoidal_init}
-\input{Wessel_init}
-\input{CrossCorrelation_init}
-\input{MultiCoset_init}
-\input{Coprime_init}
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+
+\title{Compressive Sensing - An Overview}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\section{Call graphs source}
+\label{sec:call_graphs_source}
+\subsection{Sinusoidal}
+\label{sub:sinusoidal}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Sinusoidal_init}
+    \caption{Sinusoidal\_init call graph}
+    \label{fig:Sinusoidal_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Sinusoidal_generate}
+    \caption{Sinusoidal\_generate call graph}
+    \label{fig:Sinusoidal_generate}
+\end{figure}
+
+\subsection{Complex exponential}
+\label{sub:complex_exponential}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{ComplexExponential_init}
+    \caption{ComplexExponential\_init call graph.}
+    \label{fig:ComplexExponential_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{ComplexExponential_generate}
+    \caption{ComplexExponential\_generate call graph}
+    \label{fig:ComplexExponential_generate}
+\end{figure}
+
+\subsection{Rectangular source}
+\label{sub:rectangular_source}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Rect_init}
+    \caption{Rect\_init call graph.}
+    \label{fig:Rect_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Rect_generate}
+    \caption{Rect\_generate call graph}
+    \label{fig:Rect_generate}
+\end{figure}
+
+\section{Sampling call graphs}
+\label{sec:sampling_call_graphs}
+\subsection{Multicoset sampler}
+\label{sub:multicoset_sampler}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Multicoset_init}
+    \caption{Multicoset\_init call graph}
+    \label{fig:Multicoset_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Multicoset_sample}
+    \caption{Multicoset\_sample call graph}
+    \label{fig:Multicoset_sample}
+\end{figure}
+
+\subsection{Coprime sampler}
+\label{sub:coprime_sampler}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Coprime_init}
+    \caption{Coprime\_init call graph.}
+    \label{fig:Coprime_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Coprime_sample}
+    \caption{Coprime\_sample call graph.}
+    \label{fig:Coprime_sample}
+\end{figure}
+
+\section{Reconstructor call graphs}
+\label{sec:reconstructor_call_graphs}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{CrossCorrelation_init}
+    \caption{CrossCorrelation\_init call graph.}
+    \label{fig:CrossCorrelation_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{CrossCorrelation_reconstruct}
+    \caption{CrossCorrelation\_reconstruct call graph.}
+    \label{fig:CrossCorrelation_reconstruct}
+\end{figure}
+
+\subsection{Wessel}
+\label{sub:wessel}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Wessel_init}
+    \caption{Wessel\_init call graph.}
+    \label{fig:Wessel_init}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Wessel_reconstruct}
+    \caption{Wessel\_reconstruct call graph.}
+    \label{fig:Wessel_reconstruct}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+\end{document}
