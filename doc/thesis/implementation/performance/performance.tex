@@ -14,6 +14,10 @@
 \chapter{Performance}
 In this chapter we will discuss a variety of performance optimalisations. These are crucial to our product because of the performance requirements discussed in \cref{cha:impl:preliminaries}.
 
+\section{Profiling}
+\label{sec:profiling}
+To find the bottlenecks in our system we made extensive use of the profiler included with Python. Call graphs for the constructor and the interface for all blocks are included in \cref{ap:prof}.
+
 \section{Algorithms}
 A first major step in speeding up our application involved tuning our algorithms to be more specialized towards our application.
 
@@ -34,10 +38,8 @@ Another way we were able to achieve a higher speed is to vectorize a number of c
 
 \subsection{Multi-core}
 \label{sec:multi-core}
-Each major part of the model (Source\&Sampling, Reconstruction, Detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU.
+Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU.
 
-\section{Profiling}
-\label{sec:profiling}
 
 \section{Results \& Improvements}
 \label{sec:results}

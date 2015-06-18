@@ -54,7 +54,9 @@ init_reconstructors = []
 for obj, args in zip(reconstructors, reconstructors_init_args):
     init_reconstructors.append(gen_profiling_report(obj, args, obj, constructor=True))
 
-#  sources_gen_args = [(nyq_block_size,)] * len(init_sources)
-#  signals = []
-#  for obj, args in zip(init_sources, sources_gen_args):
-#      signals.append(gen_profiling_report(obj, args, obj.generate))
+sources_gen_args = [(nyq_block_size,)] * len(init_sources)
+signals = []
+for obj, args in zip(init_sources, sources_gen_args):
+    signals.append(gen_profiling_report(obj, args, obj.generate))
+
+

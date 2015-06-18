@@ -8,14 +8,18 @@ class Wessel(Reconstructor):
 
     """Implementation of Wessel's adaption of the ariananda algorithm"""
 
-    def __init__(self, L, C):
+    def __init__(self, L, C, cache=True):
         Reconstructor.__init__(self)
         self.L = L
         self.C = C
         self.M = self.C.shape[0]
         self.N = self.C.shape[1]
         self.R = self.constructR()
-        self.R_pinv = self.calc_pseudoinverse(self.R)
+
+        if cache:
+            self.R_pinv = self.calc_pseudoinverse(self.R)
+        else:
+            self.R_pinv = sp.linalg.pinv(self.R)
 
     # Given M decimated channels, try to estimate the PSD
     def reconstruct(self, signal):
