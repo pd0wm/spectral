@@ -22,7 +22,7 @@ All our sources are derived from one base source, that defines the methods that 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/classes_source.eps}
-    \caption{The UML diagram of the sources.}
+    \caption{The UML diagram of the sources}
     \label{fig:umlsource}
 \end{figure}
 
@@ -60,7 +60,7 @@ After the samples are generated, different sampling methods have to be applied. 
 \begin{figure}
     \centering
     \includegraphics{./figures/classes_sampling.eps}
-    \caption{The UML diagram of the samplers.}
+    \caption{The UML diagram of the samplers}
     \label{fig:}
 \end{figure}
 
@@ -82,7 +82,10 @@ The minimal sparse ruler is a special case of the Multi-coset sampler. Its list 
 
 \subsection{Coprime sampler}
 \label{sec:coprime-sampler}
-The coprime sampler is another special case of the multi-coset sampler. The only difference again is the way the list of offsets is generated. As explained in \cref{sec:coprime}, the coprime sampler rests on two samplers with different sampling ratios that have a coprime ratio. This can be seen as $a + b - 1$ cosets sampling at a $a \cdot b$ downsampling factor. The coprime offsets are generated using a generator function\footnote{
+The coprime sampler is another special case of the multi-coset sampler. The only difference again is the way the list of offsets is generated. As explained in \cref{sec:coprime}, the coprime sampler rests on two samplers with different sampling ratios that have a coprime ratio. The constructor takes two arguments, a and b, the coprime ratios of the sample frequencies.
+
+Coprime can be seen as a different form of multi-coset sampling, $a + b - 1$ are the number of cosets and $a \cdot b$ is the downsampling factor as can be read in \cref{sec:coprime}. This means that two samplers that have a coprime ratio have a shared period of $a \cdot b$.
+In the implementation the coprime offsets are generated using a generator function\footnote{
     A generator function is a way to do `lazy' generation of values which translates to lower memory usage. In this case the gains are marginal but it is good form nonetheless.}
 which keeps returning multiples of the coprime until their least common multiple, the downsampling ratio $a \cdot b$, is reached. This sampler also inherits the multi-coset \func{sample(signal)} method.
 
@@ -92,11 +95,11 @@ The hardware coprime sampler does not get one vector with input samples, but two
 
 \section{Reconstruction}
 \label{sec:reconstruction}
-Two different kind of reconstruction methods are implemented. One similar to the one specified in \cite{ariananda2012compressive} the other is discussed in Part 1 of this thesis. Both reconstructors implement the interface \func{reconstructor} which has a contract for one method named \func{reconstruct(signal)}, see the UML in \cref{fig:umlreconstructor}. Both classes make use of the shared function \func{calc\_pseudoinverse(R)}. This is a wrapper around \lib{SciPy's} \func{pinv}, which calculates the pseudoinverse. Because this operation is quite time consuming for larger systems a caching mechanism was introduced to lower startup times.
+Two different kind of reconstruction methods are implemented. One similar to the one specified in \cite{ariananda2012compressive} the other is discussed in Part 1 of this thesis. Both reconstructors implement the interface \func{reconstructor} which has a contract for one method named \func{reconstruct(signal)}, see the UML in \cref{fig:umlreconstructor}. Both classes make use of the shared function \func{calc\_pseudoinverse(R)}. This is a wrapper around \lib{SciPy's} \func{pinv}, which calculates the pseudoinverse. Because this operation is quite time consuming for larger systems a caching mechanism was introduced to lower startup times.% It writes a file with the specific parameters (L and all the intervals) in the name away to a cache directory.
 
 \subsection{CrossCorrelation}
 \label{sub:crosscorrelation}
-The CrossCorrelation class implementation is based on \cite{ariananda2012compressive}. The constructor takes 3 arguments (one optional):
+The \func{CrossCorrelation} class implementation is based on \cite{ariananda2012compressive}. The constructor takes 3 arguments (one optional):
 \begin{description}
     \item[L] determines the maximum lag estimated of cross-correlation of the cosets,
     \item[C] is the sampling matrix used by one of the samplers. This is required for the reconstruction algorithm, and
@@ -114,14 +117,14 @@ Wessel's reconstructor is a variation on the reconstruction technique implemente
     \item[C] is the sampling matrix used by one of the samplers. This is required for the reconstruction algorithm.
     \item[cache] (default is True) is a boolean value that determines whether the pseudo-inverse can be loaded and saved to the cache. Mainly used for test and profiling purposes.
 \end{description}
-The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions.
+The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions. These all build matrices as described in \cref{cha:reconstruction}. The difference between the \func{CrossCorrelation} reconstructor and this one are that the form of the pseudoinverse is more optimized for \lib{NumPy} in \func{Wessel}'s case. This is because of how the input signal should be structured. Because \lib{NumPy's} native way of saving matrices is in row-major order\footnote{This is the standard way of saving a array in C, two notable exceptions are \matlab and Fortran. Column major order is often called Fortran style.}.
 
-The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector. This is the functionality as described in \cref{cha:reconstruction}.
+The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector.
 
 \begin{figure}
     \centering
     \includegraphics{./figures/classes_reconstruction.eps}
-    \caption{The UML diagram of the reconstructors.}
+    \caption{The UML diagram of the reconstructors}
     \label{fig:umlreconstructor}
 \end{figure}
 
@@ -131,7 +134,7 @@ The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with o
 \begin{figure}
     \centering
     \includegraphics{./figures/classes_detection.eps}
-    \caption{The UML diagram of the detectors.}
+    \caption{The UML diagram of the detectors}
     \label{fig:umldetector}
 \end{figure}
 
