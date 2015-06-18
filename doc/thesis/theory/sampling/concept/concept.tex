@@ -40,7 +40,7 @@ The first step of spectrum sensing is sampling the signal. Conventional methods 
 \caption{Uniform sampling with sampling period $T$. Gray blocks are sampled}\label{tkz:uniform}
 \end{figure}
 
-When one desires to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate \todo{ref}. However, we don't need a full recovery of the signal, but are only interested in certain properties of the signal. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum, and efficiently recover the information we are looking for. Non uniform sampling has no restriction on delays of subsequent samples as is illustrated in \cref{tkz:nonuniform}.
+When one desires to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate \todo{ref}. However, we don't need a full recovery of the signal, and are only interested in certain properties of the signal. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum, and efficiently recover the information we are looking for. Non-uniform sampling has no restriction on delays of subsequent samples as is illustrated in \cref{tkz:nonuniform}.
 
 \begin{figure}[H]
 \centering
@@ -72,8 +72,7 @@ When one desires to ensure full reconstruction of the signal with uniform sampli
 \end{tikzpicture}
 \caption{Non-uniform sampling with sampling period $T$. Gray blocks are sampled}\label{tkz:nonuniform}
 \end{figure} 
-
-This is however not trivial to implement on a device. To perform non-uniform sampling we introduce multi-coset sampling. Multi-coset sampling is a set of sampling methods that use multiple samplers, or cosets, to sample the spectrum. This is illustrated in \cref{tkz:multicoset}
+ This is however not trivial to implement on a device. To perform non-uniform sampling we introduce multi-coset sampling. Multi-coset sampling is a set of sampling methods that use multiple samplers, or cosets, to sample the spectrum. This is illustrated in \cref{tkz:multicoset}
 
 \begin{figure}[H]
 \centering
@@ -106,7 +105,7 @@ This is however not trivial to implement on a device. To perform non-uniform sam
 \caption{schematic multi-coset sampling with $m$ cosets}\label{tkz:multicoset}
 \end{figure}
 
-In the reconstruction section we will deduce criteria on the sampling that will further specify the samplers. In the sampling section methods we will then get back to multi-coset sampling to link it to the reconstruction and optimize performance.
+Here the $x$ represents the input signal, the switches are the samplers and $y_i$ are the outputs of the different samplers. In the reconstruction section we will deduce criteria on the sampling that will further specify the samplers. Wee will then get back to multi-coset sampling to link it to the reconstruction and optimize performance in \cref{cha:sampling_methods}.
 
 \end{document}
 

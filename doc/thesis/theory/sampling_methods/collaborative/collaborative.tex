@@ -8,7 +8,7 @@
 
 \section{Collaborative sampling}
 
-Collaborative sampling is very similar to circular sparse ruler, but differs in that it makes use of multiple devices. In this way, one device does not need to have the information for all lags, because other devices might have that information. This is illustrated in \cref{tkz:collaborative_ruler}, where $N=13$, $M=4$ with two devices.
+Collaborative sampling is very similar to circular sparse ruler, but differs in that it makes use of multiple devices. In this way, one device does not need to sample the information for all lags, because other devices might sample that information. This is illustrated in \cref{tkz:collaborative_ruler}, where $N=13$ and $M=4$ with two devices.
 
 \begin{figure}[H]
 \centering
@@ -16,7 +16,7 @@ Collaborative sampling is very similar to circular sparse ruler, but differs in 
 
 \draw (0,3.3) -- (8.5,3.3);
 \draw [blue, very thick] (0,3) -- (0,3.3);
-\draw (0.5,3) -- (0.5,3.1);
+\draw (0.5,3.2) -- (0.5,3.3);
 \draw [blue, very thick](1,3) -- (1,3.3);
 \draw (1.5,3.2) -- (1.5,3.3);
 \draw (2,3.2) -- (2,3.3);
@@ -108,10 +108,19 @@ Collaborative sampling is very similar to circular sparse ruler, but differs in 
 \caption{collaborative sampling solution for $N=13$ and $M=4$}\label{tkz:collaborative_ruler}
 \end{figure}
 
-insert blaatverhaal
+The red arrows indicate the lags that are produced by device one, and the blue arrows indicate the lags that are produced by device two. Note that together they make all lags necessary.
 
-\subsection{ci aanmaken}\label{sub:ci-collab}
-blaatverhaal
+The paper ref \todo{ref} investigates ways to come up with optimal set-ups for different amounts of devices. The solution presented in \cref{tkz:collaborative_ruler} is an optimal solution for two devices and three samplers: $S_1=\{1,2,4\}, S_2 = \{1,3,8\}$.
+
+\subsection{combine collaborative sampler with reconstructor}\label{sub:ci-collab}
+We need different devices to compute different parts of the desired autocorrelation $\vec{r}_x$. Therefore we have to tell the reconstructor to not try to reconstruct the whole autocorrelation, but only parts of it per device. The results of different devices are then combined. However, it is not trivial to tell the reconstructor to only calculate the parts of the autocorrelation it has information for. do this we need to take a look at
+
+\begin{align} %\label{eq:ry-R-rx}
+    \vec{r}_y = \mat{R} \vec{r}_x.
+\end{align}
+which is the result from \cref{eq:ry-R-rx} in ref \todo{ref}. This formula describes the relationship between $\vec{r}_y$ and $\vec{r}_x$. When we don't have all lags available, $\mat{R}$ is not full column rank, what in practice means that there are columns with only zeros. These columns correspond directly to the elements of $\vec{r}_x$ we have no information of. So what we now need to do is remove the columns with only zeros, and remove the corresponding elements out of $\vec{r}_x$. One can choose to either calculate beforehand which columns are zero, but one can also do that after calculating $\mat{R}$, and remove the columns that are zero. 
+
+The only thing left to do is to combine the information on a combiner. This combiner takes the information of the different devices and puts their values accordingly in the autocorrelation vector $\vec{r}_x$. 
 
 
 \end{document}
