@@ -31,41 +31,41 @@ def gen_profiling_report(obj, args, runs, method=None, constructor=False):
         pr.dump_stats("profiler_reports/{}_{}.prof".format(obj.__class__.__name__, method.__name__))
     return ret
 
+if __name__ == "__main__":
+    sources = [cg.source.Sinusoidal, cg.source.ComplexExponential, cg.source.Rect]
+    sources_init_args = [(frequencies, sample_freq)] * 2
+    sources_init_args.append((frequencies, widths, sample_freq))
+    init_sources = []
+    for obj, args in zip(sources, sources_init_args):
+        init_sources.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
 
-sources = [cg.source.Sinusoidal, cg.source.ComplexExponential, cg.source.Rect]
-sources_init_args = [(frequencies, sample_freq)] * 2
-sources_init_args.append((frequencies, widths, sample_freq))
-init_sources = []
-for obj, args in zip(sources, sources_init_args):
-    init_sources.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
+    init_samplers = []
+    samplers = [cg.sampling.Coprime, cg.sampling.MultiCoset]
+    sampler_init_args = [(a, b), (N,)]
 
-init_samplers = []
-samplers = [cg.sampling.Coprime, cg.sampling.MultiCoset]
-sampler_init_args = [(a, b), (N,)]
+    for obj, args in zip(samplers, sampler_init_args):
+        init_samplers.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
 
-for obj, args in zip(samplers, sampler_init_args):
-    init_samplers.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
+    C = init_samplers[1].get_C()
 
-C = init_samplers[1].get_C()
+    reconstructors = [cg.reconstruction.CrossCorrelation, cg.reconstruction.Wessel]
+    reconstructors_init_args = [(L, C, False)] * len(reconstructors)
 
-reconstructors = [cg.reconstruction.CrossCorrelation, cg.reconstruction.Wessel]
-reconstructors_init_args = [(L, C, False)] * len(reconstructors)
+    init_reconstructors = []
+    for obj, args in zip(reconstructors, reconstructors_init_args):
+        init_reconstructors.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
 
-init_reconstructors = []
-for obj, args in zip(reconstructors, reconstructors_init_args):
-    init_reconstructors.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
+    sources_gen_args = [(nyq_block_size,)] * len(init_sources)
+    signals = []
+    for obj, args in zip(init_sources, sources_gen_args):
+        signals.append(gen_profiling_report(obj, args, runs, obj.generate))
 
-sources_gen_args = [(nyq_block_size,)] * len(init_sources)
-signals = []
-for obj, args in zip(init_sources, sources_gen_args):
-    signals.append(gen_profiling_report(obj, args, runs, obj.generate))
+    sample_samp_args = [(signals[0],)] * len(init_samplers)
+    sampled_signal = []
+    for obj, args in zip(init_samplers, sample_samp_args):
+        sampled_signal.append(gen_profiling_report(obj, args, runs, obj.sample))
 
-sample_samp_args = [(signals[0],)] * len(init_samplers)
-sampled_signal = []
-for obj, args in zip(init_samplers, sample_samp_args):
-    sampled_signal.append(gen_profiling_report(obj, args, runs, obj.sample))
-
-reconst_reconstr_args = [(sampled_signal[1],)] * len(reconstructors)
-reconstr_signal = []
-for obj, args in zip(init_reconstructors, reconst_reconstr_args):
-    reconstr_signal.append(gen_profiling_report(obj, args, runs, obj.reconstruct))
+    reconst_reconstr_args = [(sampled_signal[1],)] * len(reconstructors)
+    reconstr_signal = []
+    for obj, args in zip(init_reconstructors, reconst_reconstr_args):
+        reconstr_signal.append(gen_profiling_report(obj, args, runs, obj.reconstruct))
