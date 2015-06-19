@@ -3,14 +3,27 @@ from .multicoset import MultiCoset
 
 class MinimalSparseRuler(MultiCoset):
 
-    """Multi coset sampler implementation"""
+    """ Minimimal sparse ruler sampler. Generates a minimal sparse ruler
+    and feeds it into the multicoset constructor.
+
+    Args:
+        N: Downsampling factor
+    """
 
     def __init__(self, N):
         sparseruler = self.sparseruler(N)
         M = len(sparseruler)
         super(MinimalSparseRuler, self).__init__(sparseruler, N, M)
 
-    def sparseruler(self, i):
+    def sparseruler(self, ruler_length):
+        """ Lookup table for sparse ruler solutions.
+
+        Args:
+            ruler_length: Length of the ruler to be solved.
+
+        Returns:
+            Returns solution to minimal sparse ruler problem.
+        """
         sparseruler = {
             1: (0, 1),
             2: (0, 1, 2),
@@ -36,6 +49,6 @@ class MinimalSparseRuler(MultiCoset):
             50: (0, 1, 7, 9, 12, 31, 35, 45),
             60: (0, 1, 4, 6, 10, 22, 30, 37, 48)
         }
-        if (i - 1) not in sparseruler:
+        if (ruler_length - 1) not in sparseruler:
             raise NotImplementedError("Values other than " + str(sparseruler.keys()) + " not implemented.")
-        return sparseruler[i - 1]
+        return sparseruler[ruler_length - 1]
