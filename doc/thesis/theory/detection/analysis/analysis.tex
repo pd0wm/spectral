@@ -258,7 +258,7 @@ where $\mat{C}_{r_y}$ denotes the covariance matrix of $\vec{r}_y$. The elements
 % \end{figure}
 
 \section{Covariance absolute value method}
-The covariance absolute value detection method as introduced does \emph{not} depend on the noise power. Its test statistic is based on the structure of the autocorrelation function $r_x[n]$. 
+The covariance absolute value detection method as introduced in \cite{zheng2009spectrum} does \emph{not} depend on the noise power $\sigma_n^2$. Its test statistic is based on the structure of the autocorrelation function $r_x[n]$. 
 
 \begin{figure}[H]
 \centering
@@ -413,6 +413,11 @@ The threshold $\gamma$ can then be calculated as
 \begin{align*}
 \gamma &= \frac{E(T_1)}{Q^{-1}(1-p_{fa})\sqrt{\Var(T_2)}+E(T_2)}
 \end{align*}
+
+\subsection{Filtering}
+To be able to detect in a certain frequency band the input signal should be filtered in some way. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered: noise samples may become correlated. \cite{zheng2009spectrum} proposes a prewhiting technique
+that can be used if the filter applied to $x[n]$ is known. In our case the detector is provided with $r_x[n]$ and no filter is applied to $x[n]$. 
+We therefore, cannot use the prewhitening technique. 
 
 % To determine the the threshold of the CAV detector we assume that the elements of the reconstructed auto correlation  $\hat{r}_x[n]$ are approximately gaussian distributed (see \cite{zheng2009spectrum} \cite{ariananda2012compressive}).
 
