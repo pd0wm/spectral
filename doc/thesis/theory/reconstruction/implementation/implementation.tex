@@ -8,113 +8,65 @@
 
 \section{Implementational details}
 \label{sec:reconstruction-implementation}
-This section will discuss some details of the algorithm which are useful when implementing the algorithm.
+This section will discuss some details of the algorithm which should be considered when implementing the algorithm.
+
+\subsection{Restrictions on the sampling signals}
+\label{sub:reconstruction-ci}
+This subsection discusses sufficient restrictions on $c_i[n]$ which yield a correct estimation. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Furthermore, all $c_i[n]=1$ for $n=n_i$ and otherwise zero. Finally, the following problem must be satisfied.
+
+\begin{description}
+    \item[Circular Sparse Ruler Problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ make up $0,\ldots,N-1$.
+\end{description}
+
+This problem will be further discussed in \cref{cha:sampling_methods}.
 
 \subsection{Estimation of the cross-correlations and autocorrelation}
 \label{sub:reconstruction-estimation}
-In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[m]$ is known for $m = 0,\ldots,KL-1$. Since we assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$, it remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
+In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[n]$ is known for $n = 0,\ldots,KL-1$. Since we assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$, it remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
 \begin{align*}
     \hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|}\sum_{k=l}^{u}y_i[k]\conj{y}_j[k+m]
 \end{align*}
-where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. It is worthwhile to notice that $E(\hat{r}_{y_i,y_j}[m])=r_{y_i,y_j}[m]$, which means that $\hat{r}_{y_i,y_j}[m]$ is an unbiased estimator of $r_{y_i,y_j}[m]$. Similarly, we define
-\begin{align*}
-    \hat{\vec{r}}_{y_i,y_j} = \begin{bmatrix}
-        \hat{r}_{y_i,y_j}[L] & \cdots & \hat{r}_{y_i,y_j}[-L]
-    \end{bmatrix}.
-\end{align*}
-Then $E(\hat{\vec{r}}_{y_i,y_j})=\vec{r}_{y_i,y_j}$, which means that $\hat{\vec{r}}_{y_i,y_j}$ is an unbiased estimator of $\vec{r}_{y_i,y_j}$. Now consider \cref{eq:ry-R-rx}. Notice that
-\begin{align*}
-    E(\hat{\vec{r}}_{y_i,y_j}) = \vec{r}_{y_i,y_j} = \mat{R} \vec{r}_x.
-\end{align*}
-Thus $\hat{\vec{r}}_{y_i,y_j}$ can be used to estimate $\vec{r}_x$. Denote this estimation of $\vec{r}_x$ by $\hat{\vec{r}}_x$.
+where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. It is worthwhile to notice that $E(\hat{r}_{y_i,y_j}[m])=r_{y_i,y_j}[m]$, which means that $\hat{r}_{y_i,y_j}[m]$ is an unbiased estimator of $r_{y_i,y_j}[m]$.
+% Similarly, we define
+% \begin{align*}
+%     \hat{\vec{r}}_{y_i,y_j} = \begin{bmatrix}
+%         \hat{r}_{y_i,y_j}[L] & \cdots & \hat{r}_{y_i,y_j}[-L]
+%     \end{bmatrix}^T.
+% \end{align*}
+% Then $E(\hat{\vec{r}}_{y_i,y_j})=\vec{r}_{y_i,y_j}$, which means that $\hat{\vec{r}}_{y_i,y_j}$ is an unbiased estimator of $\vec{r}_{y_i,y_j}$. Now consider \cref{eq:ry-R-rx}. Notice that
+% \begin{align*}
+%     E(\hat{\vec{r}}_{y_i,y_j}) = \vec{r}_{y_i,y_j} = \mat{R} \vec{r}_x.
+% \end{align*}
+% Thus $\hat{\vec{r}}_{y_i,y_j}$ can be used to estimate $\vec{r}_x$. Denote this estimation of $\vec{r}_x$ by $\hat{\vec{r}}_x$.
 
 \subsection{Sparsity}
 \label{sub:reconstruction-sparsity}
-Operations on large matrices can be computationally intensive. If a matrix is sparse, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation, we argued that every row of $\mat{R}$ has exactly one nonzero element. Since $\mat{R}$ has $2LN+1$ columns, the fration of nonzero elements of $\mat{R}$ is given by
+Operations on large matrices can be computationally expensive. If a matrix is sparse, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation during the derivation of the algorithm, we argued that every row of $\mat{R}$ has exactly one nonzero element. Since $\mat{R}$ has $2LN+1$ columns, the fration of nonzero elements of $\mat{R}$ is given by
 \begin{align*}
     \rho_{\text{nz}}=\frac{1}{2LN+1}.
 \end{align*}
-Since $LN$ determines the resolution of the estimated power spectral density of the input signal, the product $LN$ is usually chosen large. This means that $\mat{R}$ is usually a very sparse matrix.
+Since $LN$ determines the resolution of the estimated power spectral density of the input signal, the product $LN$ is usually chosen large. This means that $\mat{R}$ is usually a sparse matrix.
 
 \subsection{Efficient generation of the matrices}
 \label{sub:reconstruction-generation}
-It turns out that $\mat{R}_{i,j}$ can be generated efficiently using commonly available functions. To generate $\mat{R}_{i,j}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. Given a vector, $\operatorname{toeplitz}$ generates a Toeplitz matrix from this vector. Also, given a matrix, $\operatorname{tril}$ keeps the lower triangular matrix of this matrix and sets the other elements to zero. Their operation is illustrated with two examples.
-\begin{align*}
-    \operatorname{toeplitz}\left(\begin{bmatrix}
-        1 & 2 & 3 & 4
-    \end{bmatrix}\right) = \begin{bmatrix}
-        1 & 2 & 3 & 4 \\
-        2 & 1 & 2 & 3 \\
-        3 & 2 & 1 & 2 \\
-        4 & 3 & 2 & 1
-    \end{bmatrix},
-\end{align*}
-\begin{align*}
-    \operatorname{tril}\left(\begin{bmatrix}
-        1 & 2 & 3 & 4 \\
-        2 & 1 & 2 & 3 \\
-        3 & 2 & 1 & 2 \\
-        4 & 3 & 2 & 1
-    \end{bmatrix}\right) = \begin{bmatrix}
-        1 & 0 & 0 & 0 \\
-        2 & 1 & 0 & 0 \\
-        3 & 2 & 1 & 0 \\
-        4 & 3 & 2 & 1
-    \end{bmatrix}.
-\end{align*}
-To illustrate the way $\mat{R}_{i,j}$ can be generated efficiently, we consider an example. Suppose that $N=2$ and $L=1$. Then
-\begin{align*}
-    \mat{R}_{i,j} = \begin{bmatrix}
-        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 \\
-        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 \\
-        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] \\
-    \end{bmatrix}.
-\end{align*}
-Now notice that
-\begin{align*}
-    \operatorname{tril}\left[\operatorname{toeplitz}\left(\begin{bmatrix}
-        c_{i,j}[1] & c_{i,j}[0] & c_{i,j}[-1] & 0 & 0 & 0
-    \end{bmatrix}\right)\right] = \\ \begin{bmatrix}
-        c_{i,j}[1] & 0 & 0 & 0 & 0 & 0\\
-        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 & 0\\
-        c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0\\
-        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0\\
-        0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 \\
-        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] \\
-    \end{bmatrix}.
-\end{align*}
-We can construct $\mat{R}_{i,j}$ by omitting several rows and columns. First omit the first $N-1$ rows and last $N-1$ columns. Then
-\begin{align*}
-    \begin{bmatrix}
-        \color{red}c_{i,j}[1] & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}0\\
-        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 & \color{red}0\\
-        c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & \color{red}0\\
-        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & \color{red}0\\
-        0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & \color{red}0 \\
-        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & \color{red}c_{i,j}[1] \\
-   \end{bmatrix}   
-\end{align*}
-remains. The red elements represent the omitted elements. Now keep rows $1,N+1,\ldots,2LN+1$. Then
-\begin{align*}
-    \begin{bmatrix}
-        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0\\
-        \color{red}c_{i,j}[-1] & \color{red}c_{i,j}[0] & \color{red}c_{i,j}[1] & \color{red}0 & \color{red}0\\
-        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0\\
-        \color{red}0 & \color{red}0 & \color{red}c_{i,j}[-1] & \color{red}c_{i,j}[0] & \color{red}c_{i,j}[1] \\
-        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0]\\
-   \end{bmatrix}
-\end{align*}
-remains, which is exactly $\mat{R}_{i,j}$. In general, the algorithm to construct $\mat{R}_{i,j}$ is as follows.
+It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. Given a vector, $\operatorname{toeplitz}$ generates a Toeplitz matrix from this vector. Given a matrix, $\operatorname{tril}$ keeps the lower triangular matrix of this matrix and sets the other elements to zero. The functions $\operatorname{toeplitz}$ and $\operatorname{tril}$ are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows. An example of the algorithm which illustrates its correctness is given in \cref{sec:reconstruction-generation-algorithm}.
 
 \begin{tabularx}{\textwidth}{rY}
-    Step 1: & Let $\vec{c} = \begin{bmatrix}
-                c_{i,j}[N-1] & \cdots c_{i,j}[-N+1]
-            \end{bmatrix}$. \\ \\
+    Step 1: & Let \begin{align*}
+                \vec{c} = \begin{bmatrix} c_{i,j}[N-1] \; \cdots \; c_{i,j}[-N+1] \end{bmatrix}
+\end{align*} where \begin{align*}
+                c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
+            \end{align*} \\
     Step 2: & Append $\vec{c}$ with $2(L-1)N+1$ zeros. \\ \\
     Step 3: & Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$. \\ \\
     Step 4: & Omit the first $N-1$ rows and the last $N-1$ columns. \\ \\
-    Step 5: & Keep rows $1,N,\ldots,2LN+1$. The resulting matrix is $\mat{R}_{i,j}$. \\
+    Step 5: & Keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$ \\ \\
+    Step 6: & Construct \begin{align*}
+        \mat{R} = \begin{bmatrix}
+            \mat{R}_{1,1} \\ \vdots \\ \mat{R}_{M,M}
+        \end{bmatrix}.
+    \end{align*} \\
 \end{tabularx}
 
-The advantage is that this algorithm can take advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 and 5 can be vectorised.
+The advantage is that this algorithm takes advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 and 5 can be vectorised.
 \end{document}
