@@ -78,16 +78,11 @@ The method \func{sample(signal)} takes a signal, uniformly sampled, as argument 
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
-The minimal sparse ruler is a special case of the Multi-coset sampler. Its list offsets are all of a special form such that it forms a minimal sparse ruler on the downsampling factor. This means that implementation wise everything can be inherited from the multi-coset implementation except that it generates its own set of intervals from a lookup table containing precomputed solutions to the minimal sparse ruler problem. This sampler inherits the \func{sample(signal)} method from the multi-coset sampler.
+The miminal sparse ruler inherits from the multi-coset sampler. It feeds a solution to the minimal sparse ruler, which it gets from a lookup table, to the multi-coset sampler. It inherits all the other functions.
 
 \subsection{Coprime sampler}
 \label{sec:coprime-sampler}
-The coprime sampler is another special case of the multi-coset sampler. The only difference again is the way the list of offsets is generated. As explained in \cref{sec:coprime}, the coprime sampler rests on two samplers with different sampling ratios that have a coprime ratio. The constructor takes two arguments, a and b, the coprime ratios of the sample frequencies.
-
-Coprime can be seen as a different form of multi-coset sampling, $a + b - 1$ are the number of cosets and $a \cdot b$ is the downsampling factor as can be read in \cref{sec:coprime}. This means that two samplers that have a coprime ratio have a shared period of $a \cdot b$.
-In the implementation the coprime offsets are generated using a generator function\footnote{
-    A generator function is a way to do `lazy' generation of values which translates to lower memory usage. In this case the gains are marginal but it is good form nonetheless.}
-which keeps returning multiples of the coprime until their least common multiple, the downsampling ratio $a \cdot b$, is reached. This sampler also inherits the multi-coset \func{sample(signal)} method.
+The coprime sampler also inherits from the multi-coset sampler. It generates a number of coprime multiples (see \cref{sec:samplingmethods}) as a set of intervals and feeds that into the multi-coset sampler. It inherits all the other functions.
 
 \subsection{Hardware coprime}
 \label{sec:hardware-coprime}
