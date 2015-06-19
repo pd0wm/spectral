@@ -538,9 +538,9 @@ Coprime sampling is very different from circular sparse sampling and collaborati
 
 The grey blocks represent the samples that are recovered by the device, and the coloured blocks represent the samplers that are recovered by each sampler.
 
-The choice of the down-sampling factors substantially influences the performance of the device and will be discussed further in section \todo{ref}. 
+The choice of the down-sampling factors substantially influences the performance of the device and will be discussed further in \cref{sec:coprime}. 
 
-It is not trivial to feed a coprime sampler to the reconstructor. The reconstructor expects a set of different devices with the same sampling period. To put the coprime sampler into the reconstructor, we need some additional processing. We use the signals of two samplers with down-sampling factor $n$ and $m$ to make $n+m$ signals with down-sampling factor $n\cdot m$. This will be further explained in section ref \todo{ref}. A schematic for a possible hardware implementation is given by \cref{tkz:sc_coprime}. 
+It is not trivial to feed a coprime sampler to the reconstructor. The reconstructor expects a set of different devices with the same sampling period. To put the coprime sampler into the reconstructor, we need some additional processing. We use the signals of two samplers with down-sampling factor $n$ and $m$ to make $n+m$ signals with down-sampling factor $n\cdot m$. This will be further explained in \cref{sec:coprime}. A schematic for a possible hardware implementation is given by \cref{tkz:sc_coprime}. 
 
 \begin{figure}[H]
 \centering

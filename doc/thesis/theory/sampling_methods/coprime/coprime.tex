@@ -6,7 +6,7 @@
 
 \begin{document}
 
-\section{Coprime sampling}
+\section{Coprime sampling}\label{sec:coprime}
 This is illustrated in \cref{tkz:coprime_ruler}.
 
 \begin{figure}[H]
@@ -123,7 +123,7 @@ This is illustrated in \cref{tkz:coprime_ruler}.
 \caption{coprime sampling solution with $m=3$ and $n=5$}\label{tkz:coprime_ruler}
 \end{figure}
 
-The different sampling periods of the coprime samplers should be chosen carefully. Ref \todo{ref} shows that these numbers should be coprime to each other to ensure that all lags are avialable. That means that the sampling periods of the samplers should be $mT$ and $nT$, where the only positive integer that evenly devided both of $m$ and $n$ is 1, hence the name coprime sampling. 
+The different sampling periods of the coprime samplers should be chosen carefully. \cite{pal2011coprime} shows that these numbers should be coprime to each other to ensure that all lags are avialable. That means that the sampling periods of the samplers should be $mT$ and $nT$, where the only positive integer that evenly devided both of $m$ and $n$ is 1, hence the name coprime sampling. 
 
 \subsection{Combine coprime sampling with reconstructor}\label{sub:ci-coprime}
 The reconstuctor is not designed to process two coprime sampled signals. Therefore some pre-processing is necessary. We need to feed the reconstructor singals of samplers with identical period. To achieve this we break the signals of the two different samplers with sampling period numbers $nT$ and $mT$ into samplers with samopling period $nmT$. This is illustrated in \cref{tkz:pre-coprime}.
@@ -386,4 +386,6 @@ The reconstuctor is not designed to process two coprime sampled signals. Therefo
 \end{figure}
 
 In this figure, the grey blocks indicate the samples recovered by the device, the orange blocks the samples that are recoverd by sampler $m$, and the green blocks the samples that are recovered by sampler $n$. The middle block shows how the samples are actually gathered, while the bottom block shows how the reconstructor thinks the samples are gathered.
+
+Now that we work with multiple samplers with identical sampling frequency we can use the technique described in \cref{sub:ci-circ} to connect coprime sampling to the reconstructor.
 \end{document}

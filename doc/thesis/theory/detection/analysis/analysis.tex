@@ -416,9 +416,7 @@ The threshold $\gamma$ can then be calculated as
 
 \subsection{Filtering}
 To be able to detect in a certain frequency band the input signal should be filtered in some way. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered: noise samples may become correlated. \cite{zheng2009spectrum} proposes a prewhiting technique
-that can be used if the filter applied to $x[n]$ is known. In our case the detector is provided with $r_x[n]$ and no filter is applied to $x[n]$. One approach is to filter the power spectral density and use the inverse discrete fourier transform to obtain an autocorrelation function for a bandlimited signal.
-
-We therefore, cannot use the prewhitening technique. 
+that can be used if the filter applied to $x[n]$ is known. We therefore, cannot use this prewhitening technique. 
 
 % To determine the the threshold of the CAV detector we assume that the elements of the reconstructed auto correlation  $\hat{r}_x[n]$ are approximately gaussian distributed (see \cite{zheng2009spectrum} \cite{ariananda2012compressive}).
 
