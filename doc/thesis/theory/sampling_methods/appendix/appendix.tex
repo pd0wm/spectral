@@ -1,0 +1,56 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Appendix}
+
+
+\subsection{Derivation ILP}\label{ap:derivation_ILP}
+\begin{blockTheorem} \label{th:ruler-distance}\nolinebreak
+    Let $\vec{r} \in \{0,1\}^N$ be a ruler. Then $\vec{r}$ contains the distance $d$ if $\vec{d}^T \vec{r} = 2$ for any $\vec{d} \in D_d$.\nolinebreak
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:ruler-distance}}
+    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, either $|i-j|=d$ or $|i-j| = N-d$. In both cases, $\vec{r}$ contains the distance $d$. 
+\end{blockProofTheorem}
+
+Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in $D_d$ as rows.
+
+\begin{blockTheorem} \label{th:ruler-distance-matrix}\nolinebreak
+    Let $\vec{r} \in \{0,1\}^N$ be a ruler and let $\vec{y} \in \{0,1\}^{|D_d|}$. Then $\vec{r}$ contains the distance $d$ at least once if $\mat{D}_d \vec{r} \ge 2\vec{y}$ such that $||\vec{y}||_1 = 1$.
+\end{blockTheorem}
+
+\begin{blockProofTheorem}{\ref{th:ruler-distance-matrix}}
+    Assume that $\mat{D}_d \vec{r} \ge 2 \vec{y}$ such that $||\vec{y}||_1 = 1$. Then there is one and only one $i$ such that $(\vec{y})_i=1$. Therefore there exists a $\vec{d} \in D_d$ such that $\vec{d}^T \vec{r} \ge 2 (\vec{y})_i = 2$. Since $||\vec{d}||_1=2$, the equality holds and thus $\vec{r}$ contains the distance $d$. Now consider $\vec{d}' \in D_d$ such that $\vec{d}' \neq \vec{d}$. Then $\vec{d}^T \vec{r} \ge 0$, which holds for any $\vec{r}$.  
+\end{blockProofTheorem}
+
+Consider the binary integer linear program
+\begin{align*}
+    \text{minimise } &\vec{1}_N^T \vec{r} \\
+    \text{such that } &
+    \begin{bmatrix}
+        \mat{D}_1 \\
+        \vdots \\
+        \mat{D}_{N-1}
+    \end{bmatrix} \vec{r} \ge 2 \begin{bmatrix}
+        \vec{y}_1 \\
+        \vdots \\
+        \vec{y}_2
+    \end{bmatrix}, \begin{bmatrix}
+        \vec{1}_{|D_1|}^T & & \\
+        & \ddots & \\
+        & & \vec{1}_{|D_{N-1}|}^T
+    \end{bmatrix}  \begin{bmatrix}
+        \vec{y}_1 \\
+        \vdots \\
+        \vec{y}_{N-1}
+    \end{bmatrix} = \vec{1}_{N-1}, \\
+    & \vec{r} \in \{0,1\}^N \text{ and } \vec{y}_i \in \{0,1\}^{|D_i|} \text{ for } i = 1,\ldots,N-1.
+\end{align*}
+Then, by the definition of a minimal circular ruler and \cref{th:ruler-distance-matrix}, this program yields a minimal circular ruler of length $N$.
+
+\end{document}
