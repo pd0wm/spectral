@@ -13,7 +13,7 @@ This section will discuss an algorithm to estimate the power spectral density of
 
 Let the input signal sampled at the Nyquist-frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Every coset $i$ samples the input signal every $N$ samples, which means that the output of a coset is an $N$-decimation of the input signal. Let the output of coset $i$ be denoted by $y_i[n]$. Our reconstruction method estimates the power spectral density of $x[n]$ by making use of the outputs of all cosets. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$. Therefore, our reconstruction method aims to estimate the autocorrelation of $x[n]$. Let the autocorrelation of the input signal be denoted by $r_x[m]$. Let the cross-correlation of the output of cosets $i$ and $j$ be denoted by $r_{y_i,y_j}[m]$. 
 
-It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. The parameter $L$ determines the support of $r_{y_i,y_j}[m]$\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} and influences the length of the estimated autocorrelation, which determines the resolution of the estimated power spectral density of $x[n]$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of several steps.
+It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. The parameter $L$ determines the support of $r_{y_i,y_j}[m]$ such that $r_{y_i,y_j}[m]$ is limited in support\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} from $m=-L$ to $m=L$. This influences the length of the estimated autocorrelation, which determines the resolution of the estimated power spectral density of $x[n]$. The autocorrelation $r_x[m]$ will be estimated for $m \le |LN|$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of several steps.
 
 \begin{table}
     \centering
@@ -24,7 +24,7 @@ It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cos
         Input & $y_i[n]$ & Output of coset $i$ \\
         Input & $L$ & Support of $r_{y_i,y_j}[m]$. This parameter influences the resolution of the estimated power spectral density of $x[n]$. \\
         Input & $K$ & Oversampling factor. This parameter influences the accuracy of the estimated power spectral density of $x[n]$, but increases the measurement time. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. \\
-        Output & $r_x[m]$ & Autocorrelation of $x[n]$. The autocorrelation $r_x[m]$ is estimated from $m=-LN$ to $m=LN$.
+        Output & $r_x[m]$ & Autocorrelation of $x[n]$. The autocorrelation $r_x[m]$ is estimated for $|m| \le LN$.
     \end{tabularx}
     \caption{Input and outputs of the reconstruction algorithm}
     \label{tab:reconstruction-algorithm-inputs-outputs}
@@ -35,20 +35,26 @@ The algorithm to estimate the autocorrelation is as follows.
 \begin{tabularx}{\textwidth}{rY}
     Step 1: & Determine $c_i[n]$ for every coset $i$.
     \newline \newline
-    The signal $c_i[n]$ is defined in \cref{eq:yi}. This equation will be discussed in the derivation. The configuration determines $c_i[n]$ for every coset $i$. This is explained in \cref{sub:ci-circ,sub:ci-collab,sub:ci-coprime}.
+    The signal $c_i[n]$ is defined in \cref{eq:yi}. This equation will be discussed in the derivation of the algorithm. The configuration determines $c_i[n]$ for every coset $i$. This is explained in \cref{sub:ci-circ,sub:ci-collab,sub:ci-coprime}.
     \newline \\
     Step 2: & Construct $\mat{R}$.
     \newline \newline
-    The matrix $\mat{R}$ is defined in \cref{eq:ry-R-rx}. This equation will be discussed in the derivation.
+    The matrix $\mat{R}$ is defined in \cref{eq:ry-R-rx}. This equation will also be discussed in the derivation of the algorithm.
     \newline \\
     Step 3: & Measure $y_i[n]$ for $KL$ samples for every coset $i$. \newline \\
     Step 4: & Estimate $r_{y_i,y_j}[m]$ for every combination of cosets $i$ and $j$.
     \newline \newline
     \cref{sub:reconstruction-estimation} discusses how $KL$ samples of $y_i[n]$ can be used to estimate $r_{y_i,y_j}[m]$.
     \newline \\
-    Step 5: & Construct $\vec{r}_y$ and solve \cref{eq:normal-rx} to estimate $\vec{r}_x$, which yields an estimation of $r_x[m]$.
+    Step 5: & Construct $\vec{r}_y$.
     \newline \newline
-    The vectors $\vec{r}_y$ and $\vec{r}_x$ are defined in respectively \cref{eq:ry-R-rx,eq:def-rx}. Once more, these equations will be discussed in the derivation.  \\
+    The vector $\vec{r}_y$ is defined in \cref{eq:ry-R-rx}.
+    \newline \\
+    Step 6: &  Solve \cref{eq:normal-rx} to estimate $\vec{r}_x$, which yields an estimation of $r_x[m]$.
+    \newline \newline
+    The vector  $\vec{r}_x$ is defined in \cref{eq:def-rx}. Once more, \cref{eq:normal-rx} will be discussed in the derivation of the algorithm. The autocorrelation $r_x[m]$ is estimated for $|m| \le LN$.
+    \newline \\
+    Step 6 (alternative): & Calculate \cref{eq:pseudo-rx} to estimate $\vec{r}_x$, which yields an estimation of $r_x[m]$.
 \end{tabularx}
 
 \end{document}
