@@ -17,10 +17,11 @@ In this section we will look at ways to map the different sampling methods on th
 The first specification can be simplified further. When we set the time of a sample as an integer, we can set the lags as the differences between the integers. because of this we can look at a more abstract problem. 
 
 \section{Circular sparse ruler}
-We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$, then vector $\mathbf{S}$ represents the locations on the ruler that are occupied by samplers. A circular sparse ruler contains a distance $d$ if there exist an $S_i$ and $S_j$ such that $|S_i-S_j| = d$ or  $N-|S_i-S_j| = d$. A solution to a circular ruler is correct if it contains lags $ 1, \ldots, N - 1$. \Cref{fig:circular-ruler} shows a circular sparse ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
+% We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$, then vector $\mathbf{S}$ represents the locations on the ruler that are occupied by samplers. A circular sparse ruler contains a distance $d$ if there exist an $S_i$ and $S_j$ such that $|S_i-S_j| = d$ or  $N-|S_i-S_j| = d$. A solution to a circular ruler is correct if it contains lags $ 1, \ldots, N - 1$. \Cref{fig:circular-ruler} shows a circular sparse ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
 
-In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
-If we can make lag $L$ we can also make lag $L+kN$ with $k$ an integer. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags. This problem is called circular sparse ruler. We construct a circle with $N$ marks on it. Every mark can be occupied by a sampler. Time on this circle passes as the hand of a clock. the distance between two samplers on the circle is equal to the lag one would get. This is illustrated in \cref{fig:circular-ruler}, where $N=7$, and the samplers occupy the locations $\{1,2,4\}$.
+% In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
+% If we can make lag $L$ we can also make lag $L+kN$ with $k$ an integer. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags. This problem is called circular sparse ruler. 
+In ref \todo{ref} we introduced the circular sparse ruler. We construct a circle with $N$ marks on it. Every mark can be occupied by a sampler. Time on this circle passes as the hand of a clock. the distance between two samplers on the circle is equal to the lag one would get. This is illustrated in \cref{fig:circular-ruler}, where $N=7$, and the samplers occupy the locations $\{1,2,4\}$.
 
 \begin{figure}[H]
     \centering
@@ -158,65 +159,32 @@ To see why \cref{th:upperbound} holds, we take a look at the maximum amount of d
 
 For example: observe that an optimal linear sparse ruler for $M=5$, is $\{1,2,5,8,10\}$ with $N=10$, resulting in a circular sparse ruler solution with $N=19$. However the circular sparse ruler solution $\{1,2,7,9,19\}$ with $N=21$ is better, and also optimal, because the upper bound for $M=5$ is $N=21$ as dictated in \cref{th:upperbound}.  
 
-One circular sparse ruler can be used to make $2N-1$ other circular sparse ruler solutions through translation and mirroring the solution. The first $N-1$ solutions can be made by translating all positions over the circle with $N$ positions. This possible because the relative positions do not change when calculating the distances. The other $N$ solutions can be made by first mirroring the solution on the circle, and then translating the new solution in similar fashion over the circle. To lose some redundancy we consider these variations to be identical.    
-
 \subsection{Integer linear programming (ILP)}
-\begin{blockTheorem} \label{th:ruler-distance}\nolinebreak
-    Let $\vec{r} \in \{0,1\}^N$ be a ruler. Then $\vec{r}$ contains the distance $d$ if $\vec{d}^T \vec{r} = 2$ for any $\vec{d} \in D_d$.\nolinebreak
-\end{blockTheorem}
 
-\begin{blockProofTheorem}{\ref{th:ruler-distance}}
-    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, either $|i-j|=d$ or $|i-j| = N-d$. In both cases, $\vec{r}$ contains the distance $d$. 
-\end{blockProofTheorem}
+To generate optimal circular sparse ruler programs we made use of integer linear programming. Integer linear programming is a mathematical optimasation and feasibility program in which variables are restricted to be integers. This can be expressed as
 
-Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in $D_d$ as rows.
+\begin{align}
+\text{maximize}   &\quad \vec{c}^Tx\\
+\text{subject to} &\quad \mat{A}\vec{x} \leq \vec{b},\\
+                  &\quad \vec{x} \geq 0,\\
+\text{and}        &\quad \vec{x} \in \mathbb{Z}
+\end{align}
+where the entires of $\vec{c}$, $\vec{b}$ are vectors, and $\mat{A}$ is a matrix, having integer values. We wrote the problem of circular sparse ruler into this format, which is derived in \cref{ap:derivation_ILP}.
 
-\begin{blockTheorem} \label{th:ruler-distance-matrix}\nolinebreak
-    Let $\vec{r} \in \{0,1\}^N$ be a ruler and let $\vec{y} \in \{0,1\}^{|D_d|}$. Then $\vec{r}$ contains the distance $d$ at least once if $\mat{D}_d \vec{r} \ge 2\vec{y}$ such that $||\vec{y}||_1 = 1$.
-\end{blockTheorem}
-
-\begin{blockProofTheorem}{\ref{th:ruler-distance-matrix}}
-    Assume that $\mat{D}_d \vec{r} \ge 2 \vec{y}$ such that $||\vec{y}||_1 = 1$. Then there is one and only one $i$ such that $(\vec{y})_i=1$. Therefore there exists a $\vec{d} \in D_d$ such that $\vec{d}^T \vec{r} \ge 2 (\vec{y})_i = 2$. Since $||\vec{d}||_1=2$, the equality holds and thus $\vec{r}$ contains the distance $d$. Now consider $\vec{d}' \in D_d$ such that $\vec{d}' \neq \vec{d}$. Then $\vec{d}^T \vec{r} \ge 0$, which holds for any $\vec{r}$.  
-\end{blockProofTheorem}
-
-Consider the binary integer linear program
-\begin{align*}
-    \text{minimise } &\vec{1}_N^T \vec{r} \\
-    \text{such that } &
-    \begin{bmatrix}
-        \mat{D}_1 \\
-        \vdots \\
-        \mat{D}_{N-1}
-    \end{bmatrix} \vec{r} \ge 2 \begin{bmatrix}
-        \vec{y}_1 \\
-        \vdots \\
-        \vec{y}_2
-    \end{bmatrix}, \begin{bmatrix}
-        \vec{1}_{|D_1|}^T & & \\
-        & \ddots & \\
-        & & \vec{1}_{|D_{N-1}|}^T
-    \end{bmatrix}  \begin{bmatrix}
-        \vec{y}_1 \\
-        \vdots \\
-        \vec{y}_{N-1}
-    \end{bmatrix} = \vec{1}_{N-1}, \\
-    & \vec{r} \in \{0,1\}^N \text{ and } \vec{y}_i \in \{0,1\}^{|D_i|} \text{ for } i = 1,\ldots,N-1.
-\end{align*}
-Then, by the definition of a minimal circular ruler and \cref{th:ruler-distance-matrix}, this program yields a minimal circular ruler of length $N$.
 
 \subsection{Results}
-Using this algorithm we generated the following set of circular sparse ruler solutions:
+Using ILP we generated the following set of circular sparse ruler solutions:
 \begin{align}
 M=2,\;\,N=3  \quad S&=\{1,2\}\\
 M=3,\;\,N=7  \quad S&=\{1,2,4\}\\
-M=4,N=13 \quad S&=\{1,2,5,7\}\\
-M=5,N=21 \quad S&=\{1,2,7,9, 19\}\\
-M=6,N=31 \quad S&=\{1,2,5,7,14,22\}\\
-M=7,N=39 \quad S&=\{1,2,5,7,14,21,31\}\\
-M=8,N=51 \quad S&=\{1,2,8,10,13,32,36, 46\}\\
-M=9,N=65 \quad S&=\{1,2,5,7,15, 33, 43, 51, 54\}
+M=4,N=13     \quad S&=\{1,2,5,7\}\\
+M=5,N=21     \quad S&=\{1,2,7,9, 19\}\\
+M=6,N=31     \quad S&=\{1,2,5,7,14,22\}\\
+M=7,N=39     \quad S&=\{1,2,5,7,14,21,31\}\\
+M=8,N=51     \quad S&=\{1,2,8,10,13,32,36, 46\}\\
+M=9,N=65     \quad S&=\{1,2,5,7,15, 33, 43, 51, 54\}
 \end{align}
-The results in this list can directly be used for devices with 2-9 samplers. \cref{fig:comparison_sparse_ruler} compares the upper-bound from \cref{th:upperbound} in green, minimal linear sparse ruler in red and the results from the ILP in blue.
+\cref{fig:comparison_sparse_ruler} compares the upper-bound from \cref{th:upperbound} in green, minimal linear sparse ruler in red and the results from the ILP in blue. One can clearly see that for higher $m$, linear sparse ruler is outperformed by the solution of the ILP algorithm. 
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[xlabel={amount of samplers $M$},ylabel={down-sampling factor $N$},width=\textwidth, height=0.8\textwidth]

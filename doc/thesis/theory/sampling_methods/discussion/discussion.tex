@@ -1,0 +1,26 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Discussion}
+In this section we have designed and modified three samplers to fit in our system. Each method imposing different constraint and offering improvements in other ways. These actions illustrate the power of the reconstructor as a general purpose autocorrelation estimator. 
+
+There is no best sampling method in this context, because all sampling methods optimalize performance in a different situation. All of them fit the requirements of the system. The implementation will determine which sampling method suits a situation.
+
+For circular sparse ruler we constructed solutions with higher performance than proposed in \cite{ariananda2012compressive}. After we researched on this we found out that others also attempted  this, but the optimal circular sparse ruler algorithm we provided, and the accompanying performance, is to our knowledge novel. We also made an recursive algorithm to generate circular sparse ruler solutions,  but this was however a less clean solution, because it used some theorys we could not prove, and therefore did not guarantee to find all possuible optimal circular sparse ruler solutions.
+
+For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth
+
+\section{Future work}
+We implemented three sampling methods that are very much different and fed them into the same system. This shows potential for a more general sampling system. For instance: what happens when we combine multiple coprime devices, or what happens when we pick the circular sparse ruler problem, and allow the sampling frequency to differ. There is potential to look fo a more general sampling strategy but investigating this further needs future work.
+
+This also holds for optimisation strategies. It would be very interesting to compare the different optimisation strategies and see whether they can benefit from each other. The collaborative sampler has for example currently no good algorithm to find configurations for more than two devices with more than three samplers. 
+
+In this section we saw the sampling strategies grow towards each other and it would be interesting to see what happens if they move even further towards each other. 
+
+
+\end{document}
