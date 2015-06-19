@@ -13,7 +13,7 @@ In this section we derive the algorithm discussed in \cref{sec:reconstruction-de
 Consider the input signal to be a random stochastic process. To relate the output of a coset to the input signal, we need some mathematical constructs.
 
 \subsection{Construction of the output of a coset}
-In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yield one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
+In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yields one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -375,7 +375,11 @@ Denote the aggregation of \cref{eq:ryiyji-R-rx} by
 \begin{align} \label{eq:normal-rx}
     \mat{R}^T \vec{r}_y = \mat{R}^T \mat{R} \vec{r}_x.
 \end{align}
-We can use \cref{eq:normal-rx} to estimate the autocorrelation of the input signal if $\vec{r}_y$ is known. This concludes the estimation of the autocorrelation of the input signal.
+Alternatively, the least-squares solution can be obtained by making use of the Moore–Penrose pseudoinverse. Therefore, if $\mat{R}$ has full column rank, then
+\begin{align} \label{eq:pseudo-rx}
+    \mat{R}^\dagger \vec{r}_y = \vec{r}_x
+\end{align}
+where $\mat{R}^\dagger$ denotes the Moore-Penrose pseudoinverse of $\mat{R}$. We can use \cref{eq:normal-rx} or \cref{eq:pseudo-rx} to estimate the autocorrelation of the input signal if $\vec{r}_y$ is known. This concludes the estimation of the autocorrelation of the input signal.
 
 \subsection{Unicity of the estimation}
 Since \cref{eq:normal-rx} is used to estimate the autocorrelation of the input signal, we have to make sure that $\mat{R}$ has full column rank. We will do this by inspecting the structure of $\mat{R}$. Since $\mat{R}$ depends on $c_i[n]$ solely, we start by analysing $c_i[n]$.

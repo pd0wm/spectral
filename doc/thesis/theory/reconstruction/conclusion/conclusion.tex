@@ -7,6 +7,7 @@
 \begin{document}
 
 \section{Conclusion}
-conclusion
+We have discussed an algorithm to reconstruct the power spectral density, or equivalently the autocorrelation, of a signal sampled at sub-Nyquist frequencies. Notice that Step 1 and Step 2 two of the algorithm can be precomputed. Also, computing the expression in the alternative of Step 6 can be done very efficiently, since first, the Moore-Penrose pseudoinverse can be precomputed and second, all matrix manipulations experience a significant speedup because $\mat{R}$ is sparse. Therefore, our algorithm allows for fast online estimation of the power spectral density of the samples signal. This is in constrast to other methods available, since these methods are mostly based on $l_1$-optimisation. 
+
 
 \end{document}
