@@ -46,7 +46,7 @@ If we can make lag $L$ we can also make lag $L+kN$ with $k$ an integer. Therefor
     \label{fig:circular-ruler}
 \end{figure}
 
-Finding beneficial solutions for this problem is a convenient optimisation for our device. D.Ariananda and G.Leus \todo{ref}, proposed a method that uses linear sparse ruler to generate solution for the circular sparse ruler problem. The linear sparse ruler problem is identical to the circular sparse ruler, but the ends do not connect, as is illustrated in \cref{tkz:linear_sparse_ruler}.  
+Finding beneficial solutions for this problem is a convenient optimisation for our device. D.Ariananda and G.Leus, proposed a method that uses linear sparse ruler to generate solution for the circular sparse ruler problem in \cite{ariananda2012compressive}. The linear sparse ruler problem is identical to the circular sparse ruler, but the ends do not connect, as is illustrated in \cref{tkz:linear_sparse_ruler}.  
 
 \begin{figure}[H]
 \centering
@@ -81,7 +81,7 @@ Finding beneficial solutions for this problem is a convenient optimisation for o
 \caption{linear sparse ruler with $N=7$ and $M=4$}\label{tkz:linear_sparse_ruler}
 \end{figure}
 
-The proposed method in ref \todo{ref}   is that a linear sparse solution for $N=x$ is also a circular sparse ruler solution for $N=2(x-1)$ when $x$ is even, and $N=2x-1$ when $x$ is odd. This can be readily seen, because for every lag $L_i<\lfloor\frac{N}{2}\rfloor$, there is also a lag $L_j = N-L_i$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} of $\{1,2,5,7\}$ with $N=7$, is therefore also a circular sparse ruler solution for $N=13$ as is illustrated in \cref{tkz:linear_sparse_ruler}. 
+The proposed method in \cite{ariananda2012compressive} uses the fact that a linear sparse solution for $N=x$ can be turned into circular sparse ruler solutions for $N=2(x-1)$ when $x$ is even, and $N=2x-1$ when $x$ is odd. This can be readily seen, because for every lag $L_i<\lfloor\frac{N}{2}\rfloor$, there is also a lag $L_j = N-L_i$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} of $\{1,2,5,7\}$ with $N=7$, is therefore also a circular sparse ruler solution for $N=13$ as is illustrated in \cref{tkz:linear_sparse_ruler}. 
 
 \begin{figure}[H]
 \centering
@@ -245,13 +245,17 @@ The results in this list can directly be used for devices with 2-9 samplers. \cr
     table [col sep=comma]{plots/circ_lin.txt};
 \end{axis}
 \end{tikzpicture}
-\caption{plot of down-sampling $N$ for a given amount of samplers $M$. red = minimal linear sparse, blue = ILP circular sparse, green = theoretical upper-bound}\label{fig:comparison_sparse_ruler}
+\caption{plot of down-sampling $N$ for a given amount of samplers $M$. red = minimal linear sparse, blue = ILP circular sparse, green = teltheoretical upper-bound}\label{fig:comparison_sparse_ruler}
 \end{figure}
 
 \subsection{combine circular sparse ruler to reconstructor}\label{sub:ci-circ}
 
-The next step is to communicate the sampling configuration to the reconstructor.
+The next step is to communicate the sampling configuration to the reconstructor. As described in ref \todo{ref}, is the behavior of a sampler described as a vector $\vec{c}_i$ of length $N$, with binary elements that represent whether a sample is taken or not. For circular sparse ruler, this is straight forward to implement. We have exact knowledge of which samples are taken. A circular sparse ruler soluytion $\vec{S}= \{\color{orange}1\color{black},\color{green}2\color{black},\color{cyan}4\color{black}\}$ for $N=7$ would for example look like:
+\begin{itemize}
+\item $\color{orange}c_1 \color{black}= \{\color{orange}1\color{black},0,0,0,0,0,0\}$
+\item $\color{green}c_2 \color{black}= \{0,\color{green}1\color{black},0,0,0,0,0\}$
+\item $\color{cyan}c_3 \color{black}= \{0,0,0,\color{cyan}1\color{black},0,0,0\}$
+\end{itemize}
 
-\todo[inline]{Met wessel afstemmen hoe C er uit moet zien}
 
 \end{document}
