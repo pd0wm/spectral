@@ -20,7 +20,7 @@ Let $\mat{F}$ denote the $(2LN-1) \times (2LN-1)$ DFT matrix, then $\vec{\hat{s}
 $\vec{\hat{s}}_x = \mat{F} \vec{\hat{r}}_x$
 is an estimator of the power spectral density $\mathcal{P}(\omega)$ at frequencies $\omega = \frac{2\pi k}{2LN+1}$ where $0 \leq k \leq 2LN$ .
 
-In \cite{ariananda2012compressive} it is derived that when $KLN$ is large, then the elements of $\vec{s}_x$ are approximately gaussian distributed. Let $\hat{s}_k$ denote the $k^{th}$ element of $\vec{\hat{s}}_x$, then we approximate its distribution by the gaussian $\mathcal{N}(\mu_k, \sigma^2_k)$.
+In \cite{ariananda2012compressive} it is derived that when $KLN$ is large, then the elements of $\vec{s}_x$ are approximately Gaussian distributed. Let $\hat{s}_k$ denote the $k^{th}$ element of $\vec{\hat{s}}_x$, then we approximate its distribution by the Gaussian $\mathcal{N}(\mu_k, \sigma^2_k)$.
 
 The threshold $\gamma_k$ is then given by 
 \begin{align}\label{eq:ari_threshold}
@@ -54,7 +54,7 @@ Let $\mat{C}_{\hat{r}_y}$ denote the covariance matrix of of $\vec{\hat{r}}_y$, 
 \text{Cov}(\hat{r}_{y_t,y_u}[i],\hat{r}_{y_v, y_w}[j]).
 \end{align}
 
-As stated in \cite{ariananda2012compressive}, under the assumption that the elements of $x[n]$ are i.i.d. circular complex gaussian distributed, the expression for the covariance in \cref{eq:cov_ry} simplifies to:
+As stated in \cite{ariananda2012compressive}, under the assumption that the elements of $x[n]$ are i.i.d. circular complex Gaussian distributed, the expression for the covariance in \cref{eq:cov_ry} simplifies to:
 
 \begin{align}\label{eq:elem_cov_ry}
 \text{Cov}(\hat{r}_{y_t,y_u}[i],\hat{r}_{y_v, y_w}[j]). &= \frac{\sigma_n^4 c_{t,v}[0] \conj{c}_{u,w}[0] \delta \left[ j-i\right]}{KL-|i|}.

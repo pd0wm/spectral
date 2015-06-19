@@ -28,7 +28,7 @@
 \end{tikzpicture}
 \caption{Conventional Energy Detector}\label{tkz:conv_ed}
 \end{figure}
-A standard digital energy detector is a detector that consists of a lowpass filter $H(f)$ that filters the analog input signal $x(t)$ such
+A standard digital energy detector is a detector that consists of a low-pass filter $H(f)$ that filters the analog input signal $x(t)$ such
 that only the frequency band of interest remains. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). The detector estimates the energy $\Lambda$ of the signal during a period of $N$ samples as follows
 \begin{align}\label{eq:test_ed}
 	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
@@ -189,7 +189,7 @@ A detector that uses the autocorrelation $r_x[n]$ is depicted in \cref{tkz:conv_
 \end{figure}
 The problem with the conventional energy detectors as described above is that they assume that the signal is filtered to only contain the frequency band of interest. This filtering of  $x[n]$ however affects the reconstruction process of $r_x[m]$ and we can therefore not pre-filter the signal. 
 
-A modified energy detector as proposed in \cite{ariananda2012compressive} is depicted in \cref{tkz:ed_ari_overview}. The detector first estimates the power spectral density by applying the Fast Fourier Transform to an estimate of the autocorrelation function. This results in a discrete estimate of the power spectral density. Each element of this estimate is then compared an element-dependent threshold $\gamma_k$. As this detector detects per frequency wheter there is a signal present or not, filtering of the signal is not necessary anymore.
+A modified energy detector as proposed in \cite{ariananda2012compressive} is depicted in \cref{tkz:ed_ari_overview}. The detector first estimates the power spectral density by applying the Fast Fourier Transform to an estimate of the autocorrelation function. This results in a discrete estimate of the power spectral density. Each element of this estimate is then compared an element-dependent threshold $\gamma_k$. As this detector detects per frequency whether there is a signal present or not, filtering of the signal is not necessary anymore.
 To calculate $\gamma_k$ information about the reconstruction method as described in \Cref{cha:reconstruction} is used. Details on this calculation can be found in \cref{sec:ari_ed_deriv}.
 
 % Let $\vec{s}_x \in \mathbb{R}^{2LN+1}$ denote the discrete power spectral density vector obtained by applying the $(2LN+1)$ point Discrete Fourier Transform to $\vec{r}_x$. 
@@ -335,10 +335,10 @@ The CAV detector was first introduced in \cite{zheng2009spectrum}. A block diagr
 	\item Compare $\frac{T1}{T2}$ to a threshold $\gamma$. In case that $\frac{T_1}{T_2} > \gamma$ it is decided that $\mathcal{H}_1$ is true, otherwise $\mathcal{H}_0$ is regarded as the true hypothesis. 
 \end{enumerate}
 
-The threshold $\gamma$ is derived and an explantion of CAV can be found in \cref{sec:cav_derivation}.
+The threshold $\gamma$ is derived and an explanation of CAV can be found in \cref{sec:cav_derivation}.
 
 \subsection{Filtering}
-To be able to detect in a certain frequency band the input signal should be filtered by a bandpass filter. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered. This affects the autocorrelation function $r_x[n]$.  A technique to circumvent this problem is proposed in \cite{zheng2009spectrum}, but requires that the filter applied to $x[n]$ is known. However we start our detection process with $r_x[n]$ instead of $x[n]$ and therefore cannot use this technique.  This limits the CAV implementation as described in this section to detection in just one frequency band. Furthermore, if use of this technique was possible, it would imply that we need to apply it per frequency band which may significantly add up to the computational cost if wideband spectrums are used.
+To be able to detect in a certain frequency band the input signal should be filtered by a band-pass filter. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered. This affects the autocorrelation function $r_x[n]$.  A technique to circumvent this problem is proposed in \cite{zheng2009spectrum}, but requires that the filter applied to $x[n]$ is known. However we start our detection process with $r_x[n]$ instead of $x[n]$ and therefore cannot use this technique.  This limits the CAV implementation as described in this section to detection in just one frequency band. Furthermore, if use of this technique was possible, it would imply that we need to apply it per frequency band which may significantly add up to the computational cost in case that wide-band spectra are used.
 
 % To determine the the threshold of the CAV detector we assume that the elements of the reconstructed auto correlation  $\hat{r}_x[n]$ are approximately gaussian distributed (see \cite{zheng2009spectrum} \cite{ariananda2012compressive}).
 
