@@ -188,8 +188,12 @@
 \newcommand{\pushright}[1]{\intertext{\hfill$\displaystyle #1$}}
 \newcommand{\pushline}{\hskip \textwidth minus \textwidth}
 \newcommand{\matlab}{\textsc{Matlab}}
+
+\definecolor{code-grey}{HTML}{DDDDDD}
 \newcommand{\lib}[1]{\textsf{#1}}
-\newcommand{\func}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\textsf{#1}}
+\newcommand{\func}[1]{\colorbox{code-grey}{\texttt{#1}}}
+\newcommand{\class}[1]{\colorbox{code-grey}{\texttt{#1}}}
 
 % Setup actiepunten
 \newenvironment{important}[1][]{%
