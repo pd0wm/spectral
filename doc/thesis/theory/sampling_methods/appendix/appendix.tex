@@ -7,6 +7,7 @@
 \begin{document}
 
 \section{Appendix: circular sparse ruler problem}
+\label{ap:circ-ruler}
 % We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$, then vector $\mathbf{S}$ represents the locations on the ruler that are occupied by samplers. A circular sparse ruler contains a distance $d$ if there exist an $S_i$ and $S_j$ such that $|S_i-S_j| = d$ or  $N-|S_i-S_j| = d$. A solution to a circular ruler is correct if it contains lags $ 1, \ldots, N - 1$. \Cref{fig:circular-ruler} shows a circular sparse ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
 
 % In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
@@ -183,36 +184,265 @@ We have used integer linear programming to calculate circular sparse ruler solut
 \end{table}
 
 \Cref{fig:comparison_sparse_ruler} compares the upper bound from \cref{th:upperbound} to minimal linear sparse ruler solutions and minimal circular sparse ruler solutions. One can clearly see that for high $M$, minimal solutions to the circular sparse ruler problem have higher $N$.
-\begin{figure}[H]
-\begin{tikzpicture}
-\begin{axis}[xlabel={Number of samples ($M$)},ylabel={Downsampling factor ($N$)},width=\textwidth, height=0.8\textwidth]
-    \addplot [
-    color=green,
-    solid,
-    mark=.,
-    ]
-    %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
-    table [col sep=comma]{plots/circ_upper.txt};
+% \begin{figure}[H]
+% \begin{tikzpicture}
+% \begin{axis}[xlabel={Number of samples ($M$)},ylabel={Downsampling factor ($N$)},width=\textwidth, height=0.8\textwidth]
+%     \addplot [
+%     color=green,
+%     solid,
+%     mark=.,
+%     ]
+%     %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
+%     table [col sep=comma]{plots/circ_upper.txt};
     
-    \addplot [
-    color=blue,
-    solid,
-    mark=.,
-    ]
-    % table[x index=0,y index=1,col sep=comma] {circ_ilp.data};
-    table [col sep=comma]{plots/circ_ilp.txt};
+%     \addplot [
+%     color=blue,
+%     solid,
+%     mark=.,
+%     ]
+%     % table[x index=0,y index=1,col sep=comma] {circ_ilp.data};
+%     table [col sep=comma]{plots/circ_ilp.txt};
 
-    \addplot [
-    color=red,
-    solid,
-    mark=.,
-    ]
-    % table[x index=0,y index=1,col sep=comma] {circ_lin.data};
-    table [col sep=comma]{plots/circ_lin.txt};
-\end{axis}
+%     \addplot [
+%     color=red,
+%     solid,
+%     mark=.,
+%     ]
+%     % table[x index=0,y index=1,col sep=comma] {circ_lin.data};
+%     table [col sep=comma]{plots/circ_lin.txt};
+% \end{axis}
+% \end{tikzpicture}
+% \caption{Solutions of the circular and linear sparse ruler problem. Minimal solutions to linear sparse ruler are shown in red, minimal solutions to the circular sparse ruler problem are shown in blue and the upper bound from \cref{th:upperbound} is shown in green.}\label{fig:comparison_sparse_ruler}
+% \end{figure}
+
+\section{Collaborative sampling}
+Collaborative sampling also requires that the circular sparse ruler problem is satisfied. In this case, however, the estimation of the lags is split across two physically separate devices. This is shown in \cref{tkz:collaborative_ruler}.
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=1.3]
+\foreach \i in {0,...,17} {
+    \draw [dashed] (\i/2,-0.35) -- (\i/2,3.3);
+}
+
+\draw (0,3.3) -- (8.5,3.3);
+\draw [blue, very thick] (0,3) -- (0,3.3);
+% \draw (0.5,3.2) -- (0.5,3.3);
+\draw [blue, very thick](1,3) -- (1,3.3);
+% \draw (1.5,3.2) -- (1.5,3.3);
+% \draw (2,3.2) -- (2,3.3);
+% \draw (2.5,3.2) -- (2.5,3.3);
+% \draw (3,3.2) -- (3,3.3);
+\draw [blue, very thick](3.5,3) -- (3.5,3.3);
+% \draw (4,3.2) -- (4,3.3);
+% \draw (4.5,3.2) -- (4.5,3.3);
+% \draw (5,3.2) -- (5,3.3);
+% \draw (5.5,3.2) -- (5.5,3.3);
+% \draw (6,3.2) -- (6,3.3);
+\draw [blue, very thick] (6.5,3) -- (6.5,3.3);
+% \draw (7,3.2) -- (7,3.3);
+\draw [blue, very thick](7.5,3) -- (7.5,3.3);
+% \draw (8,3.2) -- (8,3.3);
+% \draw (8.5,3.2) -- (8.5,3.3);
+
+\node at (0,3.7) {1};
+\node at (0.5,3.7) {2};
+\node at (1,3.7) {3};
+\node at (1.5,3.7) {4};
+\node at (2,3.7) {5};
+\node at (2.5,3.7) {6};
+\node at (3,3.7) {7};
+\node at (3.5,3.7) {8};
+\node at (4,3.7) {9};
+\node at (4.5,3.7) {10};
+\node at (5,3.7) {11};
+\node at (5.5,3.7) {12};
+\node at (6,3.7) {13};
+\node at (6.5,3.7) {14};
+\node at (7,3.7) {15};
+\node at (7.5,3.7) {16};
+\node at (8,3.7) {17};
+\node at (8.5,3.7) {18};
+
+\draw (0,-0.35) -- (8.5,-0.35);
+\draw [red, very thick] (0,-0.35) -- (0,-0.05);
+\draw [red, very thick](0.5,-0.35) -- (0.5,-0.05);
+% \draw (1,-0.35) -- (1,-0.25);
+% \draw (1.5,-0.35) -- (1.5,-0.25);
+\draw [red, very thick](2,-0.35) -- (2,-0.05);
+% \draw (2.5,-0.35) -- (2.5,-0.25);
+% \draw (3,-0.35) -- (3,-0.25);
+% \draw  (3.5,-0.35) -- (3.5,-0.25);
+% \draw (4,-0.35) -- (4,-0.25);
+% \draw (4.5,-0.35) -- (4.5,-0.25);
+% \draw (5,-0.35) -- (5,-0.25);
+% \draw (5.5,-0.35) -- (5.5,-0.25);
+% \draw (6,-0.35) -- (6,-0.25);
+\draw [red, very thick] (6.5,-0.35) -- (6.5,-0.05);
+\draw [red, very thick](7,-0.35) -- (7,-0.05);
+% \draw (7.5,-0.35) -- (7.5,-0.25);
+% \draw (8,-0.35) -- (8,-0.25);
+\draw [red, very thick](8.5,-0.35) -- (8.5,-0.05);
+
+\node at (0,-0.7) {1};
+\node at (0.5,-0.7) {2};
+\node at (1,-0.7) {3};
+\node at (1.5,-0.7) {4};
+\node at (2,-0.7) {5};
+\node at (2.5,-0.7) {6};
+\node at (3,-0.7) {7};
+\node at (3.5,-0.7) {8};
+\node at (4,-0.7) {9};
+\node at (4.5,-0.7) {10};
+\node at (5,-0.7) {11};
+\node at (5.5,-0.7) {12};
+\node at (6,-0.7) {13};
+\node at (6.5,-0.7) {14};
+\node at (7,-0.7) {15};
+\node at (7.5,-0.7) {16};
+\node at (8,-0.7) {17};
+\node at (8.5,-0.7) {18};
+
+\draw [red, >=latex,<->] (0,0.25) -- (0.5,0.25);
+\draw [blue, >=latex,<->](0,2.75) -- (1,2.75);
+\draw [red, >=latex,<->](0.5,0.5) -- (2,0.5);
+\draw [red, >=latex,<->](0,0.75) -- (2,0.75);
+\draw [blue, >=latex,<->](1,2.5) -- (3.5,2.5);
+\draw [blue, >=latex,<->](3.5,2.25) -- (6.5,2.25);
+\draw [blue, >=latex,<->](0,2.05) -- (3.5,2.05);
+\draw [blue, >=latex,<->](3.5,1.8) -- (7.5,1.8);
+\draw [red, >=latex,<->](2,1) -- (7,1);
+\draw [blue, >=latex,<->](1,1.55) -- (6.5,1.55);
+\draw [red, >=latex,<->](0.5,1.25) -- (6.5,1.25);
+
 \end{tikzpicture}
-\caption{Solutions of the circular and linear sparse ruler problem. Minimal solutions to linear sparse ruler are shown in red, minimal solutions to the circular sparse ruler problem are shown in blue and the upper bound from \cref{th:upperbound} is shown in green.}\label{fig:comparison_sparse_ruler}
+\caption{Collaborative sampling with $N=13$ and $M=4$}\label{tkz:collaborative_ruler}
 \end{figure}
+The red arrows indicate the lags that are produced by device one, and the blue arrows indicate the lags that are produced by device two. Note that together they make all lags available. \cite{ariananda2014cooperative} investigates ways to come up with optimal set-ups for different amounts of devices.
+
+\section{Coprime sampling}
+Similarly, coprime sampling also requires that the circular sparse ruler problem is satisfied. A configuration for coprime sampling is depicted in \cref{tkz:coprime_ruler}.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=1.3]
+
+\foreach \i in {0,...,20} {
+    \draw [dashed] (1+\i/2,0) -- (1+\i/2,3.5);
+}
+
+\draw (1,0) -- (11,0);
+
+\draw [red, very thick] (1,0) -- (1,0.3);
+% \draw (1.5,0) -- (1.5,0.1);
+% \draw (2,0) -- (2,0.1);
+\draw [red, very thick] (2.5,0) -- (2.5,0.3);
+% \draw (3,0) -- (3,0.1);
+% \draw (3.5,0) -- (3.5,0.1);
+\draw [red, very thick] (4,0) -- (4,0.3);
+% \draw  (4.5,0) -- (4.5,0.1);
+% \draw (5,0) -- (5,0.1);
+\draw [red, very thick] (5.5,0) -- (5.5,0.3);
+% \draw (6,0) -- (6,0.1);
+% \draw (6.5,0) -- (6.5,0.1);
+\draw [red, very thick] (7,0) -- (7,0.3);
+% \draw (7.5,0) -- (7.5,0.1);
+% \draw (8,0) -- (8,0.1);
+\draw [red, very thick] (8.5,0) -- (8.5,0.3);
+% \draw (9,0) -- (9,0.1);
+% \draw (9.5,0) -- (9.5,0.1);
+\draw [red, very thick] (10,0) -- (10,0.3);
+% \draw (10.5,0) -- (10.5,0.1);
+% \draw (11,0) -- (11,0.1);
+
+\node at (1,-0.35) {1};
+\node at (1.5,-0.35) {2};
+\node at (2,-0.35) {3};
+\node at (2.5,-0.35) {4};
+\node at (3,-0.35) {5};
+\node at (3.5,-0.35) {6};
+\node at (4,-0.35) {7};
+\node at (4.5,-0.35) {8};
+\node at (5,-0.35) {9};
+\node at (5.5,-0.35) {10};
+\node at (6,-0.35) {11};
+\node at (6.5,-0.35) {12};
+\node at (7,-0.35) {13};
+\node at (7.5,-0.35) {14};
+\node at (8,-0.35) {15};
+\node at (8.5,-0.35) {16};
+\node at (9,-0.35) {17};
+\node at (9.5,-0.35) {18};
+\node at (10,-0.35) {19};
+\node at (10.5,-0.35) {20};
+\node at (11,-0.35) {21};
+
+\draw (1,3.5) -- (11,3.5);
+
+\draw [blue, very thick] (1,3.2) -- (1,3.5);
+% \draw (1.5,3.4) -- (1.5,3.5);
+% \draw (2,3.4) -- (2,3.5);
+% \draw (2.5,3.4) -- (2.5,3.5);
+% \draw (3,3.4) -- (3,3.5);
+\draw [blue, very thick] (3.5,3.2) -- (3.5,3.5);
+% \draw (4,3.4) -- (4,3.5);
+% \draw  (4.5,3.4) -- (4.5,3.5);
+% \draw (5,3.4) -- (5,3.5);
+% \draw (5.5,3.4) -- (5.5,3.5);
+\draw [blue, very thick] (6,3.2) -- (6,3.5);
+% \draw (6.5,3.4) -- (6.5,3.5);
+% \draw (7,3.4) -- (7,3.5);
+% \draw (7.5,3.4) -- (7.5,3.5);
+% \draw (8,3.4) -- (8,3.5);
+\draw [blue, very thick] (8.5,3.2) -- (8.5,3.5);
+% \draw (9,3.4) -- (9,3.5);
+% \draw (9.5,3.4) -- (9.5,3.5);
+% \draw (10,3.4) -- (10,3.5);
+% \draw (10.5,3.4) -- (10.5,3.5);
+\draw [blue, very thick] (11,3.2) -- (11,3.5);
+
+\node at (1,3.85) {1};
+\node at (1.5,3.85) {2};
+\node at (2,3.85) {3};
+\node at (2.5,3.85) {4};
+\node at (3,3.85) {5};
+\node at (3.5,3.85) {6};
+\node at (4,3.85) {7};
+\node at (4.5,3.85) {8};
+\node at (5,3.85) {9};
+\node at (5.5,3.85) {10};
+\node at (6,3.85) {11};
+\node at (6.5,3.85) {12};
+\node at (7,3.85) {13};
+\node at (7.5,3.85) {14};
+\node at (8,3.85) {15};
+\node at (8.5,3.85) {16};
+\node at (9,3.85) {17};
+\node at (9.5,3.85) {18};
+\node at (10,3.85) {19};
+\node at (10.5,3.85) {20};
+\node at (11,3.85) {21};
+
+\draw [>=latex,<->] (1,0.6) -- (1.5,0.6);
+\draw [>=latex,<->](2.5,0.8) -- (3.5,0.8);
+\draw [>=latex,<->](1,1) -- (2.5,1);
+\draw [>=latex,<->](3.5,1.2) -- (5.5,1.2);
+\draw [>=latex,<->](1,1.4) -- (3.5,1.4);
+\draw [>=latex,<->](1,1.6) -- (4,1.6);
+\draw [>=latex,<->](3.5,1.8) -- (7,1.8);
+\draw [>=latex,<->](6,2) -- (10,2);
+\draw [>=latex,<->](1,2.2) -- (5.5,2.2);
+\draw [>=latex,<->](1,2.4) -- (6,2.4);
+\draw [>=latex,<->](5.5,2.6) -- (11,2.6);
+\draw [>=latex,<->](1,2.8) -- (7,2.8);
+\draw [>=latex,<->](3.5,3) -- (10,3);
+
+\end{tikzpicture}
+\caption{Coprime sampling with $a=3$ and $b=5$}\label{tkz:coprime_ruler}
+\end{figure}
+
+We see that the sampling periods $a$ and $b$ should be chosen carefully such that all lags are estimated. \cite{pal2011coprime} shows that choosing $a$ and $b$ coprime yields that all lags are estimated. Remember that $a$ and $b$ are coprime if the only positive integer that evenly divides both of them is one, hence the name coprime.
+
+
 
 
 \section{Appendix: derivation of the integer linear program to calculate circular sparse ruler solutions}\label{ap:derivation_ILP}
