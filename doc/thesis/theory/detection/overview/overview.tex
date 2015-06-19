@@ -26,7 +26,7 @@ A popular example of this type is cyclostationary detection which uses the knowl
 A basic detection method of this type is energy detection \cite{axell2012spectrum} which compares the energy contained in a signal to a certain threshold based on the noise power. Other examples include Covariance absolute value detection \cite{zheng2009spectrum} and wavelet-based detection \cite{han2013novel}. 
 \end{enumerate}
 
-A well known problem in the context of cognitive radio is the \emph{SNR wall}. This problem states that below a certain signal-to-noise ratio \footnote{the signal-to-noise ratio is the ratio of the signal power and the noise power} a detector fails to detect a signal no matter how long the sensing time \cite{sahai2009spectrum}. This problem arises from uncertainties and inperfections in the model assumptions of that detector. Detectors that use a threshold that is independent from noise or signal parameters are not affected by this SNR wall\cite{axell2012spectrum} and possess the property of constant false-alarm rate (CFAR). This property states the probability that the detector decides that its input signal is a signal different from noise, where in fact the signal contains only noise is constant. 
+A well known problem in the context of cognitive radio is the \emph{SNR wall}. This problem states that below a certain signal-to-noise ratio \footnote{the signal-to-noise ratio is the ratio of the signal power and the noise power} a detector fails to detect a signal no matter how long the sensing time \cite{sahai2009spectrum}. This problem arises from uncertainties and inperfections in the model assumptions of that detector. Detectors that use a threshold that is independent from noise or signal parameters are not affected by this SNR wall\cite{axell2012spectrum} and possess the property of constant false-alarm rate (\emph{CFAR}). This property states the probability that the detector decides that its input signal is a signal different from noise, where in fact the signal contains only noise is constant. 
 
 In this chapter we will focus on detection methods that do not assume to have any prior knowledge available. Although methods that use \emph{prior information} can operate at lower SNRs than blind detectors, they generally result in more (computationally) complex algorithms. Furthermore using a detector that depends on \emph{prior information} limits the applicability as it can only be used in situations where prior knowledge is available.
 
@@ -36,10 +36,10 @@ This chapter will be concerned with the theoretical analysis of the following tw
 	\item Energy detection. This detection method uses a relatively simpe test statistic. Its threshold, as stated before, is dependent on 
 	the noise power. This noise power has to be estimated in real detectors for example by using an empty frequency band as reference. This detection method is therefore subject to the SNR-wall phenomenon as there will be uncertainty in the noise estimate.
 	\item Covariance Absolute Value detection (CAV). This detection method uses a test statistic based on the autocorrelation function of 
-	the signal. It uses a threshold that does not depend on any signal or noise parameters. Therefore, this detector does posses the CFAR
+	the signal. It uses a threshold that does not depend on any signal or noise parameters. Therefore, this detector does posses the \emph{CFAR}
 	property.
 \end{enumerate}
 
-This analysis represents the search for a suitable detector to be used in our system.  The analsysis of energy detection is motivated by the relative simplicity of the algorithm and low comlexity of its implementation. Analysing CAV is motivated by the fact that it is a CFAR detector which is convenient in practical applications\cite{axell2012spectrum}.  Based on this analysis this chapter will conclude why the final system is using an energy detector. 
+This analysis represents the search for a suitable detector to be used in our system.  The analsysis of energy detection is motivated by the relative simplicity of the algorithm and low comlexity of its implementation. Analysing CAV is motivated by the fact that it is a \emph{CFAR} detector which is convenient in practical applications\cite{axell2012spectrum}.  Based on this analysis this chapter will conclude why the final system is using an energy detector. 
 
 \end{document}
