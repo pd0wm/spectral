@@ -16,10 +16,10 @@ Let $x[n]$ denote the received signal. The conventional energy detection algorit
   \mathcal{H}_0&: x[n] = w[n]\\
   \mathcal{H}_1&: x[n] = s[n] + w[n]
 \end{align}
-in which $w[n]$ denotes additive circular complex gaussian noise and $s[n]$ denotes a signal as transmitted by a primary user.
+in which $w[n]$ denotes additive circular complex Gaussian noise and $s[n]$ denotes a signal as transmitted by a primary user.
 
-We assume that the noise samples are i.i.d. zero mean circular complex gaussian distributed; $w[n] \sim \mathcal{CN}(0, \sigma_n^2)$. 
-We furthermore assume that the samples of the signal $s[n]$ can be modelled independently as circular complex gaussian $\mathcal{CN}(0, \sigma_s^2)$. % todo ref
+We assume that the noise samples are i.i.d. zero mean circular complex Gaussian distributed; $w[n] \sim \mathcal{CN}(0, \sigma_n^2)$. 
+We furthermore assume that the samples of the signal $s[n]$ can be modelled independently as circular complex Gaussian $\mathcal{CN}(0, \sigma_s^2)$. % todo ref
 % dat dit aannemelijk maakt That is
 
 \begin{align*}
@@ -64,7 +64,7 @@ is proportional to $\Lambda'(x)$. Note that $\Lambda''$ is the same test statist
 
 \subsubsection{Threshold}
 In this section we will determine the threshold $\gamma$, for the energy detector test statistic $\Lambda''(\vec{x})$.
-Under $\mathcal{H}_0$ we have that $\Lambda''(\vec{x})$ is the sum of $2N$ independent zero mean gaussian distributed variables
+Under $\mathcal{H}_0$ we have that $\Lambda''(\vec{x})$ is the sum of $2N$ independent zero mean Gaussian distributed variables
 with variance $\frac{\sigma_n^2}{2}$. Therefore the following applies:
 
 \begin{align}
@@ -81,7 +81,7 @@ Therefore the false alarm probability $p_{fa}$ is given by \cite{rugini2013small
 
 with $F_{2N}$ the CDF of a chi square distribution with $2N$ degrees of freedom. 
 
-If $N$ is large enough, we can approximate the test statistics' distribution by a gaussian distributio as it it is the sum of $2N$ i.i.d. random variables, using the Central Limit theorem:
+If $N$ is large enough, we can approximate the test statistics' distribution by a Gaussian distribution as it it is the sum of $2N$ i.i.d. random variables, using the Central Limit theorem:
 
 \begin{align*}
 F_{2N} \approx 1-Q(\frac{\frac{2\Lambda''(x)}{\sigma^2_n}-2N}{2\sqrt{N}}).
