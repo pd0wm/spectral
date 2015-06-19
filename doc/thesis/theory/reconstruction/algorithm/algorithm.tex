@@ -11,13 +11,56 @@
 \label{sec:reconstruction-algorithm}
 This section will discuss the algorithm to estimate in real-time the power spectral density of a signal which is sampled at sub-Nyquist frequencies. We consider multi-coset sampling such as described in \cref{cha:sampling}. A step-by-step derivation of the algorithm can be found in \cref{sec:reconstruction-derivation}.
 
-Let the input signal sampled at the Nyquist-frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Every coset $i$ samples the input signal every $N$ samples, which means that the output of a coset is an $N$-decimation of the input signal. Let the output of coset $i$ be denoted by $y_i[n]$. Our reconstruction method estimates the power spectral density of $x[n]$ by making use of the outputs of all cosets. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$.\footnote{More specifically, the Wiener-Khinchin theorem states that the Fourier transform of the autocorrelation equals the power spectral density, which yields the equivalence.} Therefore, our reconstruction method aims to estimate the autocorrelation of $x[n]$. Let the autocorrelation of the input signal be denoted by $r_x[m]$. Let the cross-correlation of the output of cosets $i$ and $j$ be denoted by $r_{y_i,y_j}[m]$. We will make use of $r_{y_i,y_j}[m]$ to estimate $r_x[m]$. This estimation is based on the relationship
+Let the input signal sampled at the Nyquist frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. We have seen that every coset samples the input signal every $N$ samples, which means that the output of a coset is an $N$-decimation of the input signal. Let the output of coset $i$ be denoted by $y_i[n]$. Our reconstruction method estimates the power spectral density of $x[n]$ by making use of the outputs of all cosets. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$.\footnote{More specifically, the Wiener-Khinchin theorem states that the Fourier transform of the autocorrelation equals the power spectral density, which yields the equivalence.} Therefore, our reconstruction method aims to estimate the autocorrelation of $x[n]$. Let the autocorrelation of the input signal be denoted by $r_x[m]$. Let the cross-correlation of the output of cosets $i$ and $j$ be denoted by $r_{y_i,y_j}[m]$. We will make use of $r_{y_i,y_j}[m]$ to estimate $r_x[m]$. This estimation is based on the relationship
 \begin{align*}
     \vec{r}_{y} = \mat{R} \vec{r}_x.
 \end{align*}
 Here $\vec{r}_y$ represents an aggregation of $r_{y_i,y_j}[m]$ and $\vec{r}_x$ represents an aggregation of $r_x$. We see that we can use $\mat{R}$ to relate $r_x[m]$ to $r_{y_i,y_j}[m]$.
 
-It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. Here $M$ and $N$ have already been discussed. The parameter $L$ limits $r_{y_i,y_j}[m]$ in support from $m=-L$ to $m=L$.\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} This influences the length of the estimated autocorrelation, which then determines the resolution of the estimated power spectral density of $x[n]$. The autocorrelation $r_x[m]$ will be estimated for $|m| \le LN$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of several steps.
+It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal is determined by the sampling method. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \ref{cha:sampling} and will be further discussed in \ref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. Here $M$ and $N$ have already been discussed. The parameter $L$ limits $r_{y_i,y_j}[m]$ in support from $m=-L$ to $m=L$.\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} This influences the length of the estimated autocorrelation, which then determines the resolution of the estimated power spectral density of $x[n]$. The autocorrelation $r_x[m]$ will be estimated for $|m| \le LN$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}.
+
+Before we describe the algorithm, we have to study the output of a coset more closely. Every coset $i$ is associated to a sampling signal $c_i[n]$. We have seen that every coset samples the input signal every $N$ samples. Therefore, if we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples. This concept is illustrated in \cref{fig:illustration-yi}. The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be further discussed in \cref{cha:sampling_methods}.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\draw  (-1,-4) rectangle (-0.5,-4.5);
+\draw  [fill=gray](-0.5,-4) rectangle (0,-4.5);
+\draw  [fill=gray](0,-4) rectangle (0.5,-4.5);
+\draw  (0.5,-4) rectangle (1,-4.5);
+\draw  (1,-4) rectangle (1.5,-4.5);
+\draw  [fill=gray](1.5,-4) rectangle (2,-4.5);
+\draw  (2,-4) rectangle (2.5,-4.5);
+\draw  (2.5,-4) rectangle (3,-4.5);
+\draw  (3,-4) rectangle (3.5,-4.5);
+\draw  (3.5,-4) rectangle (4,-4.5);
+\draw  (4,-4) rectangle (4.5,-4.5);
+\draw  (4.5,-4) rectangle (5,-4.5);
+\draw  (5,-4) rectangle (5.5,-4.5);
+\draw  (5.5,-4) rectangle (6,-4.5);
+\draw  [fill=gray](6,-4) rectangle (6.5,-4.5);
+\draw  [fill=gray](6.5,-4) rectangle (7,-4.5);
+\draw  (7,-4) rectangle (7.5,-4.5);
+\draw  (7.5,-4) rectangle (8,-4.5);
+\draw  [fill=gray](8,-4) rectangle (8.5,-4.5);
+\draw  (8.5,-4) rectangle (9,-4.5);
+\draw (-0.5,-4) -- (-0.5,-3.5);
+\draw (6,-4) -- (6,-3.5);
+\draw [>=latex,<->] (-0.5,-3.5) -- node[yshift=0.3cm] {$N$} (6,-3.5);
+\draw [>=latex,->] (-0.25,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_1[0]$} (-0.25,-5);
+\draw [>=latex,->] (-0.25+6.5,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_1[1]$} (-0.25+6.5,-5);
+\draw (-1.5,-4.25) node {$\cdots$};
+\draw (9.5,-4.25) node {$\cdots$};
+\draw [>=latex,->] (-0.25+0.5,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_2[0]$} (-0.25+0.5,-5.5);
+\draw [>=latex,->] (-0.25+6.5+0.5,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_2[1]$} (-0.25+6.5+0.5,-5.5);
+\draw [>=latex,->] (-0.25+2,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_3[0]$} (-0.25+2,-6);
+\draw [>=latex,->] (-0.25+6.5+2,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_3[1]$} (-0.25+6.5+2,-6);
+\end{tikzpicture}
+\caption{Illustration of how $y_i[n]$ is constructed from $x[n]$. The blocks represent the samples of $x[n]$.}
+\label{fig:illustration-yi}
+\end{figure}
+
+The algorithm consists of following steps.
 
 \begin{table}
     \centering
@@ -34,22 +77,15 @@ It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cos
     \label{tab:reconstruction-algorithm-inputs-outputs}
 \end{table}
 
-\begin{tabularx}{\textwidth}{rY}
-    Step 1: & Determine $c_i[n]$ for every coset $i$.
-    \newline \newline
-    The configuration determines $c_i[n]$, which is called the sampling signal, for every coset $i$. How $c_i[n]$ can be obtained from the configuration is explained in \cref{sub:ci-circ,sub:ci-collab,sub:ci-coprime}. The restrictions on $c_i[n]$ are discussed in \cref{sub:reconstruction-ci}.
-    \newline \\
-    Step 2: & Construct $\mat{R}$.
-    \newline \newline
-    \cref{sub:reconstruction-generation} explains how to construct $\mat{R}$.
-    \newline \\
-    Step 3: & Measure $y_i[n]$ for $KL$ samples for every coset $i$. \newline \\
-    Step 4: & Estimate $r_{y_i,y_j}[m]$ for every combination of cosets $i$ and $j$.
-    \newline \newline
-    \cref{sub:reconstruction-estimation} discusses how $KL$ samples of $y_i[n]$ can be used to estimate $r_{y_i,y_j}[m]$.
-    \newline \\
-    Step 5: & Construct $\vec{r}_y$.
-    \newline \newline
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item1}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
+    \item Determine $c_i[n]$ for every coset $i$. \\ \\
+    The configuration determines $c_i[n]$ for every coset $i$. How $c_i[n]$ can be obtained from the configuration is explained in \cref{sub:ci-circ,sub:ci-collab,sub:ci-coprime}. The restrictions on $c_i[n]$ are discussed in \cref{sub:reconstruction-ci}. \\
+    \item Construct $\mat{R}$. \\ \\
+    \cref{sub:reconstruction-generation} explains how to construct $\mat{R}$. \\
+    \item Measure $y_i[n]$ for $KL$ samples for every coset $i$. \\
+    \item Estimate $r_{y_i,y_j}[m]$ for every combination of cosets $i$ and $j$. \\ \\
+    \cref{sub:reconstruction-estimation} discusses how $KL$ samples of $y_i[n]$ can be used to estimate $r_{y_i,y_j}[m]$. \\
+    \item Construct $\vec{r}_y$. \\ \\
     If
     \begin{align*}
         \vec{r}_{y_i,y_j} = \begin{bmatrix}
@@ -62,19 +98,14 @@ It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cos
             \vec{r}_{y_1,y_1} \\ \vdots \\ \vec{r}_{y_M,y_M}
         \end{bmatrix}.
     \end{align*}
-    \newline \\
-    % Step 6: &  Solve \cref{eq:normal-rx} to estimate $\vec{r}_x$, which yields an estimation of $r_x[m]$.
-    % \newline \newline
-    % The vector  $\vec{r}_x$ is defined in \cref{eq:def-rx}. Once more, \cref{eq:normal-rx} will be discussed in the derivation of the algorithm.
-    % \newline \\
-    Step 6 : & Calculate $\vec{r}_x=\mat{R}^\dagger \vec{r}_y$, which yields an estimation of $r_x[m]$.
-    \newline \newline
+    \item Calculate $\vec{r}_x=\mat{R}^\dagger \vec{r}_y$, which yields an estimation of $r_x[m]$. \\ \\
     Here
     \begin{align*}
          \vec{r}_x = \begin{bmatrix}
              r_x[LN] \; \cdots \; r_x[-LN]
          \end{bmatrix}.
-    \end{align*} Therefore the autocorrelation $r_x[m]$ is estimated for $|m| \le LN$. The matrix $\mat{R}^\dagger$ denotes the Moore-Penrose pseudoinverse of $\mat{R}$.
-\end{tabularx}
+    \end{align*} Therefore the autocorrelation $r_x[m]$ is estimated for $|m| \le LN$. The matrix $\mat{R}^\dagger$ denotes the Moore-Penrose pseudoinverse of $\mat{R}$. \\
+    \label{last-item1}
+\end{enumerate}
 
 \end{document}

@@ -12,15 +12,15 @@ This section will discuss some details of the algorithm which should be consider
 
 \subsection{Restrictions on the sampling signals}
 \label{sub:reconstruction-ci}
-This subsection discusses sufficient restrictions on $c_i[n]$ which yield a correct estimation. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Furthermore, all $c_i[n]=1$ for $n=n_i$ and otherwise zero. Finally, the following problem must be satisfied.
+This subsection discusses sufficient restrictions on $c_i[n]$ which yield a correct estimation. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Furthermore, all $c_i[n]=1$ for a single $n=n_i$ and otherwise zero. Finally, the following problem must be satisfied.
 
 \begin{description}
-    \item[Circular Sparse Ruler Problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ make up $0,\ldots,N-1$.
+    \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ must make up $0,\ldots,N-1$.
 \end{description}
 
 This problem will be further discussed in \cref{cha:sampling_methods}.
 
-\subsection{Estimation of the cross-correlations and autocorrelation}
+\subsection{Estimation of the cross-correlations}
 \label{sub:reconstruction-estimation}
 In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[n]$ is known for $n = 0,\ldots,KL-1$. Since we assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$, it remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
 \begin{align} \label{eq:ryij-est}
@@ -51,22 +51,23 @@ Since $LN$ determines the resolution of the estimated power spectral density of 
 \label{sub:reconstruction-generation}
 It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. Given a vector, $\operatorname{toeplitz}$ generates a Toeplitz matrix from this vector. Given a matrix, $\operatorname{tril}$ keeps the lower triangular matrix of this matrix and sets the other elements to zero. The functions $\operatorname{toeplitz}$ and $\operatorname{tril}$ are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows. An example of the algorithm which illustrates its correctness is given in \cref{sec:reconstruction-generation-algorithm}.
 
-\begin{tabularx}{\textwidth}{rY}
-    Step 1: & Let \begin{align*}
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item2}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
+    \item Let \begin{align*}
                 \vec{c} = \begin{bmatrix} c_{i,j}[N-1] \; \cdots \; c_{i,j}[-N+1] \end{bmatrix}
 \end{align*} where \begin{align*}
                 c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
-            \end{align*} \\
-    Step 2: & Append $\vec{c}$ with $2(L-1)N+1$ zeros. \\ \\
-    Step 3: & Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$. \\ \\
-    Step 4: & Omit the first $N-1$ rows and the last $N-1$ columns. \\ \\
-    Step 5: & Keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$ \\ \\
-    Step 6: & Construct \begin{align*}
+            \end{align*}
+    \item Append $\vec{c}$ with $2(L-1)N+1$ zeros. \\
+    \item Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$. \\
+    \item Omit the first $N-1$ rows and the last $N-1$ columns. \\
+    \item Keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$ \\
+    \item Construct \begin{align*}
         \mat{R} = \begin{bmatrix}
             \mat{R}_{1,1} \\ \vdots \\ \mat{R}_{M,M}
         \end{bmatrix}.
-    \end{align*} \\
-\end{tabularx}
+    \end{align*}
+    \label{last-item2}
+\end{enumerate}
 
 The advantage is that this algorithm takes advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 and 5 can be vectorised.
 \end{document}
