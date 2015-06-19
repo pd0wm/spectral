@@ -1,0 +1,34 @@
+%!TEX program = xelatex
+%!TEX root = ../../theory.tex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+\section{Overview of Variables}
+This chapter describes detection methods adopted to work with the reconstructor as described in \Cref{cha:reconstruction}. Besides the variables as introduced in \Cref{tab:reconstruction-overview-variables}, this chapter
+ introduces some new variables which are introduced in \Cref{tab:detection-overview-variables}. 
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{lY}
+        \textbf{Variable} & \textbf{Description}\\ \hline
+        $x[n]$ & input signal \\
+        $w[n]$& noise signal \\
+        $s[n]$ & user signal \\
+        $p_{fa}$ & false alarm probability  \\
+        $\gamma$ & detection threshold \\
+        $\mathcal{H}_0$ & hypothesis that a signal purely contains noise \\
+        $\mathcal{H}_1$ & hypothesis that a signal contain a user signal $s[n]$ besides noise \\
+        $Q(x)$ & tail probability function of the standard gaussian distribution \\
+        $\sigma_n^2$ & noise variance/noise power \\
+        $\mathcal{F}(\cdot)$ & DTFT operator \\
+        $\mathcal{P}(\omega)$ & power spectral density obtained by applying the DTFT to $r_x[n]$\\
+        $\vec{s}_x$ & power spectral density vector, obtained by aplying the DFT to $\vec{r}_x$.\\
+    \end{tabularx}
+    \caption{Overview of the variables used}
+    \label{tab:detection-overview-variables}
+\end{table}
+
+\end{document}

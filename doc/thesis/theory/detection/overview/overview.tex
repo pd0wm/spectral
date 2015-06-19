@@ -22,18 +22,25 @@ where $w[n]$ denotes a noise signal and $s[n]$ a signal different from noise. Un
 We can distinguish between two types of detection methods to provide an answer to this problem:
 \begin{enumerate}
 \item detection methods based on information of the type of signals to be detected, such called \emph{prior information}.
-\item detection methods methods working without any prior knowledge of the signals to be detected.
+A popular example of this type is cyclostationary detection which uses the knowledge of the modulation techniques of the signals to perform the detection\cite{axell2012spectrum,quan2009optimal}. Another example is a matched filter detector. This detector correlates the received signal with a known signal that is to be detected and therefore needs exact knowledge of the signal \cite{Kapoor2011Communication}\cite{couch2013digital}. 
+\item detection methods methods working without any prior knowledge of the signals to be detected, such called \emph{blind} detection methods.
+A basic detection method of this type is energy detection \cite{axell2012spectrum} which compares the energy contained in a signal to a certain threshold based on the noise power. Other examples include Covariance absolute value detection \cite{zheng2009spectrum} and wavelet-based detection \cite{han2013novel}. 
 \end{enumerate}
 
-In this chapter we will focus on the latter type. First of all, using \emph{prior information} results in more complex algorithms and needs knowledge of the signal types to be implemented and analyzed. Furthermore using a detector that depends on \emph{prior information} limits the applicability as it can only be used in constrained situations. 
+A well known problem in the context of cognitive radio is the \emph{SnR-wall}. This problem states that below a certain signal-to-noise ratio a detector fails to detect a signal no matter how long the sensing time \cite{sahai2009spectrum}. This problem arises from uncertainties and inperfections in the model assumptions of the detector Detectors that use a threshold independent form noise or signal parameters are not affected by this SnR wall\cite{axell2012spectrum} and possess constant false-alarm rate property (CFAR). 
 
-This chapter will be concered with the analysis of the following two detection methods:
+In this chapter we will focus on detection methods that do not assume to have any prior knowledge availbe. This is motivated by observing that using \emph{prior information} results in more complex algorithms that need knowledge of the signal types in order to be implemented and analyzed. Furthermore using a detector that depends on \emph{prior information} limits the applicability as it can only be used in situations where prior knowledge is available. 
+
+This chapter will be concerned with the analysis of the following two detection methods:
 
 \begin{enumerate}
-	\item Energy detection;
-	\item Covariance Absolute Value detection (CAV).
+	\item Energy detection; This detection method uses a relatively simpe test statistic. Its threshold, as stated before, is dependent on 
+	the noise power. This noise power has to be estimated in real detectors for example by using an empty frequency band as reference. This detection method is therefore subject to the SnR-wall phenomenon as there will be uncertainty in the noise estimate.
+	\item Covariance Absolute Value detection (CAV). This detection method uses a test statistic based on the autocorrelation function of 
+	the signal. It uses a threshold that does not depend on any signal or noise parameters. Therefore, this detector does posses the CFAR
+	property.
 \end{enumerate}
 
-In the subsequent sections it is assumed that noise is represented  by zero-mean \emph{circular symmetric complex gaussian} white noise\footnote{TODO ref naar appendix}, which we will simply refer to as white noise.  
+Analsysis of energy detection is motivated by the relative simplicity of  the algorithm.  Analysing CAV is motivated by the fact that it is a CFAR detector, independent of a noise level estimate which is convenient in practical applications. 
 
 \end{document}
