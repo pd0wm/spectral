@@ -17,7 +17,6 @@ Submodules
 .. toctree::
 
    cogradio.helperfunctions
-   cogradio.sparseruler
 
 Module contents
 ---------------

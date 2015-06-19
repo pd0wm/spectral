@@ -6,8 +6,8 @@ Submodules
 
 .. toctree::
 
-   cogradio.sampling.collab_sampler
    cogradio.sampling.coprime
+   cogradio.sampling.minimalsparse
    cogradio.sampling.multicoset
    cogradio.sampling.sampling
 

@@ -6,7 +6,11 @@ import scipy as sp
 
 class Wessel(Reconstructor):
 
-    """Implementation of Wessel's adaption of the ariananda algorithm"""
+    """Implementation of Wessel's adaption of the ariananda algorithm
+
+    Args:
+        L: Maximum lag estimated in the cross-correlation of the cosets.
+        C: Sampling matrix used by the sampler used"""
 
     def __init__(self, L, C, cache=True):
         Reconstructor.__init__(self)
@@ -23,19 +27,40 @@ class Wessel(Reconstructor):
 
     # Given M decimated channels, try to estimate the PSD
     def reconstruct(self, signal):
+        """ Reconstruct method reconstructing the autocorrelation function
+        from a a periodically sampled signal
+
+        Args:
+            signal: Asymptotically sampled signal.
+        Returns:
+            reconstructed autocorrelation function.
+        """
+
         ry = self.cross_correlation_signals(signal)
         ry_stacked = ry.ravel()
-        #ry_stacked = ry.ravel()
         rx = self.R_pinv.dot(ry_stacked)
         return rx
 
     def build_D(self):
+        """ Builds the D matrix.
+
+        Returns:
+            D matrix
+        """
         D = np.zeros((2 * self.L - 1, 2 * self.N * self.L + 2 * self.N - 3), dtype=np.complex128)
         for i in range(1, 2 * self.L):
             D[i - 1, (i + 1) * self.N - 2] = 1
         return D
 
     def build_rcc(self, cross_correlation):
+        """ Builds the Rcc matrix based on the cross_correlation provided.
+        Makes use of the nature of the toeplitz generation by entering a modified
+        row and column vector and then 'cutting' these to get the matrix required.
+        Args:
+            cross_correlation: The matrix containing the cross_correlations of the input signal
+        Returns:
+            Rcc matrix.
+        """
         Rcc_dim = 2 * self.N * self.L - 1
         toeplitz_array = np.zeros((Rcc_dim - 1+ len(cross_correlation)), dtype=np.complex128)
         toeplitz_array[:len(cross_correlation)] = cross_correlation
