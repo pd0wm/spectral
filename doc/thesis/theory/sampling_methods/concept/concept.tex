@@ -16,7 +16,7 @@ We will propose three different sampling methods
 Each of these techniques impose their own restrictions on sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple devices with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each sampling method is designed to perform well in situations where their restrictions are in order.
 
 \subsection{Circular sparse sampling}
-Circular sparse sampling uses samplers with sampling period $NT$, where $T$ is the sampling period of the signal to be reconstructed and $N$ the down-sampling factor. This is illustrated in \cref{tkz:circsparseruler} where $N = 7$.
+Circular sparse sampling uses samplers with each the same sampling period $NT$, where $T$ is the sampling period and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
 
 \begin{figure}[H]
 \centering
@@ -118,14 +118,14 @@ Circular sparse sampling uses samplers with sampling period $NT$, where $T$ is t
 \draw [>=latex,->] (8.25,0) to (8.25,-3);
 
 \end{tikzpicture}
-\caption{circular sparse ruler sampling with three samplers}\label{tkz:circsparseruler}
+\caption{An example of circular sparse ruler sampling with three samplers and $N=7$}\label{tkz:circsparseruler}
 \end{figure}
-The grey blocks represent the samples that are recovered by the device and the different coloured blocks represent the samples that are recovered by the different samplers. An implementation of this sampling method is illustrated in \cref{tkz:sc_circsparseruler}. 
+The grey blocks represent the samples recovered by all samplers of the device. The coloured blocks represent the samples that are recovered by the different samplers. A possible implementation of this sampling method is illustrated in \cref{tkz:sc_circsparseruler}. 
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=.9]
-\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x[n]$};
+\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x$};
 \draw  (-1.5,1.5) -- (0.5,1.5);
 \draw  (-0.5,3) -- (0.5,3);
 \draw (-0.5,3) -- (-0.5,-0.5);
@@ -163,20 +163,20 @@ The grey blocks represent the samples that are recovered by the device and the d
 \draw  (3,0) -- (4,0);
 \draw  (3,-2) -- (4,-2);
 
-\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1[k]$};
-\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2[k]$};
-\draw  (5,-1.5) rectangle (4,-2.5) node[pos=.5]{$y_m[k]$};
-\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0[k]$};
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1$};
+\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2$};
+\draw  (5,-1.5) rectangle (4,-2.5) node[pos=.5]{$y_m$};
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0$};
 
 \end{tikzpicture}
-\caption{schematic of circular sparse ruler implementation}\label{tkz:sc_circsparseruler}
+\caption{Schematic of a circular sparse ruler implementation}\label{tkz:sc_circsparseruler}
 \end{figure}
 
-The switches are samplers that sample and hold the input signal $x[n]$ at a given time. The N$\,\downarrow$ is an integrate and dump with a factor $N$. The signal $y_i[k]$ has therefore $N$ times less samples than input signal $x[n]$. 
+The switches represent a sample and hold operation of the input signal $x$. The N$\,\downarrow$ represents an integrate and dump operation every $N$ samples. Therefore, $y_i$ is an $N$-decimation of the input signal. 
 
 \subsection{Collaborative sampling}
 
-Collaborative sampling is fairly similar to circular sparse sampling, except for the fact that circular sparse sampling is restricted to only one device, and collaborative sampling to multiple devices. Collaborative sampling is illustrated in \cref{tkz:collaborative}, where we use two devices with each three samplers, and a down-sampling factor of $N=13$.
+Collaborative sampling is similar to circular sparse sampling, except for the fact that circular sparse sampling is restricted to only one device, while collaborative sampling is restricted to multiple devices. Collaborative sampling is illustrated in \cref{tkz:collaborative}. In this example, we use two devices with three samplers each and a downsampling factor of $N=13$.
 
 \begin{figure}[H]
 \centering
@@ -367,16 +367,18 @@ Collaborative sampling is fairly similar to circular sparse sampling, except for
 \draw [>=latex,->] (3.25,-5.5) to (3.25,-8.5);
 
 \end{tikzpicture}
-\caption{collaborative sampling with two devices with each three samplers}\label{tkz:collaborative}
+\caption{Collaborative sampling with two devices with each three samplers}\label{tkz:collaborative}
 \end{figure}
-In this figure, the top half is device one, and the bottom half is device 2. The grey blocks represent the samples that are recovered by each device, and the coloured blocks represent the samplers that are recovered by each sampler.
 
+In \cref{tkz:collaborative}, the top half represents the first device, and the bottom half represents the second device. Both devices sample separate signals. Similar to \cref{tkz:circsparseruler}, the coloured blocks represent the samples recovered by the sampler of the associated device.
+
+TODO: verplaats. \\
 Because collaborative sampling uses multiple devices with each their own reconstructor, the information from the different reconstructors needs to be combined to result in the desired autocorrelation. A schematic of an implementation is given in \cref{tkz:sc_collaborative}.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=.9]
-\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x_1[n]$};
+\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x_1$};
 \draw  (-1.5,1.5) -- (0.5,1.5);
 \draw  (-0.5,3) -- (0.5,3);
 \draw (-0.5,3) --(-.5,0) ;
@@ -403,11 +405,11 @@ Because collaborative sampling uses multiple devices with each their own reconst
 \draw  (3,1.5) -- (4,1.5);
 \draw  (3,0) -- (4,0);
 
-\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0[k]$};
-\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1[k]$};
-\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2[k]$};
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0$};
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1$};
+\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2$};
 
-\draw  (-2.5,-4) rectangle (-1.5,-5) node[pos=.5]{$x_2[n]$};
+\draw  (-2.5,-4) rectangle (-1.5,-5) node[pos=.5]{$x_2$};
 \draw  (-1.5,-4.5) -- (0.5,-4.5);
 \draw  (-0.5,-3) -- (0.5,-3);
 \draw (-0.5,-3) --(-0.5,-6) ;
@@ -434,24 +436,24 @@ Because collaborative sampling uses multiple devices with each their own reconst
 \draw  [>=latex,->] (5,-4.5) -- (6,-4.5);
 \draw  [>=latex,->] (5,-6) -- (6,-6);
 
-\draw  (5,-2.5) rectangle (4,-3.5) node[pos=.5]{$y_0[k]$};
-\draw  (5,-4) rectangle (4,-5) node[pos=.5]{$y_1[k]$};
-\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$y_2[k]$};
+\draw  (5,-2.5) rectangle (4,-3.5) node[pos=.5]{$y_0$};
+\draw  (5,-4) rectangle (4,-5) node[pos=.5]{$y_1$};
+\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$y_2$};
 
-\draw  (6,3.5) rectangle (8.5,-.5) node[pos=.5]{reconstructor};
-\draw  (6,-2.5) rectangle (8.5,-6.5) node[pos=.5]{reconstructor};
+\draw  (6,3.5) rectangle (8.5,-.5) node[pos=.5]{Reconstructor};
+\draw  (6,-2.5) rectangle (8.5,-6.5) node[pos=.5]{Reconstructor};
 
-\draw  (6,-1) rectangle (8.5,-2) node[pos=.5]{combiner};
+\draw  (6,-1) rectangle (8.5,-2) node[pos=.5]{Combiner};
 \draw [>=latex,->] (7.25,-2.5) -- (7.25,-2);
 \draw [>=latex,->] (7.25,-.5) -- (7.25,-1);
 
 \end{tikzpicture}
-\caption{schematic of collaborative sampling implementation}\label{tkz:sc_collaborative}
+\caption{Schematic of collaborative sampling implementation}\label{tkz:sc_collaborative}
 \end{figure}
 
 
 \subsection{Coprime sampling}\label{sub:coprime}
-Coprime sampling is very different from circular sparse sampling and collaborative sampling, in that the sample period of the different samplers are not equal. Also the amount of samplers are restricted to exactly two. The down-sampling is not achieved by adding more samplers but by altering the sampling periods of the two samplers. This is illustrated in \cref{tkz:coprime}, where one device has a down-sampling factor of three, and the other of five.  
+Coprime sampling is different from circular sparse sampling and collaborative sampling in the sense that the different sampler sample with differents periods. Also, the amount of samplers is restricted to two. The first sampler samples with period $aT$, and the second sampler samples with period $bT$. Coprime sampling is illustrated in \cref{tkz:coprime}. In this example, $a=3$ and $b=5$.
 
 \begin{figure}[H]
 \centering
@@ -533,20 +535,17 @@ Coprime sampling is very different from circular sparse sampling and collaborati
 \draw [>=latex,->] (6.75,0) to (6.75,-2);
 
 \end{tikzpicture}
-\caption{coprime sampling with $m=3,n=5$}\label{tkz:coprime}
+\caption{Coprime sampling with $a=3$ and $b=5$}\label{tkz:coprime}
 \end{figure}
+The choice of the $a$ and $b$ substantially influences the performance of the coprime sampler. This influence will be investigated in \cref{sec:coprime}. 
 
-The grey blocks represent the samples that are recovered by the device, and the coloured blocks represent the samplers that are recovered by each sampler.
-
-The choice of the down-sampling factors substantially influences the performance of the device and will be discussed further in \cref{sec:coprime}. 
-
-It is not trivial to feed a coprime sampler to the reconstructor. The reconstructor expects a set of different devices with the same sampling period. To put the coprime sampler into the reconstructor, we need some additional processing. We use the signals of two samplers with down-sampling factor $n$ and $m$ to make $n+m$ signals with down-sampling factor $n\cdot m$. This will be further explained in \cref{sec:coprime}. A schematic for a possible hardware implementation is given by \cref{tkz:sc_coprime}. 
+In \cref{sec:reconstruction-algorithm}, it is assumed that every sampler samples the input signal at a same rate. However, coprime sampling involves two samplers sampling at different rates. Therefore, using the reconstruction algorithm in conjunction with coprime sampling is non-trivial. \Cref{tkz:sc_coprime} shows an equivalent hardware implementation, which may be used for reconstruction. This implementation will be further discussed in \cref{sec:coprime}. It is worthwhile to note that the equivalent signals $u_0,\ldots,u_a$ and $v_0,\ldots,v_b$ are an $a\cdot b$-decimation of the input signal.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=.9]
 
-\draw  (-2.5,3.5) rectangle (-1.5,2.5) node[pos=.5]{$x_1[n]$};
+\draw  (-2.5,3.5) rectangle (-1.5,2.5) node[pos=.5]{$x_1$};
 
 \draw  (-1.5,3) -- (-0.5,3);
 \draw  (0,3) -- (0.5,3);
@@ -555,10 +554,10 @@ It is not trivial to feed a coprime sampler to the reconstructor. The reconstruc
 
 \draw[ very thick](-0.5,3)-- +(30:0.46);
 
-\draw  (1,3) ellipse (.5 and .5) node{M$\,\downarrow$} ;
-\draw  (3,3) ellipse (.5 and .5) node{N$\,\downarrow$} ;
-\draw  (3,1.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
-\draw  (3,-0.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
+\draw  (1,3) ellipse (.5 and .5) node{a$\,\downarrow$} ;
+\draw  (3,3) ellipse (.5 and .5) node{b$\,\downarrow$} ;
+\draw  (3,1.5) ellipse (.5 and .5) node{b$\,\downarrow$} ;
+\draw  (3,-0.5) ellipse (.5 and .5) node{b$\,\downarrow$} ;
 
 \node at (4.5,0.6) {\vdots};
 \node at (3,0.6) {\vdots};
@@ -571,9 +570,9 @@ It is not trivial to feed a coprime sampler to the reconstructor. The reconstruc
 
 \draw  (2,-0.5) -- (2,3);
 
-\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$u_0[k]$};
-\draw  (5,2) rectangle (4,1) node[pos=.5]{$u_1[k]$};
-\draw  (5,0) rectangle (4,-1) node[pos=.5]{$u_m[k]$};
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$u_0$};
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$u_1$};
+\draw  (5,0) rectangle (4,-1) node[pos=.5]{$u_a$};
 
 %%%%%%%%%%%%%%%
 
@@ -586,10 +585,10 @@ It is not trivial to feed a coprime sampler to the reconstructor. The reconstruc
 
 \draw[ very thick](-0.5,-2.5)-- +(30:0.46);
 
-\draw  (1,-2.5) ellipse (.5 and .5) node{N$\,\downarrow$} ;
-\draw  (3,-2.5) ellipse (.5 and .5) node{M$\,\downarrow$} ;
-\draw  (3,-4) ellipse (.5 and .5) node{M$\,\downarrow$} ;
-\draw  (3,-6) ellipse (.5 and .5) node{M$\,\downarrow$} ;
+\draw  (1,-2.5) ellipse (.5 and .5) node{b$\,\downarrow$} ;
+\draw  (3,-2.5) ellipse (.5 and .5) node{a$\,\downarrow$} ;
+\draw  (3,-4) ellipse (.5 and .5) node{a$\,\downarrow$} ;
+\draw  (3,-6) ellipse (.5 and .5) node{a$\,\downarrow$} ;
 
 \node at (4.5,-4.9) {\vdots};
 \node at (3,-4.9) {\vdots};
@@ -602,15 +601,12 @@ It is not trivial to feed a coprime sampler to the reconstructor. The reconstruc
 
 \draw  (2,-6) -- (2,-2.5);
 
-\draw  (5,-2) rectangle (4,-3) node[pos=.5]{$v_0[k]$};
-\draw  (5,-3.5) rectangle (4,-4.5) node[pos=.5]{$v_1[k]$};
-\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$v_n[k]$};
+\draw  (5,-2) rectangle (4,-3) node[pos=.5]{$v_0$};
+\draw  (5,-3.5) rectangle (4,-4.5) node[pos=.5]{$v_1$};
+\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$v_b$};
 
 \end{tikzpicture}
-\caption{schematic of hardware implementation of coprime sampler}\label{tkz:sc_coprime}
+\caption{Schematic of an equivalent hardware implementation of coprime sampling}\label{tkz:sc_coprime}
 \end{figure}
-
-Note that the signals $u_i[k]$ and $v_i[k]$ have a sample frequency that is $MN$ times slower than the input signal $x[n]$.
-
 \end{document}
 

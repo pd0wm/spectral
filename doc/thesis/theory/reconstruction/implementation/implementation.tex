@@ -23,9 +23,9 @@ This problem will be further discussed in \cref{cha:sampling_methods}.
 \subsection{Estimation of the cross-correlations and autocorrelation}
 \label{sub:reconstruction-estimation}
 In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[n]$ is known for $n = 0,\ldots,KL-1$. Since we assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$, it remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
-\begin{align*}
+\begin{align} \label{eq:ryij-est}
     \hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|}\sum_{k=l}^{u}y_i[k]\conj{y}_j[k+m]
-\end{align*}
+\end{align}
 where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. It is worthwhile to notice that $E(\hat{r}_{y_i,y_j}[m])=r_{y_i,y_j}[m]$, which means that $\hat{r}_{y_i,y_j}[m]$ is an unbiased estimator of $r_{y_i,y_j}[m]$.
 % Similarly, we define
 % \begin{align*}
