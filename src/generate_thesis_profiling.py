@@ -60,15 +60,17 @@ INPUT_DIR = "./profiler_reports/"
 OUTPUT_EXT = ".tex"
 key = ('cumtime', 'tottime')
 
-inp_files = [os.path.splitext(os.path.basename(b)) for b in glob.glob(INPUT_DIR + "*")]
-for filetupl in inp_files:
-    if filetupl[1] == ".prof":
-        input_file = filetupl[0] + filetupl[1]
-        output_file = filetupl[0] + OUTPUT_EXT
-        raw_report = read_stats(INPUT_DIR + input_file, key)
-        content = get_content_from_file(raw_report)
-        table_to_file(content, OUTPUT_DIR + output_file)
 
-lines = ["\\input{{{}}}\n".format(f[0]) for f in inp_files]
-with open(OUTPUT_DIR + APPENDIX_NAME, 'w') as f:
-    f.writelines(lines)
+if __name__ == "__main__":
+    inp_files = [os.path.splitext(os.path.basename(b)) for b in glob.glob(INPUT_DIR + "*")]
+    for filetupl in inp_files:
+        if filetupl[1] == ".prof":
+            input_file = filetupl[0] + filetupl[1]
+            output_file = filetupl[0] + OUTPUT_EXT
+            raw_report = read_stats(INPUT_DIR + input_file, key)
+            content = get_content_from_file(raw_report)
+            table_to_file(content, OUTPUT_DIR + output_file)
+
+    lines = ["\\input{{{}}}\n".format(f[0]) for f in inp_files]
+    with open(OUTPUT_DIR + APPENDIX_NAME, 'w') as f:
+        f.writelines(lines)
