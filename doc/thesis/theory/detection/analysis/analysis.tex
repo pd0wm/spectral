@@ -335,10 +335,10 @@ The CAV detector was first introduced in \cite{zheng2009spectrum}. A block diagr
 	\item Compare $\frac{T1}{T2}$ to a threshold $\gamma$. In case that $\frac{T_1}{T_2} > \gamma$ it is decided that $\mathcal{H}_1$ is true, otherwise $\mathcal{H}_0$ is regarded as the true hypothesis. 
 \end{enumerate}
 
-The threshold $\gamma$ is derived in ???
+The threshold $\gamma$ is derived and an explantion of CAV can be found in \cref{sec:cav_derivation}.
 
 \subsection{Filtering}
-To be able to detect in a certain frequency band the input signal should be filtered by a bandpass filter. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered. This affects the autocorrelation function $r_x[n]$.  A technique to circumvent this problem is proposed in \cite{zheng2009spectrum}, but requires that the filter applied to $x[n]$ is known. However we start our detection process with $r_x[n]$ instead of $x[n]$ and therefore cannot use this technique. This limits the CAV implementation as described in this section to detection in just one frequency band.
+To be able to detect in a certain frequency band the input signal should be filtered by a bandpass filter. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered. This affects the autocorrelation function $r_x[n]$.  A technique to circumvent this problem is proposed in \cite{zheng2009spectrum}, but requires that the filter applied to $x[n]$ is known. However we start our detection process with $r_x[n]$ instead of $x[n]$ and therefore cannot use this technique.  This limits the CAV implementation as described in this section to detection in just one frequency band. Furthermore, if use of this technique was possible, it would imply that we need to apply it per frequency band which may significantly add up to the computational cost if wideband spectrums are used.
 
 % To determine the the threshold of the CAV detector we assume that the elements of the reconstructed auto correlation  $\hat{r}_x[n]$ are approximately gaussian distributed (see \cite{zheng2009spectrum} \cite{ariananda2012compressive}).
 
