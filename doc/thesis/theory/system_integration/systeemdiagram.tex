@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{calc,matrix,positioning}
+\usetikzlibrary{calc,arrows,positioning}
+\begin{document}
+
+\tikzstyle{block} = [draw, fill=white, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=white, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+% http://tex.stackexchange.com/questions/48756/tikz-relative-coordinates
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+
+    \node [input, name=input] {};
+    %\node [sum, right of=input] (sum) {};
+    \node [block, right of=input,  minimum height=10em, minimum width=6em] (sampler) {sampler};
+     % Reconstructor block
+    \node [block, right of=sampler, node distance=7cm] (reconstructor) {reconstructor};
+% lel such beun
+\foreach \x[count=\a] in {0.1,0.32}{
+    \draw node[draw,inner ysep=5pt]
+    (idft-\a) at ([xshift=2cm]$(sampler.north east)!\x!(sampler.south east)$) {$y_\a[kN]$} % 
+    node[right=1cm+\a cm of idft-\a] (c-\a){};
+    \draw[->] (sampler.east|-idft-\a) -- (idft-\a);
+    \draw[->] (sampler.east|-idft-\a) -- (idft-\a);
+    \draw[->] (idft-\a -| ($(sampler.north east)!0.5!(reconstructor.west)$)) -- (reconstructor.west);
+    %\draw[-] (#1.east) -| (mid) |- (#2.west);
+    %\draw[->] (idft-\a.east-|($(idft-\a.east)!0.5!(reconstructor.west)$)) -| (reconstructor.west);
+}
+    \node[draw=none,fill=none] at ([xshift=2cm]$(sampler.north east)!0.54!(sampler.south east)$) {$\vdots$};
+    \node[draw, ,inner ysep=5pt,name=ym] at ([xshift=2cm]$(sampler.north east)!0.76!(sampler.south east)$) {$y_M[kN]$};
+    \draw[->] (sampler.east|-ym) -- (ym);
+
+   
+   
+    \draw [draw,->] (input) -- node {$x[n]$} (sampler);
+
+  
+\end{tikzpicture}
+\end{document}

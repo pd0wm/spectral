@@ -2,22 +2,25 @@
 
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../../includes/preamble.tex}
-\addbibresource{../../../../includes/bibliography.bib}
+\addbibresource{../../../../../includes/bibliography.bib}
 
 \begin{document}
 
 \section{Preliminaries}
-
-\begin{blockDefinition}[Likelihood function under Hypothesis]
-Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$, then $L_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
-\end{blockDefinition}
+The definitions given in this section are used in the derivations later on and are based  on \cite{yates2005probability}.
 
 \begin{blockDefinition}[Complex Gaussian Random Variable]
-Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed.
+Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed. A complex gaussian random variable is characterised by three parameters:
+\begin{enumerate}
+	\item $\mu = E(Z)$
+	\item $\Gamma = E\left(Z-\mu)(\conj(Z)-\conj(\mu))^T\right)$
+	\item $C = E\left((Z-\mu)(Z-\mu)^T\right)$
+\end{enumerate}
+~
 \end{blockDefinition}
 
-\begin{blockDefinition}[Circular Complex Gaussian Random Variable]
-Given a complex gaussian random variable $Z = X + jY$, then $Z$ is circular complex gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta \in \mathbb{R}$. Since
+\begin{blockDefinition}[Circular Symmetric Complex Gaussian Random Variable]
+Given a complex gaussian random variable $Z = X + jY$, then $Z$ is circular symmetric complex gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta \in \mathbb{R}$. Since
 \begin{align*}
 	E\left[Z\right] = E\left[e^{j\theta}Z\right]  = e^{j\theta}E\left[Z\right] 
 \end{align*}
@@ -43,7 +46,7 @@ The probability density function of a circular complex gaussian vector $\vec{Z}\
 \end{blockDefinition}
 
 \begin{blockDefinition}[Chi-square distribution for complex random variables]
-Given a random vector $\vec{Z} \in \mathbb{C}^N$, with $\vec{Z}i \sim \mathcal{CN}(0, 2\mathbf{I})$ then the random variable $\mathbf{X}$ defined as
+Given a random vector $\vec{Z} \in \mathbb{C}^N$, with $Z_i \sim \mathcal{CN}(0, 2\mathbf{I})$ then the random variable $\mathbf{X}$ defined as
 
 \begin{align*}
 	\mathbf{X} &= \sum_{n=1}^N \left|(\vec{Z})_n\right|^2 % http://dsp-book.narod.ru/DSPMW/60.PDF
@@ -61,6 +64,10 @@ Given a random vector $\vec{Z} \in \mathbb{C}^N$, with $\vec{Z}i \sim \mathcal{C
 
 follows a chi-square distribution with $2N$ degrees of freedom, denoted by $\mathbf{X} \sim \chi^2_{2N}$.
 $E[X] = 2N$ and $\text{Var}[X] = 4N$.
+\end{blockDefinition}
+
+\begin{blockDefinition}[Likelihood function under Hypothesis]
+Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random variable $\mathbf{X}$, then $L_{\mathbf{X} | \mathcal{H}}(\mathbf{x})$ denotes the likelihood function of $\mathbf{x}$ given $\mathcal{H}$.
 \end{blockDefinition}
 
 \begin{blockDefinition}[Neyman-Pearson Test]

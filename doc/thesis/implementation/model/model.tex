@@ -78,16 +78,11 @@ The method \func{sample(signal)} takes a signal, uniformly sampled, as argument 
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
-The minimal sparse ruler is a special case of the Multi-coset sampler. Its list offsets are all of a special form such that it forms a minimal sparse ruler on the downsampling factor. This means that implementation wise everything can be inherited from the multi-coset implementation except that it generates its own set of intervals from a lookup table containing precomputed solutions to the minimal sparse ruler problem. This sampler inherits the \func{sample(signal)} method from the multi-coset sampler.
+The miminal sparse ruler inherits from the multi-coset sampler. It feeds a solution to the minimal sparse ruler, which it gets from a lookup table, to the multi-coset sampler. It inherits all the other functions.
 
 \subsection{Coprime sampler}
 \label{sec:coprime-sampler}
-The coprime sampler is another special case of the multi-coset sampler. The only difference again is the way the list of offsets is generated. As explained in \cref{sec:coprime}, the coprime sampler rests on two samplers with different sampling ratios that have a coprime ratio. The constructor takes two arguments, a and b, the coprime ratios of the sample frequencies.
-
-Coprime can be seen as a different form of multi-coset sampling, $a + b - 1$ are the number of cosets and $a \cdot b$ is the downsampling factor as can be read in \cref{sec:coprime}. This means that two samplers that have a coprime ratio have a shared period of $a \cdot b$.
-In the implementation the coprime offsets are generated using a generator function\footnote{
-    A generator function is a way to do `lazy' generation of values which translates to lower memory usage. In this case the gains are marginal but it is good form nonetheless.}
-which keeps returning multiples of the coprime until their least common multiple, the downsampling ratio $a \cdot b$, is reached. This sampler also inherits the multi-coset \func{sample(signal)} method.
+The coprime sampler also inherits from the multi-coset sampler. It generates a number of coprime multiples (see \cref{sec:samplingmethods}) as a set of intervals and feeds that into the multi-coset sampler. It inherits all the other functions.
 
 \subsection{Hardware coprime}
 \label{sec:hardware-coprime}
@@ -95,31 +90,33 @@ The hardware coprime sampler does not get one vector with input samples, but two
 
 \section{Reconstruction}
 \label{sec:reconstruction}
-Two different kind of reconstruction methods are implemented. One similar to the one specified in \cite{ariananda2012compressive} the other is discussed in Part 1 of this thesis. Both reconstructors implement the interface \func{reconstructor} which has a contract for one method named \func{reconstruct(signal)}, see the UML in \cref{fig:umlreconstructor}. Both classes make use of the shared function \func{calc\_pseudoinverse(R)}. This is a wrapper around \lib{SciPy's} \func{pinv}, which calculates the pseudoinverse. Because this operation is quite time consuming for larger systems a caching mechanism was introduced to lower startup times.% It writes a file with the specific parameters (L and all the intervals) in the name away to a cache directory.
+Two different kind of reconstruction methods are implemented. One is similar to the one specified in \cite{ariananda2012compressive} and the other is discussed in \cref{prt:theory} of this thesis. Both reconstructors implement the interface \class{reconstructor}, which has a contract for a reconstruct-method\footnote{Meaning they should implement such a method.}, which is depicted by the UML-diagram in \cref{fig:umlreconstructor}.
+Both classes make use of shared functionality to calculate a pseudo-inverse. This is a wrapper around \lib{SciPy}'s \func{pinv}. Because this operation is quite time-consuming for larger systems, a caching mechanism was introduced to lower start-up times.% It writes a file with the specific parameters (L and all the intervals) in the name away to a cache directory.
 
 \subsection{CrossCorrelation}
 \label{sub:crosscorrelation}
-The \func{CrossCorrelation} class implementation is based on \cite{ariananda2012compressive}. The constructor takes 3 arguments (one optional):
+This class implements an algorithm based on the one described in \cite{ariananda2012compressive}. The algorithm has two parameters:
 \begin{description}
-    \item[L] determines the maximum lag estimated of cross-correlation of the cosets,
-    \item[C] is the sampling matrix used by one of the samplers. This is required for the reconstruction algorithm, and
-    \item[cache] (default is True) is a boolean value that determines whether the pseudo-inverse can be loaded and saved to the cache. This is mainly used for test and profiling purposes.
+    \item[L] Determines the maximum lag estimated of cross-correlation of the cosets.
+    \item[C] The sampling matrix used by one of the samplers. This is required for the reconstruction algorithm.
 \end{description}
-The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs an R matrix using the \func{cross\_correlation\_filters()} which takes the \func{block\_toeplitz(Rc0, Rc1)} helper function to build the R matrix from the filter correlations.
-
-The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with signal cross correlations, to reconstruct the autocorrelation of the original signal.
+Optionally a switch can be passed to disable the caching mechanism described in the base class. During the initialisation of the class it builds the R-matrix as discussed in \cite{ariananda2012compressive} and computes its pseudo-inverse.
 
 \subsection{Wessel}
 \label{sub:wessel}
-Wessel's reconstructor is a variation on the reconstruction technique implemented by \func{CrossCorrelation}. The theory is thoroughly described in the first part of this thesis. The constructor takes 3 arguments (one optional):
+The Wessel reconstructor is a variation on the reconstruction technique implemented by \class{CrossCorrelation}. The theory is thoroughly described in the \cref{prt:theory} of this thesis. The algorithm takes two parameters:
 \begin{description}
-    \item[L] determines the maximum lag estimated of cross-correlation of the cosets.
-    \item[C] is the sampling matrix used by one of the samplers. This is required for the reconstruction algorithm.
-    \item[cache] (default is True) is a boolean value that determines whether the pseudo-inverse can be loaded and saved to the cache. Mainly used for test and profiling purposes.
+    \item[L] Determines the maximum lag estimated of cross-correlation of the cosets.
+    \item[C] The sampling matrix used by one of the samplers. This is required for the reconstruction algorithm.
 \end{description}
-The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions. These all build matrices as described in \cref{cha:reconstruction}. The difference between the \func{CrossCorrelation} reconstructor and this one are that the form of the pseudoinverse is more optimized for \lib{NumPy} in \func{Wessel}'s case. This is because of how the input signal should be structured. Because \lib{NumPy's} native way of saving matrices is in row-major order\footnote{This is the standard way of saving a array in C, two notable exceptions are \matlab and Fortran. Column major order is often called Fortran style.}.
+Similar to the other reconstructor implementation, a switch to disable the caching mechanism has been implemented. Like \class{CrossCorrelation}, \class{Wessel} generates an R-matrix and computes its pseudo-inverse. Details on this algorithm may be found in \cref{cha:reconstruction}.
 
-The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector.
+From an implementation perspective, the structure of the pseudo-inverse of the Wessel algorithm maps better on the data structures of \lib{NumPy}. \lib{NumPy}'s basic array data structures are in row-major order\footnote{This is the standard way of saving an array in C, two notable exceptions that save their arrays in column major order are \matlab{} and Fortran. Column major order is often called Fortran style.}.
+
+The final phase of both reconstruction steps is reshaping the cross-correlation matrix to a single column vector and multiplying it with the pseudo-inverse. This operation is more memory efficient in the Wessel reconstructor.
+%The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions. These all build matrices as described in \cref{cha:reconstruction}. The difference between the \func{CrossCorrelation} reconstructor and this one are that the form of the pseudoinverse is more optimized for \lib{NumPy} in \func{Wessel}'s case. This is because of how the input signal should be structured. Because \lib{NumPy's} native way of saving matrices is in row-major order\footnote{}
+
+%The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector.
 
 \begin{figure}
     \centering

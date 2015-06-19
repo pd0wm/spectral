@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-INP_DIR="./cogradio/";
+INP_DIR="./spectral/";
 OUT_DIR="../doc/thesis/implementation/model/figures/"
-TOP_LEVEL="cogradio";
+TOP_LEVEL="spectral";
 
 DIR_MATCHER="*/"
 PIC_TYPE="eps"

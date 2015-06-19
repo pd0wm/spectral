@@ -4,10 +4,27 @@ import scipy.signal
 
 
 def signal_power(signal):
+    """ Calculates the signal power of a signal by
+    P = |signal|^2/len
+
+    args:
+        signal: Input signal.
+
+    returns:
+        The power of the signal.
+        """
     return np.linalg.norm(signal) ** 2 / len(signal)
 
 
 def hermitian(array):
+    """
+    Calculates the Hermitian of a matrix.
+
+    args:
+        array: The input matrix.
+    returns:
+        The Hermitian of the input matrix.
+    """
     return np.conjugate(np.transpose(array))
 
 def fft(signal):

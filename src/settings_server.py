@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 import Pyro4
-import cogradio_vis as vis
+import spectral_supervisor as ss
 from multiprocessing import Process
 
 
 def settings_server():
     daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-    settings = vis.settings.Settings()
+    settings = ss.settings.Settings()
     uri = daemon.register(settings)
-    ns.register("cg.settings", uri)
+    ns.register("sc.settings", uri)
     daemon.requestLoop()
 
 

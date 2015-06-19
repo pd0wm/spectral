@@ -1,6 +1,6 @@
 from .detector import Detector
 import numpy as np
-import cogradio as cg
+import spectral_core as sc
 import scipy.stats as stats
 
 
@@ -14,7 +14,7 @@ class noise_power(Detector):
         self.num_bins = num_bins
 
     def detect(self, rx):
-        psd = abs(cg.fft(rx))
+        psd = abs(sc.fft(rx))
         # create array for power in bin
         power = np.zeros(self.num_bins)
         stepsize = np.floor(len(psd) / self.num_bins)
