@@ -1,0 +1,12 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Conclusion}
+In this chapter we have presented two different detection methods. We have observed that using our reconstruction method as described in \Cref{cha:reconstruction} affects the threshold of the default implementations of these detectors. Furthermore we have noticed that the energy detection method for use with our reconstruction method is affected by the SNR-wall. The CAV detection method does not suffer from this SNR wall due to its CFAR property, but introduces a new problem when filtering is to be used with the detector. We therefore conclude that from this analysis the modified energy detector is most suitable for use in combination with our reconstruction method.
+
+\end{document}

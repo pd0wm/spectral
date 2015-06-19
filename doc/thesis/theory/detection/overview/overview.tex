@@ -7,7 +7,6 @@
 \begin{document}
 
 \section{Overview}
-
 The fundamental problem of detection is to discern noise from a signal. This problem can be formulated as a binary hypothesis test. Given a signal $x[n]$ a detector has to decide between the following two hypotheses:
 
 \begin{align*}
@@ -19,7 +18,7 @@ The fundamental problem of detection is to discern noise from a signal. This pro
 
 where $w[n]$ denotes a noise signal and $s[n]$ a signal different from noise. Under $\mathcal{H}_0$ the signal $x[n]$ contains only noise. Under $\mathcal{H}_1$ another signal besides noise is present in $x[n]$. Besides this hypothesis test, the detector also has to deal with frequency bands: which frequency bands are occupied by some signal and which are unoccupied?
 
-We can distinguish between two types of detection methods to provide an answer to this problem:
+We can distinguish between two types of detection methods that provide an answer to this problem:
 \begin{enumerate}
 \item detection methods based on information of the type of signals to be detected, such called \emph{prior information}.
 A popular example of this type is cyclostationary detection which uses the knowledge of the modulation techniques of the signals to perform the detection\cite{axell2012spectrum,quan2009optimal}. Another example is a matched filter detector. This detector correlates the received signal with a known signal that is to be detected and therefore needs exact knowledge of the signal \cite{Kapoor2011Communication}\cite{couch2013digital}. 
@@ -27,20 +26,20 @@ A popular example of this type is cyclostationary detection which uses the knowl
 A basic detection method of this type is energy detection \cite{axell2012spectrum} which compares the energy contained in a signal to a certain threshold based on the noise power. Other examples include Covariance absolute value detection \cite{zheng2009spectrum} and wavelet-based detection \cite{han2013novel}. 
 \end{enumerate}
 
-A well known problem in the context of cognitive radio is the \emph{SnR-wall}. This problem states that below a certain signal-to-noise ratio a detector fails to detect a signal no matter how long the sensing time \cite{sahai2009spectrum}. This problem arises from uncertainties and inperfections in the model assumptions of the detector Detectors that use a threshold independent form noise or signal parameters are not affected by this SnR wall\cite{axell2012spectrum} and possess constant false-alarm rate property (CFAR). 
+A well known problem in the context of cognitive radio is the \emph{SNR wall}. This problem states that below a certain signal-to-noise ratio \footnote{the signal-to-noise ratio is the ratio of the signal power and the noise power} a detector fails to detect a signal no matter how long the sensing time \cite{sahai2009spectrum}. This problem arises from uncertainties and inperfections in the model assumptions of that detector. Detectors that use a threshold that is independent from noise or signal parameters are not affected by this SNR wall\cite{axell2012spectrum} and possess the constant false-alarm rate property (CFAR). This property says the probability that the detector decides that its input signal is a signal different from noise, where in fact the signal contains only noise is constant. 
 
-In this chapter we will focus on detection methods that do not assume to have any prior knowledge availbe. This is motivated by observing that using \emph{prior information} results in more complex algorithms that need knowledge of the signal types in order to be implemented and analyzed. Furthermore using a detector that depends on \emph{prior information} limits the applicability as it can only be used in situations where prior knowledge is available. 
+In this chapter we will focus on detection methods that do not assume to have any prior knowledge available. This is motivated by observing that using \emph{prior information} results in more complex algorithms that need knowledge of the signal types in order to be implemented and analyzed. Furthermore using a detector that depends on \emph{prior information} limits the applicability as it can only be used in situations where prior knowledge is available. 
 
 This chapter will be concerned with the analysis of the following two detection methods:
 
 \begin{enumerate}
 	\item Energy detection; This detection method uses a relatively simpe test statistic. Its threshold, as stated before, is dependent on 
-	the noise power. This noise power has to be estimated in real detectors for example by using an empty frequency band as reference. This detection method is therefore subject to the SnR-wall phenomenon as there will be uncertainty in the noise estimate.
+	the noise power. This noise power has to be estimated in real detectors for example by using an empty frequency band as reference. This detection method is therefore subject to the SNR-wall phenomenon as there will be uncertainty in the noise estimate.
 	\item Covariance Absolute Value detection (CAV). This detection method uses a test statistic based on the autocorrelation function of 
 	the signal. It uses a threshold that does not depend on any signal or noise parameters. Therefore, this detector does posses the CFAR
 	property.
 \end{enumerate}
 
-Analsysis of energy detection is motivated by the relative simplicity of  the algorithm.  Analysing CAV is motivated by the fact that it is a CFAR detector, independent of a noise level estimate which is convenient in practical applications. 
+Analsysis of energy detection is motivated by the relative simplicity of the algorithm and low comlexity of its implementation. Analysing CAV is motivated by the fact that it is a CFAR detector, independent of a noise level estimate which is convenient in practical applications\cite{axell2012spectrum}. 
 
 \end{document}
