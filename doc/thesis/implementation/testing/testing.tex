@@ -11,7 +11,32 @@
 \raggedbottom
 
 \begin{document}
-\chapter{Testing}
+\chapter{Software quality \& Testing}
+\section{Introduction}
+In this chapter we will talk about software quality. We will discuss this according to the definitions from Code Complete 2 about external and internal characteristics of quality code. External qualities are qualities the user of the software will notice. Internal qualities are only noticed by the developers of the software.
+
+\subsection{External qualities}
+\begin{description}
+\item[Correctness] The degree to which a system is free from faults in its specification, design, and implementation.
+\item[Usability] The easy with which users can learn and use a system.
+\item[Efficiency] Minimal use of system resources, including memory and execution time.
+\item[Reliability] The ability of a system to perform its required functions under state conditions whenever required --- having a long mean time between failures.
+\item[Integrity] The degree to which a system prevents unauthorised or improper access to its programs and data. The idea of integrity includes restricting unauthorised user accesses as well ensuring that data is accessed properly --- that is, that tables with parallel data are modified in parallel, that date fields contain only valid dated, and so on.
+\item[Adaptability] The extent to which a system can be used, without modification, in applications or environments other than those for which it was specifically designed.
+\item[Accuracy] The degree to which a system, as built, is free from error, especially with respect to quantitative outputs. Accuracy differs from correctness; it is a determination of how well a system does the job it's built for rather than whether it was built correctly.
+\item[Robustness] The degree to which a system continues to function in the presence of invalid inputs or stressful environmental conditions.
+\end{description}
+
+\subsection{Internal qualities}
+\begin{description}
+\item[Maintainability] The ease with which you modify a software system to change or add capabilities, improve performance, or correct defect.
+\item[Flexibility] The extent to which you can modify a system for uses or environments other than those for which it was specifically designed.
+\item[Portability] The ease with which you can modify a system to operate in an environment different from that for which it was specifically designed.
+\item[Reusability] The extent to which you and the ease with which you can use parts of a system in other systems.
+\item[Readability] The ease with which you can read and understand the source code of a system, especially at the detailed-statement level.
+\item[Testability] The degree to which you can unit-test and system-test a system; the degree to which you can verify that the system meets its requirements.
+\item[Understandability] The ease with which you can comprehend a system at both the system-organisational and detailed-statement levels. Understandability has to do with the coherence of the system at a more general level than readability does.
+\end{description}
 
 \section{Unit Tests}
 \label{sec:unit-tests}
