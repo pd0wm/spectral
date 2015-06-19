@@ -10,7 +10,8 @@ def herm(a):
     return np.transpose(np.conjugate(a))
 
 
-class Wessel_test(unittest.TestCase):
+@unittest.skip("Tests take too long, need new sample set")
+class WesselTests(unittest.TestCase):
     MAX_ERROR = 10 ** (-12)
 
     def setUp(self):
@@ -42,7 +43,6 @@ class Wessel_test(unittest.TestCase):
         y = np.dot(C, x.transpose().reshape((self.dony['N'], self.L * self.K), order='F'))
         return y
 
-    @unittest.skip("Deze test faalt om onbekende reden.")
     def test_cross_correlation_matrix(self):
         error = sp.linalg.norm(self.dony['ry'] - self.wes.cross_correlation_signals(self.y).T.ravel())
         self.assertLess(error, self.MAX_ERROR)
