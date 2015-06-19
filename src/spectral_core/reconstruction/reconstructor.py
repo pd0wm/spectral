@@ -1,5 +1,5 @@
 import numpy as np
-import cogradio as cg
+import spectral_core as sc
 import scipy as sp
 
 
@@ -31,11 +31,11 @@ class Reconstructor(object):
         max_lag = self.L - 1
         out = np.zeros((signal.shape[0] ** 2, 2 * self.L - 1), dtype=np.complex128)
         for lag in range(max_lag + 1):  # non-negative lags
-            all_lags = np.dot(signal[:, lag:length], cg.hermitian(signal[:, :(length - lag)]))
+            all_lags = np.dot(signal[:, lag:length], sc.hermitian(signal[:, :(length - lag)]))
             all_lags = all_lags.ravel(order='F') / float(length - lag)
             out[:, lag + max_lag] = all_lags
         for lag in range(max_lag + 1):  # non-positive lags
-            all_lags = np.dot(signal[:, :length - lag], cg.hermitian(signal[:, lag:length]))
+            all_lags = np.dot(signal[:, :length - lag], sc.hermitian(signal[:, lag:length]))
             all_lags = all_lags.ravel(order='F') / float(length - lag)
             out[:, max_lag - lag] = all_lags
         return out
@@ -63,7 +63,7 @@ class Reconstructor(object):
         return set(np.nonzero(matrix)[1])  # Vieze oneliners ftw
 
     def get_filename(self):
-        filepath = cg.CACHE_DIR
+        filepath = sc.CACHE_DIR
         filename = self.__class__.__name__
         filename += str(self.L) + "_"
         filename += "_".join(str(rule) for rule in self.get_non_zero_column(self.C))

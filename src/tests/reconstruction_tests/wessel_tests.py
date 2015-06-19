@@ -2,7 +2,7 @@ import unittest
 import scipy as sp
 import scipy.io
 import scipy.linalg
-import cogradio as cg
+import spectral_core as sc
 import numpy as np
 
 
@@ -16,7 +16,7 @@ class WesselTests(unittest.TestCase):
 
     def setUp(self):
         self.dony = sp.io.loadmat("./tests/reconstruction_tests/wessel_tests")
-        self.wes = cg.reconstruction.Wessel(self.dony['L'][0][0], self.dony['C'], cache=False)
+        self.wes = sc.reconstruction.Wessel(self.dony['L'][0][0], self.dony['C'], cache=False)
         self.L = self.dony['L'][0][0]
         self.K = 1984
         self.y = self.sample(self.dony['C'], self.dony['x'])

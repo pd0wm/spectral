@@ -1,5 +1,5 @@
 import json
-import cogradio_vis as vis
+import spectral_supervisor as ss
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 
@@ -10,7 +10,7 @@ class ServerProtocolControl(WebSocketServerProtocol):
     factory = None
 
     def __init__(self):
-        self.settings = vis.get_settings_object()
+        self.settings = ss.get_settings_object()
         WebSocketServerProtocol.__init__(self)
 
     def onOpen(self):
