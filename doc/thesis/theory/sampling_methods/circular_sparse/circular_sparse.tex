@@ -216,13 +216,42 @@ M=7,N=39 \quad S&=\{1,2,5,7,14,21,31\}\\
 M=8,N=51 \quad S&=\{1,2,8,10,13,32,36, 46\}\\
 M=9,N=65 \quad S&=\{1,2,5,7,15, 33, 43, 51, 54\}
 \end{align}
-The results in this list can directly be used for devices with 2-9 samplers. 
+The results in this list can directly be used for devices with 2-9 samplers. \cref{fig:comparison_sparse_ruler} compares the upper-bound from \cref{th:upperbound} in green, minimal linear sparse ruler in red and the results from the ILP in blue.
+\begin{figure}[H]
+\begin{tikzpicture}
+\begin{axis}[xlabel={amount of samplers $M$},ylabel={down-sampling factor $N$},width=\textwidth, height=0.8\textwidth]
+    \addplot [
+    color=green,
+    solid,
+    mark=.,
+    ]
+    %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
+    table [col sep=comma]{plots/circ_upper.txt};
+    
+    \addplot [
+    color=blue,
+    solid,
+    mark=.,
+    ]
+    % table[x index=0,y index=1,col sep=comma] {circ_ilp.data};
+    table [col sep=comma]{plots/circ_ilp.txt};
 
-\todo[inline]{hier komt een plot die minimal linear sparse tegenover bovenstaande lijst zet. Maar moet tikz plotten nog afstemmen}
+    \addplot [
+    color=red,
+    solid,
+    mark=.,
+    ]
+    % table[x index=0,y index=1,col sep=comma] {circ_lin.data};
+    table [col sep=comma]{plots/circ_lin.txt};
+\end{axis}
+\end{tikzpicture}
+\caption{plot of down-sampling $N$ for a given amount of samplers $M$. red = minimal linear sparse, blue = ILP circular sparse, green = theoretical upper-bound}\label{fig:comparison_sparse_ruler}
+\end{figure}
 
 \subsection{combine circular sparse ruler to reconstructor}\label{sub:ci-circ}
 
-\todo[inline]{Met wessel afstemmen hoe C er uit moet zien}
+The next step is to communicate the sampling configuration to the reconstructor.
 
+\todo[inline]{Met wessel afstemmen hoe C er uit moet zien}
 
 \end{document}
