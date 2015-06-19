@@ -1,5 +1,5 @@
 import json
-import cogradio_vis as vis
+import spectral_supervisor as ss
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 
@@ -16,15 +16,15 @@ class ServerProtocolData(WebSocketServerProtocol):
     center_freq = 2.4e9
 
     def __init__(self):
-        self.settings = vis.get_settings_object()
+        self.settings = ss.get_settings_object()
 
         WebSocketServerProtocol.__init__(self)
 
     def pushData(self, request):
-        data = self.factory.dequeue(request)
+        container = self.factory.dequeue(request)
         self.update_options()
 
-        if data:
+        if container:
             message = PlotDataContainer(self.sample_freq, self.center_freq, container.dtype, container.data)
             self.sendMessage(message.encode())
 

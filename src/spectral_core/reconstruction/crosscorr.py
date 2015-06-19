@@ -1,5 +1,5 @@
 from .reconstructor import Reconstructor
-import cogradio as cg
+import spectral_core as sc
 import numpy as np
 import scipy as sp
 

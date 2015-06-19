@@ -1,4 +1,4 @@
-import cogradio as cg
+import spectral_core as sc
 import cProfile
 
 L = 3
@@ -32,7 +32,7 @@ def gen_profiling_report(obj, args, runs, method=None, constructor=False):
     return ret
 
 if __name__ == "__main__":
-    sources = [cg.source.Sinusoidal, cg.source.ComplexExponential, cg.source.Rect]
+    sources = [sc.source.Sinusoidal, sc.source.ComplexExponential, sc.source.Rect]
     sources_init_args = [(frequencies, sample_freq)] * 2
     sources_init_args.append((frequencies, widths, sample_freq))
     init_sources = []
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         init_sources.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
 
     init_samplers = []
-    samplers = [cg.sampling.Coprime, cg.sampling.MultiCoset]
+    samplers = [sc.sampling.Coprime, sc.sampling.MultiCoset]
     sampler_init_args = [(a, b), (N,)]
 
     for obj, args in zip(samplers, sampler_init_args):
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     C = init_samplers[1].get_C()
 
-    reconstructors = [cg.reconstruction.CrossCorrelation, cg.reconstruction.Wessel]
+    reconstructors = [sc.reconstruction.CrossCorrelation, sc.reconstruction.Wessel]
     reconstructors_init_args = [(L, C, False)] * len(reconstructors)
 
     init_reconstructors = []

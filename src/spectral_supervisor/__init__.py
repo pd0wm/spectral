@@ -1,5 +1,4 @@
 from . import multiprocessing
-from . import webserver
-from . import websocket
 from . import settings
+from . import websocket
 from .helperfunctions import *

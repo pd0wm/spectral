@@ -4,7 +4,7 @@ import os
 import StringIO
 from tabulate import tabulate
 
-search_items = ['cogradio', 'dist-packages', 'python2.7']
+search_items = ['spectral', 'dist-packages', 'python2.7']
 
 
 def read_stats(inp, key):

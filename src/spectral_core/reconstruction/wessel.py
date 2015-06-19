@@ -1,5 +1,5 @@
 from .reconstructor import Reconstructor
-import cogradio as cg
+import spectral_core as sc
 import numpy as np
 import scipy as sp
 
@@ -72,7 +72,7 @@ class Wessel(Reconstructor):
                                       dtype=np.complex128)
         for i in range(0, self.M):
             for j in range(0, self.M):
-                cross_correlations[i * self.M + j, :] = cg.cross_correlate(self.C[i, :],
+                cross_correlations[i * self.M + j, :] = sc.cross_correlate(self.C[i, :],
                                                                            self.C[j, :],
                                                                            unbiased=False)
         return cross_correlations

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import cogradio as cg
-import cogradio_vis as vis
+import spectral_core as sc
+import spectral_supervisor as ss
 import argparse
 import time
 import sys
@@ -38,7 +38,7 @@ N = 61
 upscale_factor = 2000  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
-settings = vis.get_settings_object()
+settings = ss.get_settings_object()
 settings.update({
     'Pfa': 0.1,
     'center_freq': 2.4,  # GHz
@@ -48,28 +48,28 @@ settings.update({
 })
 
 if source_type == "usrp":
-    source = cg.source.UsrpN210(addr=ip, samp_freq=sample_freq)
+    source = sc.source.UsrpN210(addr=ip, samp_freq=sample_freq)
 elif source_type == "dump":
-    source = cg.source.File(dump_file_path)
+    source = sc.source.File(dump_file_path)
 elif source_type == "sinusoidal":
-    source = cg.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
+    source = sc.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
 
 
-# sampler = cg.sampling.Coprime(a, b)
-sampler = cg.sampling.MinimalSparseRuler(N)
+# sampler = sc.sampling.Coprime(a, b)
+sampler = sc.sampling.MinimalSparseRuler(N)
 
-reconstructor = cg.reconstruction.Wessel(L, sampler.get_C(), cache=False)
-# reconstructor = cg.reconstruction.CrossCorrelation(L, C=sampler.get_C())
+reconstructor = sc.reconstruction.Wessel(L, sampler.get_C(), cache=False)
+# reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
-detector = cg.detection.noise_power()
+detector = sc.detection.noise_power()
 
 # Init queues
-signal_queue = vis.multiprocessing.SafeQueue()
-detection_queue = vis.multiprocessing.SafeQueue()
+signal_queue = ss.multiprocessing.SafeQueue()
+detection_queue = ss.multiprocessing.SafeQueue()
 
-websocket_src_queue = vis.multiprocessing.SafeQueue()
-websocket_rec_queue = vis.multiprocessing.SafeQueue()
-websocket_det_queue = vis.multiprocessing.SafeQueue()
+websocket_src_queue = ss.multiprocessing.SafeQueue()
+websocket_rec_queue = ss.multiprocessing.SafeQueue()
+websocket_det_queue = ss.multiprocessing.SafeQueue()
 
 
 if __name__ == '__main__':
