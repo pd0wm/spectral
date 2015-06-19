@@ -1,0 +1,17 @@
+%!TEX program = xelatex
+%!TEX root = .
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Appendix Detection}\label{app:detector}
+This appendix will focus on the detailed theory behind the detectors as described in \Cref{cha:detection}. First a set of definitions is given which will be
+used in subsequent explanations and derivations.
+
+\subimport{preliminaries/}{preliminaries}
+\subimport{derivations/}{conventional_ed}
+\subimport{derivations/}{ariananda_ed}
+
+\end{document}

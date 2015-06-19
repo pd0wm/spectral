@@ -1,34 +1,23 @@
 %!TEX program = xelatex
 
 \documentclass[a4paper, openany, oneside]{memoir}
-\input{../../../../includes/preamble.tex}
-\addbibresource{../../../../includes/bibliography.bib}
+\input{../../../../../includes/preamble.tex}
+\addbibresource{../../../../../includes/bibliography.bib}
 
 \begin{document}
 
-\section{Main analysis Ariananda}
+\section{Energy detector using the reconstructed autocorrelation}\label{sec:ari_ed_deriv}
+In this section we will derive how $\gamma_k$ as introduced in \cref{ssec:ari_ed} can be calculated. This derivation is largely based on \cite{ariananda2012compressive}.
 
-We assume that if our signal $x[n]$ purely contains noise, then $x[n] \sim \mathcal{CN}(0,\sigma_n)$. 
-In this section we will analyze how the elements of the power spectral density can serve as the test statistic.
-
-\subsection{Distribution of PSD elements}
-To employ the Neyman-Pearson theorem to determine the threshold at frequency $\omega$, it is necessary that one knows the distribution of $\mathcal{P}\left(\omega\right)$. Only if this distribution is known, the threshold $\eta_{\omega}$ can correctly be set to yield the desired false alarm probability.
-
-Note that 
-
+We assume that if our signal $x[n]$ purely contains noise, then $x[n] \sim \mathcal{CN}(0,\sigma_n)$. Let $\vec{\hat{r}}_x = [\hat{r}[-LN], \ldots, \hat{r}[0], \ldots \hat{r}[LN]]^T$ denote the vector containing the estimated elements of the autocorrelation. 
+By ??? we know that $\vec{\hat{r}}_x$ is given as
 \begin{align*}
-\mathcal{P}\left(\omega\right) &= \sum_{n=-\infty}^{\infty} r_{x}[n] \exp\left[-jn\omega\right]
-\end{align*}
+\vec{hat{r}}_x &= \mat{R}^{\dagger}\vec{r}_y.
+\end{align*}.
+Furthermore let $(\vec{\hat{s}}_x) = \mat{F} \vec{\hat{r}}_x$, where $\mat{F}$ denotes the $2LN-1 \times 2LN-1$ DFT matrix. Then $\vec{s}_x$ contains an estimate of the power spectral density.
+In \cite{ariananda2012compressive} it is derived that when $KLN$ is large, then the elements of $\vec{s}_x$ are approximately gaussian distributed, which we will denote as $\hat{r}_x[m] \sim \mathcal{N}(\mu_m,\sigma^2_m$ with $-LN \leq m \leq LN$.
 
-and therefore the distribution of $\mathcal{P}(\omega)$ depends on the distribution of \emph{all} elements of the autocorrelation. Furthermore, the elements of the autocorrelation, can in general not be regarded as independent random variables. This illustrates that the distribution of $\mathcal{P}(\omega)$, is not trivial to derive. 
-
-Let $(\vec{s}_x) = \mat{F} \vec{\hat{r}}_x$, where $\mat{F}$ denotes the $2LN-1 \times 2LN-1$ DFT matrix, denote the vector containing the elements of the power spectral density of $\vec{x}$. That is the element $\left(\vec{s}_{x}\right)_{i}$ denotes the component of the power spectral density at $\omega = \frac{2\pi (i-1)}{2LN-1}$.
-
-\begin{blockTheorem}[Distribution of power spectral density elements]\label{th:psd_distr}
-Under the assumption that $\vec{x}$ is circular complex gaussian noise and $L-1 \ll KL$, the elements of $\vec{s}_x$ are approximately gaussian distributed.
-\end{blockTheorem}
-
-Using this approximation, it is possible to determine the distribution of the elements  of $\vec{s}_x$: by determining the expected value ($\mu_{\omega}$) and the variance $\sigma_{\omega}^2$ for each element of $\vec{s}_x$, the distribution is completely specified.
+By noting that
 
 If $\mat{C}_{s_x}$ denotes the covariance matrix of $\vec{s}_x$, then the variance of a element of $\vec{s}_x$ can be found on its diagonal.
 Using the relation for $\vec{s}_x$, we can compute the covariance matrix $\mat{C}_{s_x}$ as:

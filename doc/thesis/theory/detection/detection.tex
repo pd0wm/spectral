@@ -1,5 +1,5 @@
 %!TEX program = xelatex
-
+%!TEX root = .
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../includes/preamble.tex}
 \addbibresource{../../../includes/bibliography.bib}
@@ -13,13 +13,11 @@
 \begin{document}
 
 \chapter{Detection}
-
-%\subimport{preliminaries/}{preliminaries}
+\label{cha:detection}
 \subimport{introduction/}{introduction}
 \subimport{overview/}{overview}
-\subimport{overview_of_variables/}{overview_of_variables}
 \subimport{analysis/}{analysis}
-%\subimport{results/}{results}
-\subimport{discussion/}{discussion}
+\subimport{conclusion/}{conclusion}
+\subimport{appendix/}{appendix}
 
 \end{document}

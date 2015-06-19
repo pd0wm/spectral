@@ -1,26 +1,23 @@
 %!TEX program = xelatex
 
 \documentclass[a4paper, openany, oneside]{memoir}
-\input{../../../../includes/preamble.tex}
+\input{../../../../../includes/preamble.tex}
 \addbibresource{../../../../includes/bibliography.bib}
 
 \begin{document}
 
 % http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6068200
-\section{Main analysis}
+\section{Energy detector}
 
-Let $x[n]$ denote the received signal. 
-
-The algorithm must decide between to hypotheses:
-
+\subsection{Conventional Energy detector}\label{ssec:conv_ed_derivation}
+This section will give a derivation of the conventional energy detector based on ???.
+Let $x[n]$ denote the received signal. The conventional energy detection algorithm must decide between to hypotheses:
 \begin{align}\label{eq:hypotheses}
   \mathcal{H}_0&: x[n] = w[n]\\
   \mathcal{H}_1&: x[n] = s[n] + w[n]
 \end{align}
-
 in which $w[n]$ denotes additive circular complex gaussian noise and $s[n]$ denotes a signal as transmitted by a primary user.
 
-\subsection{Energy Detection}
 We assume that the noise samples are i.i.d. zero mean circular complex gaussian distributed; $w[n] \sim \mathcal{CN}(0, \sigma_n^2)$. 
 We furthermore assume that the samples of the signal $s[n]$ can be modelled independently as circular complex gaussian $\mathcal{CN}(0, \sigma_s^2)$. % todo ref
 % dat dit aannemelijk maakt That is
@@ -52,7 +49,7 @@ Where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ 
 By taking the logarithm of $\Lambda(x)$ we obtain a Log Likelihood Ratio test statistic $\Lambda'(x)$, given by
 
 \begin{align*}
-\Lambda(\vec{x}) &= \log \left(
+\Lambda(\vec{x})' &= \log \left(
 \frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)\exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}\right) \\
 &= \log\left(\sigma_n^2\right) - \log\left(\sigma_n^2 + \sigma_s^2\right) +  (\sigma_s^2) \sum_{i=0}^{N-1} |x[i]|^2. 
 \end{align*}
@@ -60,52 +57,52 @@ By taking the logarithm of $\Lambda(x)$ we obtain a Log Likelihood Ratio test st
 Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic 
 
 \begin{align*}
-\Lambda''(\vec{x}) &= \frac{\sum_{i=0}^{N-1} |x|^2}{N}
+\Lambda''(\vec{x}) &= \sum_{n=0}^{N-1} |x[n]|^2
 \end{align*} 
 
-is proportional to $\Lambda'(x)$. A detector using the test statistic $\Lambda''(x)$ is  referred to as the \emph{Energy detector}. 
+is proportional to $\Lambda'(x)$. Note that $\Lambda''$ is the same test statistic as $\Lambda$ in \Cref{sec:conv_ed}.
 
 \subsubsection{Threshold}
-In this section we will determine the threshold $\eta$, for the energy detector test statistic $\Lambda''(x)$.
-%Without loss of generality, let $\sigma_n = N^2$ \footnote{To determine the threshold $\eta$ for $\sigma_n \neq N^2$, observe that we can normalize $(\vec{x})_i$, by dividing it by its standard deviation $\sigma_n$.}. 
-Under $\mathcal{H}_0$ the following applies\cite{teguigspectrum2014}  
+In this section we will determine the threshold $\gamma$, for the energy detector test statistic $\Lambda''(\vec{x})$.
+Under $\mathcal{H}_0$ we have that $\Lambda''(\vec{x})$ is the sum of $2N$ independent zero mean gaussian distributed variables
+with variance $\frac{\sigma_n^2}{2}$. Therefore the following applies:
 
 \begin{align}
-    \frac{\Lambda''(x)N}{2\sigma_n^2} \sim \chi^2_{2N}.
+    \frac{2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
 \end{align}
 
 % Sensing Throughput Tradeoff in Cognitive Radio, Y. C. Liang
-
-Therefore the false alarm probability $P_{fa}$ is given by \cite{rugini2013small}:
+Therefore the false alarm probability $p_{fa}$ is given by \cite{rugini2013small}:
 
 \begin{align*}
-    P_{fa} &= P\left[(\Lambda''(\vec{x}) > \eta)\right] \\
-        &= 1-F_{2N} (\frac{\eta N}{2\sigma_n^2})
+    P_{fa} &= P\left[(\Lambda''(\vec{x}) > \gamma)\right] \\
+        &= 1-F_{2N} (\frac{2\gamma}{\sigma_n^2})
 \end{align*}
 
 with $F_{2N}$ the CDF of a chi square distribution with $2N$ degrees of freedom. 
 
-If $N$ is large enough, we can approximate the test statistics' distribution by a gaussian distribution, using the Central Limit theorem:
+If $N$ is large enough, we can approximate the test statistics' distribution by a gaussian distributio as it it is the sum of $2N$ i.i.d. random variables, using the Central Limit theorem:
 
 \begin{align*}
-F_{2N} \approx 1-Q(\frac{\frac{\Lambda''(x)N}{2\sigma^2_n}-2N}{2\sqrt{N}}).
+F_{2N} \approx 1-Q(\frac{\frac{2\Lambda''(x)}{\sigma^2_n}-2N}{2\sqrt{N}}).
 \end{align*}
 
 $P_{fa}$ can then be approximated as 
 
  \begin{align}
- P_{fa} \approx Q\left(\frac{\frac{\eta N}{2\sigma_n^2} -2N}{2\sqrt{N}}\right).\label{eq:p_fa}
+ P_{fa} \approx Q\left(\frac{\frac{2\gamma}{\sigma_n^2} -2N}{2\sqrt{N}}\right).\label{eq:p_fa}
  \end{align} \cite{
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
  }
 
- and given a desired $P_{fa}$ the threshold $\eta$ is given by
+ and given a desired $P_{fa}$ the threshold $\gamma$ is given by
 
 \begin{align}\label{eq:ed_threshold}
- \eta &= \frac{\left(Q^{-1}\left(P_{fa}\right)2\sqrt{N} + 2N\right)2\sigma_n^2}{N} \\
- \end{align} \cite{
+ \gamma &= \left(Q^{-1}\left(P_{fa}\right)\sqrt{N} + N\right)\sigma_n^2
+ \end{align} 
+ %\cite{
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
- }
+ %}
  
 
 \end{document}
