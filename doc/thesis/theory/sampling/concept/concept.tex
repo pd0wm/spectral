@@ -7,7 +7,7 @@
 \begin{document}
 
 % \section{Concept}
-The first step of spectrum sensing is sampling the signal. Conventional methods sample at a uniform sampling rate to ensure complete reconstruction of the signal. With uniform sampling, every subsequent sample has an equal delay in time. This is illustrated by \cref{tkz:uniform}.
+As described by the system overview in \cref{cha:overview}, the first step in high-performance spectrum sensing consists of sampling the signal. Conventional methods sample at an uniform sampling rate, which means that the time between the sample moments is constant. Uniform sampling is illustrated in \cref{tkz:uniform}. Here rectangles represent samples such that subsequent rectangles are subsequent samples.
 
 \begin{figure}[H]
 \centering
@@ -36,11 +36,12 @@ The first step of spectrum sensing is sampling the signal. Conventional methods 
 
 \node (v5) at (1.5,.5) {};
 \draw  (v5) node {T} ;
+\draw (-1,-1.5) node {Time $\rightarrow$};
 \end{tikzpicture}
-\caption{Uniform sampling with sampling period $T$. Gray blocks are sampled}\label{tkz:uniform}
+\caption{Uniform sampling with sampling period $T$}\label{tkz:uniform}
 \end{figure}
 
-When one desires to ensure full reconstruction of the signal with uniform sampling one needs to sample at the Nyquist rate\footnote{Nyquist rate is the minimum rate at which a signal can be sampled without introducing errors, which is twice the highest frequency present in the sitgnal}. However, we don't need a full recovery of the signal, and are only interested in certain properties of the signal. To improve our sampling methods we remove the restriction of uniform sampling to look for more efficient ways to sample the spectrum, and efficiently recover the information we are looking for. Non-uniform sampling has no restriction on delays of subsequent samples as is illustrated in \cref{tkz:nonuniform}.
+When one desires to ensure full reconstruction of a uniformly sampled signal, one needs to sample this signal at least at the Nyquist frequency\footnote{The Nyquist frequency is the minimum frequency at which a signal can be sampled without distorting the signal. The Nyquist frequency is twice the highest frequency present in the signal.}. However, we are not necessarily interested in full recovery of the signal, since we only need to detect signals. In our sampling methods, we aim to not restrict ourselves to uniform sampling, and try to exploit non-uniform sampling. This allows for methods which sample the signal in a more efficient way, without losing the information we are looking for. Non-uniform sampling is illustrated in \cref{tkz:nonuniform}. This figure is similar to \cref{tkz:uniform}, but some rectangles are left white. Only the gray rectangle represent sample moments of the non-uniform sampler.
 
 \begin{figure}[H]
 \centering
@@ -69,12 +70,13 @@ When one desires to ensure full reconstruction of the signal with uniform sampli
 
 \node (v5) at (1.5,.5) {};
 \draw  (v5) node {T} ;
+\draw (-1,-1.5) node {Time $\rightarrow$};
 \end{tikzpicture}
-\caption{Non-uniform sampling with sampling period $T$. Gray blocks are sampled}\label{tkz:nonuniform}
+\caption{Non-uniform sampling with sampling period $T$. Gray rectangles represent sample moments of the non-uniform sampler.}\label{tkz:nonuniform}
 \end{figure} 
- This is however not trivial to implement on a device. To perform non-uniform sampling we introduce multi-coset sampling. Multi-coset sampling is a set of sampling methods that use multiple samplers, or cosets, to sample the spectrum. This is illustrated in \cref{tkz:multicoset}
+Non-uniform sampling, however, is not trivial to implement. To perform non-uniform sampling, we introduce a concept called multi-coset sampling. Multi-coset sampling is the name for a set of sampling methods that use multiple devices to sample the signal. These devices are also called cosets. Multi-coset sampling is illustrated in \cref{tkz:multicoset}. Here the $x$ represents the input signal, the switches represent the sampling moments and $y_i$ represent the outputs of the different cosets. In \cref{cha:reconstruction}, we will deduce criteria that will further specify the samplers. Afterwards, in \cref{cha:sampling_methods}, we will reconsider non-uniform sampling to optimise performance.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \begin{tikzpicture}
 \draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x$};
@@ -99,13 +101,11 @@ When one desires to ensure full reconstruction of the signal with uniform sampli
 \draw[ very thick](0.5,-2)-- +(30:0.46);
 \draw  (3,2) rectangle (2,1) node[pos=.5]{$y_1$};
 \draw  (3,0.5) rectangle (2,-0.5) node[pos=.5]{$y_2$};
-\draw  (3,-1.5) rectangle (2,-2.5) node[pos=.5]{$y_m$};
+\draw  (3,-1.5) rectangle (2,-2.5) node[pos=.5]{$y_M$};
 \draw  (3,3.5) rectangle (2,2.5) node[pos=.5]{$y_0$};
 \end{tikzpicture}
-\caption{schematic multi-coset sampling with $m$ cosets}\label{tkz:multicoset}
+\caption{Schematic representation of multi-coset sampling with $M$ cosets}\label{tkz:multicoset}
 \end{figure}
-
-Here the $x$ represents the input signal, the switches are the samplers and $y_i$ are the outputs of the different samplers. In the reconstruction section we will deduce criteria on the sampling that will further specify the samplers. Wee will then get back to multi-coset sampling to link it to the reconstruction and optimize performance in \cref{cha:sampling_methods}.
 
 \end{document}
 
