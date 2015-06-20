@@ -15,8 +15,6 @@ class Coprime(MultiCoset):
     """
 
     def __init__(self, a, b):
-        """ Constructor, takes two arguments which are coprime pair a and
-        """
         intervals = self.coprime_multiples(a, b)
         N = a * b
         M = a + b - 1
