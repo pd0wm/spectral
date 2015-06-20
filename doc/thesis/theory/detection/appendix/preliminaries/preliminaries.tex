@@ -12,15 +12,14 @@ The definitions given in this section are used in the derivations later on and a
 \begin{blockDefinition}[Complex Gaussian Random Variable]
 Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed. A complex gaussian random variable is characterised by three parameters:
 \begin{enumerate}
-	\item $\mu = E(Z)$
-	\item $\Gamma = E\left(Z-\mu)(\conj(Z)-\conj(\mu))^T\right)$
-	\item $C = E\left((Z-\mu)(Z-\mu)^T\right)$
+	\item $\mu = E(Z)$,
+	\item $\Gamma = E\left(Z-\mu)(\conj(Z)-\conj(\mu))^T\right)$ and
+	\item $C = E\left((Z-\mu)(Z-\mu)^T\right)$.
 \end{enumerate}
-~
 \end{blockDefinition}
 
 \begin{blockDefinition}[Circular Symmetric Complex Gaussian Random Variable]
-Given a complex gaussian random variable $Z = X + jY$, then $Z$ is circular symmetric complex gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta \in \mathbb{R}$. Since
+Given a complex gaussian random variable $Z = X + jY$, then $Z$ is circular symmetric complex gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta$ real. Since
 \begin{align*}
 	E\left[Z\right] = E\left[e^{j\theta}Z\right]  = e^{j\theta}E\left[Z\right] 
 \end{align*}

@@ -184,36 +184,36 @@ We have used integer linear programming to calculate circular sparse ruler solut
 \end{table}
 
 \Cref{fig:comparison_sparse_ruler} compares the upper bound from \cref{th:upperbound} to minimal linear sparse ruler solutions and minimal circular sparse ruler solutions. One can clearly see that for high $M$, minimal solutions to the circular sparse ruler problem have higher $N$.
-% \begin{figure}[H]
-% \begin{tikzpicture}
-% \begin{axis}[xlabel={Number of samples ($M$)},ylabel={Downsampling factor ($N$)},width=\textwidth, height=0.8\textwidth]
-%     \addplot [
-%     color=green,
-%     solid,
-%     mark=.,
-%     ]
-%     %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
-%     table [col sep=comma]{plots/circ_upper.txt};
+\begin{figure}[H]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Number of samples ($M$)},ylabel={Downsampling factor ($N$)},width=\textwidth, height=0.8\textwidth]
+    \addplot [
+    color=green,
+    solid,
+    mark=.,
+    ]
+    %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
+    table [col sep=comma]{plots/circ_upper.txt};
     
-%     \addplot [
-%     color=blue,
-%     solid,
-%     mark=.,
-%     ]
-%     % table[x index=0,y index=1,col sep=comma] {circ_ilp.data};
-%     table [col sep=comma]{plots/circ_ilp.txt};
+    \addplot [
+    color=blue,
+    solid,
+    mark=.,
+    ]
+    % table[x index=0,y index=1,col sep=comma] {circ_ilp.data};
+    table [col sep=comma]{plots/circ_ilp.txt};
 
-%     \addplot [
-%     color=red,
-%     solid,
-%     mark=.,
-%     ]
-%     % table[x index=0,y index=1,col sep=comma] {circ_lin.data};
-%     table [col sep=comma]{plots/circ_lin.txt};
-% \end{axis}
-% \end{tikzpicture}
-% \caption{Solutions of the circular and linear sparse ruler problem. Minimal solutions to linear sparse ruler are shown in red, minimal solutions to the circular sparse ruler problem are shown in blue and the upper bound from \cref{th:upperbound} is shown in green.}\label{fig:comparison_sparse_ruler}
-% \end{figure}
+    \addplot [
+    color=red,
+    solid,
+    mark=.,
+    ]
+    % table[x index=0,y index=1,col sep=comma] {circ_lin.data};
+    table [col sep=comma]{plots/circ_lin.txt};
+\end{axis}
+\end{tikzpicture}
+\caption{Solutions of the circular and linear sparse ruler problem. Minimal solutions to linear sparse ruler are shown in red, minimal solutions to the circular sparse ruler problem are shown in blue and the upper bound from \cref{th:upperbound} is shown in green.}\label{fig:comparison_sparse_ruler}
+\end{figure}
 
 \section{Collaborative sampling}
 Collaborative sampling also requires that the circular sparse ruler problem is satisfied. In this case, however, the estimation of the lags is split across two physically separate devices. This is shown in \cref{tkz:collaborative_ruler}.
