@@ -13,7 +13,18 @@
 \begin{document}
 \chapter{Model - The Core}
 \label{cha:model}
-In this chapter we will discuss the model part of our system. All functionality discussed in this chapter is contained in the \lib{spectral\_core} module. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
+In this chapter we will discuss the model part of our system. All functionality discussed in this chapter is contained in the \lib{spectral\_core} module. 
+
+\begin{figure*}[h]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \input{./figures/model-diagram}
+    \end{adjustbox}
+    \caption{The model and its components}
+    \label{fig:model-diagram}
+\end{figure*}
+
+\cref{fig:model-diagram} shows the model and its components. In this chapter, the various implementations of source, sampling, reconstructions will be discussed. 
 
 \section{Source}
 \label{sec:source}
@@ -89,7 +100,7 @@ Both classes make use of shared functionality to calculate a pseudo-inverse. Thi
 
 \subsection{CrossCorrelation}
 \label{sub:crosscorrelation}
-This class implements an algorithm based on the one described in \cite{ariananda2012compressive}. The algorithm has two parameters. The first one determines the maximum lag that will be estimated of cross-correlation of the cosets, often referred to as $L$. The second one is the sampling matrix used by the sampler described in \cref{sec:sampling}. These are also the parameters specified\footnote{\label{fn:reconparam}There are actually four parameters $L$, $N$, $M$ and $C$. However $N$ and $M$ can be determined from the shape of $C$.} in the paper.
+This class implements an algorithm based on the one described in \cite{ariananda2012compressive}. The algorithm has two parameters. The first one determines the maximum lag that will be estimated of cross-correlation of the cosets, often referred to as $L$. The second one is the sampling matrix used by the sampler described in \cref{sec:sampling}. These are also the parameters specified\footnote{\label{fn:reconparam}There are actually four parameters: $L$, $N$, $M$ and $C$. However, $N$ and $M$ can be determined from the shape of $C$.} in the paper.
 
 Optionally a switch can be passed to disable the caching mechanism described in the base class. During the initialisation of the class it builds the $R$-matrix as discussed in \cite{ariananda2012compressive} and computes its pseudo-inverse.
 

@@ -13,9 +13,19 @@
 \begin{document}
 \chapter{Presenter - The Supervisor}
 \label{cha:presenter}
-In the model-view-presenter architectural pattern, the presenter forms the glue between the model and the view. In is packaged in the \lib{spectral\_supervisor} module. The model notifies the presenter whenever its state changes, which will then trigger the presenter to update the view using the new data. At the same time, the view notifies the presenter whenever a user interacts with it, upon which the presenter will take the necessary actions to reflect this user-event in the model.
+In the model-view-presenter architectural pattern, the presenter forms the glue between the model and the view. It is packaged in the \lib{spectral\_supervisor} module.
+\begin{figure*}[h]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \input{./figures/presenter-diagram}
+    \end{adjustbox}
+    \caption{The presenter and the central role it fulfils in the system}
+    \label{fig:presenter-diagram}
+\end{figure*}
 
-In our implementation, the presenter is concerned with the following tasks:
+The model notifies the presenter whenever its state changes, which will then trigger the presenter to update the view using the new data. At the same time, the view notifies the presenter whenever a user interacts with it, upon which the presenter will take the necessary actions to reflect this user-event in the model. These interactions are shown in \cref{fig:presenter-diagram} and will be described in detail in the rest of this chapter.
+
+The presenter's tasks can be summarized as follows:
 \begin{itemize}
 	\item Coordinate model and view actions.
 	\item Manage system-wide settings during runtime.
