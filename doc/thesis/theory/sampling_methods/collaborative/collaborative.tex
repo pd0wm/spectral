@@ -9,7 +9,7 @@
 \subsection{Collaborative sampling}
 In collaborative sampling, the estimation of the lags is split across two physically separate devices. This situation is analysed and described more carefully in \cref{ap:circ-ruler}. The advantage of splitting the estimation of the lags across physically separate devices is that this reduces the workload of a single device. 
 
-To ensure that reconstruction is possible, we consider a treatment similar to \cref{sub:ci-circ}. However, the difference is that Step 6 of the reconstruction algorithm is invalid, since a single device does not satisfy the circular sparse ruler problem. However, since the device does estimate certain lags, an analysis similar \cref{sec:reconstruction-derivation} shows that each device solves its own part of the equation of Step 6 in such a way that their results yield the complete solution. Therefore, after the reconstruction of each device, it remains to combine their results. A possible final implementation is pictured in \cref{tkz:sc_collaborative_combine}.
+To ensure that reconstruction is possible, we consider a treatment similar to \cref{sub:ci-circ}. However, the difference is that Step 6 of the reconstruction algorithm is invalid, since a single device does not satisfy the circular sparse ruler problem. However, since a single device does estimate certain lags, an analysis similar \cref{sec:reconstruction-derivation} shows that each device solves its own part of the equation of Step 6 in such a way that their results yield the complete solution. Therefore, after the reconstruction of each device, it remains to combine their results. A possible final implementation is pictured in \cref{tkz:sc_collaborative_combine}.
 
 \begin{figure}
 \centering
