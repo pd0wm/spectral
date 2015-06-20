@@ -36,7 +36,7 @@ class SimulatedSource(Source):
         if not SNR:
             return signal
 
-        if np.iscomplex(signal[0]).any():
+        if np.iscomplex(signal).any():
             return self.cmplx_white_gaussian_noise(SNR, signal)
         else:
             return self.real_white_gaussian_noise(SNR, signal)
