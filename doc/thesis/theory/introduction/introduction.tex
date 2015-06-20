@@ -21,7 +21,7 @@ spectrum sense = detectie van signal is verscheiende delen van het spctrum
 
 
 \section{System overview}
-- modules: \\
+- modules: \\ 
 * Sampling techniques which allow for efficient spectrum sensing \\
 * Reconstruction module which analyses the sampled signal in real-time \\
 * Detection module which performs identification of the spectrum based on the output of the reconstruction algorithm \\
@@ -31,7 +31,7 @@ spectrum sense = detectie van signal is verscheiende delen van het spctrum
 \draw  (-1,1.5) rectangle (1,0.5) node[pos=.5]{Sampling};
 \draw  (2,1.5) rectangle (4,0.5) node[pos=.5]{Reconstruction};
 \draw  (4.3,1.5) rectangle (6.3,0.5) node[pos=.5]{Detection};
-\draw  [dashed] (1.7,2.5) rectangle (6.6,-0.5);
+\draw  [dashed] (1.7,2.5) rectangle (6.6,0.2);
 \node at (4.1,2) {Toolkit};
 
 \draw [>=latex,->] (1,1) -- (2,1);
@@ -46,6 +46,8 @@ spectrum sense = detectie van signal is verscheiende delen van het spctrum
 \end{tikzpicture}
 
 \section{Requirements and specifications}
+intro functioneel
+
 The requirements of our approach are as follows. The approach must enable spectrum sensing such that the application
 \begin{enumerate}
     \item is able to identify at which frequencies signals are present, where signals
@@ -54,7 +56,7 @@ The requirements of our approach are as follows. The approach must enable spectr
         \item can have any reasonable signal strength;
     \end{enumerate}
     \item is able to sense any specified bandwidth and
-    \item makes use of sampling techniques which are more efficient than conventional sampling techniques.
+    \item makes use of sampling techniques which are as efficient as possible.
 \end{enumerate}
 
 The specifications of our approach are as follows. Identification of signals must be such that
@@ -67,13 +69,18 @@ The specifications of our approach are as follows. Identification of signals mus
 Identification of signals should be such that
 \begin{enumerate}
     \item the resolution of detection can be as high as possible and
-    \item its operation can be as accurate as possible.
+    \item its operation can be as correct as possible.
 \end{enumerate}
 
-The sampling techniques must be such that they allow for
+The sampling techniques must allow for
 \begin{enumerate}
+    \item correction operation of the detection;
     \item usage of a single sampling device and
-    \item usage of multiple devices such that the workload can be distributed across the sampling devices.
+    \item usage of multiple sampling devices such that
+    \begin{enumerate}
+        \item the technique is as efficient as possible and
+        \item the workload can be distributed across the devices.
+    \end{enumerate}
 \end{enumerate}
 
 We will design our system according to these requirements and specifications.
