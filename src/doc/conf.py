@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# cogradio documentation build configuration file, created by
-# sphinx-quickstart on Fri Jun 19 17:54:39 2015.
+# spectral_core documentation build configuration file, created by
+# sphinx-quickstart on Sat Jun 20 15:23:29 2015.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -19,7 +19,7 @@ import shlex
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../'))
 
 # -- General configuration ------------------------------------------------
 
@@ -29,12 +29,11 @@ import shlex
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-sys.path.append(os.path.abspath('../'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -52,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'cogradio'
+project = u'spectral_core'
 copyright = u'2015, Author'
 author = u'Author'
 
@@ -206,7 +205,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'cogradiodoc'
+htmlhelp_basename = 'spectral_coredoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -228,7 +227,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'cogradio.tex', u'cogradio Documentation',
+  (master_doc, 'spectral_core.tex', u'spectral\\_core Documentation',
    u'Author', 'manual'),
 ]
 
@@ -258,7 +257,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'cogradio', u'cogradio Documentation',
+    (master_doc, 'spectral_core', u'spectral_core Documentation',
      [author], 1)
 ]
 
@@ -272,8 +271,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'cogradio', u'cogradio Documentation',
-   author, 'cogradio', 'One line description of project.',
+  (master_doc, 'spectral_core', u'spectral_core Documentation',
+   author, 'spectral_core', 'One line description of project.',
    'Miscellaneous'),
 ]
 
