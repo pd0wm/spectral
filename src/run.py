@@ -31,11 +31,11 @@ data_port = args.dataport
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-L = 15
+L = 3
 a = 3
 b = 4
-N = a * b
-upscale_factor = 50  # Warning: greatly diminishes performance
+N = 51
+upscale_factor = 2000  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
 settings = ss.get_settings_object()
