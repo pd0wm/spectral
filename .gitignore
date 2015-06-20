@@ -154,3 +154,5 @@ Session.vim
 ### IPythonNotebook ###
 # Temporary data
 .ipynb_checkpoints/
+
+!fig_*.pdf

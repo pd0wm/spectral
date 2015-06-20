@@ -2,7 +2,7 @@ import logging
 import spectral_supervisor as ss
 from flask import Flask, render_template
 from flask.ext.bower import Bower
-from elements import SliderElement, SweepElement, VisualisationElement, TextElement
+from elements import SliderElement, SweepElement, VisualisationElement, TextElement, CheckboxElement
 from content import Content
 
 # Init Flask application.
@@ -26,8 +26,6 @@ def dashboard_get_content():
     vis1 = VisualisationElement(key="vis1", title="", default_type="fft", default_datatype="src_data")
     vis2 = VisualisationElement(key="vis2", title="", default_type="fft", default_datatype="rec_data")
 
-    txt1 = TextElement(key="txt1", title="Uptime")
-
     cnt = Content()
     cnt.add(gain_slider, position=(0, 0))
     cnt.add(freq_slider, position=(1, 0))
@@ -37,8 +35,6 @@ def dashboard_get_content():
     cnt.add(vis2, position=(1, 2))
 
     settings = ss.get_settings_object()
-    settings.update({'txt1': '00:10:12'})
-    cnt.add(txt1, position=(0, 3))
 
     return cnt
 
