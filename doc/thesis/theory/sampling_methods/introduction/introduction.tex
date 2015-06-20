@@ -7,20 +7,13 @@
 \begin{document}
 
 \section{Introduction}
-as described in ref \todo{ref}, The sampling techniques \emph{must} allow for
-\begin{enumerate}
-    \item correction operation of the detection;
-    \item usage of a single sampling device and
-    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
-\end{enumerate}
+This chapter will describe different sampling techniques that make up the sampling component described in \cref{sec:theory-system-overview}. These sampling techniques will be developed according to their specifications, which were given in \cref{sec:theory-specs}.
 
-The sampling techniques \emph{should} allow for
-\begin{enumerate}
-    \item sampling as efficient as possible.
-\end{enumerate}
+There has already been published a lot of theory on different sampling methods. \cite{ariananda2012compressive,ariananda2014cooperative,pal2011coprime} describe different methods and describe how to implement those methods in their respective frameworks. Each of these methods impose their own restrictions on the design of the sampling device. \textit{Circular sparse sampling} \cite{ariananda2012compressive} describes a technique in which a device uses multiple samplers which all sample at the same frequency. \textit{Collaborative sampling} \cite{ariananda2014cooperative} describes a technique in which multiple devices use multiple samplers. All these samplers sample at the same frequency. \textit{Corpime sampling} describes a technique in which exactly two devices are used, but which sampling frequencies differ.
 
-Theory on different sampling methods has already been published. \textit{Circular sparse sampling} \cite{ariananda2012compressive}, \textit{collaborative sampling} \cite{ariananda2014cooperative} and \textit{coprime sampling} \cite{pal2011coprime} describe different sampling methods and how to implement them in their respective frameworks. Each of these techniques impose their own restrictions on the design of a sampling device. Circular sparse sampling enforces that the sampling is done by a single device with multiple samplers with the same sample frequency $N$. Collaborative sampling enforces multiple devices with multiple samplers with the same sample frequency $N$. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each sampling method is designed to perform well in situations where their restrictions are in order.
+In this chapter we further investigate \textit{circular sparse sampling}, \textit{collaborative sampling} and \textit{coprime sampling}. We will fit them into our system in such a way that they can collaborate with the reconstruction algorithm, eventually allowing for correct operation of the detection. 
 
-In this chapter we will investigate \textit{circular sparse sampling} , \textit{collaborative sampling} and \textit{coprime sampling}, and fit them into our system in such a way that it can collaborate with the reconstruction algorithm, and therefore enable correct operation of the detection. For every sampling technique we will also look for ways to optimise their efficiency as stated. Specifically in circular sparse sampling will we look at ways to improve efficiency.
+% Theory on different sampling methods has already been published. \textit{Circular sparse sampling} \cite{ariananda2012compressive}, \textit{collaborative sampling} \cite{ariananda2014cooperative} and \textit{coprime sampling} \cite{pal2011coprime} describe different sampling methods and how to implement them in their respective frameworks. Each of these techniques impose their own restrictions on the design of a sampling device. Circular sparse sampling enforces that the sampling is done by a single device with multiple samplers with the same sample frequency $N$. Collaborative sampling enforces multiple devices with multiple samplers with the same sample frequency $N$. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each sampling method is designed to perform well in situations where their restrictions are in order.
 
+% In this chapter we will investigate , and fit them into our system in such a way that it can collaborate with the reconstruction algorithm, and therefore enable correct operation of the detection. 
 \end{document}

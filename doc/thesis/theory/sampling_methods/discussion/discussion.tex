@@ -6,18 +6,12 @@
 
 \begin{document}
 
-\section{Conclusion and discussion}
-In this section we have designed and modified three sampling techniques to fit our system. Each method imposing different constraint and offering improvements in other ways. All sampling techniques provided allow for correction operation of the detection, where circular sparse sampling and coprime sampling use one device, and collaborative uses multiple devices for which the workload is distributred across the devices.
+\section{Conclusion}
+We have discussed three sampling techniques to fit our system. Each method imposes different constraints and offers advantages such that the specifications in \cref{sec:theory-specs} are satisfied. That is, circular sparse sampling can be used for sampling with a single device, whereas collaborative and corpime sampling can be used for sampling with multiple devices.  All sampling techniques also allow for correction operation of the detection.
 
-In this context there is no such thing as a best sampling technique, because all different sampling techniques fit different situations. Therefore the context of the product will determine which sampling technique suits best.
-
-For every sampling technique we looked at possibilities to sample as efficient as possible. For coprime and collaborative we made use of the research of others. 
-
+\section{Discussion: VERPLAATS}
 For circular sparse ruler we constructed solutions with higher performance than proposed in \cite{ariananda2012compressive}. Our method is a novelty and contributes to higher efficiency in our product. We also made an recursive algorithm to generate circular sparse ruler solutions,  but this was a less clean approach, because it used  theorys we could not prove, and therefore did not guarantee to find the best solutions. Overall we managed to get a lot of efficiency out of the sampling techniques, but we cannot know for sure whether a more efficient solution is possible or not.
 
-The sampling techniques managed to meet the specified requirements. 
-
-\section{Future work}
 We implemented three sampling methods that are quite different and fit them into our system. This shows potential for a more general sampling technique. For instance: what happens when we combine multiple coprime devices, or what happens when we pick the circular sparse ruler problem, and allow the sampling frequency to differ. There is potential to look fo a more general sampling strategy but investigating this further needs future work.
 
 This also holds for optimisation strategies. It would be very interesting to compare the different optimisation strategies and see whether they can benefit from each other. The collaborative sampler has for example currently no good algorithm to find configurations for more than two devices with more than three samplers. 

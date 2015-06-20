@@ -8,7 +8,7 @@
 
 \section{Concept}
 
-In this section we will analyse the different sampling techniques and connect them to our system. 
+In this section we will analyse the different sampling techniques described in the introduction and connect them to our system. Before we move on, the reader must understand the difference between a sampler and a device. A device refers to a physical device, which may employ multiple samplers. A sampler is part of a device, and performs actual sampling of the signal. Remember that the term coset and sampler are used interchangeably.
 
 \subsection{Circular sparse sampling}
 Circular sparse sampling uses samplers with each the same sampling period $NT$, where $T$ is the sampling period and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
@@ -167,11 +167,11 @@ The grey blocks represent the samples recovered by all samplers of the device. T
 \caption{Schematic of a circular sparse ruler implementation}\label{tkz:sc_circsparseruler}
 \end{figure}
 
-The switches represent a sample and hold operation of the input signal $x$. The N$\,\downarrow$ represents an integrate and dump operation every $N$ samples. Therefore, $y_i$ is an $N$-decimation of the input signal. 
+The switches represent a sample and hold operation of the input signal $x$. The N$\,\downarrow$ represents an integrate and dump operation every $N$ samples. Therefore, $y_i$ is an $N$-decimation of the input signal sampled at the Nyquist frequency. 
 
 \subsection{Collaborative sampling}
 
-Collaborative sampling is similar to circular sparse sampling, except for the fact that circular sparse sampling is restricted to only one device, while collaborative sampling is restricted to multiple devices. Collaborative sampling is illustrated in \cref{tkz:collaborative}. In this example, we use two devices with three samplers each and a downsampling factor of $N=13$.
+Collaborative sampling is similar to circular sparse sampling, except for the fact that circular sparse sampling is restricted to only one device, while collaborative sampling is allows for multiple devices. Collaborative sampling is illustrated in \cref{tkz:collaborative}. In this example, we use two devices with three samplers each and a downsampling factor of $N=13$.
 
 \begin{figure}
 \centering
@@ -532,9 +532,9 @@ Coprime sampling is different from circular sparse sampling and collaborative sa
 \end{tikzpicture}
 \caption{Coprime sampling with $a=3$ and $b=5$}\label{tkz:coprime}
 \end{figure}
-The choice of the $a$ and $b$ substantially influences the performance of the coprime sampler. This influence will be investigated in \cref{sec:coprime}. 
+The choice of the $a$ and $b$ substantially influences the performance of the coprime sampler. This influence will be investigated later in this chapter. 
 
-In \cref{sec:reconstruction-algorithm}, it is assumed that every sampler samples the input signal at a same rate. However, coprime sampling involves two samplers sampling at different rates. Therefore, using the reconstruction algorithm in conjunction with coprime sampling is non-trivial. \Cref{tkz:sc_coprime} shows an equivalent hardware implementation, which may be used for reconstruction. This implementation will be further discussed in \cref{sec:coprime}. It is worthwhile to note that the equivalent signals $u_0,\ldots,u_a$ and $v_0,\ldots,v_b$ are $a b$-decimations of the input signal.
+In \cref{sec:reconstruction-algorithm}, it is assumed that every sampler samples the input signal at a same rate. However, coprime sampling involves two samplers sampling at different rates. Therefore, using the reconstruction algorithm in conjunction with coprime sampling is non-trivial. \Cref{tkz:sc_coprime} shows an equivalent hardware implementation, which may be used for reconstruction. This implementation will be further discussed later on. It is worthwhile to note that the equivalent signals $u_0,\ldots,u_a$ and $v_0,\ldots,v_b$ are $a b$-decimations of the input signal.
 
 \begin{figure}
 \centering
