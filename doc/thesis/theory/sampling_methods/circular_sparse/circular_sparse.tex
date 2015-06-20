@@ -6,224 +6,30 @@
 
 \begin{document}
 
-\section{Optimisation}
-In this section we will look at ways to map the different sampling methods on the reconstructor with as much performance as possible. The specifications that the reconstructor imposes are:
+\section{Sampling and reconstruction}
+In this previous section we discussed three multi-coset sampling methods. In \cref{sec:reconstruction-algorithm}, we saw that the sampling method determines the configuration, which is the way the samplers sample the input signal. The configuration then yields $c_i[n]$. Remember that the sampling signal $c_i[n]$ represents the way sampler $i$ samples the input signal. If these $c_i[n]$ satisfy the requirements stated in \cref{sec:reconstruction-implementation}, then the algorithm described in \cref{sec:reconstruction-algorithm} can be used to reconstruct the power spectral density of the sampled signal. We will reconsider these requirements one by one.
 
-\begin{enumerate}
-\item All lags required as described in ref \todo{ref} must be available.
-\item The sampling must be presented as a set of samplers with an equal sample frequency $N$.
-\end{enumerate} 
+Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Since $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal, which was discussed in \cref{sec:reconstruction-algorithm}, this requirement is satisfied.
 
-The first specification can be simplified further. When we set the time of a sample as an integer, we can set the lags as the differences between the integers. because of this we can look at a more abstract problem. 
+Furthermore, all $c_i[n]=1$ for a single $n=n_i$ and otherwise zero. Every coset $i$ samples a single sample of every group of $N$ samples of the input signal. Therefore, this requirement is also satisfied.
 
-\section{Circular sparse ruler}
-% We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$, then vector $\mathbf{S}$ represents the locations on the ruler that are occupied by samplers. A circular sparse ruler contains a distance $d$ if there exist an $S_i$ and $S_j$ such that $|S_i-S_j| = d$ or  $N-|S_i-S_j| = d$. A solution to a circular ruler is correct if it contains lags $ 1, \ldots, N - 1$. \Cref{fig:circular-ruler} shows a circular sparse ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
+Finally, the following problem must be satisfied.
 
-% In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
-% If we can make lag $L$ we can also make lag $L+kN$ with $k$ an integer. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags. This problem is called circular sparse ruler. 
-In ref \todo{ref} we introduced the circular sparse ruler. We construct a circle with $N$ marks on it. Every mark can be occupied by a sampler. Time on this circle passes as the hand of a clock. the distance between two samplers on the circle is equal to the lag one would get. This is illustrated in \cref{fig:circular-ruler}, where $N=7$, and the samplers occupy the locations $\{1,2,4\}$.
+\begin{description}
+    \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ make up $0,\ldots,N-1$.
+\end{description}
 
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \def\N{7}
-        \draw [thick, black] circle[radius=2.5cm] (0,0);
-        \foreach \i in {1,...,\N} {
-            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,black,thick] plot ({\x*sin(360*(\i-1)/\N)},{\x*cos(360*(\i-1)/\N)});
-            \draw [black,thick,dashed] (0,0) -- ({2.5*sin(360*(\i-1)/\N)},{2.5*cos(360*(\i-1)/\N)});
-            \node[black] at ({3*sin(360*(\i-1)/\N)},{3*cos(360*(\i-1)/\N)}) {$\i$};
-        }
-        \foreach \i in {0,1,3} {
-            \draw [scale=1,domain=2.3:2.7,smooth,variable=\x,red,line width=1mm] plot ({\x*sin(360*\i/\N)},{\x*cos(360*\i/\N)});
-        }
-        \draw [scale=1,domain=0.1:0.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 1
-        \draw [scale=1,domain=1.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 2
-        \draw [scale=1,domain=3.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({2*sin(360*\x/\N)},{2*cos(360*\x/\N)}); % 4
-        \draw [scale=1,domain=0.1:2.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1.5*sin(360*\x/\N)},{1.5*cos(360*\x/\N)}); % 3
-        \draw [scale=1,domain=3.1:7.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({1*sin(360*\x/\N)},{1*cos(360*\x/\N)}); % 5
-        \draw [scale=1,domain=1.1:6.9,smooth,variable=\x,black,thick,>=latex,<->,red] plot ({0.5*sin(360*\x/\N)},{0.5*cos(360*\x/\N)}); % 6
-    \end{tikzpicture}
-    \caption{Minimal circular ruler for $N=7$}
-    \label{fig:circular-ruler}
-\end{figure}
+Let $d=|n_i - n_j|$ or $d=N-|n_i-n_j|$. Equivalently, $d$ is the integer difference of the numbers of the samples taken by two samplers of every group of $N$ samples of the input signal. We now say that \textit{lag $d$ is estimated}. The circular sparse ruler problem can be reformulated as follows.
 
-Finding beneficial solutions for this problem is a convenient optimisation for our device. D.Ariananda and G.Leus, proposed a method that uses linear sparse ruler to generate solution for the circular sparse ruler problem in \cite{ariananda2012compressive}. The linear sparse ruler problem is identical to the circular sparse ruler, but the ends do not connect, as is illustrated in \cref{tkz:linear_sparse_ruler}.  
+\begin{description}
+    \item[Circular sparse ruler problem (alternative formulation)] Lags $0,\ldots,N-1$ must be estimated.
+\end{description}
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
+We have abstracted the satisfaction of the requirements necessary for reconstruction to the alternative formulation of the circular sparse ruler problem. The circular sparse ruler problem is treated in a more abstract way in \cref{ap:circ-ruler}. From now on, we assume that we have solutions to the circular sparse ruler problem readily available.
 
-\draw (0,1) -- (6,1);
+\subsection{Circular sparse ruler sampling}\label{sub:ci-circ}
+Since the solutions to the circular sparse ruler problem are readily available, we can choose all $c_i[n]$ such that the problem is satisfied. Then all requirements stated in \cref{sec:reconstruction-implementation} are satisfied and the sampled signal can be reconstructed. It is important to note that $c_i[n]$ is defined for $i = 1,\ldots,M$, which was explained in \cref{sec:reconstruction-algorithm}. Therefore, the solution to the circular sparse ruler problem yields a value for $M$. The parameter $M$ determines the amount of samplers which are required. Since we want to minimise the amount of samplers, we should choose a solution to the circular sparse ruler problem such that $M$ is minimal. This is discussed in \cref{ap:circ-ruler}.
 
-\draw [red, very thick] (0,1) -- (0,1.3);
-\draw [red, very thick](1,1) -- (1,1.3);
-\draw (2,1) -- (2,1.1);
-\draw (3,1) -- (3,1.1);
-\draw [red, very thick](4,1) -- (4,1.3);
-\draw (5,1) -- (5,1.1);
-\draw [red, very thick](6,1) -- (6,1.3);
-
-\draw [red, >=latex,<->] (0,1.75) -- (1,1.75);
-\draw [red, >=latex,<->](4,2) -- (6,2);
-\draw [red, >=latex,<->](1,2.25) -- (4,2.25);
-\draw [red, >=latex,<->](0,2.5) -- (4,2.5);
-\draw [red, >=latex,<->](1,2.75) -- (6,2.75);
-\draw [red, >=latex,<->](0,3) -- (6,3);
-
-\node at (0,0.7) {1};
-\node at (1,0.7) {2};
-\node at (2,0.7) {3};
-\node at (3,0.7) {4};
-\node at (4,0.7) {5};
-\node at (5,0.7) {6};
-\node at (6,0.7) {7};
-
-\end{tikzpicture}
-\caption{linear sparse ruler with $N=7$ and $M=4$}\label{tkz:linear_sparse_ruler}
-\end{figure}
-
-The proposed method in \cite{ariananda2012compressive} uses the fact that a linear sparse solution for $N=x$ can be turned into circular sparse ruler solutions for $N=2(x-1)$ when $x$ is even, and $N=2x-1$ when $x$ is odd. This can be readily seen, because for every lag $L_i<\lfloor\frac{N}{2}\rfloor$, there is also a lag $L_j = N-L_i$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} of $\{1,2,5,7\}$ with $N=7$, is therefore also a circular sparse ruler solution for $N=13$ as is illustrated in \cref{tkz:linear_sparse_ruler}. 
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-
-\draw (0,1) -- (8.5,1);
-
-\draw [red, very thick] (0,1) -- (0,1.3);
-\draw [red, very thick](.5,1) -- (.5,1.3);
-\draw (1,1) -- (1,1.1);
-\draw (1.5,1) -- (1.5,1.1);
-\draw [red, very thick](2,1) -- (2,1.3);
-\draw (2.5,1) -- (2.5,1.1);
-\draw [red, very thick](3,1) -- (3,1.3);
-\draw  (3.5,1) -- (3.5,1.1);
-\draw (4,1) -- (4,1.1);
-\draw (4.5,1) -- (4.5,1.1);
-\draw (5,1) -- (5,1.1);
-\draw (5.5,1) -- (5.5,1.1);
-\draw (6,1) -- (6,1.1);
-
-\draw [red, very thick] (6.5,1) -- (6.5,1.3);
-\draw [red, very thick](7,1) -- (7,1.3);
-\draw (7.5,1) -- (7.5,1.1);
-\draw (8,1) -- (8,1.1);
-\draw [red, very thick](8.5,1) -- (8.5,1.3);
-
-\draw [red, >=latex,<->] (0,1.75) -- (.5,1.75);
-\draw [red, >=latex,<->](2,2) -- (3,2);
-\draw [red, >=latex,<->](.5,2.25) -- (2,2.25);
-\draw [red, >=latex,<->](0,2.5) -- (2,2.5);
-\draw [red, >=latex,<->](.5,2.75) -- (3,2.75);
-\draw [red, >=latex,<->](0,3) -- (3,3);
-\draw [red, >=latex,<->](3,3.25) -- (6.5,3.25);
-\draw [red, >=latex,<->](3,3.5) -- (7,3.5);
-\draw [red, >=latex,<->](2,3.75) -- (6.5,3.75);
-\draw [red, >=latex,<->](2,4) -- (7,4);
-\draw [red, >=latex,<->](3,4.25) -- (8.5,4.25);
-\draw [red, >=latex,<->](.5,4.5) -- (6.5,4.5);
-
-\node at (0,0.7) {1};
-\node at (.5,0.7) {2};
-\node at (1,0.7) {3};
-\node at (1.5,0.7) {4};
-\node at (2,0.7) {5};
-\node at (2.5,0.7) {6};
-\node at (3,0.7) {7};
-\node at (3.5,0.7) {8};
-\node at (4,0.7) {9};
-\node at (4.5,0.7) {10};
-\node at (5,0.7) {11};
-\node at (5.5,0.7) {12};
-\node at (6,0.7) {13};
-\node at (6.5,0.7) {14};
-\node at (7,0.7) {15};
-\node at (7.5,0.7) {16};
-\node at (8,0.7) {17};
-\node at (8.5,0.7) {18};
-
-\end{tikzpicture}
-\caption{circular sparse solution for $N=13$}\label{tkz:circ_linear_sparse}
-\end{figure}
-
-This approach has one main advantage: solutions for linear sparse ruler can be recycled into circular sparse ruler solutions, and better linear sparse ruler solutions will also result in better circular sparse ruler solutions. Because linear sparse ruler is a well known problem, good solutions are easy to come by. However, the solutions generated are not necessarily optimal. Finding optimal solutions is by no means trivial and requires clever algorithms to calculate. It is also interesting to look at the structure of the problem to decrease the solution space.
-
-\subsection{Structure of circular sparse ruler}
-We are looking for optimal circular sparse rulers. Optimal circular sparse rulers are circular sparse ruler solutions with $M$ sampler and a down-sampling factor of $N$, if and only if there exist no solution with the same $M$ samplers, but higher $N$. Optimal solutions ensure the highest performance possible for given amount of samplers. In similar fashion can one define optimal linear sparse ruler. 
-
-\begin{blockTheorem}[Upper bound circular sparse ruler]\label{th:upperbound}
-the down-sampling factor $N$ of a circular sparse ruler solution with $M$ devices cannot be more than $N=M(M-1)+1$. 
-\end{blockTheorem}
-
-To see why \cref{th:upperbound} holds, we take a look at the maximum amount of different combinations of $$m_i-m_j, \quad m_i, m_j \in M,$$ which is $M^2$. We know that for $M$ combinations we have $m_i=m_j$, resulting in lag 0. This means that we have at least $M-1$ double lags. $$M^2-M+1 = M(M-1)+1$$
-
-For example: observe that an optimal linear sparse ruler for $M=5$, is $\{1,2,5,8,10\}$ with $N=10$, resulting in a circular sparse ruler solution with $N=19$. However the circular sparse ruler solution $\{1,2,7,9,19\}$ with $N=21$ is better, and also optimal, because the upper bound for $M=5$ is $N=21$ as dictated in \cref{th:upperbound}.  
-
-\subsection{Integer linear programming (ILP)}
-
-To generate optimal circular sparse ruler programs we made use of integer linear programming. Integer linear programming is a mathematical optimasation and feasibility program in which variables are restricted to be integers. This can be expressed as
-
-\begin{align}
-\text{maximize}   &\quad \vec{c}^Tx\\
-\text{subject to} &\quad \mat{A}\vec{x} \leq \vec{b},\\
-                  &\quad \vec{x} \geq 0,\\
-\text{and}        &\quad \vec{x} \in \mathbb{Z}
-\end{align}
-where the entires of $\vec{c}$, $\vec{b}$ are vectors, and $\mat{A}$ is a matrix, having integer values. We wrote the problem of circular sparse ruler into this format, which is derived in \cref{ap:derivation_ILP}.
-
-
-\subsection{Results}
-Using ILP we generated the following set of circular sparse ruler solutions:
-\begin{align}
-M=2,\;\,N=3  \quad S&=\{1,2\}\\
-M=3,\;\,N=7  \quad S&=\{1,2,4\}\\
-M=4,N=13     \quad S&=\{1,2,5,7\}\\
-M=5,N=21     \quad S&=\{1,2,7,9, 19\}\\
-M=6,N=31     \quad S&=\{1,2,5,7,14,22\}\\
-M=7,N=39     \quad S&=\{1,2,5,7,14,21,31\}\\
-M=8,N=51     \quad S&=\{1,2,8,10,13,32,36, 46\}\\
-M=9,N=65     \quad S&=\{1,2,5,7,15, 33, 43, 51, 54\}
-\end{align}
-\cref{fig:comparison_sparse_ruler} compares the upper-bound from \cref{th:upperbound} in green, minimal linear sparse ruler in red and the results from the ILP in blue. One can clearly see that for higher $m$, linear sparse ruler is outperformed by the solution of the ILP algorithm. 
-\begin{figure}[H]
-\begin{tikzpicture}
-\begin{axis}[xlabel={amount of samplers $M$},ylabel={down-sampling factor $N$},width=\textwidth, height=0.8\textwidth]
-    \addplot [
-    color=green,
-    solid,
-    mark=.,
-    ]
-    %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
-    table [col sep=comma]{plots/circ_upper.txt};
-    
-    \addplot [
-    color=blue,
-    solid,
-    mark=.,
-    ]
-    % table[x index=0,y index=1,col sep=comma] {circ_ilp.data};
-    table [col sep=comma]{plots/circ_ilp.txt};
-
-    \addplot [
-    color=red,
-    solid,
-    mark=.,
-    ]
-    % table[x index=0,y index=1,col sep=comma] {circ_lin.data};
-    table [col sep=comma]{plots/circ_lin.txt};
-\end{axis}
-\end{tikzpicture}
-\caption{plot of down-sampling $N$ for a given amount of samplers $M$. red = minimal linear sparse, blue = ILP circular sparse, green = teltheoretical upper-bound}\label{fig:comparison_sparse_ruler}
-\end{figure}
-
-\subsection{combine circular sparse ruler to reconstructor}\label{sub:ci-circ}
-
-The next step is to communicate the sampling configuration to the reconstructor. As described in ref \todo{ref}, is the behavior of a sampler described as a vector $\vec{c}_i$ of length $N$, with binary elements that represent whether a sample is taken or not. For circular sparse ruler, this is straight forward to implement. We have exact knowledge of which samples are taken. A circular sparse ruler soluytion $\vec{S}= \{\color{orange}1\color{black},\color{green}2\color{black},\color{cyan}4\color{black}\}$ for $N=7$ would for example look like:
-\begin{itemize}
-\item $\color{orange}c_1 \color{black}= \{\color{orange}1\color{black},0,0,0,0,0,0\}$
-\item $\color{green}c_2 \color{black}= \{0,\color{green}1\color{black},0,0,0,0,0\}$
-\item $\color{cyan}c_3 \color{black}= \{0,0,0,\color{cyan}1\color{black},0,0,0\}$
-\end{itemize}
 
 
 \end{document}

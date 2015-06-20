@@ -6,129 +6,10 @@
 
 \begin{document}
 
-\section{Coprime sampling}\label{sec:coprime}
-This is illustrated in \cref{tkz:coprime_ruler}.
+\subsection{Coprime sampling}\label{sec:coprime}
+As we argued before, the reconstuctor is not designed to process two signals sampled by coprime sampling. This yields that some preprocessing is necessary. The idea is the break the signal sampled by coprime sampling into many different signals which are sampled conventionally. More specifically, we break the signals of the two different samplers with sampling period numbers $aT$ and $bT$ into samplers with sampling period $abT$. This is illustrated in \cref{tkz:sc_coprime,tkz:pre-coprime}.
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=1.3]
-
-\draw (1,0) -- (11,0);
-
-\draw [red, very thick] (1,0) -- (1,0.3);
-\draw (1.5,0) -- (1.5,0.1);
-\draw (2,0) -- (2,0.1);
-\draw [red, very thick] (2.5,0) -- (2.5,0.3);
-\draw (3,0) -- (3,0.1);
-\draw (3.5,0) -- (3.5,0.1);
-\draw [red, very thick] (4,0) -- (4,0.3);
-\draw  (4.5,0) -- (4.5,0.1);
-\draw (5,0) -- (5,0.1);
-\draw [red, very thick] (5.5,0) -- (5.5,0.3);
-\draw (6,0) -- (6,0.1);
-\draw (6.5,0) -- (6.5,0.1);
-\draw [red, very thick] (7,0) -- (7,0.3);
-\draw (7.5,0) -- (7.5,0.1);
-\draw (8,0) -- (8,0.1);
-\draw [red, very thick] (8.5,0) -- (8.5,0.3);
-\draw (9,0) -- (9,0.1);
-\draw (9.5,0) -- (9.5,0.1);
-\draw [red, very thick] (10,0) -- (10,0.3);
-\draw (10.5,0) -- (10.5,0.1);
-\draw (11,0) -- (11,0.1);
-
-\node at (1,-0.35) {1};
-\node at (1.5,-0.35) {2};
-\node at (2,-0.35) {3};
-\node at (2.5,-0.35) {4};
-\node at (3,-0.35) {5};
-\node at (3.5,-0.35) {6};
-\node at (4,-0.35) {7};
-\node at (4.5,-0.35) {8};
-\node at (5,-0.35) {9};
-\node at (5.5,-0.35) {10};
-\node at (6,-0.35) {11};
-\node at (6.5,-0.35) {12};
-\node at (7,-0.35) {13};
-\node at (7.5,-0.35) {14};
-\node at (8,-0.35) {15};
-\node at (8.5,-0.35) {16};
-\node at (9,-0.35) {17};
-\node at (9.5,-0.35) {18};
-\node at (10,-0.35) {19};
-\node at (10.5,-0.35) {20};
-\node at (11,-0.35) {21};
-
-\draw (1,3.5) -- (11,3.5);
-
-\draw [blue, very thick] (1,3.2) -- (1,3.5);
-\draw (1.5,3.4) -- (1.5,3.5);
-\draw (2,3.4) -- (2,3.5);
-\draw (2.5,3.4) -- (2.5,3.5);
-\draw (3,3.4) -- (3,3.5);
-\draw [blue, very thick] (3.5,3.2) -- (3.5,3.5);
-\draw (4,3.4) -- (4,3.5);
-\draw  (4.5,3.4) -- (4.5,3.5);
-\draw (5,3.4) -- (5,3.5);
-\draw (5.5,3.4) -- (5.5,3.5);
-\draw [blue, very thick] (6,3.2) -- (6,3.5);
-\draw (6.5,3.4) -- (6.5,3.5);
-\draw (7,3.4) -- (7,3.5);
-\draw (7.5,3.4) -- (7.5,3.5);
-\draw (8,3.4) -- (8,3.5);
-\draw [blue, very thick] (8.5,3.2) -- (8.5,3.5);
-\draw (9,3.4) -- (9,3.5);
-\draw (9.5,3.4) -- (9.5,3.5);
-\draw (10,3.4) -- (10,3.5);
-\draw (10.5,3.4) -- (10.5,3.5);
-\draw [blue, very thick] (11,3.2) -- (11,3.5);
-
-\node at (1,3.85) {1};
-\node at (1.5,3.85) {2};
-\node at (2,3.85) {3};
-\node at (2.5,3.85) {4};
-\node at (3,3.85) {5};
-\node at (3.5,3.85) {6};
-\node at (4,3.85) {7};
-\node at (4.5,3.85) {8};
-\node at (5,3.85) {9};
-\node at (5.5,3.85) {10};
-\node at (6,3.85) {11};
-\node at (6.5,3.85) {12};
-\node at (7,3.85) {13};
-\node at (7.5,3.85) {14};
-\node at (8,3.85) {15};
-\node at (8.5,3.85) {16};
-\node at (9,3.85) {17};
-\node at (9.5,3.85) {18};
-\node at (10,3.85) {19};
-\node at (10.5,3.85) {20};
-\node at (11,3.85) {21};
-
-\draw [>=latex,<->] (1,0.6) -- (1.5,0.6);
-\draw [>=latex,<->](2.5,0.8) -- (3.5,0.8);
-\draw [>=latex,<->](1,1) -- (2.5,1);
-\draw [>=latex,<->](3.5,1.2) -- (5.5,1.2);
-\draw [>=latex,<->](1,1.4) -- (3.5,1.4);
-\draw [>=latex,<->](1,1.6) -- (4,1.6);
-\draw [>=latex,<->](3.5,1.8) -- (7,1.8);
-\draw [>=latex,<->](6,2) -- (10,2);
-\draw [>=latex,<->](1,2.2) -- (5.5,2.2);
-\draw [>=latex,<->](1,2.4) -- (6,2.4);
-\draw [>=latex,<->](5.5,2.6) -- (11,2.6);
-\draw [>=latex,<->](1,2.8) -- (7,2.8);
-\draw [>=latex,<->](3.5,3) -- (10,3);
-
-\end{tikzpicture}
-\caption{coprime sampling solution with $m=3$ and $n=5$}\label{tkz:coprime_ruler}
-\end{figure}
-
-The different sampling periods of the coprime samplers should be chosen carefully. \cite{pal2011coprime} shows that these numbers should be coprime to each other to ensure that all lags are avialable. That means that the sampling periods of the samplers should be $mT$ and $nT$, where the only positive integer that evenly devided both of $m$ and $n$ is 1, hence the name coprime sampling. 
-
-\subsection{Combine coprime sampling with reconstructor}\label{sub:ci-coprime}
-The reconstuctor is not designed to process two coprime sampled signals. Therefore some pre-processing is necessary. We need to feed the reconstructor singals of samplers with identical period. To achieve this we break the signals of the two different samplers with sampling period numbers $nT$ and $mT$ into samplers with samopling period $nmT$. This is illustrated in \cref{tkz:pre-coprime}.
-
-\begin{figure}[H]
+\begin{figure}
 \centering
 \begin{tikzpicture}
 \draw  [fill=gray](-1.5,0.5) rectangle (-1,0);
@@ -382,10 +263,10 @@ The reconstuctor is not designed to process two coprime sampled signals. Therefo
 
 
 \end{tikzpicture}
-\caption{pre-proccesing coprime signals}\label{tkz:pre-coprime}
+\caption{Preproccesing signal sampled by coprime sampling}\label{tkz:pre-coprime}
 \end{figure}
 
-In this figure, the grey blocks indicate the samples recovered by the device, the orange blocks the samples that are recoverd by sampler $m$, and the green blocks the samples that are recovered by sampler $n$. The middle block shows how the samples are actually gathered, while the bottom block shows how the reconstructor thinks the samples are gathered.
+In \cref{tkz:pre-coprime}, the grey blocks represent the samples recovered by the coprime sampling device. The orange blocks represent the samples that are recoverd by the sampler with sampling period $a$, and the green blocks represent the samples that are recovered by the sampler with sampling period $n$. Finally, the bottom block shows how the the orange and greens blocks are split across many artificial signals. These artificial signals represent samplers which sample conventionally. Therefore, these artificial sampler make reconstruction possible.
 
-Now that we work with multiple samplers with identical sampling frequency we can use the technique described in \cref{sub:ci-circ} to connect coprime sampling to the reconstructor.
+Coprime sampling is dicussed more carefully in \cref{ap:circ-ruler}.
 \end{document}
