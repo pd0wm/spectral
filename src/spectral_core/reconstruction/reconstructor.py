@@ -10,7 +10,7 @@ class Reconstructor(object):
     def __init__(self):
         pass
 
-    def get_R(self):
+    def get_Rpinv(self):
         return self.R_pinv.toarray()
 
     def reconstruct(self, signal):
