@@ -12,7 +12,7 @@
 
 \begin{document}
 \chapter{View - Visualisation \& Control}
-\label{ch:visualisation}
+\label{cha:view}
 The last part of the system design consists of a web-based graphical user interface (GUI) that allows for easy control and visual verification of the system and its status. This component therefore fulfils the role of view in the design's model-view-presenter architecture. It is packaged in the module \lib{spectral\_web}.
 
 \begin{figure*}[h]
@@ -121,7 +121,7 @@ As mentioned, the front-end consists of a web page containing the elements as ge
 
 \subsection{Presenter interaction}
 \label{sub:presenter_interaction}
-The model has to be updated upon any user interaction that takes place in the view. At the same time, UI-elements in the view should be able to access the most recent data from the model. For this to happen, a connection has to made between model and view. In \cref{ch:presenter} we introduced the settings and data WebSocket servers, which were built for this goal.
+The model has to be updated upon any user interaction that takes place in the view. At the same time, UI-elements in the view should be able to access the most recent data from the model. For this to happen, a connection has to made between model and view. In \cref{cha:presenter} we introduced the settings and data WebSocket servers, which were built for this goal.
 
 The web application connects to both of these WebSockets using JavaScript's built-in WebSocket implementation, wrapped in the \func{Control} and \func{Visualisation} objects, respectively. These two objects are implemented following the \emph{Singleton}-pattern, which is a design-pattern that ensures that only a single instance of the given object may exist at all times (bearing similarities to a \texttt{static} instance of a class in some other languages), which is useful since both \func{Control} and \func{Visualisation} handle all WebSocket related actions for the entire web application \cite[127]{designpatterns}.
 
