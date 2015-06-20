@@ -156,7 +156,8 @@ To verify the working of the system we built a SPICE simulation of a simplified 
 \subsubsection{Filters}
 \begin{figure}[h]
     \centering
-    \begin{circuitikz}[scale=0.7, transform shape]
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{circuitikz}
       \draw (-3,0) to [vsourcesin] (-3,3);
       \draw (-2,3) to [R, l=$50~\Omega$] (0,3);
       \draw (0,3) to [L, l=$\SI{60}{\nano\henry}$] (2,3);
@@ -176,6 +177,7 @@ To verify the working of the system we built a SPICE simulation of a simplified 
       \draw (4,3) to [short, *-*] (5,3);
       \draw (-3,0) to [short] (14,0);
     \end{circuitikz}
+    \end{adjustbox}
     \caption{Schematic of the filter and matching network used in the simulation}
     \label{fig:sim_schematic}
 \end{figure}
