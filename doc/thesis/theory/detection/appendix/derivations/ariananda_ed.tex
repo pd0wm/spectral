@@ -10,42 +10,46 @@
 In this section we will derive how $\gamma_k$ as introduced in \cref{ssec:ari_ed} can be calculated. This derivation is largely based on \cite{ariananda2012compressive} and is heavily dependent on the derivation in \cref{sec:reconstruction-derivation}.
 
 We assume that if our signal $x[n]$ purely contains noise, then $x[n] \sim \mathcal{CN}(0,\sigma_n)$. 
-Let $\vec{\hat{r}}_x = [\hat{r}[-LN], \ldots, \hat{r}[0], \ldots \hat{r}[LN]]^T$ denote the vector containing the estimated elements of the autocorrelation. 
+Let
+\begin{align*}
+    \vec{\hat{r}}_x = \begin{bmatrix}\hat{r}[-LN]& \ldots& \hat{r}[0]& \ldots \hat{r}[LN]\end{bmatrix}^T
+\end{align*}
+denote the vector containing the estimated elements of the autocorrelation. 
 By \cref{eq:pseudo-rx} we know that the estimator $\vec{\hat{r}}_x$ of $\vec{r}_x$ is given as
 \begin{align*}
 \vec{\hat{r}}_x &= \mat{R}^{\dagger}\vec{\hat{r}}_y.
 \end{align*} where the elements of the estimator $\vec{\hat{r}}_y$ of $\vec{r}_y$ are given by \cref{eq:ryij-est}.
 
-Let $\mat{F}$ denote the $(2LN-1) \times (2LN-1)$ DFT matrix, then $\vec{\hat{s}}_x$, defined as
+Let $\mat{F}$ denote the $(2LN-1) \times (2LN-1)$ discrete Fourier transform matrix, then $\vec{\hat{s}}_x$, defined as
 $\vec{\hat{s}}_x = \mat{F} \vec{\hat{r}}_x$
-is an estimator of the power spectral density $\mathcal{P}(\omega)$ at frequencies $\omega = \frac{2\pi k}{2LN+1}$ where $0 \leq k \leq 2LN$ .
+is an estimator of the power spectral density $\mathcal{P}(\omega)$ at frequencies $\omega = 2\pi k/(2LN+1)$ where $0 \leq k \leq 2LN$ .
 
-In \cite{ariananda2012compressive} it is derived that when $KLN$ is large, then the elements of $\vec{s}_x$ are approximately Gaussian distributed. Let $\hat{s}_k$ denote the $k^{th}$ element of $\vec{\hat{s}}_x$, then we approximate its distribution by the Gaussian $\mathcal{N}(\mu_k, \sigma^2_k)$.
+In \cite{ariananda2012compressive} it is derived that when $KLN$ is large, then the elements of $\vec{s}_x$ are approximately Gaussian distributed. Let $\hat{s}_k$ denote the $k$'th element of $\vec{\hat{s}}_x$, then we approximate its distribution by the Gaussian $\mathcal{N}(\mu_k, \sigma^2_k)$.
 
 The threshold $\gamma_k$ is then given by 
 \begin{align}\label{eq:ari_threshold}
-Q^{-1}(p_{fa})\sigma_{k} + \mu_{k}.
+\gamma_k = Q^{-1}(p\ss{fa})\sigma_{k} + \mu_{k}.
 \end{align}
 
-Note that $\mu_k$ is equal to the $k^{th}$ element of the vector
+Note that $\mu_k$ is equal to the $k$'th element of the vector
 \begin{align*}
-E\left(\vec{\hat{s}}_x\right) &= \mat{F}\mat{R}^{\dagger}E\left(\vec{r}_y\right).
+E\left(\vec{\hat{s}}_x\right) &= \mat{F}\mat{R}^{\dagger}E(\vec{r}_y).
 \end{align*}
 
 Making use of the following relation as derived in \cite{ariananda2012compressive}, giving  the elements of $E(\vec{r}_y)$ 
 \begin{align*}
-E(\vec{r}_{y_i, y_j}[k]) &= E\left((c_{i,j} \ast r_x) (kN)\right) & \text{\cref{th:convolution-correlation}} \\
+E(\vec{r}_{y_i, y_j}[k]) &= E[(c_{i,j} \ast r_x) (kN)] & \text{\cref{th:convolution-correlation}} \\
 &=  c_{i,j} \delta[k]
 \end{align*}
 we can calculate $\mu_k$ for $1 \leq k \leq 2LN+1$.
 
-To calculate $\sigma_k$ we note that the $k^{th}$ element on the diagonal of the covariance matrix of $\vec{\hat{s}}_x$ contains the variance $\sigma_k^2$. Let $\mat{C}_{\hat{s}_x}$ denote the covariance matrix of $\vec{\hat{s}}_x$.  We can compute $\mat{C}_{\hat{s}_x}$ as:
+To calculate $\sigma_k$ we note that the $k$'th element on the diagonal of the covariance matrix of $\vec{\hat{s}}_x$ contains the variance $\sigma_k^2$. Let $\mat{C}_{\hat{s}_x}$ denote the covariance matrix of $\vec{\hat{s}}_x$.  We can compute $\mat{C}_{\hat{s}_x}$ aby
 
 \begin{align*}
-\mat{C}_{\hat{s}_x} &= E\left(\vec{\hat{s}}_x\vec{\hat{s}}_x^H\right) - E\left(\vec{\hat{s}}\right)E\left(\vec{\hat{s}}^H\right) \\
-&= E\left(\left(\mat{F} \mat{R}^{\dagger}\vec{\hat{r}}_y\right) \left( \mat{F}\mat{R}^{\dagger}\vec{\hat{r}}_y\right)^H\right) - E\left(\mat{F}\mat{R}^{\dagger}\vec{\hat{r}}_y\right)E\left(\left(\mat{F}\mat{R}^{\dagger}\vec{\hat{r}}_y\right)^H\right) \\
-&= \mat{F}\mat{R}^{\dagger} E\left(\vec{r}_y\vec{r}_y^H\right)  \mat{R}^{\dagger H}\mat{F}^H -  \mat{F}\mat{R}^{\dagger} E\left( \vec{r}_y\right) E\left(\vec{r}_y^H\right)  \mat{R}^{\dagger H}\mat{F}^H \\
-&= \mat{F}\mat{R}^{\dagger} \mat{C}_{r_y} \mat{R}^{\dagger H}\mat{F}^H
+\mat{C}_{\hat{s}_x} &= E(\vec{\hat{s}}_x\vec{\hat{s}}_x^H) - E(\vec{\hat{s}})E(\vec{\hat{s}}^H) \\
+&= E[(\mat{F} \mat{R}^{\dagger}\vec{\hat{r}}_y) ( \mat{F}\mat{R}^{\dagger}\vec{\hat{r}}_y)^H] - E(\mat{F}\mat{R}^{\dagger}\vec{\hat{r}}_y)E[(\mat{F}\mat{R}^{\dagger}\vec{\hat{r}}_y)^H] \\
+&= \mat{F}\mat{R}^{\dagger} E(\vec{r}_y\vec{r}_y^H)  \mat{R}^{\dagger H}\mat{F}^H -  \mat{F}\mat{R}^{\dagger} E( \vec{r}_y) E(\vec{r}_y^H)  \mat{R}^{\dagger H}\mat{F}^H \\
+&= \mat{F}\mat{R}^{\dagger} \mat{C}_{r_y} \mat{R}^{\dagger H}\mat{F}^H.
 \end{align*}
 
 Let $\mat{C}_{\hat{r}_y}$ denote the covariance matrix of of $\vec{\hat{r}}_y$, with its elements given by
@@ -54,10 +58,10 @@ Let $\mat{C}_{\hat{r}_y}$ denote the covariance matrix of of $\vec{\hat{r}}_y$, 
 \text{Cov}(\hat{r}_{y_t,y_u}[i],\hat{r}_{y_v, y_w}[j]).
 \end{align}
 
-As stated in \cite{ariananda2012compressive}, under the assumption that the elements of $x[n]$ are i.i.d. circular complex Gaussian distributed, the expression for the covariance in \cref{eq:cov_ry} simplifies to:
+As stated in \cite{ariananda2012compressive}, under the assumption that the elements of $x[n]$ are independent identically circular complex Gaussian distributed, the expression for the covariance in \cref{eq:cov_ry} simplifies to
 
 \begin{align}\label{eq:elem_cov_ry}
-\text{Cov}(\hat{r}_{y_t,y_u}[i],\hat{r}_{y_v, y_w}[j]). &= \frac{\sigma_n^4 c_{t,v}[0] \conj{c}_{u,w}[0] \delta \left[ j-i\right]}{KL-|i|}.
+\text{Cov}(\hat{r}_{y_t,y_u}[i],\hat{r}_{y_v, y_w}[j]) &= \frac{\sigma_n^4 c_{t,v}[0] \conj{c}_{u,w}[0] \delta \left[ j-i\right]}{KL-|i|}.
 \end{align}
 
 Now that we have described how to calculate $\mu_k$ and $\sigma_k$, \cref{eq:ari_threshold} can be evaluated.

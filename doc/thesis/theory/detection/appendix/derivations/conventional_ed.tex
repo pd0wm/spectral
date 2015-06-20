@@ -13,45 +13,50 @@
 This section will give a derivation of the conventional energy detector based on \cite{atapattu2014energy}.
 Let $x[n]$ denote the received signal. The conventional energy detection algorithm must decide between to hypotheses:
 \begin{align}\label{eq:hypotheses}
-  \mathcal{H}_0&: x[n] = w[n]\\
-  \mathcal{H}_1&: x[n] = s[n] + w[n]
+  \mathcal{H}_0&: x[n] = w[n],\\
+  \mathcal{H}_1&: x[n] = s[n] + w[n],
 \end{align}
 in which $w[n]$ denotes additive circular complex Gaussian noise and $s[n]$ denotes a signal as transmitted by a primary user.
 
-We assume that the noise samples are i.i.d. zero mean circular complex Gaussian distributed; $w[n] \sim \mathcal{CN}(0, \sigma_n^2)$. 
+We assume that the noise samples are independently identically zero mean circular complex Gaussian distributed, that is $w[n] \sim \mathcal{CN}(0, \sigma_n^2)$. 
 We furthermore assume that the samples of the signal $s[n]$ can be modelled independently as circular complex Gaussian $\mathcal{CN}(0, \sigma_s^2)$. % todo ref
 % dat dit aannemelijk maakt That is
+So
 
 \begin{align*}
 x[n] \sim 
     \begin{cases}
-        \mathcal{CN}(0, \sigma_n^2) & \text{under $\mathcal{H}_0$} \\
-        \mathcal{CN}(0, (\sigma_s^2 + \sigma_n^2)) & \text{under $\mathcal{H}_1$}
+        \mathcal{CN}(0, \sigma_n^2) & \text{if $\mathcal{H}_0$}, \\
+        \mathcal{CN}[0, (\sigma_s^2 + \sigma_n^2)] & \text{if $\mathcal{H}_1$}.
     \end{cases}
 \end{align*} 
 
-Let $\vec{x} = \left[x[0], x[1], \ldots, x[N-1]\right]^T$ denote a vector containing $N$ samples of the signal $x$. Then the likelihood function of $\vec{x}$ denotes as $L(\vec{x})$ is given by:
+Let
+\begin{align*}
+    \vec{x} = \begin{bmatrix}x[0] & x[1] & \ldots & x[N-1]\end{bmatrix}^T
+\end{align*}
+denote a vector containing $N$ samples of the signal $x[n]$. Then the likelihood function of $\vec{x}$ denotes as $L(\vec{x})$ is given by
 
 \begin{align*}
     L(\vec{x}) &= \prod_{i=1}^N f_{(\vec{x})_i}\\
     &= \begin{cases}
-        \frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_0$} \\
-        \frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}) & \text{under $\mathcal{H}_1$}
+        \sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x}) & \text{if $\mathcal{H}_0$}, \\
+        \sigma_n^2/\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}] & \text{if $\mathcal{H}_1$}
     \end{cases}
 \end{align*}
 
-Where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ in $\vec{x}$.  The test statistic $\Lambda(\vec{x})$ as used in the Neyman Pearson test is then given by:
+where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ in $\vec{x}$.  The test statistic $\Lambda(\vec{x})$ as used in the Neyman Pearson test is then given by:
 \begin{align*}
-\Lambda(\vec{x}) &=\frac{\frac{\sigma_n^2}{\pi^N } \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{\frac{(\sigma_n^2 + \sigma_s^2)}{\pi^N } \exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}
+\Lambda(\vec{x}) &=\frac{\sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)/\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}]}.
 \end{align*}
 
 
-By taking the logarithm of $\Lambda(x)$ we obtain a Log Likelihood Ratio test statistic $\Lambda'(x)$, given by
+By taking the logarithm of $\Lambda(x)$ we obtain a log-likelihood Ratio test statistic $\Lambda'(x)$, given by
 
 \begin{align*}
-\Lambda(\vec{x})' &= \log \left(
-\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)\exp(-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x})}\right) \\
-&= \log\left(\sigma_n^2\right) - \log\left(\sigma_n^2 + \sigma_s^2\right) +  (\sigma_s^2) \sum_{i=0}^{N-1} |x[i]|^2. 
+\Lambda(\vec{x})' &= \log \left\{
+\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{[\sigma_n^2 + \sigma_s^2]\exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}]}\right\} \\
+&= \log(\sigma_n^2) - \log(\sigma_n^2 + \sigma_s^2) +  \sigma_s^2 \sum_{i=0}^{N-1} |x[i]|^2. 
 \end{align*}
 
 Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic 
@@ -63,42 +68,42 @@ Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of
 is proportional to $\Lambda'(x)$. Note that $\Lambda''$ is the same test statistic as $\Lambda$ in \Cref{sec:conv_ed}.
 
 \subsubsection{Threshold}
-In this section we will determine the threshold $\gamma$, for the energy detector test statistic $\Lambda''(\vec{x})$.
+In this section we will determine the threshold $\gamma$ for the energy detector test statistic $\Lambda''(\vec{x})$.
 Under $\mathcal{H}_0$ we have that $\Lambda''(\vec{x})$ is the sum of $2N$ independent zero mean Gaussian distributed variables
-with variance $\frac{\sigma_n^2}{2}$. Therefore the following applies:
+with variance $\sigma_n^2/2$. So
 
 \begin{align}
     \frac{2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
 \end{align}
 
 % Sensing Throughput Tradeoff in Cognitive Radio, Y. C. Liang
-Therefore the false alarm probability $p_{fa}$ is given by \cite{rugini2013small}:
+Therefore, the false alarm probability $p\ss{fa}$ is given by \cite{rugini2013small}
 
 \begin{align*}
-    P_{fa} &= P\left[(\Lambda''(\vec{x}) > \gamma)\right] \\
-        &= 1-F_{2N} (\frac{2\gamma}{\sigma_n^2})
+    p_{fa} &= P(\Lambda''(\vec{x}) > \gamma) \\
+        &= 1-F_{2N} (2\gamma/\sigma_n^2)
 \end{align*}
 
-with $F_{2N}$ the CDF of a chi square distribution with $2N$ degrees of freedom. 
+with $F_{2N}$ the cumulative distribution function of a chi square distribution with $2N$ degrees of freedom. 
 
-If $N$ is large enough, we can approximate the test statistics' distribution by a Gaussian distribution as it it is the sum of $2N$ i.i.d. random variables, using the Central Limit theorem:
+If $N$ is large enough, we can approximate the test statistics' distribution by a Gaussian distribution as it it is the sum of $2N$ independt identically distributed random variables. By the central limit theorem,
 
 \begin{align*}
-F_{2N} \approx 1-Q(\frac{\frac{2\Lambda''(x)}{\sigma^2_n}-2N}{2\sqrt{N}}).
+F_{2N} \approx 1-Q\left(\frac{2\Lambda''(x)/\sigma^2_n-2N}{2\sqrt{N}}\right).
 \end{align*}
 
-$P_{fa}$ can then be approximated as 
+$P\ss{fa}$ can then be approximated as 
 
  \begin{align}
- P_{fa} \approx Q\left(\frac{\frac{2\gamma}{\sigma_n^2} -2N}{2\sqrt{N}}\right).\label{eq:p_fa}
+ P\ss{fa} \approx Q\left(\frac{2\gamma/\sigma_n^2 -2N}{2\sqrt{N}}\right).\label{eq:p_fa}
  \end{align} \cite{
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
  }
 
- and given a desired $P_{fa}$ the threshold $\gamma$ is given by
+Given a desired $P\ss{fa}$, the threshold $\gamma$ is given by
 
 \begin{align}\label{eq:ed_threshold}
- \gamma &= \left(Q^{-1}\left(P_{fa}\right)\sqrt{N} + N\right)\sigma_n^2
+ \gamma &= [Q^{-1}\left(p_{fa}\right)\sqrt{N} + N]\sigma_n^2.
  \end{align} 
  %\cite{
  %http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6061767
