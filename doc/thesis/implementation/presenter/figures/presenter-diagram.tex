@@ -1,0 +1,96 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+\raggedbottom
+
+\begin{document}
+\begin{tikzpicture}
+    \usetikzlibrary{arrows,automata,calc}
+    \tikzset{
+        state/.style={
+            rectangle,
+            draw=black, very thick,
+            minimum height=2em,
+            inner sep=2pt,
+            text centered,
+            anchor=north,
+        },
+    }
+    \tikzstyle{dashedd} = [anchor=north, rectangle, inner sep=5pt, draw=black, very thick, dashed]
+    \tikzstyle{fancyarrow} = [draw=black, very thick, ->, auto]
+    \tikzstyle{textnodes} = [align=center]
+
+    \node[matrix, draw=black, very thick, dashed, column sep=5mm, row sep=2mm] (model) at (0, 7) {
+        & \node {\textbf{Model}}; \\
+        & \node[state, minimum height=1.5cm, minimum width=3cm] (generator) {
+            \begin{tabular}{c}
+                \textbf{Process 1} \\
+                \midrule
+                Generator
+            \end{tabular}
+        }; &
+        \node[state, minimum height=1.5cm, minimum width=3cm] (reconstructor){
+            \begin{tabular}{c}
+                \textbf{Process 2} \\
+                \midrule
+                Reconstructor
+            \end{tabular}
+        }; &
+        \node[state, minimum height=1.5cm, minimum width=3cm] (detector) {
+            \begin{tabular}{c}
+                \textbf{Process 3} \\
+                \midrule
+                Detector
+            \end{tabular}
+        }; &\\\\
+    };
+    \coordinate [right= 2.5cm of model] (c1);
+
+    \node[matrix, draw=black, very thick, dashed, column sep=5mm, row sep=2mm] (presenter) at (0, 3.5) {
+        & \node {\textbf{Presenter}}; \\
+        & \node[state, minimum height=1.5cm, minimum width=4cm] (settings_websocket) {
+            \begin{tabular}{c}
+                \textbf{Process 5} \\
+                \midrule
+                Settings WebSocket
+            \end{tabular}
+        }; &
+        \node[state, minimum height=1.5cm, minimum width=4cm] (settings_server){
+            \begin{tabular}{c}
+                \textbf{External} \\
+                \midrule
+                Settings server
+            \end{tabular}
+        }; &
+        \node[state, minimum height=1.5cm, minimum width=4cm] (data_websocket) {
+            \begin{tabular}{c}
+                \textbf{Process 6} \\
+                \midrule
+                Data WebSocket
+            \end{tabular}
+        }; &\\\\
+    };
+
+    \node[matrix, draw=black, very thick, dashed, column sep=5mm, row sep=2mm] (view) at (0, 0) {
+        & \node {\textbf{View}}; \\
+        & \node[state, minimum height=1.5cm, minimum width=3cm] (webserver) {
+            \begin{tabular}{c}
+                \textbf{Process 4} \\
+                \midrule
+                Web server
+            \end{tabular}
+        }; &\\\\
+    };
+
+    \path [fancyarrow, <->] (settings_websocket.south) |- node {} (webserver.west);
+    \path [fancyarrow, <->] (data_websocket.south) |- node {} (webserver.east);
+    \path [draw=black, very thick] (model.east) -- node {} (c1);
+    \path [fancyarrow] (c1) |- node {} (data_websocket.east);
+    \path [fancyarrow, <->] (settings_server) -- node {} (settings_websocket);
+    \path [fancyarrow] (settings_server) -- node {} (data_websocket);
+    \path [fancyarrow] (settings_server) -- node {} (model.south);
+    \path [fancyarrow] (settings_websocket.south) |- node {} (webserver.west);
+\end{tikzpicture}
+\end{document}

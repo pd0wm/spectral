@@ -61,7 +61,8 @@ sampler = sc.sampling.MinimalSparseRuler(N)
 reconstructor = sc.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
-#detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_R(), reconstructor.filter_cross_correlation())
+# detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_Rpinv(), reconstructor.filter_cross_correlation())
+
 detector = sc.detection.noise_power()
 
 

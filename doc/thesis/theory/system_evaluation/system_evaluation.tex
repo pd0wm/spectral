@@ -137,6 +137,36 @@ Our tests will be targeted at
 
 \section{Results}
 
+\begin{filecontents*}{plots/plot-data.csv}
+x, y
+1, 1
+2, 3
+3, 4
+4, 3
+\end{filecontents*}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel={Sampling time at 25 MHz (ms)},
+				ylabel={Normalised mean squared error of PSD ($\log_{10}$)},
+				width=8cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/plot-data.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{test}
+	\label{fig:plot}
+\end{figure}
+
 
 
 \section{Discussion: keesch}
