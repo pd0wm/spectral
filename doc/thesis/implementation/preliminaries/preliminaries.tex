@@ -37,38 +37,42 @@ Initially, two platforms were considered for development: \matlab{} and Python. 
     \item Python provides many libraries that allow for distributed networking/computing \cite{pythonmp}.
     \item Python is a full-blown programming language, meaning it has libraries for non-numerical applications such as web-frameworks, that allow for more advanced visualisation options.
 \end{itemize}
+The python version used is 2.7.10. The original reference and used reference are respectively \cite{Rossum:1995:PRM:869369}\cite{python2}.
+
 
 \subsection{Numpy}
 \label{sec:numpy}
-\lib{NumPy} is Python's standard numerical calculations library, providing a faster (multi-dimensional) array and high level bindings for a variety of linear algebra routines, amongst other. \lib{NumPy} is licensed under the new-BSD\footnoteref{fn:bsd} license.
+\lib{NumPy} is Python's standard numerical calculations library, providing a faster (multi-dimensional) array and high level bindings for a variety of linear algebra routines, amongst other. \lib{NumPy} is licensed under the new-BSD\footnoteref{fn:bsd} license. The reference manual is available at \cite{numpyscipy}.
 
 \subsection{Scipy}
 \label{sec:scipy}
-\lib{SciPy} is Python's replacement for a lot of default functions that are included in \matlab{}. Relying on \lib{NumPy} data structures, it gives a variety of libraries (such as \lib{signal}, their DSP-library) providing another means of quickly implementing advanced calculations. \lib{SciPy} is licensed under the new-BSD\footnote{\label{fn:bsd}The BSD 3-Clause license is free for commercial and non-commercial for more info and the template see \cite{bsdlic}.} license.
+\lib{SciPy} is Python's replacement for a lot of default functions that are included in \matlab{}. Relying on \lib{NumPy} data structures, it gives a variety of libraries (such as \lib{signal}, their DSP-library) providing another means of quickly implementing advanced calculations. \lib{SciPy} is licensed under the new-BSD\footnote{\label{fn:bsd}The BSD 3-Clause license is free for commercial and non-commercial for more info and the template see \cite{bsdlic}.} license. The reference manual is available at \cite{numpyscipy}.
+
 
 \subsection{Flask}
 \label{sec:flask}
-\lib{Flask} is a micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license.
+\lib{Flask} is a micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license. The reference manual is available at \cite{flask}.
 
 \subsection{Twisted}
 \label{sub:twisted}
-\lib{Twisted} is Python's event-driven network programming framework. It was used in conjunction with \lib{Autobahn}. \lib{Twisted} is licensed under the MIT\footnoteref{fn:mit} license.
+\lib{Twisted} is Python's event-driven network programming framework. It was used in conjunction with \lib{Autobahn}. \lib{Twisted} is licensed under the MIT\footnoteref{fn:mit} license. The reference is available at \cite{twisted}.
 
 \subsection{Autobahn}
 \label{sub:autobahn}
-\lib{Autobahn} is a real-time framework for websockets. It was used as a means of sending data to the GUI. It is written on top of \lib{Twisted} and \lib{asyncio} and is licensed under the MIT\footnoteref{fn:mit} license.
+\lib{Autobahn} is a real-time framework for websockets. It was used as a means of sending data to the GUI. It is written on top of \lib{Twisted} and \lib{asyncio} and is licensed under the MIT\footnoteref{fn:mit} license. The referency is available at \cite{autobahn}.
 
 \subsection{Pyro}
 \label{sec:pyro}
-\lib{Pyro} is a popular remote-object library. It allows us to do application programming over the network. In the future it could be an easy means of doing distributed networking but as of now it functions as a simple means of inter-process communication. \lib{Pyro4} is licensed under the MIT\footnote{\label{fn:mit}Software under the MIT license is free for both commercial and non-commercial use. For more info see \cite{mitlic}.} license.
+\lib{Pyro} is a popular remote-object library. It allows us to do application programming over the network. In the future it could be an easy means of doing distributed networking but as of now it functions as a simple means of inter-process communication. \lib{Pyro4} is licensed under the MIT\footnote{\label{fn:mit}Software under the MIT license is free for both commercial and non-commercial use. For more info see \cite{mitlic}.} license. The reference manual is available at \cite{pyro4}.
 
 \subsection{Bootstrap}
 \label{sec:bootstrap}
-\lib{Bootstrap} is a front-end CSS (Cascading Style Sheets, a language for styling web pages) framework developed by Twitter. It implements a number of primitives, much like a GUI framework does on X11 (the display server used in many Linux distributions), allowing us to quickly implement a portable GUI. It suits our demands to be able to render both on mobile and desktop views, without much effort. \lib{Bootstrap} is licensed under the MIT\footnoteref{fn:mit} license.
+\lib{Bootstrap} is a front-end CSS (Cascading Style Sheets, a language for styling web pages) framework developed by Twitter. It implements a number of primitives, much like a GUI framework does on X11 (the display server used in many Linux distributions), allowing us to quickly implement a portable GUI. It suits our demands to be able to render both on mobile and desktop views, without much effort. \lib{Bootstrap} is licensed under the MIT\footnoteref{fn:mit} license. The reference manual is available at \cite{bootstrap}..
 
 \subsection{Highcharts}
 \label{sec:highcharts}
-\lib{Highcharts} is a JavaScript plotting library capable of fulfilling all front-end plotting needs. This library was picked because of its customisability and ease-of-use. One major side note is that it is only free for non-commercial use.
+\lib{Highcharts} is a JavaScript plotting library capable of fulfilling all front-end plotting needs. This library was picked because of its customisability and ease-of-use. One major side note is that it is only free for non-commercial use. The Highcharts reference is available at \cite{highcharts}.
+
 
 \section{Workflow}
 \label{sec:workflow}
