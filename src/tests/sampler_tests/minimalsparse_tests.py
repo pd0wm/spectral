@@ -21,3 +21,7 @@ class MinimalSparseRulerTests(unittest.TestCase):
         output_ver_2 = output_ver_1 + self.N
         output_ver = np.array([output_ver_1, output_ver_2], dtype=np.complex128)
         np.testing.assert_array_almost_equal(output, output_ver.T)
+
+    def test_not_in_sparseruler(self):
+        with self.assertRaises(NotImplementedError):
+            ruler = self.sample.sparseruler(-1)

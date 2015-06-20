@@ -3,7 +3,7 @@ class Sampler(object):
     """Interface for all samplers in this subpackage"""
 
     def __init__(self):
-        pass
+        self.C = None
 
     def sample(self, signal):
         """ Contract that all children implement sample method.
@@ -18,5 +18,6 @@ class Sampler(object):
         other classes that might need the sample matrix.
 
         Returns:
-           sampling matrix. """
+           sampling matrix.
+        """
         return self.C

@@ -32,9 +32,9 @@ data_port = args.dataport
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
 L = 3
-a = 5
-b = 7
-N = 61
+a = 3
+b = 4
+N = 51
 upscale_factor = 2000  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
@@ -58,10 +58,13 @@ elif source_type == "sinusoidal":
 # sampler = sc.sampling.Coprime(a, b)
 sampler = sc.sampling.MinimalSparseRuler(N)
 
-reconstructor = sc.reconstruction.Wessel(L, sampler.get_C(), cache=False)
+reconstructor = sc.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
+# detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_Rpinv(), reconstructor.filter_cross_correlation())
+
 detector = sc.detection.noise_power()
+
 
 # Init queues
 signal_queue = ss.multiprocessing.SafeQueue()
