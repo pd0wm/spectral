@@ -11,7 +11,7 @@ As described by the system overview in \cref{cha:overview}, the first step in hi
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.75]
 
 \draw [fill=gray]  (-2,0) rectangle (-1,-1);
 \draw [fill=gray]  (-1,0) rectangle (0,-1);
@@ -41,11 +41,11 @@ As described by the system overview in \cref{cha:overview}, the first step in hi
 \caption{Uniform sampling with sampling period $T$}\label{tkz:uniform}
 \end{figure}
 
-When one desires to ensure full reconstruction of a uniformly sampled signal, one needs to sample this signal at least at the Nyquist frequency. However, we are not necessarily interested in full recovery of the signal, since we only need to detect signals by recovery of the power spectral density. In our sampling methods, we aim to not restrict ourselves to uniform sampling, and try to exploit non-uniform sampling. This allows for methods which sample the signal in a more efficient way, without losing the information we are looking for. Non-uniform sampling is illustrated in \cref{tkz:nonuniform}. This figure is similar to \cref{tkz:uniform}, but some blocks are left white. Only the grey blocks represent sample moments of the non-uniform sampler.
+When one desires to ensure full reconstruction of an uniformly sampled signal, one needs to sample this signal at least at the Nyquist frequency. However, we are not necessarily interested in full recovery of the signal, since we only need to detect which frequencies of the signal are occupied by signals distinct from noise. In our sampling methods, we aim to not restrict ourselves to uniform sampling, and try to exploit non-uniform sampling. This allows for methods which sample the signal in a more efficient way. Since we want to obtain the power spectral density of the signal, it turns out that by non-uniform sampling, we do not lose the information we are looking for. Non-uniform sampling is illustrated in \cref{tkz:nonuniform}. This figure is similar to \cref{tkz:uniform}, but some blocks are left white. Only the grey blocks represent sample moments of the non-uniform sampler.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.75]
 
 \draw  (-2,0) rectangle (-1,-1);
 \draw [fill=gray]  (-1,0) rectangle (0,-1);

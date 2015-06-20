@@ -97,6 +97,7 @@ After that the filtered signal is mixed with a band-limited noise source, and th
 \centering
 \caption{Filter frequencies for frequency range of \SIrange{3}{3179}{\mega\hertz}}
 \label{tab:filter_freqs}
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{rrrrr}
 \toprule
    Harmonic &   Filter low [\si{\mega\hertz}] &   Filer high [\si{\mega\hertz}] &   LO low [\si{\mega\hertz}] &   LO high [\si{\mega\hertz}] \\
@@ -114,6 +115,7 @@ After that the filtered signal is mixed with a band-limited noise source, and th
           9 &         2601 &         3179 &      289 &       353 \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \subsection{Schematics}
@@ -125,10 +127,22 @@ For this implementation we chose a frequency range of \SIrange{405}{675}{\mega\h
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{filter.png}
+    \begin{circuitikz}
+      \draw (0,3) to [L, l=$\SI{60}{\nano\henry}$] (2,3);
+      \draw (2,3) to [C, l=$\SI{1.5}{\pico\farad}$, -*] (4,3);
+      \draw (4,3) to [C, l_=$\SI{12}{\pico\farad}$, *-*] (4,0);
+      \draw (5,3) to [L, l=$\SI{7.4}{\nano\henry}$, *-*] (5,0);
+      \draw (5,3) to [L, l=$\SI{60}{\nano\henry}$, *-] (7,3);
+      \draw (7,3) to [C, l=$\SI{1.5}{\pico\farad}$] (9,3);
+      \draw (4,3) to [short, *-*] (5,3);
+      \draw (-1,0) to [short, o-o] (10,0);
+      \draw (-1,3) to [short, o-] (0,3);
+      \draw (9,3) to [short, -o] (10,3);
+    \end{circuitikz}
     \caption{The designed bandpass filter}
     \label{fig:filter}
 \end{figure}
+
 
 \subsubsection{Noise source}
 
@@ -138,15 +152,38 @@ A microcontroller was needed to control the clock generator IC and communicate w
 The microcontroller connects to the PC with a special FTDI usb to serial cable. With this setup we can easily send commands from our python program to the microcontroller.
 
 \subsection{Simulations}
-To verify the working of the system we built a SPICE simulation of a simplified version of the schematic. We also simulated the filters to check if those were designed correctly.
+To verify the working of the system we built a SPICE simulation of a simplified version of the schematic, see \cref{fig:sim_schematic}. The resistor of $1~\text{M}\Omega$ was added to keep SPICE happy. This includes the filter in \cref{fig:filter} and a matching network to match to $50~\Omega$ source to the $180~\Omega$ impedance of the mixer.
+
 
 \subsubsection{Filters}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{fig_sim_schematic.pdf}
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{circuitikz}
+      \draw (-3,0) to [vsourcesin] (-3,3);
+      \draw (-2,3) to [R, l=$50~\Omega$] (0,3);
+      \draw (0,3) to [L, l=$\SI{60}{\nano\henry}$] (2,3);
+      \draw (2,3) to [C, l=$\SI{1.5}{\pico\farad}$, -*] (4,3);
+      \draw (4,3) to [C, l_=$\SI{12}{\pico\farad}$, *-*] (4,0);
+      \draw (5,3) to [L, l=$\SI{7.4}{\nano\henry}$, *-*] (5,0);
+      \draw (5,3) to [L, l=$\SI{60}{\nano\henry}$, *-] (7,3);
+      \draw (7,3) to [C, l=$\SI{1.5}{\pico\farad}$, -*] (9,3);
+      \draw (9,3) to [R, l_=$1~\text{M}\Omega$, *-*] (9,0);
+      \draw (9,3) to [L, l=$\SI{44}{\nano\henry}$, -*] (11,3);
+      \draw (11,3) to [C, l=$\SI{1}{\pico\farad}$, *-*] (11,0);
+      \draw (11,3) to [C, l=$\SI{1.2}{\pico\farad}$] (13,3);
+      \draw (14,3) to [R, l=$180~\Omega$] (14,0);
+
+      \draw (-3,3) to [short] (-2,3);
+      \draw (13,3) to [short] (14,3);
+      \draw (4,3) to [short, *-*] (5,3);
+      \draw (-3,0) to [short] (14,0);
+    \end{circuitikz}
+    \end{adjustbox}
     \caption{Schematic of the filter and matching network used in the simulation}
     \label{fig:sim_schematic}
 \end{figure}
+
 
 \begin{figure}[H]
 \centering

@@ -1,0 +1,96 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../../includes/preamble.tex}
+\addbibresource{../../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\section{Covariance Absolute Value detection}\label{sec:cav_derivation}
+
+\subsection{Explanation}
+Let $L$ samples of the signal $x[n]$ be collected in the vector
+\begin{align*}
+    \vec{x} = \begin{bmatrix}x[n]& x[n+1]& \cdots& x[n+L]\end{bmatrix}^T.
+\end{align*}
+
+Furthermore let
+\begin{align*}
+    \mat{C} = E[\left(\vec{x} - \mu \right)\left(\vec{x} - \mu \right)^H]
+\end{align*}
+denote the covariance of $\vec{x}$ with $\mu = E(\vec{x})$. In the case that $E\left(\vec{x}\right)=0$, like for noise or most communication signals, then $\mat{C}$ can be simplified to
+\begin{align*}
+\mat{C}_x &= E(\vec{x}\vec{x}^T) \\
+&= \begin{bmatrix} 
+E\left(x[n][n]\right) & E\left(x[n][n+1]\right) & \ldots & E\left(x[n][n+L-1]\right) \\
+E\left(x[n+1][n]\right) & E\left(x[n+1][n+1]\right) & \ldots & E\left(x[n+1][n+L-1]\right) \\
+\vdots & \vdots & \ddots & \vdots \\
+E\left(x[n+L-1][n]\right) & E\left(x[n+L-1][n+1]\right) & \ldots & E\left(x[n+L-1][n+L-1]\right) \\
+\end{bmatrix}.
+\end{align*}
+Under the assumption that $x[n]$ is a wide-sense stationary signal, we can simplify $\mat{C}$ even further. 
+\begin{align*}
+\mat{C}_x&= E(\vec{x}\vec{x}^T) \\
+&= \begin{bmatrix} 
+r_x[0] & r_x[1] & \ldots & r_x[L-1] \\
+r_x[1] & r_x[0] & \ldots & r_x[L-2] \\
+\vdots & \vdots & \ddots & \vdots \\
+r_x[L-1] & r_x[L-2] & \ldots & r_x[0] \\
+\end{bmatrix}.
+\end{align*}
+Note how $\mat{C}_x$ is symmetric and has a Toeplitz structure. This corresponds to the first block in \cref{tkz:cav}. As  the autocorrelation function of white noise is a delta function, it means that  if $x[n]$ is white noise with variance $\sigma_n^2$, then $\mat{C}_x = \sigma_n^2\mat{I}$.
+If the signal $x[n]$ is not equal to noise, then its autocorrelation function is not equal to a delta function which results in $\mat{C}_x$ having nonzero off diagonal elements.
+
+Covariance Absolute Value method detection uses a measure of this `diagonality of $\mat{C}_x$ as test statistic $\Lambda$.
+This measure $\Lambda$ is defined as
+\begin{align}\label{eq:cav_statistic}
+\Lambda &= \frac{T_1}{T_2} \nonumber \\
+&=\frac{\sum_{n=1}^{L} \sum_{m=1}^L \left|(\mat{C}_x)_{nm}\right|}{\sum_{k=1}^L |(\mat{C}_x)_{kk}|}
+\end{align} 
+
+where $T_1 = \sum_{n=1}^{L} \sum_{m=1}^L |(\mat{C}_x)_{nm}|/L$ and
+$T_2 = \sum_{k=1}^L |(\mat{C}_x)_{kk}|/L$.
+This test statistic can be computed by first taking the absolute value of $\mat{C}_x$. This is then followed by summing all the elements of the resulting matrix, $T_1$, and computing the trace of that matrix, $T_2$. Upon diving those two results one obtains the test statistic $\Lambda$. This process is depicted in \cref{tkz:cav}.
+
+In practice one estimates the matrix $\mat{C}_x$ by using a limited amount of samples $N$ to estimate $r_x[n]$. The threshold given a desired false alarm probability
+$p\ss{fa}$ is derived in \cite{zheng2009spectrum} to be
+\begin{align*}
+\gamma &= \frac{1+(L-1)\sqrt{2/N\pi}}{1-Q^{-1}(p\ss{fa})\sqrt{2/N}}.
+\end{align*} 
+
+\subsection{Adjusting the threshold}\label{eq:threshold_cav_deriv}
+In \cite{zheng2009spectrum} it is assumed that for large $N$ the distribution of $T_1$ and $T_2$ approach Gaussian distributions. Given a fixed false alarm probability, the threshold $\gamma$ is derived under the hypothesis $\mathcal{H}_0$. Now should
+\begin{align*}
+p_{fa} &\approx P(T_1/T_2 > \gamma  | \mathcal{H}_0) \\
+&= P(T_2 < T_1/\gamma  | \mathcal{H}_0).
+\end{align*}
+
+Under $\mathcal{H}_0$, the distribution of $T_2 = r_x[0]$ is approximated by a Gaussian. We can therefore derive the
+threshold $\gamma$ by noting that
+\begin{align*}
+p\ss{fa} &= P\left[\frac{E\left(T_1\right)/\gamma - E\left(T_2\right) }{\sqrt{\text{Var}(T_2)}}\right]\\
+&= 1-Q\left[\frac{E\left(T_1\right)/\gamma - E\left(T_2\right) }{\sqrt{\text{Var}(T_2)}}\right].
+\end{align*}
+
+To solve for $\gamma$ we have to determine $E\left(T_1\right)$, $E\left(T_2\right)$ and $\Var(T_2)$. It is at this point that we cannot use the expressions from \cite{zheng2009spectrum}, since the estimation of $r_x[m]$ in \cref{sec:reconstruction-implementation} is a random variable itself, which interferes with calculating $p\ss{fa}$.
+
+To solve this problem, let
+\begin{align*}
+    \vec{\hat{r}_x} = \begin{bmatrix} \hat{r}_x[-LN]& \hat{r}_x[-LN+1] & \cdots & \hat{r}_x[LN]\end{bmatrix}
+\end{align*}
+denote the vector containing the by the reconstructor estimated elements of $r_x[m]$. Then 
+\begin{align*}
+E(\vec{\hat{r}}_x) &= \mat{R}^{\dagger}E(\vec{\hat{r}}_y)
+\end{align*}
+
+contains $r_x[m]$ for $-LN \leq m \leq LN$. Notice that this vector contains $r_x[0] = E(T_2)$ and that it can be used to construct $E(\mat{C})$. Therefore it can also be used to calculate $E(T_1)$. To obtain $\Var(r_x[0])$, we notice that the $\Var(r_x[m])$ is contained on the diagonal of the covariance matrix of $\vec{\hat{r}_x}$, which is denoted by $\mat{C}_{\hat{r}_x}$. This covariance matrix is equal to
+\begin{align*}
+\mat{C}_{\hat{r}_x} &= E(\vec{\hat{r}}_x\vec{\hat{r}}_x^T) - E(\vec{\hat{r}}_x) E(\vec{\hat{r}}_x^T)\\
+&= R^{\dagger}\mat{C}_{\hat{r}_y}(R^{\dagger})^H.
+\end{align*}
+The elements of the covariance matrix $\mat{C}_{\hat{r}_y}$ are given by \cref{eq:elem_cov_ry}. Finally, the threshold $\gamma$ can be calculated by
+\begin{align*}
+\gamma &= \frac{E(T_1)}{Q^{-1}(1-p_{fa})\sqrt{\Var(T_2)}+E(T_2)}.
+\end{align*}
+
+\end{document}

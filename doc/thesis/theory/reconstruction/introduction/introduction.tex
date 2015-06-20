@@ -15,6 +15,8 @@
 % - conclusion (todo)
 
 \section{Introduction}
+In the previous chapter, we introduced the concept of multi-coset sampling. In the introduction, we argued that we want to avoid sampling at the Nyquist frequency. Therefore, the cosets in multi-coset sampling will sample at sub-Nyquist frequencies. The samples obtained by these cosets will be used to reconstruct the power spectral density of the sampled signal, which, once more, we argued to be important during detection.
+
 This chapter introduces a method to reconstruct the power spectral density of a signal which is sampled at sub-Nyquist frequencies. Usually, sampling at sub-Nyquist frequencies causes aliasing, which means that the obtained signal is distorted. Our reconstruction method should be able to reconstruct the power spectral density of the signal in real-time, despite the fact that the sampled signal is aliased. We focus on an accessible, yet complete explanation of such a reconstruction method which discusses all details necessary for implementation.
 
 First of all, we will consider various methods which allow for reconstruction of the power spectral density of signals sampled at sub-Nyquist frequencies. We will then choose one of these methods, based on careful considerations. Next, we will discuss an algorithm based on this method. Afterwards, we will discuss some details which turn out to be essential when implementing the algorithm.
