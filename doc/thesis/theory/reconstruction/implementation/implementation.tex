@@ -12,17 +12,23 @@ This section will discuss some details of the algorithm which should be consider
 
 \subsection{Restrictions on the sampling signals}
 \label{sub:reconstruction-ci}
-This subsection discusses sufficient restrictions on the sampling signal $c_i[n]$ which yield a correct estimation. Remember that the sampling signal determines the way a coset samples the input signal. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Furthermore, all $c_i[n]=1$ for a single $n=n_i$ and otherwise zero. Finally, the following problem must be satisfied.
+This subsection discusses sufficient restrictions on the sampling signal $c_i[n]$ which yield a correct estimation. Remember that the sampling signal determines the way a coset samples the input signal. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. The restrictions are as follows.
+
+\begin{enumerate}
+    \item Every $c_i[n]=0$ for $n < 0$ and $n > N-1$.
+    \item All $c_i[n]=1$ for a single $n=n_i$ and otherwise zero.
+    \item The circular sparse ruler problem must be satisfied.
+\end{enumerate}
 
 \begin{description}
     \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of cosets $i$ and $j$ must make up $0,\ldots,N-1$.
 \end{description}
 
-This problem will be further discussed in \cref{cha:sampling_methods}.
+The circular sparse ruler problem will be further discussed in \cref{cha:sampling_methods}.
 
 \subsection{Estimation of the cross-correlations}
 \label{sub:reconstruction-estimation}
-In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[n]$ is known for $n = 0,\ldots,KL-1$. Since we assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$, it remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
+In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[n]$ is known for $n = 0,\ldots,KL-1$. We assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$. It then remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
 \begin{align} \label{eq:ryij-est}
     \hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|}\sum_{k=l}^{u}y_i[k]\conj{y}_j[k+m]
 \end{align}
@@ -57,10 +63,10 @@ It turns out that $\mat{R}$ can be generated efficiently using commonly availabl
 \end{align*} where \begin{align*}
                 c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
             \end{align*}
-    \item Append $\vec{c}$ with $2(L-1)N+1$ zeros. \\
-    \item Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$. \\
-    \item Omit the first $N-1$ rows and the last $N-1$ columns. \\
-    \item Keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$ \\
+    \item Append $\vec{c}$ with $2(L-1)N+1$ zeros.
+    \item Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$.
+    \item Omit the first $N-1$ rows and the last $N-1$ columns.
+    \item Keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$
     \item Construct \begin{align*}
         \mat{R} = \begin{bmatrix}
             \mat{R}_{1,1} \\ \vdots \\ \mat{R}_{M,M}
