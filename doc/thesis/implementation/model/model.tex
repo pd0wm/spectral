@@ -66,9 +66,9 @@ After the samples are generated, different sampling methods have to be applied. 
 
 \subsection{Multi-coset sampler}
 \label{sub:multi_coset_sampler}
-Multi-coset sampling (as introduced in \cref{cha:sampling}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). The list of offsets is one of the constructor arguments used to generate the C-matrix which has dimensions defined by M and N, which are the other arguments of this implementation.
+Multi-coset sampling (as introduced in \cref{cha:sampling}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). The list of offsets is one of the constructor arguments used to generate the $C$-matrix which has dimensions defined by $M$ and $N$, which are the other arguments of this implementation.
 
-The implementation of the sample method takes a signal, uniformly sampled, as argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension N and the other determined by the length of the input signal.
+The implementation of the sample method takes a signal, uniformly sampled, as argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension $N$ and the other determined by the length of the input signal.
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
@@ -85,7 +85,8 @@ The hardware coprime sampler does not get one vector with input samples, but two
 \section{Reconstruction}
 \label{sec:reconstruction}
 Two different kind of reconstruction methods are implemented. One is similar to the one specified in \cite{ariananda2012compressive} and the other is discussed in \cref{prt:theory} of this thesis. Both reconstructors implement the interface \class{Reconstructor}, which has a contract for a reconstruct-method\footnote{Meaning they should implement such a method.}, which is depicted by the UML-diagram in \cref{fig:umlreconstructor}.
-Both classes make use of shared functionality to calculate a pseudo-inverse. This is a wrapper around \lib{SciPy}'s \func{pinv}. Because this operation is quite time-consuming for larger systems, a caching mechanism was introduced to lower start-up times.% It writes a file with the specific parameters (L and all the intervals) in the name away to a cache directory.
+
+Both classes make use of shared functionality to calculate a pseudo-inverse. This is a wrapper around \lib{SciPy}'s \func{pinv}. Because this operation is quite time-consuming for larger systems, a caching mechanism was introduced to lower start-up times.
 
 \subsection{CrossCorrelation}
 \label{sub:crosscorrelation}
@@ -105,10 +106,6 @@ The reconstruct method is implemented by calculating the cross correlations (aga
 
 From an implementation perspective, the structure of the pseudo-inverse of the Wessel algorithm maps better on the data structures of \lib{NumPy}. \lib{NumPy}'s basic array data structures are in row-major order\footnote{This is the standard way of saving an array in C, two notable exceptions that save their arrays in column major order are \matlab{} and Fortran. Column major order is often called Fortran style.}. The final phase of both reconstruction steps is reshaping the cross-correlation matrix to a single column vector and multiplying it with the pseudo-inverse. This operation is more memory efficient in the Wessel reconstructor.
 
-%The constructor gets the number of cosets and the down-sampling factor from the C matrix. It constructs the R matrix in \func{constructR()}, which makes use of the \func{build\_D()}, \func{filter\_cross\_correlations()} and \func{build\_rcc()} as helper functions. These all build matrices as described in \cref{cha:reconstruction}. The difference between the \func{CrossCorrelation} reconstructor and this one are that the form of the pseudoinverse is more optimized for \lib{NumPy} in \func{Wessel}'s case. This is because of how the input signal should be structured. Because \lib{NumPy's} native way of saving matrices is in row-major order\footnote{}
-
-%The \func{reconstruct(signal)} takes the pseudo-inverse and multiplies it with output of \func{cross\_correlation\_signals(signal)} reshaped to a vector.
-
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{./figures/classes_reconstruction.eps}
@@ -121,7 +118,7 @@ From an implementation perspective, the structure of the pseudo-inverse of the W
 
 \begin{figure}
     \centering
-    \includegraphics{./figures/classes_detection.eps}
+    \includegraphics[width=0.5\linewidth]{./figures/classes_detection.eps}
     \caption{The UML diagram of the detectors}
     \label{fig:umldetector}
 \end{figure}
