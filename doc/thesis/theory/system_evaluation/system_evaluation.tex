@@ -137,34 +137,51 @@ Our tests will be targeted at
 
 \section{Results}
 
-\begin{filecontents*}{plots/plot-data.csv}
+\begin{filecontents*}{plots/data-circ1.csv}
 x, y
-1, 1
-2, 3
-3, 4
-4, 3
+25000.0000,-0.8528
+50000.0000,-0.9962
+75000.0000,-1.0684
+100000.0000,-1.1360
+125000.0000,-1.1877
+150000.0000,-1.2243
+175000.0000,-1.2668
+200000.0000,-1.2787
+225000.0000,-1.3157
+250000.0000,-1.3237
+275000.0000,-1.3524
+300000.0000,-1.3681
+325000.0000,-1.3725
+350000.0000,-1.3879
+375000.0000,-1.4151
+400000.0000,-1.4440
+425000.0000,-1.4555
+450000.0000,-1.4564
+475000.0000,-1.4693
+500000.0000,-1.4749
 \end{filecontents*}
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
-				xlabel={Sampling time at 25 MHz (ms)},
+				xlabel={Sampling time (ms)},
 				ylabel={Normalised mean squared error of PSD ($\log_{10}$)},
-				width=8cm,
+				width=11cm,
 				height=8cm,
 				scale=1,
 				grid=both,
-				axis lines=left
+				axis lines=left,
+				legend entries={Circular sparse sampling 1}
 			]
 		    \addplot [
 			    color=red,
 			    solid,
 			    mark=o
-		    ] table [x=x, y=y, col sep=comma]{plots/plot-data.csv};
+		    ] table [x=x, y=y, col sep=comma]{plots/data-circ1.csv};
 		\end{axis}
 	\end{tikzpicture}
-	\caption{test}
-	\label{fig:plot}
+	\caption{Normalised mean squared errors of the reconstructed power spectral densities by different sampling methods. The plot assumes a Nyquist frequency of \SI{25}{MHz}.}
+	\label{fig:plot-nmse}
 \end{figure}
 
 
