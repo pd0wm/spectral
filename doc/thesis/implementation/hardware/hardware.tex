@@ -23,9 +23,8 @@ The USRPs can also be used as a transmitter using the DAC and the same local osc
 
 These radios are connected to a PC by using gigabit Ethernet, thus limiting the effective sample rate to \SI{25}{\mega\sample\per\second} with a 16 bit resolution or \SI{50}{\mega\sample\per\second} with an 8 bit resolution. If you want to use the full potential of the internal ADC (2x \SI{100}{\mega\sample\per\second}) and DAC (2x \SI{400}{\mega\sample\per\second}) you have to write your own firmware for the internal FPGA\@.
 
-For our implementation of co-prime sampling we needed to synchronise the sampling of two USRPs. This can be accomplished by connection them with a special MIMO cable. This allows them to internally synchronise their sampling clock. It even allows them to schedule commands at exactly the same time, so they can start sampling at exactly the same moment.
-
 \subsection{Drivers}
+\label{sec:drivers}
 The communication between the USRPs and our software is handled by the UHD driver\footnote{The code for this driver can be found online at: \url{https://github.com/EttusResearch/uhd}} written by \textit{Ettus Research}.
 
 In the first version of our software we built everything using \lib{GNU Radio}. We used the \lib{gnuradio-uhd} blocks to get samples from our USRPs. Soon we switched to a pure Python version, we still used the \lib{gnuradio-uhd} library to retrieve our samples. We used a specific helper function \func{gnuradio.uhd.finite\_acquisition(n)} from the GNU Radio libraries. This helper function started a low level stream, waits for n samples, closes the stream and returns the samples to the caller.
@@ -33,5 +32,16 @@ In the first version of our software we built everything using \lib{GNU Radio}. 
 The USRPs have an automatic calibration for the DC offset introduced by the local oscillator after the mixer. However due to a bug in the USRPs, every time a stream is started this DC calibration is reset. This makes the \func{finite\_acquisition} unusable for our purposes.
 
 To solve this we had to write our own low level code to stream samples from the device. We wrote \CC~code to connect to the USRPs, synchronise them and start a stream. The received samples are then send through a socket to the rest of the system for further processing. This was not an easy task, but has the added benefit that our system no longer depends on \lib{GNU Radio} and we have very low level control over the precise operation of the USRPs.
+
+
+\subsection{Synchronisation}
+For our implementation of co-prime sampling we needed to synchronise the sampling of two USRPs. This can be accomplished by connection them with a special MIMO cable. This allows them to internally synchronise their sampling clock. It even allows them to schedule commands at exactly the same time, so they can start sampling at exactly the same moment.
+
+To verify that our synchronisation is correct, we dumped two frames from the same moment in time to a file. If we plot them on the same time scale, as in figure ***, we can see that they align almost perfectly. We can also calculate the cross-correlation between the two signals, which looks like figure ***.
+
+The only offset we have is from the phase offset between the two local oscillators of the USRPs. After each tune command the two USRPs have a random phase offset of \SIrange[retain-explicit-plus]{-180}{+180}{\degree}.  We don't know if that influences our results. If that is the case we can calculate this lag by looking at the cross-correlation between the two USRPs or by transmitting a reference pulse after each tune command and calculating the delay.
+
+
+Hier nog plotjes zetten van sync na x frames. Hier maandag even samples van binnen halen.
 
 \end{document}
