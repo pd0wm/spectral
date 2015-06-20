@@ -15,4 +15,19 @@ The false alarm probability of CAV is evaluated in a seperate run where there is
 
 \todo{Plot ROC for CAV, ED, ED ariananda}
 
+\begin{figure}[H]
+\begin{tikzpicture}
+\begin{axis}[xlabel={Number of samples ($M$)},ylabel={Downsampling factor ($N$)},width=\textwidth, height=0.8\textwidth]
+    \addplot [
+    color=green,
+    solid,
+    mark=.,
+    ]
+    %table[x index=0,y index=1,col sep=comma] {circ_upper.data};
+    table [col sep=comma]{circ_upper.txt};
+\end{axis}
+\end{tikzpicture}
+\caption{Solutions of the circular and linear sparse ruler problem. Minimal solutions to linear sparse ruler are shown in red, minimal solutions to the circular sparse ruler problem are shown in blue and the upper bound from \cref{th:upperbound} is shown in green.}\label{fig:comparison_sparse_ruler}
+\end{figure}
+
 \end{document}
