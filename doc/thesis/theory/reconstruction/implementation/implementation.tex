@@ -15,7 +15,7 @@ This section will discuss some details of the algorithm which should be consider
 This subsection discusses sufficient restrictions on the sampling signal $c_i[n]$ which yield a correct estimation. Remember that the sampling signal determines the way a coset samples the input signal. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Furthermore, all $c_i[n]=1$ for a single $n=n_i$ and otherwise zero. Finally, the following problem must be satisfied.
 
 \begin{description}
-    \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ must make up $0,\ldots,N-1$.
+    \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of cosets $i$ and $j$ must make up $0,\ldots,N-1$.
 \end{description}
 
 This problem will be further discussed in \cref{cha:sampling_methods}.
