@@ -137,18 +137,55 @@ Our tests will be targeted at
 
 \section{Results}
 
+\begin{filecontents*}{plots/data-circ1.csv}
+x, y
+25000.0000,-0.8528
+50000.0000,-0.9962
+75000.0000,-1.0684
+100000.0000,-1.1360
+125000.0000,-1.1877
+150000.0000,-1.2243
+175000.0000,-1.2668
+200000.0000,-1.2787
+225000.0000,-1.3157
+250000.0000,-1.3237
+275000.0000,-1.3524
+300000.0000,-1.3681
+325000.0000,-1.3725
+350000.0000,-1.3879
+375000.0000,-1.4151
+400000.0000,-1.4440
+425000.0000,-1.4555
+450000.0000,-1.4564
+475000.0000,-1.4693
+500000.0000,-1.4749
+\end{filecontents*}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel={Sampling time (ms)},
+				ylabel={Normalised mean squared error of PSD ($\log_{10}$)},
+				width=11cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left,
+				legend entries={Circular sparse sampling 1}
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-circ1.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Normalised mean squared errors of the reconstructed power spectral densities by different sampling methods. The plot assumes a Nyquist frequency of \SI{25}{MHz}.}
+	\label{fig:plot-nmse}
+\end{figure}
 
 
-\section{Discussion: keesch}
-For circular sparse ruler we constructed solutions with higher performance than proposed in \cite{ariananda2012compressive}. Our method is a novelty and contributes to higher efficiency in our product. We also made an recursive algorithm to generate circular sparse ruler solutions,  but this was a less clean approach, because it used  theorys we could not prove, and therefore did not guarantee to find the best solutions. Overall we managed to get a lot of efficiency out of the sampling techniques, but we cannot know for sure whether a more efficient solution is possible or not.
 
-We implemented three sampling methods that are quite different and fit them into our system. This shows potential for a more general sampling technique. For instance: what happens when we combine multiple coprime devices, or what happens when we pick the circular sparse ruler problem, and allow the sampling frequency to differ. There is potential to look fo a more general sampling strategy but investigating this further needs future work.
-
-This also holds for optimisation strategies. It would be very interesting to compare the different optimisation strategies and see whether they can benefit from each other. The collaborative sampler has for example currently no good algorithm to find configurations for more than two devices with more than three samplers. 
-
-In this section we saw the sampling strategies grow towards each other and it would be interesting to see what happens if they move even further towards each other in the future. 
-
-For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth, but collaborative sampling can also be used for other purposes, like increasing accuracy, or sensing in a larger radius. We did not look at these applications and this should be considered future work.
 
 
 
