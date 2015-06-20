@@ -15,7 +15,7 @@
 Our approach consists of several components, which all work together to achieve the functionality specified in the previous section. The components are as follows.
 
 \begin{description}
-    \item[Sampling] Sampling consists of applying sampling techniques to the signal whose spectrum has to be sensed. Sampling is not part of the system, but forms an interface between the the signal and the toolkit.
+    \item[Sampling] Sampling consists of applying sampling techniques to the signal whose spectrum has to be sensed. The actual sampling is not part of the system, but forms an interface between the the signal and the toolkit.
     \item[Reconstruction] Reconstruction analyses the sampled signal. Reconstruction has knowledge of the used sampling technique in sampling to perform this analysis.
     \item[Detection] Detection performs the identification of signals based on the analysis of the reconstruction. Detection and reconstruction closely work together.
 \end{description}
@@ -46,7 +46,7 @@ The modules are depicted in \cref{fig:overview}. They will be discussed more det
 
 
 \subsection{Sampling}
-The first step in high-performance real-time wideband spectrum sensing is sampling the signal whose spectrum has to be sensed. Conventionally, this is done by making use of uniform sampling at the Nyquist frequency\footnote{The Nyquist frequency is the minimum frequency at which a signal can be sampled without distorting the signal. The Nyquist frequency is twice the highest frequency present in the signal.}. This ensures that the signal can be reconstructed after sampling. However, the Nyquist frequency becomes very high when one wants to sense a very large bandwidth, which is specified in the specifications. Since the Nyquist frequency becomes very high, to sense the specturm, one has to use hardware which supports such high Nyquist frequencies. This hardware can be very expensive.
+The first step in high-performance real-time wideband spectrum sensing is sampling the signal whose spectrum has to be sensed. Conventionally, this is done by making use of uniform sampling at the Nyquist frequency\footnote{The Nyquist frequency is the minimum frequency at which a signal can be sampled without distorting the signal. The Nyquist frequency is twice the highest frequency present in the signal.}. This ensures that the signal can be reconstructed after sampling. However, the Nyquist frequency becomes very high when one wants to sense a very large bandwidth, which is specified in the specifications. Since the Nyquist frequency becomes very high, sensing the spectrum requires one to use hardware which supports such high Nyquist frequencies. This hardware can be very expensive.
 
 We investigate alternative sampling techniques which are non-uniform sampling techniques. These techniques can be implemented by making use of multiple sampling devices, also called samplers. Non-uniform sampling is discussed in \cref{cha:sampling} and non-uniform sampling techniques are discussed in \cref{cha:sampling_methods}.
 
