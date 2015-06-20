@@ -4,13 +4,32 @@ import numpy as np
 
 class Rect(SimulatedSource):
 
-    """Signal representing a rectangle in the spectrum"""
+    """
+    Signal representing a number of rectangles in the frequency domain.
+
+    Args:
+        frequencies: A list of center frequencies of the blocks.
+        widths: A list of widths of the rectangles
+        samp_freq: Sample frequency
+        SNR: Signal to Noise ratio of the output signal
+    """
 
     def __init__(self, frequencies, widths, samp_freq, SNR=None):
         super(Rect, self).__init__(frequencies, samp_freq, SNR=SNR)
         self.widths = widths
 
     def generate(self, no_samples):
+        """
+        Generator function that generates a signal with rectangular
+        frequency components specified on object creation.
+
+        Args:
+            no_sampls: Number of samples to generate
+
+        Returns:
+            Generated samples with a Signal to Noise ratio as specified on
+            object creation.
+        """
         t = np.arange(0, no_samples) / self.samp_freq
         duration = t[-1]
 
