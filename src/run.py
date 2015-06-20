@@ -31,11 +31,11 @@ data_port = args.dataport
 
 frequencies = [2e6, 4e6, 4.5e6, 3e6]
 widths = [1000, 1000, 1000, 1000]
-L = 3
-a = 5
-b = 7
-N = 61
-upscale_factor = 2000  # Warning: greatly diminishes performance
+L = 15
+a = 3
+b = 4
+N = a * b
+upscale_factor = 50  # Warning: greatly diminishes performance
 block_size = N * upscale_factor * L
 
 settings = ss.get_settings_object()
@@ -52,16 +52,16 @@ if source_type == "usrp":
 elif source_type == "dump":
     source = sc.source.File(dump_file_path)
 elif source_type == "sinusoidal":
-    source = sc.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
+    source = sc.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
 
 
 # sampler = sc.sampling.Coprime(a, b)
 sampler = sc.sampling.MinimalSparseRuler(N)
 
-reconstructor = sc.reconstruction.Wessel(L, sampler.get_C(), cache=False)
+reconstructor = sc.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
-detector = sc.detection.noise_power()
+detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_R(), reconstructor.filter_cross_correlation())
 
 # Init queues
 signal_queue = ss.multiprocessing.SafeQueue()
