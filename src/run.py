@@ -52,7 +52,7 @@ if source_type == "usrp":
 elif source_type == "dump":
     source = sc.source.File(dump_file_path)
 elif source_type == "sinusoidal":
-    source = sc.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
+    source = sc.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
 
 
 # sampler = sc.sampling.Coprime(a, b)
@@ -61,7 +61,9 @@ sampler = sc.sampling.MinimalSparseRuler(N)
 reconstructor = sc.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
-detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_R(), reconstructor.filter_cross_correlation())
+#detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_R(), reconstructor.filter_cross_correlation())
+detector = sc.detection.noise_power()
+
 
 # Init queues
 signal_queue = ss.multiprocessing.SafeQueue()
