@@ -6,9 +6,9 @@
 
 \begin{document}
 
-\section{Appendix: derivation}
+\chapter{Derivation of the reconstruction algorithm}
 \label{sec:reconstruction-derivation}
-In this section we derive the algorithm discussed in \cref{sec:reconstruction-derivation}. The derivation aims to be an accessible, yet complete explanation which discusses all details necessary for implementation. \Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the derivation of the algorithmr.
+In this appendix we derive the algorithm discussed in \cref{sec:reconstruction-derivation}. The derivation aims to be an accessible, yet complete explanation which discusses all details necessary for implementation. \Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the derivation of the algorithmr.
 
 \begin{table}[H]
     \centering
@@ -41,7 +41,7 @@ In this section we derive the algorithm discussed in \cref{sec:reconstruction-de
 
 Consider the input signal to be a random stochastic process. To relate the output of a coset to the input signal, we need some mathematical constructs.
 
-\subsection{Construction of the output of a coset}
+\section{Construction of the output of a coset}
 In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yields one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
 \begin{figure}
     \centering
@@ -214,7 +214,7 @@ By inspection of \cref{eq:yi} and \cref{eq:zi}, we obtain that
 \end{align*}
 
 
-\subsection{Autocorrelation and cross-correlation}
+\section{Autocorrelation and cross-correlation}
 The goal of the reconstruction method is to reconstruct the autocorrelation of the input signal given the output of all cosets. The autocorrelation of the input signal is given by
 \begin{align*}
     r_x[n,m] = E(x[n]\conj{x}[n+m]).
@@ -229,12 +229,12 @@ Similarly, the cross-correlation of $y_i[n]$ and $y_j[n]$ is given by
 \end{align*}
 Since the outputs of the cosets are assumed to be readily available, $r_{y_i,y_j}[n,m]$ can be determined. We plan to estimate $r_x[m]$ by making use of $r_{y_i,y_j}[n,m]$.
 
-\subsection{Relating the autocorrelation of the input signal}
+\section{Relating the autocorrelation of the input signal}
 
 Since $x[n]$ is a wide sense stationary process, Theorem 11.5 of \cite{yates2005probability} yields that
-\begin{align*}
+\begin{align} \label{eq:crij-rx}
     r_{z_i,z_j}[n,m] = (c_{i,j} \ast r_{x})[m]
-\end{align*}
+\end{align}
 where
 \begin{align} \label{eq:cij}
     c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
@@ -315,7 +315,7 @@ We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r
 \end{figure}
 
 
-\subsection{Estimating the autocorrelation of the input signal}
+\section{Estimating the autocorrelation of the input signal}
 To estimate the autocorrelation of the input signal, we assume that $r_{y_i,y_j}[m]=0$ for $|m| > L$. This assumption will be discussed at a later moment. If we inspect \cref{fig:visualisation-ryiyj-rx}, we see that $r_{y_i,y_j}[L+1]$ depends on $r_x[LN+1]$ to $r_x[(L+2)N-1]$. Since we have chosen $c_{i,j}[m]$ arbitrarily, $r_{y_i,y_j}[L+1]=0$ implies that $r_x[LN+1]$ to $r_x[(L+2)N-1]$ must be zero, since $r_{y_i,y_j}[L+1]$ is not necessarily zero otherwise. Consequently, if we evaluate $r_{y_i,y_j}[m]=0$ for all $|m| > L$ in a similar way, we obtain that $r_x[m]=0$ for $|m| > LN$.
 
 Since $r_x[m]=0$ for $|m| > LN$, all that remains is estimating $r_x[m]$ for $|m| \le LN$. Aggregating \cref{eq:ryiyj-rx} for $|m| \le L$ yields that
@@ -410,7 +410,7 @@ Alternatively, the least-squares solution can be obtained by making use of the M
 \end{align}
 where $\mat{R}^\dagger$ denotes the Moore-Penrose pseudoinverse of $\mat{R}$. We can use \cref{eq:normal-rx} or \cref{eq:pseudo-rx} to estimate the autocorrelation of the input signal if $\vec{r}_y$ is known. This concludes the estimation of the autocorrelation of the input signal.
 
-\subsection{Unicity of the estimation}
+\section{Unicity of the estimation}
 Since \cref{eq:normal-rx} is used to estimate the autocorrelation of the input signal, we have to make sure that $\mat{R}$ has full column rank. We will do this by inspecting the structure of $\mat{R}$. Since $\mat{R}$ depends on $c_i[n]$ solely, we start by analysing $c_i[n]$.
 
 In the construction of the output of a coset, we saw the output of coset $i$ is an $N$-decimation of the input signal if $c_i[n]=1$ for a single $n$ and otherwise zero. This is exactly what we want, since this matches the methods described in \cref{cha:sampling}. Therefore, assume that $c_i[n]=1$ for $n=n_i$ and otherwise zero. Now consider \cref{eq:cij}. Note that $c_{i,j}[m]=1$ if and only if $c_i[k]=1$ and $\conj{c}_j[k+m]=1$, which requires that $k = n_i$ and $k+m = n_j$. Equivalently, $c_{i,j}[m]=1$ if and only if $m = n_j - n_i$. This means that $c_{i,j}[m]$ consists of a single one. Now consider \cref{eq:ryiyji-R-rx}. Since $c_{i,j}[m]$ consists of a single one, two columns of $\mat{R}_{i,j}$ are linearly independent if they are nonzero. Therefore, if all columns of $\mat{R}$ are nonzero, then all columns are linearly indepedent and $\mat{R}$ has full column rank.
@@ -471,7 +471,7 @@ We require that columns $1$ to $N$ are nonzero. This implies the following state
     \label{fig:upper-left-Rij}
 \end{figure}
 
-\section{Appendix: construction of the matrices}
+\chapter{Construction of the matrices}
 \label{sec:reconstruction-generation-algorithm}
 The operation of $\operatorname{toeplitz}$ and $\operatorname{tril}$ is illustrated with two examples.
 \begin{align*}
