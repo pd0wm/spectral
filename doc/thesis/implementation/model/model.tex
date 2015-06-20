@@ -55,7 +55,7 @@ The coprime source uses an external \CC~program to do the actual sampling. This 
 
 \section{Sampling}
 \label{sec:sampling}
-After the samples are generated, different sampling methods have to be applied. Each sampler implements an interface called \func{Sampler}. This interface implements two methods, a \func{sample(signal)} method to act on the input samples, and a \func{get\_C()} function that returns the sampling matrix\footnote{This is required for the reconstructors as their algorithms require knowledge about the sample intervals} used by the sampler.
+After the samples are generated, different sampling methods have to be applied. Each sampler implements an interface called \func{Sampler}, which has a contract for sample-method. The interface also defines a getter for the C-matrix\footnote{This is required for the reconstructors as their algorithms require knowledge about the sample intervals}.
 
 \begin{figure}
     \centering
@@ -66,15 +66,9 @@ After the samples are generated, different sampling methods have to be applied. 
 
 \subsection{Multi-coset sampler}
 \label{sub:multi_coset_sampler}
-Multi-coset sampling (as introduced in \cref{cha:sampling}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). This sampler takes three arguments:
-\begin{description}
-    \item[S] is the list of offsets,
-    \item[M] is the number of cosets, and
-    \item[N] is the downsampling factor such that every coset samples the input signal once every N samples.
-\end{description}
-The list of offsets is used to generate the C matrix which has dimensions defined by M and N.
+Multi-coset sampling (as introduced in \cref{cha:sampling}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). The list of offsets is one of the constructor arguments used to generate the C-matrix which has dimensions defined by M and N, which are the other arguments of this implementation.
 
-The method \func{sample(signal)} takes a signal, uniformly sampled, as argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension N and the other determined by the length of the input signal.
+The implementation of the sample method takes a signal, uniformly sampled, as argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension N and the other determined by the length of the input signal.
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
