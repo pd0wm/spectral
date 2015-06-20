@@ -1,0 +1,68 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+\raggedbottom
+
+\begin{document}
+\begin{tikzpicture}
+    \usetikzlibrary{arrows,automata,calc}
+    \tikzset{
+        state/.style={
+            rectangle,
+            draw=black, very thick,
+            minimum height=2em,
+            inner sep=2pt,
+            text centered,
+            anchor=north,
+        },
+    }
+    \tikzstyle{dashedd} = [anchor=north, rectangle, inner sep=5pt, draw=black, very thick, dashed]
+    \tikzstyle{fancyarrow} = [draw=black, very thick, ->, auto]
+    \tikzstyle{textnodes} = [align=center]
+
+    \node[dashedd] (model) at (0, 0) {
+        \begin{tikzpicture}
+            \node at (0,1) {\textbf{Model}};
+
+            \node[state, minimum height=1.5cm, minimum width=3cm] (source) at (0, 0) {
+                \begin{tabular}{c}
+                    \textbf{Source}\\
+                    \midrule
+                    \func{generate()} \\
+                \end{tabular}
+            };
+
+            \node[state, minimum height=1.5cm, minimum width=3cm] (sampler) at (4, 0) {
+                \begin{tabular}{c}
+                    \textbf{Sampler}\\
+                    \midrule
+                    \func{sample()} \\
+                \end{tabular}
+            };
+
+            \node[state, minimum height=1.5cm, minimum width=3cm] (reconstructor) at (8, 0) {
+                \begin{tabular}{c}
+                    \textbf{Reconstructor}\\
+                    \midrule
+                    \func{reconstruct()} \\
+                \end{tabular}
+            };
+
+            \node[state, minimum height=1.5cm, minimum width=3cm] (detector) at (12, 0) {
+                \begin{tabular}{c}
+                    \textbf{Detector}\\
+                    \midrule
+                    \func{detect()} \\
+                \end{tabular}
+            };
+
+            \path [fancyarrow] (source) -- node {} (sampler);
+            \path [fancyarrow] (sampler) -- node {} (reconstructor);
+            \path [fancyarrow] (reconstructor) -- node {} (detector);
+            
+        \end{tikzpicture}
+    };
+\end{tikzpicture}
+\end{document}

@@ -10,17 +10,21 @@
 
 \raggedbottom
 
-% TODO
-% Images
-% Accentuate design patterns and other programming delights
-% References
-
 \begin{document}
 \chapter{View - Visualisation \& Control}
 \label{ch:visualisation}
 The last part of the system design consists of a web-based graphical user interface (GUI) that allows for easy control and visual verification of the system and its status. This component therefore fulfils the role of view in the design's model-view-presenter architecture. It is packaged in the module \lib{spectral\_web}.
 
-The view can be roughly divided into a server-side part (or \emph{back-end}) and a client-side part (or \emph{front-end}). The server-side system, written in Python, prepares the user interface for display on the client-side. The client-side system is a web application, written in JavaScript, that handles the actual presentation of the data, as well as any action the end-user might perform which should have an effect back in the functional core.
+\begin{figure*}[h]
+    \centering
+    \begin{adjustbox}{width=0.7\textwidth}
+    \input{./figures/view-diagram}
+    \end{adjustbox}
+    \caption{The view}
+    \label{fig:view-diagram}
+\end{figure*}
+
+The view can be roughly divided into a server-side part (or \emph{back-end}) and a client-side part (or \emph{front-end}). This is shown by \cref{fig:view-diagram}. The server-side system, written in Python, prepares the user interface for display on the client-side. The client-side system is a web application, written in JavaScript, that handles the actual presentation of the data, as well as any action the end-user might perform which should have an effect back in the functional core.
 
 The major advantage of using a GUI in the form of a web application is its (almost) guaranteed cross-platform support, as well as relatively easy development and debugging, since most browsers are shipped with more than adequate development tools.
 The choice for Python to write the back-end in was made so that the \lib{Flask} Python package could be used as web server. \lib{Flask} allows the programmer to quickly set up a simple web-server to serve the web application with.
@@ -112,7 +116,7 @@ As mentioned, the front-end consists of a web page containing the elements as ge
 \label{sub:presenter_interaction}
 The model has to be updated upon any user interaction that takes place in the view. At the same time, UI-elements in the view should be able to access the most recent data from the model. For this to happen, a connection has to made between model and view. In \cref{ch:presenter} we introduced the settings and data WebSocket servers, which were built for this goal.
 
-The web application connects to both of these WebSockets using JavaScript's built-in WebSocket implementation, wrapped in the \func{Control} and \func{Visualisation} objects, respectively. These two objects are implemented following the \emph{Singleton}-pattern, which is a design-pattern that ensures that only a single instance of the given object may exist at all times (bearing similarities to a \texttt{static} instance of a class in some other languages), which is useful since both \func{Control} and \func{Visualisation} handle all WebSocket related actions for the entire web application.
+The web application connects to both of these WebSockets using JavaScript's built-in WebSocket implementation, wrapped in the \func{Control} and \func{Visualisation} objects, respectively. These two objects are implemented following the \emph{Singleton}-pattern, which is a design-pattern that ensures that only a single instance of the given object may exist at all times (bearing similarities to a \texttt{static} instance of a class in some other languages), which is useful since both \func{Control} and \func{Visualisation} handle all WebSocket related actions for the entire web application \cite[127]{designpatterns}.
 
 The \class{Control} object connects to the settings WebSocket server from \cref{sub:websocket_settings}. Whenever a user modifies a setting, e.g. by altering a slider value, \class{Control} will send a message over the WebSocket to the presenter to notify it of the update.
 After this, the presenter will publish the update to the model. The various subcomponents of the model may implement a method to read the most recent system settings to process setting updates that might concern the.

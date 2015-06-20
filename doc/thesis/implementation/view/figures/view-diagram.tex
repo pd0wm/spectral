@@ -1,0 +1,52 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+\raggedbottom
+
+\begin{document}
+\begin{tikzpicture}
+    \usetikzlibrary{arrows,automata,calc}
+    \tikzset{
+        state/.style={
+            rectangle,
+            draw=black, very thick,
+            minimum height=2em,
+            inner sep=2pt,
+            text centered,
+            anchor=north,
+        },
+    }
+    \tikzstyle{dashedd} = [anchor=north, rectangle, inner sep=5pt, draw=black, very thick, dashed]
+    \tikzstyle{fancyarrow} = [draw=black, very thick, ->, auto]
+    \tikzstyle{textnodes} = [align=center]
+
+    \node[dashedd] (model) at (0, 0) {
+        \begin{tikzpicture}
+            \node at (0,1) {\textbf{View}};
+
+            \node[state, minimum height=1.5cm, minimum width=4cm] (webserver) at (0, 0) {
+                \begin{tabular}{c}
+                    \textbf{Web server}\\
+                    \midrule
+                    Python (\lib{Flask}) \\
+                    Back-end \\
+                \end{tabular}
+            };
+
+            \node[state, minimum height=1.5cm, minimum width=4cm] (webapp) at (5, 0) {
+                \begin{tabular}{c}
+                    \textbf{Web application}\\
+                    \midrule
+                    HTML/JavaScript \\
+                    Front-end \\
+                \end{tabular}
+            };
+
+            \path [fancyarrow, <->] (webserver) -- node {} (webapp);
+            
+        \end{tikzpicture}
+    };
+\end{tikzpicture}
+\end{document}
