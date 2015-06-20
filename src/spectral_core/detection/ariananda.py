@@ -25,6 +25,10 @@ class Ariananda(Detector):
     def detect(self, rx):
         psd = abs(sc.fft(rx))
         sigma = self.estimate_sigma(psd)
+        print "pfa", self.Pfa
+        print "window_length", self.window_length
+        print "psd_len", len(psd)
+        print "sigma db", sc.convert_db(sigma)
 
         ry_exp = self.generate_ryexp(sigma)
         psd_exp = np.abs(sc.fft(self.R_pinv.dot(ry_exp)))
@@ -33,6 +37,8 @@ class Ariananda(Detector):
         C_sx = self.generate_Csx(C_ry)
 
         threshold = self.calc_threshold(C_sx, psd_exp, sigma)
+        print "gamma (thresh)", threshold
+        print "abs psd", np.abs(psd)
         return psd > threshold
 
     def generate_ryexp(self, sigma):
@@ -58,7 +64,7 @@ class Ariananda(Detector):
                     b = np.mod(i, self.M)
                     c = np.floor(k/self.M)
                     d = np.mod(k, self.M)
-                    C_ry[i*(2*self.L-1) + j, k*(2*self.L-1) + j] = sigma**4 * self.rc[a*self.M + c, self.N-1] * np.conj(self.rc[b*self.M + d, self.N-1]) / (self.L*self.K - np.abs(lag))
+                    C_ry[i*(2*self.L-1) + j, k*(2*self.L-1) + j] = self.rc[a*self.M + c, self.N-1] * np.conj(self.rc[b*self.M + d, self.N-1]) / (self.L*self.K - np.abs(lag))
         return C_ry
 
     def estimate_sigma(self, psd):
