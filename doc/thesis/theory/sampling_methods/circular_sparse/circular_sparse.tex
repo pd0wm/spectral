@@ -7,7 +7,7 @@
 \begin{document}
 
 \section{Sampling and reconstruction}
-In this previous section we discussed three multi-coset sampling methods. In \cref{sec:reconstruction-algorithm}, we saw that the sampling method determines the configuration. The configuration then yields $c_i[n]$. If these $c_i[n]$ satisfy the requirements stated in \cref{sec:reconstruction-implementation}, then the algorithm described in \cref{sec:reconstruction-algorithm} can be used to reconstruct the power spectral density of the sampled signal. We will reconsider these requirements one by one.
+In this previous section we discussed three multi-coset sampling methods. In \cref{sec:reconstruction-algorithm}, we saw that the sampling method determines the configuration, which is the way the samplers sample the input signal. The configuration then yields $c_i[n]$. Remember that the sampling signal $c_i[n]$ represents the way sampler $i$ samples the input signal. If these $c_i[n]$ satisfy the requirements stated in \cref{sec:reconstruction-implementation}, then the algorithm described in \cref{sec:reconstruction-algorithm} can be used to reconstruct the power spectral density of the sampled signal. We will reconsider these requirements one by one.
 
 Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Since $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal, which was discussed in \cref{sec:reconstruction-algorithm}, this requirement is satisfied.
 

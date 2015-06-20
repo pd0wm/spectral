@@ -9,9 +9,9 @@
 \section{Energy detection}
 
 \subsection{Conventional energy detection}\label{sec:conv_ed}
-\begin{figure}[H]
+\begin{figure}
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[H]
 \node at (-5,3) {$x(t)$};
 \node at (4.3,3) {$\mathcal{H}_0 \text{ or } \mathcal{H}_1$};
 \draw [>=latex, ->] (-3,3) -- (-2.5,3);
@@ -42,7 +42,7 @@ This estimate is then compared to a threshold $\gamma$ to decide whether a signa
 \end{align*}
 The details behind determining the threshold $\gamma$ and a derivation of this energy detector can be found in \Cref{ssec:conv_ed_derivation}.
 
-Some energy detectors use $\Lambda/N$ as test statistic\cite{chang2008sensing}, which is an estimate of the average power instead of the energy. Using this test statistic a detector that uses the autocorrelation $r_x[m]$ can be constructed. Such a detector is depicted in \cref{tkz:conv_ed}.
+Some energy detectors use $\Lambda/N$ as test statistic \cite{chang2008sensing}, which is an estimate of the average power instead of the energy. Using this test statistic a detector that uses the autocorrelation $r_x[m]$ can be constructed. Such a detector is depicted in \cref{tkz:conv_ed}.
 %  depends on the noise power $\sigma_n^2$  and the desired false alarm probability $p_{fa}$: the probability that the detector decides that hypothesis 2 is true, while hypothesis 1 is the true hypothesis. The derivation of $\gamma$ (see Appendix ...) gives the following result
 % \begin{align*}
 % \gamma = \left[Q^{-1}(p_{fa})\sqrt{N} + N\right]2\sigma_n^2
@@ -65,7 +65,7 @@ Some energy detectors use $\Lambda/N$ as test statistic\cite{chang2008sensing}, 
 \caption{Energy detector using the power spectral density}
 \label{tkz:ed_psd}
 \end{figure}
-This detector calculates a discrete estimate of power spectral density by applying the Fast Fourier Transform to $r_x[m]$. By summating over the obtained power spectral density an estimate of the average power of $x[n]$ is obtained. This result is compared to a threshold $\gamma'$  to decide between $\mathcal{H}_0$ and $\mathcal{H}_1$. 
+This detector calculates a discrete estimate of power spectral density by applying the Fast Fourier Transform to $r_x[m]$. By summation over the obtained power spectral density an estimate of the average power of $x[n]$ is obtained. Finally, the result is compared to a threshold $\gamma'$  to decide between $\mathcal{H}_0$ and $\mathcal{H}_1$. This is depicted in \cref{tkz:ed_psd}.
 
 % As can be seen from \cref{eq:test_ed} the test statistic $\Lambda$ depends on the signal itself, not on the autocorrelation or the power spectral density which serves as input of our detector. We will now establish this relation by modifying the test statistic $\Lambda$.
 % Let 
@@ -335,7 +335,7 @@ The CAV detector was first introduced in \cite{zheng2009spectrum}. A block diagr
     \label{last-item3}
 \end{enumerate}
 
-The threshold $\gamma$ is derived and an explanation of CAV can be found in \cref{sec:cav_derivation}.
+The threshold $\gamma$ is derived in \cref{sec:cav_derivation}.
 
 \subsection{Filtering}
 To be able to detect in a certain frequency band the input signal should be filtered by a band-pass filter. However if the input signal $x[n]$ is filtered, then the noise in that input signal is also filtered. This affects the autocorrelation function $r_x[n]$.  A technique to circumvent this problem is proposed in \cite{zheng2009spectrum}, but requires that the filter applied to $x[n]$ is known. However, we start our detection process with $r_x[n]$ instead of $x[n]$ and therefore cannot use this technique.  This limits the CAV implementation as described in this section to detection in just one frequency band. Furthermore, if use of this technique was possible, it would imply that we need to apply it per frequency band which may significantly add up to the computational cost in case that wide-band spectra are used.
