@@ -18,7 +18,7 @@ class CrossCorrelation(Reconstructor):
         if cache:
             self.R_pinv = self.calc_pseudoinverse(self.R)
         else:
-            self.R_pinv = sp.linalg.pinv(self.R)
+            self.R_pinv = sp.csr_matrix(sp.linalg.pinv(self.R))
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)

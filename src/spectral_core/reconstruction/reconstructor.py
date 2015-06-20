@@ -10,6 +10,9 @@ class Reconstructor(object):
     def __init__(self):
         pass
 
+    def get_R(self):
+        return self.R_pinv.toarray()
+
     def reconstruct(self, signal):
         raise NotImplementedError("Implement this method.")
 
