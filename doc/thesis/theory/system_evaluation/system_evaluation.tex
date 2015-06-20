@@ -52,7 +52,6 @@ To evaluate the performance of our system we will we use an artificial testing s
 Details on this signal generation can be found in \cref{ssec:test_signal}.
 
 \subsection{Test signal}\label{ssec:test_signal}
-\textbf{naar bijlage?}
 To construct the testing signal given a desired SNR we take the following steps:
 
 \begin{enumerate}
@@ -62,19 +61,68 @@ To construct the testing signal given a desired SNR we take the following steps:
 	\item Add $s[n]$ to $w[n]$ to produce the testing signal $x[n]$
 \end{enumerate}
 
+
+
 \subsection{Tests}
+There are four parameters of the system, circled in \cref{tkz:test_system}, that will be used in our tests to asses the performance of the system:
+\begin{enumerate}
+	\item SNR of the input signal.
+	\item The sampler type used to sample the input signal.
+	\item The false alarm probability $p\ss{fa}$ of the detector.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\draw  (-2,3.5) rectangle (0,2.5) node[pos=.5]{Noise};
+\draw  (-2,1.5) rectangle (0,0.5) node[pos=.5]{Signal};
+\draw  (1.5,3) ellipse (.5 and .5);
+\draw  [fill=lightgray](3,3.5) rectangle (5,2.5) node[pos=.5]{Sampler};
+\draw  [fill=lightgray](6,3.5) rectangle (9,2.5) node[pos=.5]{Reconstructor};
+\draw  [fill=lightgray](6,1.5) rectangle (9,0.5) node[pos=.5]{Detector};
+\draw  [fill=blue, opacity=.1](3,1.5) rectangle (5,0.5);
+\draw  (3,1.5) rectangle (5,0.5)node[pos=.5]{Compare};
+
+
+\draw (10,0.5) -- (10,1.5);
+\draw (1.5,2.6) -- (1.5,3.4);
+\draw (1.9,3) -- (1.1,3);
+\draw [>=latex, ->] (0,3) -- (1,3);
+\draw [>=latex, ->] (10,1) -- (9,1);
+\draw [>=latex, ->] (4,4.5) -- (4,3.5);
+\draw [>=latex, ->] (1.5,1) -- (1.5,2.5);
+\draw [>=latex, ->] (-3,3) -- (-2,3);
+\draw [>=latex, ->] (6,1) -- (5,1);
+\draw [>=latex, ->] (0,1) -- (3,1);
+\draw [>=latex, ->] (7.5,2.5) -- (7.5,1.5);
+\draw [>=latex, ->] (2,3) -- (3,3);
+\draw [>=latex, ->] (5,3) -- (6,3);
+
+
+\draw   [fill=yellow, opacity=.1] (-3.5,3) ellipse (.5 and .5);
+\draw   [fill=yellow, opacity=.1] (10,0) ellipse (.5 and .5);
+\draw   [fill=yellow, opacity=.1] (10,2) ellipse (.5 and .5);
+\draw   [fill=yellow, opacity=.1] (4,5) ellipse (.5 and .5);
+
+\draw   (-3.5,3) ellipse (.5 and .5) node{SNR};
+\draw  (10,0) ellipse (.5 and .5) node{$p\ss{fa}$};
+\draw  (10,2) ellipse (.5 and .5) node{Type};
+\draw  (4,5) ellipse (.5 and .5) node{Type};
+
+\end{tikzpicture}
+\caption{Testing the system}\label{tkz:test_system}
+\end{figure}
+
 Our tests will be targeted at
 \begin{enumerate}
 	\item adressing the performance of the reconstruction and feeding it an artificial constructed signal while
-
 	\begin{enumerate}
 		\item varying the sampling technique used to sample the signal (as described in \cref{cha:sampling_methods});
 		\item varying the compression rate and the oversampling factor (as described in \cref{cha:reconstruction}).
 	\end{enumerate}
-
 	By comparing the reconstructed the power spectral density to the power spectral density recovered directly from the constructed test signal, we can evaluate the correctness of reconstruction when used with a specific sampling technique.
 	Furthermore the dependence on the oversampling factor and the compression factor can be evaluated from those test results. 
-	
 	\item adressing the performance of detection on the reconstructed signal. The energy detector as described in \cref{ssec:ari_ed} will be evaluated by tests that make use of the test signal as described in \cref{ssec:test_signal}. 
 	The detector is applied to the output of the reconstructor while	
 	\begin{enumerate}
