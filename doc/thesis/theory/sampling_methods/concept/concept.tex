@@ -7,13 +7,8 @@
 \begin{document}
 
 \section{Concept}
-We will propose three different sampling methods
-\begin{itemize}
-\item circular sparse sampling
-\item collaborative sampling
-\item coprime sampling
-\end{itemize}
-Each of these techniques impose their own restrictions on sampling. Circular sparse ruler enforces that the sampling is done by a single device with multiple samplers with the same sample frequency. Collaborative sampling is done with multiple devices with multiple samplers with the same sample frequency. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each sampling method is designed to perform well in situations where their restrictions are in order.
+
+In this section we will discuss the concept behind the different techniques. The details behind them and the optimalisation methods for them can be found in the Appendix \todo{ref}. 
 
 \subsection{Circular sparse sampling}
 Circular sparse sampling uses samplers with each the same sampling period $NT$, where $T$ is the sampling period and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
