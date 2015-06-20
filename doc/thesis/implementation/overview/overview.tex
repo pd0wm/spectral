@@ -16,26 +16,26 @@ For the implementation of our system two libraries were written to support our c
 
 \section{Model-View-Presenter}
 \label{sec:model-view-presenter}
-The design of our system can best be described by a model-view-presenter (MVP) architectural pattern. It is a variation on the well known model-view-controller pattern. The components consist of the following:
+The design of our system can best be described by a model-view-presenter (with passive view, referred to as MVP from now on) architectural pattern. It is a variation on the well known model-view-controller pattern \cite{syromiatnikov2014journey}. The components consist of the following:
 \begin{description}
-    \item[Model] This encompasses the library \lib{cogradio}, that holds all the functional parts of our library. This means it contains the theoretical sources, the samplers, the reconstructors and the detectors.
-    \item[Presenter] This encompasses part of the library \lib{cogradio\_vis}, that contains the Settings remote object and websockets. It functions as a driver for the model, taking the input from the view.
-    \item[View] This encompasses part of the library \lib{cogradio\_vis}, that contains the GUI elements.
+    \item[Model] This encompasses the library \lib{spectral\_core}, that handles all the domain logic\footnote{The domain logic encompasses all the functional parts of our code. It is the ``world'' our code lives in.}.
+    \item[Presenter] This encompasses part of the library \lib{spectral\_superviser}, that handles all the application logic\footnote{The application logic is the logic that drives the application. This is amongst other things handling the input data from the user and reflecting it in the model}.
+    \item[View] This encompasses part of the library \lib{spectral\_web}, that contains the GUI elements.
 \end{description}
-An overview can be seen in \cref{fig:MVP}.
+An overview can be seen in \cref{fig:MVP}. The advantages of MVP is that the domain logic and application logic are completely separate. The model concerns itself with the domain logic, the view with the representation of the data and the presenter manages the data and user input synchronization. This allows us to do orthogonal design.
 
-\begin{figure}
+\begin{figure*}
     \centering
     \input{./figures/mvp}
     \caption{Illustration of the MVP pattern as an hierarchical way of separating our system.}
     \label{fig:MVP}
-\end{figure}
+\end{figure*}
 
 \subsection{Model}
 \label{sub:model}
 The goal was to implement enough primitives in these libraries that a large number of configurations can quickly be constructed together. This is to account for the variety of configurations in which this product can be used. It also allows us to test different kind of sampling techniques with reconstruction methods.
 
-A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this, the Strategy design pattern\footnote{The strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}.} is used for all the models. This is further discussed in \cref{cha:model}.
+A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this, the Strategy design pattern\footnote{The strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}. } is used for all the models. This is further discussed in \cref{cha:model}.
 
 \subsection{View}
 \label{sub:view}
