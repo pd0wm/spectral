@@ -6,20 +6,14 @@ import spectral_core as sc
 import numpy as np
 
 
-def herm(a):
-    return np.transpose(np.conjugate(a))
-
-
-@unittest.skip("Tests take too long, need new sample set")
 class WesselTests(unittest.TestCase):
-    MAX_ERROR = 10 ** (-12)
-
     def setUp(self):
-        self.dony = sp.io.loadmat("./tests/reconstruction_tests/wessel_tests")
-        self.wes = sc.reconstruction.Wessel(self.dony['L'][0][0], self.dony['C'], cache=False)
-        self.L = self.dony['L'][0][0]
-        self.K = 1984
-        self.y = self.sample(self.dony['C'], self.dony['x'])
+        self.ref = sp.io.loadmat("./tests/reconstruction_tests/wessel_tests")
+        self.wes = sc.reconstruction.Wessel(self.ref['L'][0][0], self.ref['C'], cache=False)
+        self.L = self.ref['L'][0][0]
+        self.K = self.ref['K'][0][0]
+        self.N = self.ref['N']
+        self.y = self.sample(self.ref['C'], self.ref['x'])
 
     def tearDown(self):
         pass
@@ -30,16 +24,21 @@ class WesselTests(unittest.TestCase):
         self.assertEqual(min(shape), rank)
 
     def test_correct_R(self):
-        np.testing.assert_array_almost_equal(self.wes.R_pinv, self.dony['R_inv'])
+        np.testing.assert_array_almost_equal(self.wes.get_Rpinv(), self.ref['R_inv'])
 
     def test_correct_output(self):
-        psd1 = np.absolute(self.dony['PSD_ruler']).T
-        psd2 = np.absolute(np.fft.fft(self.wes.reconstruct(self.y).T))
+        psd1 = np.absolute(self.ref['PSD_est']).ravel()
+        psd2 = np.absolute(np.fft.fft(self.wes.reconstruct(self.y).ravel()))
         np.testing.assert_array_almost_equal(psd1, psd2)
 
     def sample(self, C, x):
-        y = np.dot(C, x.transpose().reshape((self.dony['N'], self.L * self.K), order='F'))
+        offset = x.shape[0] % self.N
+        if offset != 0:
+            x = x[:-offset]
+        y = np.dot(C, x.transpose().reshape((self.N, -1), order='F'))
         return y
 
     def test_cross_correlation_matrix(self):
-        np.testing.assert_array_almost_equal(self.dony['ry'], self.wes.cross_correlation_signals(self.y))
+        ry = self.wes.cross_correlation_signals(self.y).ravel()
+        ry_ref = self.ref['ry'].ravel()
+        np.testing.assert_array_almost_equal(ry, ry_ref)

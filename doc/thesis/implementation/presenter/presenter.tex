@@ -13,9 +13,19 @@
 \begin{document}
 \chapter{Presenter - The Supervisor}
 \label{cha:presenter}
-In the model-view-presenter architectural pattern, the presenter forms the glue between the model and the view. In is packaged in the \lib{spectral\_supervisor} module. The model notifies the presenter whenever its state changes, which will then trigger the presenter to update the view using the new data. At the same time, the view notifies the presenter whenever a user interacts with it, upon which the presenter will take the necessary actions to reflect this user-event in the model.
+In the model-view-presenter architectural pattern, the presenter forms the glue between the model and the view. It is packaged in the \lib{spectral\_supervisor} module.
+\begin{figure*}[h]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \input{./figures/presenter-diagram}
+    \end{adjustbox}
+    \caption{The presenter and the central role it fulfils in the system}
+    \label{fig:presenter-diagram}
+\end{figure*}
 
-In our implementation, the presenter is concerned with the following tasks:
+The model notifies the presenter whenever its state changes, which will then trigger the presenter to update the view using the new data. At the same time, the view notifies the presenter whenever a user interacts with it, upon which the presenter will take the necessary actions to reflect this user-event in the model. These interactions are shown in \cref{fig:presenter-diagram} and will be described in detail in the rest of this chapter.
+
+The presenter's tasks can be summarized as follows:
 \begin{itemize}
 	\item Coordinate model and view actions.
 	\item Manage system-wide settings during runtime.
@@ -45,7 +55,7 @@ Using the parameters set by the user or a set of predefined defaults, The presen
 	\item The generator and sampler, this can be any combination of one of the sources in \cref{sec:source} and one of the samplers in \cref{sec:sampling}.
 	\item The reconstructor, from \cref{sec:reconstruction}.
 	\item The detector, from \cref{sec:detection}.
-	\item The web server, an important component of the view, as will be described in \cref{ch:view}.
+	\item The web server, an important component of the view, as will be described in \cref{cha:view}.
 	\item The control WebSocket server, which exposes the model's settings so that they can be modified from external applications (like the view).
 	\item The data WebSocket server, which exposes the model's currently processed data for external applications.
 \end{enumerate}
@@ -61,7 +71,7 @@ Managing system-wide settings and allowing the user to modify them at runtime ar
 To expose model settings and result data to external applications the system makes use of the WebSocket-protocol. The WebSocket protocol defines a full-duplex single socket connection that can be used to send messages between a client and server. The WebSocket specification was initially implemented in JavaScript, but nowadays interfaces are available in many other programming languages as well, including Python. Multiple packages even exist, of which \lib{Autobahn} was chosen, because of its ease of use and clear examples.
 
 \subsection{Factories and Protocols}
-\label{sub:autobahn}
+\label{sub:presenter-autobahn}
 \lib{Autobahn} implements the WebSocket specification using another widely used Python package called \lib{Twisted}, which is an event-driven network engine. When using \lib{Autobahn}, a WebSocket server is defined by a factory object and a protocol object. A factory is, simply put, an object that can create other objects, which is a basic object-oriented programming (OOP) pattern \cite{msdn-observer}. A factory is created for both the WebSocket servers once, at runtime, when their respective processes start. From that point, either factory will create a protocol object for every client that connects to the server. The factory will perform some initialisation on the protocol and pass a reference of itself along with it, so every protocol instance shares the same factory object, more or less like a parent.
 
 The protocols themselves define the behaviour of the WebSocket server upon various events. Both protocols handle the same events, which are relatively straight-forward:

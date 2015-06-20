@@ -86,11 +86,11 @@ There are four parameters of the system, circled in \cref{tkz:test_system}, that
 \draw  (3,1.5) rectangle (5,0.5)node[pos=.5]{Compare};
 
 
-\draw (10,0.5) -- (10,1.5);
+
 \draw (1.5,2.6) -- (1.5,3.4);
 \draw (1.9,3) -- (1.1,3);
 \draw [>=latex, ->] (0,3) -- (1,3);
-\draw [>=latex, ->] (10,1) -- (9,1);
+\draw [>=latex, ->] (9.5,1) -- (9,1);
 \draw [>=latex, ->] (4,4.5) -- (4,3.5);
 \draw [>=latex, ->] (1.5,1) -- (1.5,2.5);
 \draw [>=latex, ->] (-3,3) -- (-2,3);
@@ -102,13 +102,13 @@ There are four parameters of the system, circled in \cref{tkz:test_system}, that
 
 
 \draw   [fill=yellow, opacity=.1] (-3.5,3) ellipse (.5 and .5);
-\draw   [fill=yellow, opacity=.1] (10,0) ellipse (.5 and .5);
-\draw   [fill=yellow, opacity=.1] (10,2) ellipse (.5 and .5);
+\draw   [fill=yellow, opacity=.1] (10,1) ellipse (.5 and .5);
+
 \draw   [fill=yellow, opacity=.1] (4,5) ellipse (.5 and .5);
 
 \draw   (-3.5,3) ellipse (.5 and .5) node{SNR};
-\draw  (10,0) ellipse (.5 and .5) node{$p\ss{fa}$};
-\draw  (10,2) ellipse (.5 and .5) node{Type};
+\draw  (10,1) ellipse (.5 and .5) node{$P_{fa}$};
+
 \draw  (4,5) ellipse (.5 and .5) node{Type};
 
 \end{tikzpicture}
@@ -136,6 +136,36 @@ Our tests will be targeted at
 	\end{enumerate}
 
 \section{Results}
+
+\begin{filecontents*}{plots/plot-data.csv}
+x, y
+1, 1
+2, 3
+3, 4
+4, 3
+\end{filecontents*}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel={Sampling time at 25 MHz (ms)},
+				ylabel={Normalised mean squared error of PSD ($\log_{10}$)},
+				width=8cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/plot-data.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{test}
+	\label{fig:plot}
+\end{figure}
 
 
 
