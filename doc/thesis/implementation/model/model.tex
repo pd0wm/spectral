@@ -11,9 +11,9 @@
 \raggedbottom
 
 \begin{document}
-\chapter{Model - Cogradio}
+\chapter{Model - The Core}
 \label{cha:model}
-In this chapter we will discuss the model part of our system. All the software discussed in this chapter is contained in \lib{cogradio} in the source. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
+In this chapter we will discuss the model part of our system. All functionality discussed in this chapter is contained in the \lib{spectral\_core} module. We will describe each step of the process from sampling to detection. For each step we will describe which methods we used and what choices we made.
 
 \section{Source}
 \label{sec:source}
@@ -42,7 +42,6 @@ The rectangular source generates a signal with multiple rectangles in the spectr
 \subsubsection{File source}
 The file source reads the samples from a file. This was used to test with real world data, but still get reproducible results. The files can be generated with \lib{GNU Radio} using a file sink.
 
-
 \subsection{USRP source}
 For the USRPs we have two sources. One for normal operation for simulating different sampling methods. The other is for doing hardware co-prime sampling. The USRP sources also have methods to change the centre frequency and the gain of the front-end of the radio.
 
@@ -55,7 +54,7 @@ The coprime source uses an external \CC~program to do the actual sampling. This 
 
 \section{Sampling}
 \label{sec:sampling}
-After the samples are generated, different sampling methods have to be applied. Each sampler implements an interface called \func{Sampler}, which has a contract for sample-method. The interface also defines a getter for the C-matrix\footnote{This is required for the reconstructors as their algorithms require knowledge about the sample intervals}.
+After the samples are generated, different sampling methods have to be applied. Each sampler implements an interface called \func{Sampler}, which has a contract for sample-method. The interface also defines a getter for the C-matrix\footnote{This is required for the reconstructors as their algorithms require knowledge about the sample intervals.}.
 
 \begin{figure}
     \centering
@@ -72,15 +71,15 @@ The implementation of the sample method takes a signal, uniformly sampled, as ar
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
-The miminal sparse ruler inherits from the multi-coset sampler. It feeds a solution to the minimal sparse ruler, which it gets from a lookup table, to the multi-coset sampler. It inherits all the other functions.
+The minimal sparse ruler inherits from the multi-coset sampler. It feeds a solution to the minimal sparse ruler to the multi-coset sampler, which it obtains from a lookup table. It inherits all the other functionality from the multi-coset sampler.
 
 \subsection{Coprime sampler}
 \label{sec:coprime-sampler}
-The coprime sampler also inherits from the multi-coset sampler. It generates a number of coprime multiples (see \cref{sec:samplingmethods}) as a set of intervals and feeds that into the multi-coset sampler. It inherits all the other functions.
+The coprime sampler also inherits from the multi-coset sampler. It generates a number of coprime multiples (see \cref{sec:samplingmethods}) as a set of intervals and feeds that into the multi-coset sampler. It inherits all the other functions from the multi-coset sampler.
 
 \subsection{Hardware coprime}
 \label{sec:hardware-coprime}
-The hardware coprime sampler does not get one vector with input samples, but two with a different number of samples from two samplers with different sample rates. The sampling matrix is constructed as with the normal coprime sampler. The two input vectors are then transformed in one output vector that matches the sampling matrix.
+The hardware coprime sampler uses two input sample vectors, with a different number of samples from two samplers with different sample rates. The sampling matrix is constructed as with the normal coprime sampler. The two input vectors are then transformed into one output vector that matches the sampling matrix.
 
 \section{Reconstruction}
 \label{sec:reconstruction}
@@ -90,15 +89,15 @@ Both classes make use of shared functionality to calculate a pseudo-inverse. Thi
 
 \subsection{CrossCorrelation}
 \label{sub:crosscorrelation}
-This class implements an algorithm based on the one described in \cite{ariananda2012compressive}. The algorithm has two parameters. The first determines the maximum lag estimated of cross-correlation of the cosets, often referred to as $L$. The second is the sampling matrix used by the sampler described in \cref{sec:sampling}. These are also the parameters specified\footnote{\label{fn:reconparam}There are actually four parameters $L$, $N$, $M$ and $C$. However $N$ and $M$ can be determined from the shape of $C$.} in the paper.
+This class implements an algorithm based on the one described in \cite{ariananda2012compressive}. The algorithm has two parameters. The first one determines the maximum lag that will be estimated of cross-correlation of the cosets, often referred to as $L$. The second one is the sampling matrix used by the sampler described in \cref{sec:sampling}. These are also the parameters specified\footnote{\label{fn:reconparam}There are actually four parameters $L$, $N$, $M$ and $C$. However $N$ and $M$ can be determined from the shape of $C$.} in the paper.
 
-Optionally a switch can be passed to disable the caching mechanism described in the base class. During the initialisation of the class it builds the R-matrix as discussed in \cite{ariananda2012compressive} and computes its pseudo-inverse.
+Optionally a switch can be passed to disable the caching mechanism described in the base class. During the initialisation of the class it builds the $R$-matrix as discussed in \cite{ariananda2012compressive} and computes its pseudo-inverse.
 
 The reconstruct method is implemented by calculating the cross correlations of the non-uniformly sampled input signal. A helper function is defined in the \func{Reconstructor} interface that calculates the cross correlations of the input. To speed up this function the multiple correlations are vectorized into a number of matrix multiplications. The pseudo-inverse is then multiplied by these cross-correlations to reconstruct the signal.
 
 \subsection{Wessel}
 \label{sub:wessel}
-The Wessel reconstructor is a variation on the reconstruction technique implemented by \class{CrossCorrelation}. The theory is thoroughly described in the \cref{prt:theory} of this thesis. The algorithm takes the same parameters\footnoteref{fn:reconparam}, namely the maximum lag estimated of cross-correlation of the cosets and the sampling matrix used by one the non-uniform sampler. This is required for the reconstruction algorithm.
+The Wessel reconstructor is a variation on the reconstruction technique implemented by \class{CrossCorrelation}. The theory is thoroughly described in \cref{prt:theory} of this thesis. The algorithm takes the same parameters\footnoteref{fn:reconparam}, namely the maximum lag estimated of cross-correlation of the cosets and the sampling matrix used by one the non-uniform sampler. This is required for the reconstruction algorithm.
 
 Similar to the other reconstructor implementation, a switch to disable the caching mechanism has been implemented. Like the other reconstructor, this reconstructor generates an $R$-matrix and computes its pseudo-inverse. Details on this algorithm may be found in \cref{cha:reconstruction}.
 

@@ -7,6 +7,15 @@
 \begin{document}
 
 \section{Introduction}
-Now that we have the required specifications for the sampling we can search for sampling methods that enable the reconstructor to do its work, and sense a bandwidth as big as possible. There are already a variety of sampling methods available, but none of them are trivial to connect to the reconstructor. To increase the flexibility of our system 
+as described in ref \todo{ref}, the sampling techniques should allow for
+\begin{enumerate}
+    \item Correct detection \todo{copy paste requirements}
+    \item Can work on one sampling device
+    \item can use multiple sampling devices to increase performance
+\end{enumerate}
+
+Theory on different sampling methods has already been published. \textit{Circular sparse sampling} \cite{ariananda2012compressive}, \textit{collaborative sampling} \cite{ariananda2014cooperative} and \textit{coprime sampling} \cite{pal2011coprime} describe different sampling methods and how to implement them in their respective frameworks. Each of these techniques impose their own restrictions on the desitgn of a sampling device. Circular sparse sampling enforces that the sampling is done by a single device with multiple samplers with the same sample frequency $N$. Collaborative sampling enforces multiple devices with multiple samplers with the same sample frequency $N$. Coprime sampling enforces the use of one device with exactly two samplers, but allows for different sampling frequencies. Each sampling method is designed to perform well in situations where their restrictions are in order.
+
+In this chapter we will investigate \textit{circular sparse sampling} , \textit{collaborative sampling} and \textit{coprime sampling}, and fit them into our system in such a way that it can collaborate with the reconstruction algorithm, and ensure correct detection \todo{ syncen met eisen}. For every sampling technique we will also look for ways to optimalise their efficiency to enable better products.
 
 \end{document}
