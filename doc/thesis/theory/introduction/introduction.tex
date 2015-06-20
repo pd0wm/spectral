@@ -13,9 +13,102 @@
 \begin{document}
 
 \section{Introduction}
+In this part, we develop an approach to enable high-performance spectrum sensing. More specifically, we develop techniques which are implemented in various modules of the toolkit.
+spectrum sense = detectie van signal is verscheiende delen van het spctrum
+- definitie
+
+- uitleg structuur van part
+
+
+\section{System overview}
+- modules: \\ 
+* Sampling techniques which allow for efficient spectrum sensing \\
+* Reconstruction module which analyses the sampled signal in real-time \\
+* Detection module which performs identification of the spectrum based on the output of the reconstruction algorithm \\
+
+\begin{tikzpicture}[scale=1.2]
+
+\draw  (-1,1.5) rectangle (1,0.5) node[pos=.5]{Sampling};
+\draw  (2,1.5) rectangle (4,0.5) node[pos=.5]{Reconstruction};
+\draw  (4.3,1.5) rectangle (6.3,0.5) node[pos=.5]{Detection};
+\draw  [dashed] (1.7,2.5) rectangle (6.6,0.2);
+\node at (4.1,2) {Toolkit};
+
+\draw [>=latex,->] (1,1) -- (2,1);
+\draw [>=latex,->] (6.3,1) -- (7.3,1);
+\draw [>=latex,->] (6.3,1) -- (7.3,1);
+\draw [>=latex,->] (-2,1) -- (-1,1);
+
+\draw (-2,1) -- (-2,2.5);
+\draw (-1.8,2.5) -- (-2,2.3);
+\draw (-2.2,2.5) -- (-2,2.3);
+
+\end{tikzpicture}
+
+\section{Requirements and specifications}
+intro functioneel
+
+The requirements of our approach are as follows. The approach must enable spectrum sensing such that the application
+\begin{enumerate}
+    \item is able to identify at which frequencies signals are present, where signals
+    \begin{enumerate}
+        \item can be any signal distinct from noise and
+        \item can have any reasonable signal strength;
+    \end{enumerate}
+    \item is able to sense any specified bandwidth and
+    \item makes use of sampling techniques which are as efficient as possible.
+\end{enumerate}
+
+The specifications of our approach are as follows. Identification of signals must be such that
+\begin{enumerate}
+    \item idenfication of signals consists of determines the set of frequencies with are occupied by signals other than noise;
+    \item this identification can be done real-time;
+    \item the resolution of these frequencies can be specified and
+    \item the correctness of operation can be specified.
+\end{enumerate}
+Identification of signals should be such that
+\begin{enumerate}
+    \item the resolution of detection can be as high as possible and
+    \item its operation can be as correct as possible.
+\end{enumerate}
+
+The sampling techniques must allow for
+\begin{enumerate}
+    \item correction operation of the detection;
+    \item usage of a single sampling device and
+    \item usage of multiple sampling devices such that
+    \begin{enumerate}
+        \item the technique is as efficient as possible and
+        \item the workload can be distributed across the devices.
+    \end{enumerate}
+\end{enumerate}
+
+We will design our system according to these requirements and specifications.
+
 % Compressive sensing is a subject that has made some important improvements in recent years. D.Ariananda and G.Leus published a paper in 2012 that proposed a new method in compressive sampling. When calculating the power spectral density of a signal, a lot of information is lost during the process. This paper exploits this fact by sampling in such a way, that only the information required to calculate the power spectral density is acquired. This allows for much less samples than Nyquist.
 
-Compressive sensing is an active area of research \textbf{meer}. Most algorithms are based on L1-techniques and try to recover the spectrum of the signal, and therefore assume that the signal is \emph{sparse} in the Fourier domain. Recent developments \textbf{papers van leus en ariananda hier} have shown that it is possible to reconstruct the power spectral density instead of the spectrum without the assumption of sparsity.
+% Compressive sensing is an active area of research \textbf{meer}. Most algorithms are based on L1-techniques and try to recover the spectrum of the signal, and therefore assume that the signal is \emph{sparse} in the Fourier domain. Recent developments \textbf{papers van leus en ariananda hier} have shown that it is possible to reconstruct the power spectral density instead of the spectrum without the assumption of sparsity.
 
-This thesis targets a accessible theoretical description of the compressive sensing system implemented during 
+% This thesis targets a accessible theoretical description of the compressive sensing system implemented during 
+
+% Main product: Extendable Toolkit for High-Performance Spectrum Sensing
+
+% methode om high-performance te spectrum sensen
+
+
+
+% Method which describes 
+
+% - spectrum sensing
+% - psd
+% - detection
+% - sampling methods
+% - high-performance
+% - real-time
+
+
+
+% - uitleg hoofdstukken
+% - kort systeemoverzicht + tikz
+
 \end{document}

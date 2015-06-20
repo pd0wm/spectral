@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-INP_DIR="./spectral/";
+INP_DIR="./spectral_core/";
 OUT_DIR="../doc/thesis/implementation/model/figures/"
-TOP_LEVEL="spectral";
+TOP_LEVEL="spectral_core";
 
 DIR_MATCHER="*/"
 PIC_TYPE="eps"

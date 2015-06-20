@@ -1,0 +1,54 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\begin{document}
+
+\chapter{System evaluation}
+\section{Introduction}
+
+\cref{cha:sampling}, \cref{cha:reconstruction}, \cref{cha:sampling_methods}, \cref{cha:detection} have analysed and described several
+sampling, reconstruction and detection techniques. It is in this chapter that we will evaluate their performance such that a discussion and a conclusion can be draw based on the specifications as listed in ???.
+
+\section{Overview}
+A block diagram of the complete system is depicted in ???
+
+\section{Testing}
+
+To evaluate the performance of our system we will 
+\begin{enumerate}
+	\item evaluate the performance of the reconstruction and feeding it an artificial constructed signal \textbf{wat zullen we hiermee doen? allemaal bandjes maken en dezelfde ook de detector in mikken?} while
+
+	\begin{enumerate}
+		\item varying the sampling technique used to sample the signal (as described in \cref{cha:sampling_methods}).
+		\item varying the compression rate and the oversampling factor (as described in \cref{cha:reconstruction}).
+	\end{enumerate}
+
+	By comparing the reconstructed the power spectral density to the power spectral density recovered directly from the constructed test signal, we can evaluate the correctness of reconstruction when used with a specific sampling technique.
+	Furthermore the dependence on the oversampling factor and
+	the compression factor can be evaluated from those test results. 
+	
+	\item Adress the performance of detection on the reconstructed signal. The energy detector as described in \cref{ssec:ari_ed} will be evaluated by testing on an artificial input signal. 
+
+	This is signal is constructed by generating complex white noise which is filtered using (\textbf{several???}) bandpass filter. To this filtered signal we add additive white noise. This signal is then artificially sampled and fed to the reconstructor. 
+	\textbf{plaatje welkom denk ik?}
+	
+	\begin{enumerate}
+		\item varying the signal-to-noise ratio of the input signal; 
+		\item varying the false alarm probability the detector 
+		should allow;
+		\item varying the compression rate of the reconstructor.
+	\end{enumerate}
+	Using these results we can construct the receiver operating characteristic curves (ROC-curves) which plot the detection probability versus the false alarm probability of the detector. 
+	From these curves the minimum signal strength and the detectors performance on a random signal can be evaluated. Furthermore the detection performance of the system as a whole can be evaluated by comparing these curves for different compression rates.
+	\end{enumerate}
+
+\section{Discussion}
+From the results we see that insert hier uw discussie.
+
+\section{Conclusion}
+het werkt. Future work -> collaborative detection/prior information/neural netwerk ding?
+
+\end{document}
