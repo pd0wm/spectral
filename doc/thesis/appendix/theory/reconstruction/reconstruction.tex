@@ -1,0 +1,545 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../../includes/preamble.tex}
+\addbibresource{../../../../includes/bibliography.bib}
+
+\begin{document}
+
+\chapter{Derivation of the reconstruction algorithm}
+\label{sec:reconstruction-derivation}
+In this appendix we derive the algorithm discussed in \cref{sec:reconstruction-derivation}. The derivation aims to be an accessible, yet complete explanation which discusses all details necessary for implementation. \Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the derivation of the algorithmr.
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{lY}
+        \textbf{Variable} & \textbf{Description}\\ \hline
+        $M$ & Number of cosets \\
+        $N$ & Downsampling factor such that every coset samples the input signal once every $N$ samples \\
+        $L$ & Support of $r_{y_i,y_j}[m]$. This means that $r_{y_i,y_j}[m]=0$ for $|m| > L$. \\
+        $x[n]$ & Input signal \\
+        $r_x[m,n]$ & Autocorrelation of the input signal \\
+        $y_i[n]$ & Output of coset $i$ \\
+        $r_{y_i,y_j}[m,n]$ & Cross-correlation of the outputs of cosets $i$ and $j$ \\
+        $c_i[n]$ & Signal which determines the output of coset $i$ \\
+        $c_{i,j}[m]$ & Deterministic cross-correlation of $c_i[n]$ and $c_j[n]$ \\
+        $z_i[n]$ & Helper variable related to $x[n]$ and $y_i[n]$ \\
+        $r_{z_i,z_j}[m,n]$ & Cross-correlation of $z_i[n]$ and $z_j[n]$ \\
+        $\vec{r}_x[k]$ & Aggregation of $r_x[(k+1)N-1]$ to $r_x[kN+1]$ \\
+        $\vec{c}_{i,j}^-$ & Aggregation of $c_{i,j}[-N+1]$ to $c_{i,j}[-1]$ \\
+        $\vec{c}_{i,j}^+$ & Aggregation of $c_{i,j}[1]$ to $c_{i,j}[N-1]$ \\
+        $\vec{r}_{y_i,y_j}$ & Aggregation of $r_{y_i,y_j}[L]$ to $r_{y_i,y_j}[-L]$ \\
+        $\vec{r}_x$ & Aggregation of $r_x[LN]$ to $r_x[-LN]$ \\
+        $\mat{R}_{i,j}$ & Convolution matrix of $c_{i,j}[m]$ \\
+        $\vec{r}_y$ & Aggregation of $\vec{r}_{y_M,y_M}$ to $\vec{r}_{y_0,y_0}$ \\
+        $\mat{R}$ & Aggregation of $\mat{R}_{M,M}$ to $\mat{R}_{1,1}$ \\
+        $n_i$ & Variable such that $c_i[n]=1$ for $n=n_i$ and zero otherwise
+    \end{tabularx}
+    \caption{Overview of the variables used}
+    \label{tab:reconstruction-overview-variables}
+\end{table}
+
+Consider the input signal to be a random stochastic process. To relate the output of a coset to the input signal, we need some mathematical constructs.
+
+\section{Construction of the output of a coset}
+In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yields one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [black] (-5,0.5) -- (5,0.5);
+        \draw [black] (-5,0) -- (5,0);
+
+        \draw [black] (-4,-1) -- (0,-1);
+        \draw [black] (-4,-0.5) -- (0,-0.5);
+        \draw [black] (0,-1.5) -- (4,-1.5);
+        \draw [black] (0,-1) -- (4,-1);
+        \foreach \i in {-5,...,5} {
+            \draw [black] (\i, 0) -- (\i, 0.5);
+        }
+        \foreach \i in {-4,...,5} {
+            \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
+        }
+
+        \foreach \i in {-4,...,0} {
+            \draw [black] (\i, -0.5) -- (\i, -1);
+        }
+        \foreach \i in {0,...,3} {
+            \draw ({(3-\i)-3.5},-0.75) node[black] {$c_i[\i]$};
+        }
+
+        \foreach \i in {0,...,4} {
+            \draw [black] (\i, -1.5) -- (\i, -1);
+        }
+        \foreach \i in {0,...,3} {
+            \draw ({(3-\i)+0.5},-1.25) node[black] {$c_i[\i]$};
+        }
+
+        \foreach \i in {-4,...,-1} {
+            \draw (\i+0.5,-0.25) node {$\times$};
+        }
+        \foreach \i in {0,...,3} {
+            \draw [black, >=latex, ->] (\i+0.5,-0.05)  -- node[pos=0.45,fill=white] {$\times$} (\i+0.5,-0.95);
+        }
+
+        \draw [black, >=latex, ->] (-4.05,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
+        \draw [black, >=latex, ->] (-0.05,-1.25) -- node[pos=0.825,fill=white] {\tiny$\sum$} (-5.95,-1.25);
+        \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
+        \draw [black] (-7,-1) -- (-7,-1.5) -- (-6,-1.5) -- (-6,-1) -- (-7,-1);
+        \draw (-6.5,-0.75) node[black] {$y_i[0]$};
+        \draw (-6.5,-1.25) node[black] {$y_i[1]$};
+        \draw (-5.5,0.25) node {$\cdots$};
+        \draw (5.5,0.25) node {$\cdots$};
+        \draw (-6.5,-1.75) node {$\vdots$};
+        \draw (-6.5,0) node {$\vdots$};
+    \end{tikzpicture}
+    \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
+    \label{fig:visualisation-yi}
+\end{figure}
+Mathematically,
+\begin{align} \label{eq:yi}
+    y_i[n]=\sum_{k=(n-1)N+1}^{nN} x[k]c_i[nN-k].
+\end{align}
+\Cref{eq:yi} precisely relates the output of coset $i$ to the input signal.
+
+Consider the case that $c_i[n]=1$ for a single $n$ and otherwise zero. Then $y_i[n]$ consists of the sample of every group of $N$ samples of $x[n]$.
+This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualisation-yi-example} illustrates this concept in the case that $N=4$ and $c_i[n]=1$ for $n=1$ and otherwise zero.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [black] (-5,0.5) -- (5,0.5);
+        \draw [black] (-5,0) -- (5,0);
+
+        \draw [black] (-4,-1) -- (0,-1);
+        \draw [black] (-4,-0.5) -- (0,-0.5);
+        \draw [black] (0,-1.5) -- (4,-1.5);
+        \draw [black] (0,-1) -- (4,-1);
+        \foreach \i in {-5,...,5} {
+            \draw [black] (\i, 0) -- (\i, 0.5);
+        }
+        \foreach \i in {-4,...,5} {
+            \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
+        }
+
+        \foreach \i in {-4,...,0} {
+            \draw [black] (\i, -0.5) -- (\i, -1);
+        }
+        \draw (-3.5, -0.75) node[black] {$0$};
+        \draw (-2.5, -0.75) node[black] {$0$};
+        \draw (-1.5, -0.75) node[black] {$1$};
+        \draw (-0.5, -0.75) node[black] {$0$};
+
+        \foreach \i in {0,...,4} {
+            \draw [black] (\i, -1.5) -- (\i, -1);
+        }
+        \draw (0.5, -1.25) node[black] {$0$};
+        \draw (1.5, -1.25) node[black] {$0$};
+        \draw (2.5, -1.25) node[black] {$1$};
+        \draw (3.5, -1.25) node[black] {$0$};
+
+
+        \foreach \i in {-4,...,-1} {
+            \draw (\i+0.5,-0.25) node {$\times$};
+        }
+        \foreach \i in {0,...,3} {
+            \draw [black, >=latex, ->] (\i+0.5,-0.05)  -- node[pos=0.45,fill=white] {$\times$} (\i+0.5,-0.95);
+        }
+
+        \draw [black, >=latex, ->] (-4.05,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
+        \draw [black, >=latex, ->] (-0.05,-1.25) -- node[pos=0.825,fill=white] {\tiny$\sum$} (-5.95,-1.25);
+        \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
+        \draw [black] (-7,-1) -- (-7,-1.5) -- (-6,-1.5) -- (-6,-1) -- (-7,-1);
+        \draw (-6.5,-0.75) node[black] {$x[-1]$};
+        \draw (-6.5,-1.25) node[black] {$x[3]$};
+        \draw (-5.5,0.25) node {$\cdots$};
+        \draw (5.5,0.25) node {$\cdots$};
+        \draw (-6.5,-1.75) node {$\vdots$};
+        \draw (-6.5,0) node {$\vdots$};
+    \end{tikzpicture}
+    \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$ and $c_i[n]=1$ for $n=1$ and otherwise zero}
+    \label{fig:visualisation-yi-example}
+\end{figure}
+
+To analyse \cref{eq:yi}, we need a helper variable. Let
+\begin{align} \label{eq:cij-rx}
+    z_i[n] = (c_i \ast x)[n]
+\end{align}
+where $\ast$ denotes the convolution operator. The definition of the convolution operator yields that
+\begin{align} \label{eq:zi}
+    z_i[n] &= \sum_{k=\infty}^{\infty}x[k] c_i[n-k] \\
+    &= \sum_{k=n-N+1}^{n} x[k] c_i[n-k],
+\end{align}
+since $c_i[n-k]=0$ for $k < n-N+1$ and $k > n$. \cref{fig:visualisation-zi} shows how $z_i[n]$, $x[n]$ and $c_i[n]$ are related in the case that $N=4$.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \foreach \n in {0,1,2} {
+            \begin{scope}[shift={(0,-2.5*\n)}]
+                \draw [black] (-5,0.5) -- (5,0.5);
+                \draw [black] (-5,0) -- (5,0);
+
+                \draw [black] (-4+\n,-1) -- (0+\n,-1);
+                \draw [black] (-4+\n,-0.5) -- (0+\n,-0.5);
+                \foreach \i in {-5,...,5} {
+                    \draw [black] (\i, 0) -- (\i, 0.5);
+                }
+                \foreach \i in {-4,...,5} {
+                    \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
+                }
+
+                \foreach \i in {-4,...,0} {
+                    \draw [black] (\i+\n, -0.5) -- (\i+\n, -1);
+                }
+                \foreach \i in {0,...,3} {
+                    \draw ({(3-\i)-3.5+\n},-0.75) node[black] {$c_i[\i]$};
+                }
+
+                \foreach \i in {-4,...,-1} {
+                    \draw (\i+0.5+\n,-0.25) node {$\times$};
+                }
+
+                \draw [black, >=latex, ->] (-4.05+\n,-0.75) -- node[pos=(\n+1)/(2+\n),fill=white] {\tiny$\sum$} (-5.95,-0.75);
+                \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
+                \draw (-6.5,-0.75) node[black] {$z_i[\n]$};
+                \draw (-5.5,0.25) node {$\cdots$};
+                \draw (5.5,0.25) node {$\cdots$};
+            \end{scope}
+        }
+    \end{tikzpicture}
+    \caption{Relationship between $z_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
+    \label{fig:visualisation-zi}
+\end{figure}
+By inspection of \cref{eq:yi} and \cref{eq:zi}, we obtain that
+\begin{align*}
+    y_i[n]=z_i[nN].
+\end{align*}
+
+
+\section{Autocorrelation and cross-correlation}
+The goal of the reconstruction method is to reconstruct the autocorrelation of the input signal given the output of all cosets. The autocorrelation of the input signal is given by
+\begin{align*}
+    r_x[n,m] = E(x[n]\conj{x}[n+m]).
+\end{align*}
+We assume that $x[n]$ is a wide sense stationary process. This means that $r_x[n,m]$ is independent of $n$. Therefore, we omit the $n$ in $r_x[n,m]$ and denote $r_x[n,m]=r_x[m]$. The cross-correlation of $z_i[n]$ and $z_j[n]$ is given by
+\begin{align*}
+    r_{z_i,z_j}[n,m]=E(z_i[n]\conj{z}_j[n+m]).
+\end{align*}
+Similarly, the cross-correlation of $y_i[n]$ and $y_j[n]$ is given by
+\begin{align*}
+    r_{y_i,y_j}[n,m]=E(y_i[n]\conj{y}_j[n+m]).
+\end{align*}
+Since the outputs of the cosets are assumed to be readily available, $r_{y_i,y_j}[n,m]$ can be determined. We plan to estimate $r_x[m]$ by making use of $r_{y_i,y_j}[n,m]$.
+
+\section{Relating the autocorrelation of the input signal}
+
+Since $x[n]$ is a wide sense stationary process, Theorem 11.5 of \cite{yates2005probability} yields that
+\begin{align} \label{eq:crij-rx}
+    r_{z_i,z_j}[n,m] = (c_{i,j} \ast r_{x})[m]
+\end{align}
+where
+\begin{align} \label{eq:cij}
+    c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
+\end{align}
+This shows that $r_{z_i,z_j}[n,m]$ is independent of $n$, we means that we omit the $n$ in $r_{z_i,z_j}[n,m]$  once more. Now the independence of $n$ implies that
+\begin{align*}
+    r_{z_i,z_j}[mN] &= E(z_i[n]\conj{z}_j[n+mN]) \\
+    &= E(z_i[nN]\conj{z}_j[nN+mN]) \\
+    &= E(y_i[n]\conj{y}_j[n+m]) \\
+    &= r_{y_i,y_j}[m],
+\end{align*}
+since we defined that $z_i[n]=y_i[nN]$. Therefore
+\begin{align*}
+    r_{y_i,y_j}[m] &= (c_{i,j}\ast r_{x})[mN].
+\end{align*}
+Consider \cref{eq:cij}. We know that $c_i[n]=0$ for $n < 0$ and $n > N-1$, which implies that $c_{i,j}[m]=0$ for $|m| > N-1$, since $c_i[k]\conj{c}_j[k+m]=0$ for $|m| > N-1$. So
+\begin{align} \label{eq:ryiyj-rx}
+    r_{y_i,y_j}[m] &= \sum_{k=-\infty}^{\infty}r_{x}[k]c_{i,j}[mN-k] \nonumber \\
+    &= \sum_{k=(m-1)N+1}^{(m+1)N-1}r_{x}[k]c_{i,j}[mN-k].
+\end{align}
+This is the desired equation which relates the cross-correlation of the outputs of cosets $i$ and $j$ to the autocorrelation of the input signal.
+We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r_x[m]$. \cref{fig:visualisation-ryiyj-rx} illustrates these dependencies.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [black] (-6.5,0) -- (6.5,0);
+        \draw [black] (-3,-0.1) -- (-3,0.1);
+        \draw [black] (-6,-0.1) -- (-6,0.1);
+        \draw [black] (0,-0.1) -- (0,0.1);
+        \draw [black] (3,-0.1) -- (3,0.1);
+        \draw [black] (6,-0.1) -- (6,0.1);
+        \draw (0,-0.4) node {$r_{y_i,y_j}[L]$};
+        \draw (6.5,0) node[fill=white] {$\cdots$};
+        \draw (-6.5,0) node[fill=white] {$\cdots$};
+        \draw (-3,-0.4) node {$r_{y_i,y_j}[L-1]$};
+        \draw (-6,-0.4) node {$r_{y_i,y_j}[L-2]$};
+        \draw (3,-0.4) node {$r_{y_i,y_j}[L+1]$};
+        \draw (6,-0.4) node {$r_{y_i,y_j}[L+2]$};        
+
+        \begin{scope}[shift={(0,2)}]
+            \draw [black] (-6.5,0) -- (6.5,0);
+            \draw [black] (-3,-0.1) -- (-3,0.1);
+            \draw [black] (-6,-0.1) -- (-6,0.1);
+            \draw [black] (0,-0.1) -- (0,0.1);
+            \draw [black] (3,-0.1) -- (3,0.1);
+            \draw [black] (6,-0.1) -- (6,0.1);
+            \draw [decorate,decoration={brace,amplitude=10pt,mirror},yshift=0pt] (0.5,-1) -- (3,-1) node [black,midway,yshift=-0.55cm] {\footnotesize
+            $N-1$};
+            \draw [densely dashed] (0.5,0) -- (0.5,-1);
+            \draw [densely dashed] (3,0) -- (3,-1);
+            \draw (0,0.4) node {$r_x[LN]$};
+            \draw (6.5,0) node[fill=white] {$\cdots$};
+            \draw (-6.5,0) node[fill=white] {$\cdots$};
+            \draw (-3,0.4) node {$r_x[(L-1)N]$};
+            \draw (-6,0.4) node {$r_{x}[(L-2)N]$};
+            \draw (3,0.4) node {$r_{x}[(L+1)N]$};
+            \draw (6,0.4) node {$r_{x}[(L+2)N]$}; 
+            \draw (-0.5,0.1) -- (-0.5,-0.1);
+            \draw (0.5,0.1) -- (0.5,-0.1);
+            \draw (-0.5+3,0.1) -- (-0.5+3,-0.1);
+            \draw (0.5+3,0.1) -- (0.5+3,-0.1);
+            \draw (-0.5-3,0.1) -- (-0.5-3,-0.1);
+            \draw (0.5-3,0.1) -- (0.5-3,-0.1);
+            \draw (-5.5,-0.1) -- (-5.5,0.1);
+            \draw (5.5,-0.1) -- (5.5,0.1);
+            \draw (-1.5,0) node[fill=white] {$\cdots$};
+            \draw (1.5,0) node[fill=white] {$\cdots$};
+            \draw (-4.5,0) node[fill=white] {$\cdots$};
+            \draw (4.5,0) node[fill=white] {$\cdots$};
+        \end{scope}
+
+        \fill [fill=black, fill opacity=0.1] (0,0) -- (2.5,2) -- (-2.5,2) -- cycle;
+        \fill [fill=black, fill opacity=0.1] (3,0) -- (5.5,2) -- (0.5,2) -- cycle;
+        \fill [fill=black, fill opacity=0.1] (-3,0) -- (-5.5,2) -- (-0.5,2) -- cycle;
+    \end{tikzpicture}
+    \caption{Dependencies between $r_{y_i,y_j}[m]$ and $r_x[m]$ defined by \cref{eq:ryiyj-rx}}
+    \label{fig:visualisation-ryiyj-rx}
+\end{figure}
+
+
+\section{Estimating the autocorrelation of the input signal}
+To estimate the autocorrelation of the input signal, we assume that $r_{y_i,y_j}[m]=0$ for $|m| > L$. This assumption will be discussed at a later moment. If we inspect \cref{fig:visualisation-ryiyj-rx}, we see that $r_{y_i,y_j}[L+1]$ depends on $r_x[LN+1]$ to $r_x[(L+2)N-1]$. Since we have chosen $c_{i,j}[m]$ arbitrarily, $r_{y_i,y_j}[L+1]=0$ implies that $r_x[LN+1]$ to $r_x[(L+2)N-1]$ must be zero, since $r_{y_i,y_j}[L+1]$ is not necessarily zero otherwise. Consequently, if we evaluate $r_{y_i,y_j}[m]=0$ for all $|m| > L$ in a similar way, we obtain that $r_x[m]=0$ for $|m| > LN$.
+
+Since $r_x[m]=0$ for $|m| > LN$, all that remains is estimating $r_x[m]$ for $|m| \le LN$. Aggregating \cref{eq:ryiyj-rx} for $|m| \le L$ yields that
+\begin{align*}
+    r_{y_i,y_j}[L] &= \sum_{k=(L-1)N+1}^{(L+1)N-1}r_{x}[k]c_{i,j}[LN-k] = \sum_{k=(L-1)N+1}^{LN}r_{x}[k]c_{i,j}[LN-k], \\
+    r_{y_i,y_j}[L-1] &= \sum_{k=(L-2)N+1}^{LN-1}r_{x}[k]c_{i,j}[(L-1)N-k], \\
+    &~~\vdots \\
+    % r_{y_i,y_j}[0] &= \sum_{k=1-N}^{N-1}r_{x}[k]c_{i,j}[-k], \\
+    % &~~\vdots \\
+    r_{y_i,y_j}[-L+1] &= \sum_{k=-LN+1}^{(-L+2)N-1}r_{x}[k]c_{i,j}[(-L+1)N-k], \\
+    r_{y_i,y_j}[-L] &= \sum_{k=(-L-1)N+1}^{(-L+1)N-1}r_{x}[k]c_{i,j}[-LN-k] = \sum_{k=-LN}^{(-L+1)N-1}r_{x}[k]c_{i,j}[-LN-k]. \\
+\end{align*}
+In reducing the limits of the sums in $r_{y_i,y_j}[L]$ and $r_{y_i,y_j}[-L]$ we used that $r_x[m]=0$ for $|m| > LN$. Although these equations look complicated, they can be written more compactly. To do this, let
+\begin{align} \label{eq:def-rx}
+    \vec{r}_x[k] =& \begin{bmatrix}
+        r_x[(k+1)N-1] & \cdots & r_x[kN+1]
+    \end{bmatrix}^T, \\
+    \vec{c}^{-}_{i,j} =& \begin{bmatrix}
+        c_{i,j}[-N+1] & \cdots & c_{i,j}[-1]
+    \end{bmatrix} \text{ and } \nonumber \\
+    \vec{c}^{+}_{i,j} =& \begin{bmatrix}
+        c_{i,j}[1] & \cdots & c_{i,j}[N-1]
+    \end{bmatrix}. \nonumber
+\end{align}
+If we look carefully, we see that
+\begin{align*}
+    r_{y_i,y_j}[L] &= r_x[LN]c_{i,j}[0] + \sum_{k=(L-1)N+1}^{LN-1}r_x[k]c_{i,j}[LN-k] \\
+    &=r_x[LN]c_{i,j}[0] + \vec{c}_{i,j}^+ \vec{r}_x[L-1].
+\end{align*}
+Similarly, we can write
+\begin{align*}
+    r_{y_i,y_j}[L-1] &= \vec{c}_{i,j}^{-} \vec{r}_x[L-1] + r_x[(L-1)N] c_{i,j}[0] + \vec{c}_{i,j}^{+} \vec{r}_x[L-2].
+\end{align*}
+The complicated system of equations now reduces to
+\begin{align*}
+    r_{y_i,y_j}[L] &= &&\hspace{12pt}r_x[LN] c_{i,j}[0] &&+ \vec{c}_{i,j}^+ \vec{r}_x[L-1] , \\
+    r_{y_i,y_j}[L-1] &= \vec{c}_{i,j}^{-} \vec{r}_x[L-1] &&+ r_x[(L-1)N] c_{i,j}[0] &&+ \vec{c}_{i,j}^{+} \vec{r}_x[L-2], \\
+    &~~\vdots \\
+    r_{y_i,y_j}[-L+1] &= \vec{c}_{i,j}^{-}\vec{r}_x[-L+1] &&+ r_x[(-L+1)N] c_{i,j}[0] &&+ \vec{c}_{i,j}^{+}\vec{r}_x[-L], \\
+    r_{y_i,y_j}[-L] &= \vec{c}_{i,j}^{-} \vec{r}_x[-L] &&+ r_x[-LN] c_{i,j}[0],
+\end{align*}
+which can be conveniently written as the matrix equation
+\begin{align*}
+    \begin{bmatrix}
+        r_{y_i,y_j}[L] \\
+        r_{y_i,y_j}[L-1] \\
+        \vdots \\
+        r_{y_i,y_j}[-L+1] \\
+        r_{y_i,y_j}[-L]
+    \end{bmatrix} = \begin{bmatrix}
+        c_{i,j}[0] & \vec{c}^+_{i,j} \\
+        & \vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
+        % &\vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
+        &&&\ddots \\
+        &&&\vec{c}^{-}_{i,j} & c_{i,j}[0] & \vec{c}^{+}_{i,j} \\
+        &&&&&\vec{c}^{-}_{i,j} & c_{i,j}[0]
+    \end{bmatrix} \begin{bmatrix}
+        r_x[LN] \\
+        r_x[LN-1] \\
+        \vdots \\
+        r_x[-LN+1] \\
+        r_x[-LN]
+    \end{bmatrix}.
+\end{align*}
+Denote the previous equation by
+\begin{align} \label{eq:ryiyji-R-rx}
+    \vec{r}_{y_i,y_j} = \mat{R}_{i,j} \vec{r}_x.
+\end{align}
+This equation relates the cross-correlation of the outputs of cosets $i$ and $j$ to the autocorrelation of the input signal. We can aggregate \cref{eq:ryiyji-R-rx} for all combinations of cosets. This yields that
+\begin{align*}
+    \begin{bmatrix}
+        \vec{r}_{y_1,y_1} \\
+        \vdots \\
+        \vec{r}_{y_M,y_M}
+    \end{bmatrix} = \begin{bmatrix}
+        \mat{R}_{1,1} \\
+        \vdots \\
+        \mat{R}_{M,M}
+    \end{bmatrix} \vec{r}_x.
+\end{align*}
+Denote the aggregation of \cref{eq:ryiyji-R-rx} by
+\begin{align} \label{eq:ry-R-rx}
+    \vec{r}_y = \mat{R} \vec{r}_x.
+\end{align}
+\Cref{eq:ry-R-rx} relates the cross-correlations of all combinations of outputs of cosets to the autocorrelation of the input signal. Note that $\mat{R}$ is an $M^2(2L+1) \times 2LN+1$ matrix. If $\mat{R}$ has full column rank, then $\vec{r}_x$ can be solved for using least-squares, which involves solving the normal equations. These normal equations are given by
+\begin{align} \label{eq:normal-rx}
+    \mat{R}^T \vec{r}_y = \mat{R}^T \mat{R} \vec{r}_x.
+\end{align}
+Alternatively, the least-squares solution can be obtained by making use of the Moore–Penrose pseudoinverse. Therefore, if $\mat{R}$ has full column rank, then
+\begin{align} \label{eq:pseudo-rx}
+    \mat{R}^\dagger \vec{r}_y = \vec{r}_x
+\end{align}
+where $\mat{R}^\dagger$ denotes the Moore-Penrose pseudoinverse of $\mat{R}$. We can use \cref{eq:normal-rx} or \cref{eq:pseudo-rx} to estimate the autocorrelation of the input signal if $\vec{r}_y$ is known. This concludes the estimation of the autocorrelation of the input signal.
+
+\section{Unicity of the estimation}
+Since \cref{eq:normal-rx} is used to estimate the autocorrelation of the input signal, we have to make sure that $\mat{R}$ has full column rank. We will do this by inspecting the structure of $\mat{R}$. Since $\mat{R}$ depends on $c_i[n]$ solely, we start by analysing $c_i[n]$.
+
+In the construction of the output of a coset, we saw the output of coset $i$ is an $N$-decimation of the input signal if $c_i[n]=1$ for a single $n$ and otherwise zero. This is exactly what we want, since this matches the methods described in \cref{cha:sampling}. Therefore, assume that $c_i[n]=1$ for $n=n_i$ and otherwise zero. Now consider \cref{eq:cij}. Note that $c_{i,j}[m]=1$ if and only if $c_i[k]=1$ and $\conj{c}_j[k+m]=1$, which requires that $k = n_i$ and $k+m = n_j$. Equivalently, $c_{i,j}[m]=1$ if and only if $m = n_j - n_i$. This means that $c_{i,j}[m]$ consists of a single one. Now consider \cref{eq:ryiyji-R-rx}. Since $c_{i,j}[m]$ consists of a single one, two columns of $\mat{R}_{i,j}$ are linearly independent if they are nonzero. Therefore, if all columns of $\mat{R}$ are nonzero, then all columns are linearly indepedent and $\mat{R}$ has full column rank.
+
+Suppose that the first $N$ columns of $\mat{R}$ are nonzero. Consider \cref{eq:ryiyji-R-rx} in conjunction with \cref{fig:upper-left-Rij}. We see that the structure of $\mat{R}$ repeats itself in a diagonal way every $N$ samples. Therefore, if the first $N$ columns are nonzero, all columns are nonzero and thus $\mat{R}$ has full column rank. The problem now reduces to choosing $c_i[n]$ such that the first $N$ columns of $\mat{R}$ are nonzero.
+
+Consider $c_i[n]$ and $c_j[n]$. This means that $c_{i,j}[m]$ and $c_{j,i}[m]$ exist. We have seen that $c_{i,j}[m]=1$ if and only if $m=n_j-n_i$ and $c_{j,i}[m]=1$ if and only if $m=n_i-n_j$. We make the following observations.
+\begin{enumerate}
+    \item If $n_j-n_i \ge 0$, then \cref{fig:upper-left-Rij} shows that the $n_j-n_i+1$'th column is nonzero. Similarly, if $n_i - n_j \ge 0$, then the $n_i-n_j+1$'th column is nonzero. Either way, the $|n_i - n_j| + 1$'th column is nonzero.
+    \item If $n_j-n_i \le 0$, then \cref{fig:upper-left-Rij} shows that the $N-(n_i-n_j)+1$'th column is nonzero. Similarly, if $n_i - n_j \le 0$, then the $N-(n_j-n_i)+1$'th column is nonzero. Either way, the $N-|n_i-n_j|+1$'th column is nonzero.
+\end{enumerate}
+We require that columns $1$ to $N$ are nonzero. This implies the following statement. If $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of $i$ and $j$ make up $0$ to $N-1$, then all columns of $\mat{R}$ are nonzero and $\mat{R}$ has full column rank. This restriction will be further discussed in \ref{cha:sampling_methods}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \draw [thick] (-0.1,-0.5-3*0.6+0.3) -- (-.1,-.1) -- (.1,-.1);
+
+        \draw (0.5+0*1.5, -0.5-0*0.6) node[red] {$c_{i,j}[0]$};
+        \draw (0.5+1*1.5, -0.5-0*0.6) node[red] {$c_{i,j}[1]$};
+        \draw (0.5+2*1.5, -0.5-0*0.6) node[red] {$\cdots$};
+        \draw (0.5+3*1.5, -0.5-0*0.6) node[red] {$c_{i,j}[N-1]$};
+        \draw (0.5+4*1.5, -0.5-0*0.6) node {$0$};
+        \draw (0.5+5*1.5, -0.5-0*0.6) node {$0$};
+        \draw (0.5+6*1.5, -0.5-0*0.6) node {$\cdots$};
+        % \draw (0.5+7*1.5, -0.5-0*0.6) node {$0$};
+        % \draw (0.5+8*1.5, -0.5-0*0.6) node {$0$};
+
+        \draw (0.5+0*1.5, -0.5-1*0.6) node {$0$};
+        \draw (0.5+1*1.5, -0.5-1*0.6) node[red] {$c_{i,j}[-N+1]$};
+        \draw (0.5+2*1.5, -0.5-1*0.6) node[red] {$\cdots$};
+        \draw (0.5+3*1.5, -0.5-1*0.6) node[red] {$c_{i,j}[-1]$};
+        \draw (0.5+4*1.5, -0.5-1*0.6) node {$c_{i,j}[0]$};
+        \draw (0.5+5*1.5, -0.5-1*0.6) node {$c_{i,j}[1]$};
+        \draw (0.5+6*1.5, -0.5-1*0.6) node {$\cdots$};
+        % \draw (0.5+7*1.5, -0.5-1*0.6) node {$c_{i,j}[N-1]$};
+        % \draw (0.5+8*1.5, -0.5-1*0.6) node {$0$};
+
+        \draw (0.5+0*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+1*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+2*1.5, -0.5-2*0.6) node {$\cdots$};
+        \draw (0.5+3*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+4*1.5, -0.5-2*0.6) node {$0$};
+        \draw (0.5+5*1.5, -0.5-2*0.6) node {$c_{i,j}[-N+1]$};
+        \draw (0.5+6*1.5, -0.5-2*0.6) node {$\cdots$};
+        % \draw (0.5+7*1.5, -0.5-2*0.6) node {$c_{i,j}[-1]$};
+        % \draw (0.5+8*1.5, -0.5-2*0.6) node {$c_{i,j}[0]$};
+
+        \draw (0.5+0*1.5,0.3) node {$1$};
+        \draw (0.5+1*1.5,0.3) node {$2$};
+        \draw (0.5+3*1.5,0.3) node {$N$};
+        \draw (0.5+4*1.5,0.3) node {$N+1$};
+        \draw (0.5+5*1.5,0.3) node {$N+2$};
+        % \draw (0.5+7*1.5,0.3) node {$2N$};
+        % \draw (0.5+8*1.5,0.3) node {$2N+1$};
+    \end{tikzpicture}
+    \caption{Upper left corner of $\mat{R}_{i,j}$. The column numbers are shown and the important elements are highlighted in red.}
+    \label{fig:upper-left-Rij}
+\end{figure}
+
+\chapter{Construction of the matrices}
+\label{sec:reconstruction-generation-algorithm}
+The operation of $\operatorname{toeplitz}$ and $\operatorname{tril}$ is illustrated with two examples.
+\begin{align*}
+    \operatorname{toeplitz}\left(\begin{bmatrix}
+        1 & 2 & 3 & 4
+    \end{bmatrix}\right) = \begin{bmatrix}
+        1 & 2 & 3 & 4 \\
+        2 & 1 & 2 & 3 \\
+        3 & 2 & 1 & 2 \\
+        4 & 3 & 2 & 1
+    \end{bmatrix},
+\end{align*}
+\begin{align*}
+    \operatorname{tril}\left(\begin{bmatrix}
+        1 & 2 & 3 & 4 \\
+        2 & 1 & 2 & 3 \\
+        3 & 2 & 1 & 2 \\
+        4 & 3 & 2 & 1
+    \end{bmatrix}\right) = \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        2 & 1 & 0 & 0 \\
+        3 & 2 & 1 & 0 \\
+        4 & 3 & 2 & 1
+    \end{bmatrix}.
+\end{align*}
+To illustrate the way $\mat{R}_{i,j}$ can be generated efficiently, we consider an example. Suppose that $N=2$ and $L=1$. Then
+\begin{align*}
+    \mat{R}_{i,j} = \begin{bmatrix}
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 \\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] \\
+    \end{bmatrix}.
+\end{align*}
+Now notice that
+\begin{align*}
+    \operatorname{tril}\left[\operatorname{toeplitz}\left(\begin{bmatrix}
+        c_{i,j}[1] & c_{i,j}[0] & c_{i,j}[-1] & 0 & 0 & 0
+    \end{bmatrix}\right)\right] = \\ \begin{bmatrix}
+        c_{i,j}[1] & 0 & 0 & 0 & 0 & 0\\
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 & 0\\
+        c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0\\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0\\
+        0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] \\
+    \end{bmatrix}.
+\end{align*}
+We can construct $\mat{R}_{i,j}$ by omitting several rows and columns. First omit the first $N-1$ rows and last $N-1$ columns. Then
+\begin{align*}
+    \begin{bmatrix}
+        \color{red}c_{i,j}[1] & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}0\\
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0 & \color{red}0\\
+        c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & \color{red}0\\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0 & \color{red}0\\
+        0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & \color{red}0 \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0] & \color{red}c_{i,j}[1] \\
+   \end{bmatrix}   
+\end{align*}
+remains. The red elements represent the omitted elements. Now keep rows $1,N+1,\ldots,2LN+1$. Then
+\begin{align*}
+    \begin{bmatrix}
+        c_{i,j}[0] & c_{i,j}[1] & 0 & 0 & 0\\
+        \color{red}c_{i,j}[-1] & \color{red}c_{i,j}[0] & \color{red}c_{i,j}[1] & \color{red}0 & \color{red}0\\
+        0 & c_{i,j}[-1] & c_{i,j}[0] & c_{i,j}[1] & 0\\
+        \color{red}0 & \color{red}0 & \color{red}c_{i,j}[-1] & \color{red}c_{i,j}[0] & \color{red}c_{i,j}[1] \\
+        0 & 0 & 0 & c_{i,j}[-1] & c_{i,j}[0]\\
+   \end{bmatrix}
+\end{align*}
+remains, which is exactly $\mat{R}_{i,j}$.
+
+
+\end{document}
