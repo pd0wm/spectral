@@ -39,5 +39,13 @@ class File(Source):
         """
         self.data_file.seek((self.offset * self.item_size) % self.length)
         samples = np.fromfile(self.data_file, self.data_type, count=no_samples)
-        self.offset += no_samples
+        self.offset += len(samples)
+
+        if len(samples) != no_samples:
+            diff = no_samples - len(samples)
+            self.data_file.seek((self.offset * self.item_size) % self.length)
+            samples = np.concatenate([samples, np.fromfile(self.data_file, self.data_type, count=diff)])
+
+            self.offset += diff
+
         return samples
