@@ -40,10 +40,10 @@ block_size = N * upscale_factor * L
 
 settings = ss.get_settings_object()
 settings.update({
-    'Pfa': 0.1,
+    'Pfa': 0.02,
     'center_freq': 2.4,  # GHz
     'num_bins': 150,
-    'window_length': 50,
+    'window_length': 100,
     'antenna_gain': 10
 })
 
@@ -52,7 +52,7 @@ if source_type == "usrp":
 elif source_type == "dump":
     source = sc.source.File(dump_file_path)
 elif source_type == "sinusoidal":
-    source = sc.source.ComplexExponential(frequencies, sample_freq, SNR=source_snr)
+    source = sc.source.Sinusoidal(frequencies, sample_freq, SNR=source_snr)
 
 
 # sampler = sc.sampling.Coprime(a, b)
@@ -61,9 +61,9 @@ sampler = sc.sampling.MinimalSparseRuler(N)
 reconstructor = sc.reconstruction.Wessel(L, sampler.get_C())
 # reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
-# detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_Rpinv(), reconstructor.filter_cross_correlation())
+detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_Rpinv(), reconstructor.filter_cross_correlation(), 20)
 
-detector = sc.detection.noise_power()
+# detector = sc.detection.noise_power()
 
 
 # Init queues

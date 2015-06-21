@@ -13,7 +13,7 @@
 \begin{document}
 \chapter{Model - The Core}
 \label{cha:model}
-In this chapter we will discuss the model part of our system. All functionality discussed in this chapter is contained in the \lib{spectral\_core} module. 
+In this chapter we will discuss the model part of our system. All functionality discussed in this chapter is contained in the \lib{spectral\_core} module.
 
 \begin{figure*}[h]
     \centering
@@ -24,7 +24,7 @@ In this chapter we will discuss the model part of our system. All functionality 
     \label{fig:model-diagram}
 \end{figure*}
 
-\cref{fig:model-diagram} shows the model and its components. In this chapter, the various implementations of source, sampling, reconstructions will be discussed. 
+\cref{fig:model-diagram} shows the model and its components. In this chapter, the various implementations of source, sampling, reconstructions will be discussed.
 
 \section{Source}
 \label{sec:source}
@@ -86,7 +86,7 @@ The minimal sparse ruler inherits from the multi-coset sampler. It feeds a solut
 
 \subsection{Coprime sampler}
 \label{sec:coprime-sampler}
-The coprime sampler also inherits from the multi-coset sampler. It generates a number of coprime multiples (see \cref{sec:samplingmethods}) as a set of intervals and feeds that into the multi-coset sampler. It inherits all the other functions from the multi-coset sampler.
+The coprime sampler also inherits from the multi-coset sampler. It generates a number of coprime multiples (see \cref{sec:coprime}) as a set of intervals and feeds that into the multi-coset sampler. It inherits all the other functions from the multi-coset sampler.
 
 \subsection{Hardware coprime}
 \label{sec:hardware-coprime}
@@ -132,9 +132,5 @@ From an implementation perspective, the structure of the pseudo-inverse of the W
     \caption{The UML diagram of the detectors}
     \label{fig:umldetector}
 \end{figure}
-
-\section{Utilities}
-\label{sec:utilities}
-
 
 \end{document}
