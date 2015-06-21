@@ -11,7 +11,7 @@
 In this section we will analyse the different sampling techniques described in the introduction and connect them to our system. Before we move on, the reader must understand the difference between a sampler and a device. A device refers to a physical device, which may employ multiple samplers. A sampler is part of a device, and performs actual sampling of the signal. Remember that the term coset and sampler are used interchangeably. Also keep in mind that everything will be explained conceptually.
 
 \subsection{Circular sparse sampling}
-Circular sparse sampling uses samplers with each the same sampling period $NT$, where $T$ is the sampling period and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
+Circular sparse sampling uses samplers with each the same sampling period $NT$, where $T$ is the period of $x[n]$ and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
 
 \begin{figure}
 \centering
@@ -175,7 +175,7 @@ The grey blocks represent the samples recovered by all samplers of the device. T
 \end{tikzpicture}
 \caption{Conceptual schematic of a circular sparse ruler implementation. There may be an offset between the different decimations.}\label{tkz:sc_circsparseruler}
 \end{figure}
-Here switches represent a sample operation of the input signal $x$. These switches sample simultaneously at the Nyquist frequency. The N$\,\downarrow$ represents an $N$-decimation. As explained in \cref{sec:reconstruction-algorithm}, there may be an offset between the decimations of the different cosets. This yields that the output of every coset is an $N$-decimation of the input signal which may have an offset, similar to the situation depicted in \cref{tkz:circsparseruler} and the description in \cref{sec:reconstruction-algorithm}.
+Here switches represent a sample operation of the input signal $x$. These switches sample simultaneously at the Nyquist frequency. The N$\,\downarrow$ represents an $N$-decimation. As explained in \cref{sec:reconstruction-algorithm}, there may be an offset between the decimations of the different cosets. This yields that the output of every coset is an $N$-decimation of the input signal which may have an offset in time, similar to the situation depicted in \cref{tkz:circsparseruler} and the description in \cref{sec:reconstruction-algorithm}.
 
 \subsection{Collaborative sampling}
 
@@ -545,7 +545,7 @@ Coprime sampling is different from circular sparse sampling and collaborative sa
 \end{figure}
 The choice of the $a$ and $b$ substantially influences the performance of the coprime sampler. This influence will be investigated later in this chapter. 
 
-In \cref{sec:reconstruction-algorithm}, it is assumed that every sampler samples the input signal at the same sampling rate. However, coprime sampling involves two samplers sampling at different rates. Therefore, using the reconstruction algorithm in conjunction with coprime sampling is not trivial. \Cref{tkz:sc_coprime} shows an equivalent hardware implementation, which may be used for reconstruction. This implementation will be further discussed later on. Note that the so called equivalent samplers $u_i$ and $v_i$ are $a b$-decimations of the input signal.
+In \cref{sec:reconstruction-algorithm}, it is assumed that every sampler samples the input signal at the same sampling rate. However, coprime sampling involves two samplers sampling at different rates. Therefore, using the reconstruction algorithm in conjunction with coprime sampling is not trivial. \Cref{tkz:sc_coprime} shows an equivalent hardware implementation, which may be used for reconstruction. This implementation will be further discussed later on. Note that the so called equivalent samplers $u_i$ and $v_i$ yield $a b$-decimations of the input signal.
 
 \begin{figure}
 \centering
