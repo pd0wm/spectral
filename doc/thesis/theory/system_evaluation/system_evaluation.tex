@@ -9,12 +9,11 @@
 \section{Introduction}
 
 \cref{cha:sampling,cha:reconstruction,cha:sampling_methods,cha:detection} have analysed and described several
-sampling, reconstruction and detection techniques. It is in this chapter that we will evaluate their performance such that a discussion and a conclusion can be draw based on the specifications as described \cref{sec:theory-specs}. This chapter will start with an overview of the complete system, to continue with a description of the tests performed to assess the performance of this system. This chapter will end with the results
-of those tests which will be discussed in \cref{cha:discussion_theory}.
+sampling, reconstruction and detection techniques. It is in this chapter that we will evaluate their performance. A discussion and conclusion will be based on the specifications as described \cref{sec:theory-specs}. The chapter will start with an overview of the complete system, to continue with a description of the tests performed to assess the performance of the system. We will end with the results
+of those tests. These results will be further discussed in \cref{cha:discussion_theory}.
 
 \section{Overview}
-A block diagram of the complete system is depicted in \cref{fig:theoretical_overview_system}. Considered options that did not make it into
-the final system are grayed out. 
+A block diagram of the complete system is depicted in \cref{fig:theoretical_overview_system}. Considered options that did not make it into the final system are grayed out. 
 
 \begin{figure}[H]
 \centering
@@ -50,24 +49,21 @@ the final system are grayed out.
 
 \section{Testing}
 To evaluate the performance of our system we will we use an artificial testing signal to test both the reconstructor and the detector.
-Details on this signal generation can be found in \cref{ssec:test_signal}.
+Details on this signal generation can be found the following section.
 
 \subsection{Test signal}\label{ssec:test_signal}
-To construct the testing signal given a desired SNR we take the following steps:
+The test signal will consist of an ideal signal contaminated with noise. The signal power and noise power will be based on a specified signal-to-noise ratio. Given an signal-to-noise ratio, we can construct the testing signal doing as follows:
 
 \begin{enumerate}
-	\item Generate the signal $s[n]$ which is done by generating circular symmetric complex gaussian noise and filtering it such that it represents a bandpass signal with $-0.4\pi \leq \Omega \leq 0.4\pi$. The average power of the signal at frequencies in the passband is chosen such
-	that the required SNR will be met. 
-	\item Generate the additive circular symmetric complex gaussian noise signal $w[n]$ 
-	\item Add $s[n]$ to $w[n]$ to produce the testing signal $x[n]$
+	\item Generate the ideal signal $s[n]$. The signal will consist of filtered circular symmetric complex gaussian noise such that it represents a bandpass signal with $-0.2 \leq f\leq 0.2$, where $f$ denotes the usual relative frequency. The average power of the signal at frequencies in the passband is chosen such that the required SNR will be met. 
+	\item Generate the noise signal $w[n]$, which will be additive circular symmetric complex gaussian noise.
+	\item Add $s[n]$ to $w[n]$ to produce the testing signal $x[n]$.
 \end{enumerate}
 
-
-
 \subsection{Tests}
-There are four parameters of the system, circled in \cref{tkz:test_system}, that will be used in our tests to asses the performance of the system:
+There are four parameters of the system, represented by circles in \cref{tkz:test_system}, that will be used in our tests to assess the performance of the system. The parameters are as follows:
 \begin{enumerate}
-	\item SNR of the input signal.
+	\item The SNR of the input signal.
 	\item The sampler type used to sample the input signal.
 	\item The false alarm probability $p\ss{fa}$ of the detector.
 \end{enumerate}
@@ -99,7 +95,7 @@ There are four parameters of the system, circled in \cref{tkz:test_system}, that
 	\draw   [fill=yellow, opacity=.1] (10,1) ellipse (.5 and .5);
 	\draw   [fill=yellow, opacity=.1] (4,5) ellipse (.5 and .5);
 	\draw   (-3.5,3) ellipse (.5 and .5) node{SNR};
-	\draw  (10,1) ellipse (.5 and .5) node{$P_{fa}$};
+	\draw  (10,1) ellipse (.5 and .5) node{$p_{fa}$};
 	\draw  (4,5) ellipse (.5 and .5) node{Type};
 	\end{tikzpicture}}
 	\caption{Testing the system}\label{tkz:test_system}
@@ -107,28 +103,38 @@ There are four parameters of the system, circled in \cref{tkz:test_system}, that
 
 Our tests will be targeted at
 \begin{enumerate}
-	\item adressing the performance of the reconstruction and feeding it an artificial constructed signal while
+	\item adressing the performance of the reconstruction by feeding it an artificial constructed signal while
 	\begin{enumerate}
-		\item varying the sampling technique used to sample the signal (as described in \cref{cha:sampling_methods});
-		\item varying the compression rate and the oversampling factor (as described in \cref{cha:reconstruction}).
+		\item varying the sampling technique used to sample the signal, described in \cref{cha:sampling_methods} and
+		\item varying the compression rate and the sampling time, described in \cref{cha:reconstruction}.
 	\end{enumerate}
 	By comparing the reconstructed the power spectral density to the power spectral density recovered directly from the constructed test signal, we can evaluate the correctness of reconstruction when used with a specific sampling technique.
-	Furthermore the dependence on the oversampling factor and the compression factor can be evaluated from those test results. 
+	% Furthermore the dependence on the sampling time and the compression factor can be evaluated from those test results. 
 	\item adressing the performance of detection on the reconstructed signal. The energy detector as described in \cref{ssec:ari_ed} will be evaluated by tests that make use of the test signal as described in \cref{ssec:test_signal}. 
-	The detector is applied to the output of the reconstructor while	
+	Detection is applied to the output of the reconstructor while	
 	\begin{enumerate}
-		\item varying the signal-to-noise ratio of the test signal; 
+		\item varying the signal-to-noise ratio of the test signal and
 		\item varying the false alarm probability the detector 
-		should allow;
+		should allow.
 	\end{enumerate}
 
-	The sampling technique is fixed to circular sparse ruler technique. The reason for this is, as we will see shortly, that the performance
-	of the sampling techniques is comparable at the same compression rate.
-	By averaging 5000 runs per setting we can construct estimates of the \emph{receiver operating characteristic curves} (ROC-curves) which plot the detection probability versus the false alarm probability of the detector. From these curves the minimum signal strength and the detectors performance on a random signal can be evaluated. Furthermore the detection performance of the system as a whole can be evaluated by comparing these curves.
+	The sampling technique is fixed to circular sparse sampling. The reason for this is, as we will see shortly, that the dependence of detector's performance on the reconstructor's performance, is such that techniques with equivalent reconstruction performance yield approximately equivalent detection performance. Therefore, we can use the results of the reconstructor to extrapolate the results of the detector.
+
+	By extensive simulation we can construct estimates of the \emph{receiver operating characteristic curves}, which plot the detection probability versus the false alarm probability of the detector. From these curves the minimum signal strength and the detectors performance on a random signal can be evaluated. Furthermore the detection performance of the system as a whole can be evaluated by comparing these curves.
 	\end{enumerate}
 
 \section{Results}
+The performance of the reconstructor is depicted in \cref{fig:plot-nmse-cop,fig:plot-nmse-circ,fig:plot-nmse}, which are accompanied by \cref{tab:sampling-nmse,tab:sampling-nmse-cop,tab:sampling-nmse-circ}. The performance of the detector is depicted in \cref{fig:plot-detector-noise76,fig:plot-detector76,fig:plot-detector-noise69,fig:plot-detector69}. Their results will be evaluated separately. Before we continue, the reader must be aware of the following two concepts.
 
+First, we argued in the introduction the we want to avoid sampling at the Nyquist frequency. It turned out that multi-coset sampling offered a solution to this problem. To evaluate the different sampling techniques, we introduce a quantity called \textit{compression}. Compression is the percentage of samples the sampling technique requires with respect to the samples obtained when sampling at the Nyquist frequency. Therefore, high compression represents an effective sampling technique.
+
+Second, we introduce the normalised mean squared error (NMSE) to asses the performance of the reconstructed power spectral density.\footnote{If $\hat{\text{PSD}}$ represents the estimated power spectral density, then the NMSE is given by $\text{NMSE} = ||\text{PSD} - \hat{\text{PSD}}||/||\text{PSD}||$.} A lower NMSE represents a better reconstruction of the power spectral density.
+
+\subsection{Reconstruction}
+The performance of the reconstruction will by measured by varying the sampling time, where we illustratively assume a Nyquist frequency of \SI{25}{Mhz}, and by varying the sampling technique. These sampling techniques can all achieve different compressions. \cref{fig:plot-nmse-cop} shows the NSME for coprime sampling. We see that the error increases as the compression increases, but decreases as the sampling time increases. A similar observation applies to \cref{fig:plot-nmse-circ}. We see that for a similar compression, circular sparse ruler provides less error than coprime sampling. The precise configuration is described in \cref{tab:sampling-nmse-cop,tab:sampling-nmse-circ}. We see that circular sparse ruler allows for more downsampling, but also requires more samplers. Note that the resolution of the reconstructed spectrums differ. This should be taken into account when comparing the two methods. \cref{fig:plot-nmse} shows three sampling techniques which have equivalent performance. We that their performance gain by increasing the sampling time is equivalent. \cref{tab:sampling-nmse} shows that in the case of equivalent performance, coprime sampling requires the least number of samplers. Also, in that case coprime sampling has the least downsampling, and circular sparse ruler sampling has the highest compression.
+
+\subsection{Detection}
+\cref{fig:plot-detector-noise69,fig:plot-detector69} show the performance of the detector in the case that circular sparse ruler sampling with $69\%$ compression is used. The performance is shown for signals with \SI{-5}{dB}, \SI{0}{dB} and \SI{5}{dB} SNR. The 802.22 IEEE standard shows that a detection probability of $0.9$ can be considered sufficient. We see that in case the noise power is known, signals with approximately \SI{0}{dB} SNR or higher can be detected sufficiently. However, in the case that the noise power has is somewhat uncertain, a detection probability of approximately $0.9$ requires a relatively high false-alarm probability. Finally, if we increase the compression of the used sampling technique, the detection performance deteriorates.
 
 %%%%%% PLOT: ALL SAMPLING METHODS
 \begin{filecontents*}{plots/data-nyq.csv}
@@ -653,7 +659,7 @@ x, y
 			\end{axis}
 		\end{tikzpicture}
 		\caption{The case of no noise power uncertainty}
-		\label{fig:plot-detector}
+		\label{fig:plot-detector76}
 	\end{subfigure}
 	\begin{subfigure}[t]{.4\paperwidth}
 		\centering
@@ -693,12 +699,152 @@ x, y
 			\end{axis}
 		\end{tikzpicture}
 		\caption{The case of \SI{0.1}{dB} noise power uncertainty}
-		\label{fig:plot-detector-noise}
+		\label{fig:plot-detector-noise76}
 	\end{subfigure}
 	}
-	\caption{The detector's receiver operation characteristic}
+	\caption{The detector's receiver operation characteristic. Circular sparse sampling with $76\%$ compression is used.}
 \end{figure}
 
+%%%%%%
+
+
+%%%%%% PLOT: DETECTOR2
+
+\begin{filecontents*}{plots/data-detector2-snr-5-1.csv}
+x, y
+0.021474,0.32638
+0.041823,0.42309
+0.062284,0.48659
+0.081647,0.54171
+0.101,0.58043
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector2-snr-5-2.csv}
+x, y
+8.8372e-05,0.024414
+0.00034419,0.048884
+0.00075349,0.072135
+0.0014698,0.097842
+0.0022512,0.11979
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector2-snr0-1.csv}
+x, y
+0.021549,0.94161
+0.04126,0.956
+0.061907,0.9622
+0.081605,0.96686
+0.1012,0.96985
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector2-snr0-2.csv}
+x, y
+0.00012093,0.73009
+0.00031628,0.79912
+0.00075349,0.83472
+0.0014512,0.85859
+0.0021628,0.87747
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector2-snr5-1.csv}
+x, y
+0.021507,0.99138
+0.042312,0.99293
+0.062512,0.99434
+0.081367,0.99482
+0.099693,0.99513
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector2-snr5-2.csv}
+x, y
+0.00012093,0.97744
+0.00032093,0.98055
+0.00086047,0.98304
+0.0014047,0.98449
+0.0022419,0.98557
+\end{filecontents*}
+
+
+\begin{figure}
+	\centerline{
+	\begin{subfigure}[t]{.4\paperwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+					scaled ticks=false, tick label style={/pgf/number format/fixed},
+					xlabel={$p\ss{fa}$},
+					ylabel={$p\ss{d}$},
+					width=8cm,
+					height=8cm,
+					scale=1,
+					grid=both,
+					axis lines=left,
+					legend entries={\SI{-5}{dB} SnR,\SI{0}{dB} SnR,\SI{5}{dB} SnR},
+					legend cell align=left,
+					% xmin=0.01,
+					% xmax=0.105,
+					ymin=0,
+					ymax=1.05,
+					legend style={at={(6.2cm,0.02)},anchor=south east}
+				]
+			    \addplot [
+				    color=red,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-detector2-snr-5-1.csv};
+			    \addplot [
+				    color=green,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-detector2-snr0-1.csv};
+			    \addplot [
+				    color=blue,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-detector2-snr5-1.csv};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{The case of no noise power uncertainty}
+		\label{fig:plot-detector69}
+	\end{subfigure}
+	\begin{subfigure}[t]{.4\paperwidth}
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+					xlabel={$p\ss{fa}$},
+					ylabel={$p\ss{d}$},
+					width=8cm,
+					height=8cm,
+					scale=1,
+					grid=both,
+					axis lines=left,
+					legend entries={\SI{-5}{dB} SnR,\SI{0}{dB} SnR,\SI{5}{dB} SnR},
+					legend cell align=left,
+					% xmin=0,
+					% xmax=0.12,
+					y tick label style={/pgf/number format/fixed},
+					ymin=0,
+					ymax=1.05,
+					legend style={at={(6.2cm,1cm)},anchor=south east}
+				]
+			    \addplot [
+				    color=red,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-detector2-snr-5-2.csv};
+			    \addplot [
+				    color=green,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-detector2-snr0-2.csv};
+			    \addplot [
+				    color=blue,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-detector2-snr5-2.csv};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{The case of \SI{0.1}{dB} noise power uncertainty}
+		\label{fig:plot-detector-noise69}
+	\end{subfigure}
+	}
+	\caption{The detector's receiver operation characteristic. Circular sparse sampling with $69\%$ compression is used.}
+\end{figure}
 
 %%%%%%
 
