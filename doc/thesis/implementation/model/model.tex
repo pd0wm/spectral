@@ -111,7 +111,7 @@ This class implements an algorithm based on the one described in \cite{ariananda
 
 Optionally a switch can be passed to disable the caching mechanism described in the base class. During the initialisation of the class it builds the $R$-matrix as discussed in \cite{ariananda2012compressive} and computes its pseudo-inverse.
 
-The reconstruct method is implemented by calculating the cross correlations of the non-uniformly sampled input signal. A helper function is defined in the \func{Reconstructor} interface that calculates the cross correlations of the input. To speed up this function the multiple correlations are vectorized into a number of matrix multiplications. The pseudo-inverse is then multiplied by these cross-correlations to reconstruct the signal.
+The reconstruct method is implemented by calculating the cross correlations of the non-uniformly sampled input signal. A helper function is defined in the \\\func{Reconstructor} interface that calculates the cross correlations of the input. To speed up this function the multiple correlations are vectorized into a number of matrix multiplications. The pseudo-inverse is then multiplied by these cross-correlations to reconstruct the signal.
 
 \subsection{Wessel}
 \label{sub:wessel}

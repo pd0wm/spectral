@@ -84,7 +84,7 @@ The protocols themselves define the behaviour of the WebSocket server upon vario
 
 \subsection{Settings}
 \label{sub:websocket_settings}
-The settings WebSocket server uses \lib{Pyro4} to access the model's settings and makes them available to any client that connects at request. The settings WebSocket server is defined by the \class{ServerProtocolControl} protocol class and the \class{ServerProtocolControlFactory} factory class.
+The settings WebSocket server uses \lib{Pyro4} to access the model's settings and makes them available to any client that connects at request. The settings WebSocket server is defined by the \class{ServerProtocolControl} protocol class and the\\ \class{ServerProtocolControlFactory} factory class.
 Whenever a client connects (consecutively triggering \func{onConnect} and \func{onOpen}), the protocol will register itself with the parent factory. It will also send the connected client a message containing every current setting, so that the client may initialise itself correctly. Whenever a client sends an updated setting over the WebSocket connection (triggering \func{onMessage}), the protocol forwards the update via the \lib{Pyro4} settings object and makes sure any other client is notified of the changed setting via the parent factory, which relays the message to all clients that are currently registered by the factory. Finally, when a client disconnects, its associated protocol will unregister itself with the factory before going out of scope.
 
 \subsection{Data}
