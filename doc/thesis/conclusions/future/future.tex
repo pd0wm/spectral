@@ -12,14 +12,33 @@
 
 \begin{document}
 \chapter{Future Work}
-There are a number of options depending on which setting the product is going to be used.
+As of now we have build a flexible software framwork. We split the implementation in part hardware and part product implementations.
 
-\subsection{Distributed}
+\section{Hardware Implementations}
+\label{sec:hardware_implementations}
+There are a number of configurations discussed in \cref{cha:samplingtechniques} that can be applied with different advantages and disadvantages.
+
+\subsection{Circular-sparse-ruler hardware implementation}
+\label{sub:minimal_sparse_ruler_hardware_implementation}
+A hardware implementation of samplers combined in a setup discussed in \cref{sub:ci-circ}. It allows for a high performance setup with optimal reconstruction resolution. This implementation is focussed on high-performance compressive spectrum sensing.
+
+\subsection{Coprime hardware implementation}
+\label{sub:coprime_hardwa}
+A hardware implementation of two samplers in coprime setup discussed in \cref{sec:coprime}. It would involve two samplers syncing on a combined period whilst the individual sample frequencies of the samplers would have a coprime ratio. The use case would involve optimal performance for least cost. Coprime uses non optimal ``ruler'' but is implementable with two samplers.
+
+\section{Product Implementations}
+\label{sec:product_implementations}
+After our visit to the ministry of defence to present our technology, we learned about a number of possible implementations. Besides this the discussions we had during the business plan part of the bachelor graduation project were very constructive in finding possible applications.
+
+\subsection{Distributed network}
 \label{sec:distributed}
-A large part of the processes are ran in parallel. This allows for the system to be ran distributed amongst a number of machines. Alternatively a distributed network of reconstructors can be ran and the results from all these machines can be combined as done in collabarative sensing.
+In the current implementation a lot of multiprocessing is done as discussed in \cref{cha:presenter}. A variation on this is to run a distributed network of nodes all reconstructing part of or the entire spectrum and recombining this on the views. This distributes the computing power amongst several nodes while the views  have to do very little processing. Because there are several libraries available (such as \lib{Pyro4}) which allow to do this kind of computing on a standard LAN network existing networks can be used for this purpose.
+
+A possible product for this could be aboard of naval vessels. In our conversation with defence a need for high speed spectrum sensers was voiced. It could be used for boarding operations where they want to map the communication of the opponent.
 
 \subsection{Mobile platform}
 \label{sub:mobile_platform}
+
 
 
 
