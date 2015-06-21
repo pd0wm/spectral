@@ -15,18 +15,55 @@
 This chapter will discuss the results which were presented in \cref{cha:system_evaluation_theory}. We will also look at (..).
 
 \section{Sampling}
-A comparison between the different sampling techniques has shown that each sampling technique has its own advantage. For example, circular sparse ruler sampling allows for the biggest compression, coprime sampling for the least amount of samplers and collaborative sampling for the usage of multiple devices. We can therefore conclude that the sampling technique must be chosen according to the situation, and there is no `one size which fits them all'.
+Recall that the sampling techniques \emph{must} allow for
+\begin{enumerate}
+    \item correct operation of the detection;
+    \item usage of a single sampling device and
+    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
+\end{enumerate}
+and in addition \emph{should} allow for
+\begin{enumerate}
+    \item sampling as efficient as possible.
+\end{enumerate}
 
-In the investigation of sampling techniques we have given each technique a similar approach. This enables us to not only see the differences between the different sampling techniques, but primarily their similarities. We saw that all three sampling methods are different solutions for the same problem, but have some different extra requirements. Note for example that the circular sparse sampling method, is also a collaborative sampling method for one device. From this observation rises the question if it would be possible to deduce a  general purpose configuration optimiser. The collaborative sampler has for example currently no good algorithm to find configurations for a random amount of devices with a random amount of samplers. This would be considered future work.  
-
-For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth, but collaborative sampling can also be used for other purposes, like increasing accuracy, or sensing in a larger radius. We did not look at these applications and this should be considered future work.
+We have refined three sampling techniques to fit our system. We saw that together, these techniques met their requirements: all techniques where refined to enable correct operation of the detector. Furthermore did both coprime and circular sparse sampling use one device, and collaborative multiple devices. On top of that did we apply recent developments on each sampling technology to optimalise efficiency.  
 
 For circular sparse ruler we constructed solutions with higher performance than proposed in \cite{ariananda2012compressive}. Our method for computing circular sparse ruler solutions is a novelty and contributes to higher efficiency in our product.
 
+A comparison between the different sampling techniques has shown that each sampling technique has its own advantage. For example, circular sparse ruler sampling allows for the biggest compression, coprime sampling for the least amount of samplers and collaborative sampling for the usage of multiple devices. We can therefore conclude that the sampling technique must be chosen according to the situation, and there is no `one size which fits them all'. 
+
+We can also look at the similarities of the different techniques. Note for example that the circular sparse sampling method, is at the same time a collaborative sampling method for one device. From this observation rises the question if it would be possible to deduce a  general purpose configuration optimiser. The collaborative sampler has for example currently no good algorithm to find configurations for a random amount of devices with a random amount of samplers. This would be considered future work.  
+
+For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth, but collaborative sampling can also be used for other purposes, like increasing accuracy, or sensing in a larger radius. We did not look at these applications and this should be considered future work.
+
 \section{Reconstruction}
-For the reconstruction we looked extensively at possible incompletenesses and inconsistencies to find ways to improve the algorithm. Through this research we always came back to the original algorithm. We have to conclude that we could not find improvements for the algorithm, but we can confirm through this research the robustness of the algorithm as a general purpose autocorrelation estimator. We have concluded that the reconstruction algorithm does not introduce new errors or inaccuracies. We did however reformulate the algorithm in such a way that it is more convenient to implement.
+Recall that reconstruction \emph{must} allow for
+\begin{enumerate}
+    \item corrected operation in conjunction with the sampling techniques and
+    \item real-time operation.
+\end{enumerate}
+and in addition \emph{should} be
+\begin{enumerate}
+    \item as efficient as possible and
+    \item as fast as possible.
+\end{enumerate}
+
+We refined the reconstruction in such a way that it is able to work in conjunction with various techniques in real-time. To optimise the reconstruction algorithm we looked extensively at possible incompletenesses and inconsistencies to find ways to improve the algorithm. Through this research we always came back to the original algorithm. Finally we conclude that we did not find room for improvements for the algorithm. But through this research we can verify the robustness of the algorithm as a general purpose autocorrelation estimator. We did however reformulate the algorithm in such a way that it is more convenient to implement in software.
 
 \section{Detection}
+Recall that the detection \emph{must} be such that
+\begin{enumerate}
+    \item detection of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
+    \item the resolution of these frequencies can be specified and
+    \item the correctness of operation can be specified.
+\end{enumerate}
+and in addition, \emph{should} be such that
+\begin{enumerate}
+    \item the resolution of detection can be as high as possible;
+    \item its operation can be as correct as possible and
+    \item its operation is as efficient as possible.
+\end{enumerate}
+
 For the detection on the output of the reconstruction we have looked at two blind detection methods: modified energy detection and CAV. Based on  a theoretical analysis we have decided to adopt the modified energy detector in our final system. This energy detector has been modified to work with our reformulated algorithm.
 Simulations of this detector with input of our reconstruction method has shown that per frequency detection
 can be performed if an accurate estimate of the noise power is known. The detection process is a computationally-wise a simple process and therefore adheres to the efficiency demand as stated in \cref{sec:theory-specs}.  As one might expect from \cref{cha:detection}, the performance of this detector detoriates with decreasing SNR and uncertainties in the noise power estimate. The results as presented in  support this expectation. It can be verified that the detection probability decreases with decreasing SNR; this detector is subject to the \emph{SNR} wall. Furthermore we notice that in presence of noise uncertainty the desired false alarm probability cannot be guaranteed. This also verifies that the detector does not posses the \emph{CFAR} property.
