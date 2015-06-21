@@ -19,7 +19,7 @@ Spectrum sensing consists of determining which frequencies of a signal are occup
 
 The part is divided into several chapters. We start with a detailed description of the approach. Then, we give an overview of the system. In this overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
 
-\section{Specifications}
+\chapter{Specifications}
 \label{sec:theory-specs}
 This section gives a detailed description of the approach. This description consists of specifications according to which the approach will be designed. The specifications are divided into several categories. The categories are then analysed by MoSCoW prioritisation.
 
@@ -41,7 +41,22 @@ The approach \emph{should} enable spectrum sensing such that the application
     \item the spectrum sensing is done as efficient as possible.
 \end{enumerate}
 
-\subsection{Identification}
+\subsection{Reconstruction}
+The reconstruction algorithm \emph{must} be able to
+\begin{enumerate}
+    \item the resolution of these frequencies can be specified and
+    \item the correctness of operation can be specified.
+\end{enumerate}
+
+\subsection{Sampling techniques}
+The techniques used for sampling \emph{must} allow for
+\begin{enumerate}
+    \item correct operation of the detection;
+    \item usage of a single sampling device and
+    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
+\end{enumerate}
+
+\subsection{Detection}
 Identification of signals \emph{must} be such that
 \begin{enumerate}
     \item identification of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
@@ -53,14 +68,6 @@ Identification of signals \emph{should} be such that
     \item the resolution of detection can be as high as possible;
     \item its operation can be as correct as possible and
     \item its operation is as efficient as possible.
-\end{enumerate}
-
-\subsection{Sampling techniques}
-The techniques used for sampling \emph{must} allow for
-\begin{enumerate}
-    \item correct operation of the detection;
-    \item usage of a single sampling device and
-    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
 \end{enumerate}
 
 The sampling techniques \emph{should} allow for

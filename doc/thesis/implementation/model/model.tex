@@ -125,6 +125,14 @@ From an implementation perspective, the structure of the pseudo-inverse of the W
 
 \section{Detection}
 \label{sec:detection}
+A single kind of detector is implemented. The strategy pattern is still used because of possible future additions. All detectors have to implement the interface \func{Detector}, which has a contract for a detect method.
+
+\subsection{Ariananda}
+\label{sub:ariananda}
+The Ariananda detector (named after the writer of \cite{ariananda2012compressive}) implements the theory described in \cref{cha:detection}. It takes $L$, $K$, $C$, $\mat{R}^\dagger$, $\mat{R}_c$, window length and $P_{\text{fa}}$ as its parameters.
+
+It implements the detect method by calculating a threshold (referred to as $\gamma$ in the theory) and comparing that with the PSD of the signal. It makes use of information of the reconstructor and the sampler in question to make a better estimate of a threshold for the signal.
+
 
 \begin{figure}
     \centering
