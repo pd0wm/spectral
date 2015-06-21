@@ -5,7 +5,6 @@ import spectral_core as sc
 import numpy as np
 
 
-@unittest.skip("lel")
 class ArianandaTests(unittest.TestCase):
     def setUp(self):
         self.ref = sp.io.loadmat("./tests/detector_tests/ariananda.mat")

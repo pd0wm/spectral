@@ -127,7 +127,7 @@ def cross_correlate(a, b, maxlag=None, unbiased=True):
         cross_corr = remove_bias(cross_corr)
 
     if maxlag is not None:
-        if not(1 < maxlag < (size + 1)):
+        if not(1 <= maxlag < (size + 1)):
             raise ValueError("maxlag needs to be none or strictly positive and smaller than {}".format(size))
         cross_corr = cross_corr[size - maxlag - 1:size + maxlag]
     return cross_corr
