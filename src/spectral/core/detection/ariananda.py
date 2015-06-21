@@ -1,6 +1,6 @@
 from .detector import Detector
 import numpy as np
-import spectral.core as sc
+import spectral as spec
 import scipy as sp
 
 
@@ -20,16 +20,16 @@ class Ariananda(Detector):
         self.N = self.C.shape[1]
         self.rc = filter_correlations
         self.R_pinv = R_pinv
-        R_pinv_h = sc.hermitian(R_pinv)
+        R_pinv_h = spec.core.hermitian(R_pinv)
         C_ry = self.generate_Cry()
         C_sx = self.generate_Csx(C_ry, self.R_pinv, R_pinv_h)
         self.triangle = np.diag(np.abs(C_sx))
         self.qinv = sp.stats.norm.isf(self.Pfa)
         ry_exp = self.generate_ryexp()
-        self.psd_exp = np.abs(sc.fft(self.R_pinv.dot(ry_exp)))
+        self.psd_exp = np.abs(spec.core.fft(self.R_pinv.dot(ry_exp)))
 
     def detect(self, rx):
-        psd = np.abs(sc.fft(rx))
+        psd = np.abs(spec.core.fft(rx))
         sigma = self.estimate_sigma(psd)
         threshold = self.calc_threshold(sigma)
         return psd > threshold
@@ -42,7 +42,7 @@ class Ariananda(Detector):
 
     def generate_Csx(self, C_ry, R_pinv, R_pinv_h):
         dft = sp.linalg.dft(self.R_pinv.shape[0])
-        C_sx = dft.dot(self.R_pinv).dot(C_ry).dot(R_pinv_h).dot(sc.hermitian(dft))
+        C_sx = dft.dot(self.R_pinv).dot(C_ry).dot(R_pinv_h).dot(spec.core.hermitian(dft))
         return C_sx
 
     def generate_Cry(self):

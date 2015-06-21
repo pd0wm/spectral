@@ -1,5 +1,4 @@
 from .reconstructor import Reconstructor
-import spectral.core as sc
 import numpy as np
 import scipy as sp
 

@@ -1,3 +1,1 @@
-from . import core
-from . import supervisor
-from . import web
+__all__ = ['core', 'supervisor', 'web']

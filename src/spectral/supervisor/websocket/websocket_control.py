@@ -1,5 +1,5 @@
 import json
-import spectral.supervisor as ss
+import spectral as spec
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 
@@ -9,13 +9,13 @@ class ServerProtocolControl(WebSocketServerProtocol):
     WebSocket protocol for processing configuration data. The protocol describes
     how various connection events should be handled so that each connected
     is able to modify system settings and gets notified of changes that other
-    clients make. 
+    clients make.
     """
 
     factory = None
 
     def __init__(self):
-        self.settings = ss.get_settings_object()
+        self.settings = spec.supervisor.get_settings_object()
         WebSocketServerProtocol.__init__(self)
 
     def onOpen(self):
