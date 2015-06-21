@@ -1,9 +1,9 @@
-.. spectral_core documentation master file, created by
+.. spectral.core documentation master file, created by
    sphinx-quickstart on Sat Jun 20 15:23:29 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to spectral_core's documentation!
+Welcome to spectral.core's documentation!
 =========================================
 
 Contents:
@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 4
 
-   spectral_core
+   spectral.core
 
 
 Indices and tables

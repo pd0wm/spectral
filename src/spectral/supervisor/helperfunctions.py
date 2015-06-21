@@ -1,4 +1,4 @@
-import spectral_supervisor as ss
+import spectral.supervisor as ss
 import sys
 import Pyro4
 from twisted.python import log

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import spectral_core as sc
-import spectral_supervisor as ss
+import spectral.core as sc
+import spectral.supervisor as ss
 import argparse
 import time
 import sys

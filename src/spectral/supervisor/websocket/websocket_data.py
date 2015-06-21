@@ -1,5 +1,5 @@
 import json
-import spectral_supervisor as ss
+import spectral.supervisor as ss
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 

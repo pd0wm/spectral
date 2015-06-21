@@ -1,6 +1,6 @@
 from .source import Source
 import numpy as np
-import spectral_core as sc
+import spectral.core as sc
 
 
 class SimulatedSource(Source):
