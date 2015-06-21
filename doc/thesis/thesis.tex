@@ -24,9 +24,9 @@
 
 \mainmatter
 \subimport{introduction/}{introduction}
-\subimport{introduction/}{specifications}
+%\subimport{introduction/}{specifications}
 \subimport{problem_statement/}{problem_statement}
-
+\subimport{similar_research/}{similar_research}
 \part{Theory}
 \label{prt:theory}
 \subimport{theory/}{theory}
@@ -38,11 +38,14 @@
 \part{Observations and Conclusion}
 \subimport{conclusions/}{conclusions}
 
+\clearpage
 % \backmatter
-\bookmarksetup{startatroot}
-\pagenumbering{Roman}
+%\bookmarksetup{startatroot}
+
 \printbibliography
 
+\clearpage
+\pagenumbering{Roman}
 \subimport{appendix/}{appendix}
 
 \end{document}

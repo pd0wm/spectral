@@ -1,0 +1,26 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\title{Compressive Sensing - An Overview}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+
+\chapter{Similar research}
+
+Although the concept of a Cognitive Radio network is still at a conceptual stage, compressive sampling has been researched in for example 
+\cite{candes2007sparsity,candes2006robust,zhang2008theory,candes2008introduction}. Furthermore, recent developments have introduced techniques to perform compressive wideband sensing by noticing that in cognitive radio the signal content is not of interest, only its presence in the spectrum \cite{ariananda2012compressive,ariananda2014cooperative}. 
+
+The sampling techniques to sample signals at sub-nyquist frequencies can be found in \cite{pal2011coprime,ariananda2011multicoset,lexa2011multi} and provide us with information on how to sample signals that can serve as the input for compressive spectrum sensing algorithms.
+
+Detection of signals in general is a mature field, and lots of information can be found in textbooks concering detection, for example \cite{couch2013digital,kay1998fundamentals}. Detection for use in cognitive radio, is still an active area of research. A recent overview of techniques for spectrum sensing as a whole for use in Cognitive Radio is given by \cite{axell2012spectrum}. Other detection methods for use in cognitive radio can be found in \cite{han2013novel,zheng2009spectrum}.
+
+Although there is similar theoretical research available, we have only found a few details about practical implementations, which also motivates the distinction between the theoretical aspect and implementation in this thesis.   
+
+\end{document}

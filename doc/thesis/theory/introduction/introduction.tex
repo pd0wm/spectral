@@ -12,95 +12,15 @@
 
 \begin{document}
 
-\section{Introduction}
-In this part, we develop an approach to enable high-performance real-time wideband spectrum sensing. More specifically, we develop techniques which are implemented in various modules of the toolkit.
+\lettrine[lines=3]{N}{oise} is omnipresent. Even in the presence of signals, noise always accompanies. The distinction of noise and signals forms an alluring problem; can good be distincted from evil? One often asks where signals prevail in the ocean of noise. But this ocean is wide, as wide as the spectrum of every observed signal. And we do not have the power to sail this whole ocean. Therefore, we must be smart.
 
-Spectrum sensing consists of determining which frequencies of a signal are occupied with signals distinct from noise. Our approach, which we consider to be a system, enables to determine these frequencies. Therefore, the input to our system consists of an arbitrary signal and the output is which frequencies of this signal are occupied by signals distinct from noise. We will not only consider signals from a single source, but also consider the same signal observed by multiple sources. These sources all observe the same signal by sampling this signal. So, in summary, our system will be able to combine the information obtained by a single or multiple sources all sampling the sample signal, and will then be able to determine which frequencies of this signal are occupied by signals distinct from noise.
+% \section{Introduction}
+In the context of the spectrum of a signal, it is often asked which frequencies are occupied, and which are not. To solve this problem, one has to sense the spectrum. Spectrum sensing consists of determining which frequencies of a signal are occupied, and which are not. An occupied frequency means that it contains a signal distinct from noise. Therefore, the following problem arises. Given a signal, can we determine which frequencies of that signal are occupied with signals distinct from noise? In the introduction, we have seen that this question is asked in many applications.
 
-The part is divided into several chapters. We start with a detailed description of the approach. Then, we give an overview of the system. In this overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
+This question, however, is an answered question. By means of sampling and analysing the spectrum, one provides an answer. But this only works for frequencies limitedly far apart. It turns out that for frequencies far apart, spectrum sensing requires very expensive hardware. And so a new question arises. Can we efficiently spectrum sense in the case of frequencies very far apart? Wideband spectrum sensing consists of answering this very question. One tries to determine which frequencies are occupied in a very wide band.
 
-\chapter{Specifications}
-\label{sec:theory-specs}
-This section gives a detailed description of the approach. This description consists of specifications according to which the approach will be designed. The specifications are divided into several categories. The categories are then analysed by MoSCoW prioritisation.
+Easy, it turns out to be not. Namely, wideband spectrum sensing is often done in a real-time setting. For example, we have seen that wideband spectrum sensing is essential in dynamic spectrum allocation. And it turns out, there is no definitive answer yet.
 
-\subsection{General}
-The approach \emph{must} enable spectrum sensing such that the application
-\begin{enumerate}
-    \item is able to identify at which frequencies signals are present, where signals
-    \begin{enumerate}
-        \item can be any signal distinct from noise and
-        \item can have any reasonable signal strength;
-    \end{enumerate}
-    \item is able to sense any reasonably sized bandwidth and
-    \item the spectrum sensing is done in real-time.
-\end{enumerate}
-
-The approach \emph{should} enable spectrum sensing such that the application
-\begin{enumerate}
-    \item is able to sense very large bandwidths and
-    \item the spectrum sensing is done as efficient as possible.
-\end{enumerate}
-
-\subsection{Reconstruction}
-The reconstruction algorithm \emph{must} be able to
-\begin{enumerate}
-    \item the resolution of these frequencies can be specified and
-    \item the correctness of operation can be specified.
-\end{enumerate}
-
-\subsection{Sampling techniques}
-The techniques used for sampling \emph{must} allow for
-\begin{enumerate}
-    \item correct operation of the detection;
-    \item usage of a single sampling device and
-    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
-\end{enumerate}
-
-\subsection{Detection}
-Identification of signals \emph{must} be such that
-\begin{enumerate}
-    \item identification of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
-    \item the resolution of these frequencies can be specified and
-    \item the correctness of operation can be specified.
-\end{enumerate}
-Identification of signals \emph{should} be such that
-\begin{enumerate}
-    \item the resolution of detection can be as high as possible;
-    \item its operation can be as correct as possible and
-    \item its operation is as efficient as possible.
-\end{enumerate}
-
-The sampling techniques \emph{should} allow for
-\begin{enumerate}
-    \item sampling as efficient as possible.
-\end{enumerate}
-
-
-
-% Compressive sensing is a subject that has made some important improvements in recent years. D.Ariananda and G.Leus published a paper in 2012 that proposed a new method in compressive sampling. When calculating the power spectral density of a signal, a lot of information is lost during the process. This paper exploits this fact by sampling in such a way, that only the information required to calculate the power spectral density is acquired. This allows for much less samples than Nyquist.
-
-% Compressive sensing is an active area of research \textbf{meer}. Most algorithms are based on L1-techniques and try to recover the spectrum of the signal, and therefore assume that the signal is \emph{sparse} in the Fourier domain. Recent developments \textbf{papers van leus en ariananda hier} have shown that it is possible to reconstruct the power spectral density instead of the spectrum without the assumption of sparsity.
-
-% This thesis targets a accessible theoretical description of the compressive sensing system implemented during
-
-% Main product: Extendable Toolkit for High-Performance Spectrum Sensing
-
-% methode om high-performance te spectrum sensen
-
-
-
-% Method which describes
-
-% - spectrum sensing
-% - psd
-% - detection
-% - sampling methods
-% - high-performance
-% - real-time
-
-
-
-% - uitleg hoofdstukken
-% - kort systeemoverzicht + tikz
+In this part, we develop an approach to enable high-performance real-time wideband spectrum sensing. The part is divided into several chapters. We start with a detailed description of our approach, which we consider to be a system. Then, we give an overview of this system. In the overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
 
 \end{document}

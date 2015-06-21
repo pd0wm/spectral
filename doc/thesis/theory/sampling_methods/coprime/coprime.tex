@@ -7,10 +7,10 @@
 \begin{document}
 
 \subsection{Coprime sampling}\label{sec:coprime}
-As we argued before, the reconstuctor is not designed to process two signals sampled by coprime sampling. This yields that some preprocessing is necessary. The idea is to break the signal sampled by coprime sampling into many different signals which seem to be sampled uniformly. More specifically, we break the signals of the two different samplers with sampling periods $aT$ and $bT$ into artificial signals with sampling period $abT$. This is illustrated in \cref{tkz:sc_coprime,tkz:pre-coprime}.
+As we argued before, the algorithm design in \cref{cha:reconstruction} is not designed to process two signals sampled by coprime sampling. This yields that some preprocessing is necessary. The idea is to break the signal sampled by coprime sampling into many different signals which seem to be sampled uniformly. More specifically, we break the signals of the two different samplers with sampling periods $aT$ and $bT$ into artificial signals with sampling period $abT$. This is illustrated in \cref{tkz:sc_coprime,tkz:pre-coprime}.
 
 \begin{figure}
-\centering
+\centerline{
 \begin{tikzpicture}
 \draw  [fill=gray](-1.5,0.5) rectangle (-1,0);
 \draw  (-1,0.5) rectangle (-0.5,0);
@@ -32,8 +32,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,0.5) rectangle (7.5,0);
 \draw  [fill=gray](7.5,0.5) rectangle (8,0);
 \draw  (8,0.5) rectangle (8.5,0);
-
-
 \draw  [fill=orange](-1.5,-1) rectangle (-1,-1.5);
 \draw  (-1,-1) rectangle (-0.5,-1.5);
 \draw  (-0.5,-1) rectangle (0,-1.5);
@@ -74,8 +72,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-1.5) rectangle (7.5,-2);
 \draw  (7.5,-1.5) rectangle (8,-2);
 \draw  (8,-1.5) rectangle (8.5,-2);
-
-
 \draw  [fill=orange](-1.5,-3) rectangle (-1,-3.5);
 \draw  (-1,-3) rectangle (-0.5,-3.5);
 \draw  (-0.5,-3) rectangle (0,-3.5);
@@ -96,8 +92,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-3) rectangle (7.5,-3.5);
 \draw  (7.5,-3) rectangle (8,-3.5);
 \draw  (8,-3) rectangle (8.5,-3.5);
-
-
 \draw  (-1.5,-3.5) rectangle (-1,-4);
 \draw  (-1,-3.5) rectangle (-0.5,-4);
 \draw  (-0.5,-3.5) rectangle (0,-4);
@@ -118,7 +112,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-3.5) rectangle (7.5,-4);
 \draw  [fill=orange](7.5,-3.5) rectangle (8,-4);
 \draw  (8,-3.5) rectangle (8.5,-4);
-
 \draw  (-1.5,-4) rectangle (-1,-4.5);
 \draw  (-1,-4) rectangle (-0.5,-4.5);
 \draw  (-0.5,-4) rectangle (0,-4.5);
@@ -139,9 +132,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-4) rectangle (7.5,-4.5);
 \draw  (7.5,-4) rectangle (8,-4.5);
 \draw  (8,-4) rectangle (8.5,-4.5);
-
-
-% 
 \draw (-1.5,-4.5) rectangle (-1,-5);
 \draw  (-1,-4.5) rectangle (-0.5,-5);
 \draw  (-0.5,-4.5) rectangle (0,-5);
@@ -162,9 +152,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-4.5) rectangle (7.5,-5);
 \draw  (7.5,-4.5) rectangle (8,-5);
 \draw  (8,-4.5) rectangle (8.5,-5);
-
-
-
 \draw  (-1.5,-5) rectangle (-1,-5.5);
 \draw  (-1,-5) rectangle (-0.5,-5.5);
 \draw  (-0.5,-5) rectangle (0,-5.5);
@@ -185,11 +172,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-5) rectangle (7.5,-5.5);
 \draw  (7.5,-5) rectangle (8,-5.5);
 \draw  (8,-5) rectangle (8.5,-5.5);
-
-
-
-
-
 \draw  [fill=green](-1.5,-5.5) rectangle (-1,-6);
 \draw  (-1,-5.5) rectangle (-0.5,-6);
 \draw  (-0.5,-5.5) rectangle (0,-6);
@@ -210,7 +192,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-5.5) rectangle (7.5,-6);
 \draw  (7.5,-5.5) rectangle (8,-6);
 \draw  (8,-5.5) rectangle (8.5,-6);
-
 \draw  (-1.5,-6) rectangle (-1,-6.5);
 \draw  (-1,-6) rectangle (-0.5,-6.5);
 \draw  (-0.5,-6) rectangle (0,-6.5);
@@ -231,7 +212,6 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-6) rectangle (7.5,-6.5);
 \draw  (7.5,-6) rectangle (8,-6.5);
 \draw  (8,-6) rectangle (8.5,-6.5);
-
 \draw  (-1.5,-6.5) rectangle (-1,-7);
 \draw  (-1,-6.5) rectangle (-0.5,-7);
 \draw  (-0.5,-6.5) rectangle (0,-7);
@@ -252,18 +232,28 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \draw  (7,-6.5) rectangle (7.5,-7);
 \draw  (7.5,-6.5) rectangle (8,-7);
 \draw  (8,-6.5) rectangle (8.5,-7);
-
 \node (v1) at (3.5,0) {};
 \node (v2) at (3.5,-1) {};
 \draw  [>=latex,->](v1) edge (v2);
-
 \node (v3) at (3.5,-2) {};
 \node (v4) at (3.5,-3) {};
 \draw  [>=latex,->](v3) edge (v4);
-
-
-\end{tikzpicture}
-\caption{Preproccesing signal sampled by coprime sampling}\label{tkz:pre-coprime}
+\draw (-2,0.25) node {$x[n]$};
+\draw (-2,0.25-1.5) node {$y_1[n]$};
+\draw (-2,0.25-1.5-0.5) node {$y_2[n]$};
+\draw (-2,0.25-3.5) node {$y_1[n]$};
+\draw (-2,0.25-3.5-0.5) node {$y_2[n]$};
+\draw (-2,0.25-3.5-1) node {$y_3[n]$};
+\draw (-2,0.25-3.5-1.5) node {$y_4[n]$};
+\draw (-2,0.25-3.5-2) node {$y_5[n]$};
+\draw (-2,0.25-3.5-2.5) node {$y_6[n]$};
+\draw (-2,0.25-3.5-3) node {$y_7[n]$};
+\draw (-2,0.25-3.5-3.5) node {$y_8[n]$};
+\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt]
+(-2.5,-4.5-4.5+2) -- (-2.5,-0.5-4.5+2) node [black,midway,xshift=-2cm] 
+{Artificial samplers};
+\end{tikzpicture}}
+\caption{Preproccesing of a signal sampled by coprime sampling}\label{tkz:pre-coprime}
 \end{figure}
 
 In \cref{tkz:pre-coprime}, the grey blocks represent the samples recovered by the coprime sampling device. The orange blocks represent the samples that are recoverd by the sampler with sampling period $aT$, and the green blocks represent the samples that are recovered by the sampler with sampling period $bT$. Finally, the bottom block shows how the the orange and greens blocks are split across many artificial signals. These artificial signals represent samplers with an uniform sampling period. Therefore, these artificial samplers make reconstruction possible.
