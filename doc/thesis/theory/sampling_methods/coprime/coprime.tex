@@ -7,7 +7,7 @@
 \begin{document}
 
 \subsection{Coprime sampling}\label{sec:coprime}
-As we argued before, the reconstuctor is not designed to process two signals sampled by coprime sampling. This yields that some preprocessing is necessary. The idea is the break the signal sampled by coprime sampling into many different signals which are sampled conventionally. More specifically, we break the signals of the two different samplers with sampling period numbers $aT$ and $bT$ into samplers with sampling period $abT$. This is illustrated in \cref{tkz:sc_coprime,tkz:pre-coprime}.
+As we argued before, the reconstuctor is not designed to process two signals sampled by coprime sampling. This yields that some preprocessing is necessary. The idea is to break the signal sampled by coprime sampling into many different signals which seem to be sampled uniformly. More specifically, we break the signals of the two different samplers with sampling periods $aT$ and $bT$ into artificial signals with sampling period $abT$. This is illustrated in \cref{tkz:sc_coprime,tkz:pre-coprime}.
 
 \begin{figure}
 \centering
@@ -266,7 +266,7 @@ As we argued before, the reconstuctor is not designed to process two signals sam
 \caption{Preproccesing signal sampled by coprime sampling}\label{tkz:pre-coprime}
 \end{figure}
 
-In \cref{tkz:pre-coprime}, the grey blocks represent the samples recovered by the coprime sampling device. The orange blocks represent the samples that are recoverd by the sampler with sampling period $a$, and the green blocks represent the samples that are recovered by the sampler with sampling period $n$. Finally, the bottom block shows how the the orange and greens blocks are split across many artificial signals. These artificial signals represent samplers which sample conventionally. Therefore, these artificial sampler make reconstruction possible.
+In \cref{tkz:pre-coprime}, the grey blocks represent the samples recovered by the coprime sampling device. The orange blocks represent the samples that are recoverd by the sampler with sampling period $aT$, and the green blocks represent the samples that are recovered by the sampler with sampling period $bT$. Finally, the bottom block shows how the the orange and greens blocks are split across many artificial signals. These artificial signals represent samplers with an uniform sampling period. Therefore, these artificial samplers make reconstruction possible.
 
 Coprime sampling is dicussed more carefully in \cref{ap:circ-ruler}.
 \end{document}
