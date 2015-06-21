@@ -15,13 +15,13 @@
 \section{Introduction}
 In this part, we develop an approach to enable high-performance real-time wideband spectrum sensing. More specifically, we develop techniques which are implemented in various modules of the toolkit.
 
-Spectrum sensing consists of determining which frequencies of a signal are occupied with signals distinct from noise. Our approach, which we consider to be a system, enables to determine these frequencies. Therefore, the input to our system consists of an arbitrary signal and the output is which frequencies of this signal are occupied by signals distinct from noise. We will not only consider signals from a single source, but also consider the same signal observed by multiple sources. These sources all observe the same signal by sampling this signal. So, in summary, our system will be able to combine the information obtained by a single or multiple sources all sampling the sample signal, and will then be able to determine which frequencies of this signal are occupied by signals distinct from noise. 
+Spectrum sensing consists of determining which frequencies of a signal are occupied with signals distinct from noise. Our approach, which we consider to be a system, enables to determine these frequencies. Therefore, the input to our system consists of an arbitrary signal and the output is which frequencies of this signal are occupied by signals distinct from noise. We will not only consider signals from a single source, but also consider the same signal observed by multiple sources. These sources all observe the same signal by sampling this signal. So, in summary, our system will be able to combine the information obtained by a single or multiple sources all sampling the sample signal, and will then be able to determine which frequencies of this signal are occupied by signals distinct from noise.
 
-The part is divided into several chapters. We start with a detailled description of the approach. Then, we give an overview of the system. In this overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
+The part is divided into several chapters. We start with a detailed description of the approach. Then, we give an overview of the system. In this overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
 
 \section{Specifications}
 \label{sec:theory-specs}
-This section gives a detailled description of the approach. This description consists of specifications according to which the approach will be designed. The specifications are divided into several categories. The categories are then analysed by MoSCoW prioritisation.
+This section gives a detailed description of the approach. This description consists of specifications according to which the approach will be designed. The specifications are divided into several categories. The categories are then analysed by MoSCoW prioritisation.
 
 \subsection{General}
 The approach \emph{must} enable spectrum sensing such that the application
@@ -42,7 +42,7 @@ The approach \emph{must} enable spectrum sensing such that the application
 \subsection{Identification}
 Identification of signals \emph{must} be such that
 \begin{enumerate}
-    \item idenfication of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
+    \item identification of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
     \item the resolution of these frequencies can be specified and
     \item the correctness of operation can be specified.
 \end{enumerate}
@@ -72,7 +72,7 @@ The sampling techniques \emph{should} allow for
 
 % Compressive sensing is an active area of research \textbf{meer}. Most algorithms are based on L1-techniques and try to recover the spectrum of the signal, and therefore assume that the signal is \emph{sparse} in the Fourier domain. Recent developments \textbf{papers van leus en ariananda hier} have shown that it is possible to reconstruct the power spectral density instead of the spectrum without the assumption of sparsity.
 
-% This thesis targets a accessible theoretical description of the compressive sensing system implemented during 
+% This thesis targets a accessible theoretical description of the compressive sensing system implemented during
 
 % Main product: Extendable Toolkit for High-Performance Spectrum Sensing
 
@@ -80,7 +80,7 @@ The sampling techniques \emph{should} allow for
 
 
 
-% Method which describes 
+% Method which describes
 
 % - spectrum sensing
 % - psd
