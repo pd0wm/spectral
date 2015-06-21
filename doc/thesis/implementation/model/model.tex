@@ -96,6 +96,13 @@ The hardware coprime sampler uses two input sample vectors, with a different num
 \label{sec:reconstruction}
 Two different kind of reconstruction methods are implemented. One is similar to the one specified in \cite{ariananda2012compressive} and the other is discussed in \cref{prt:theory} of this thesis. Both reconstructors implement the interface \class{Reconstructor}, which has a contract for a reconstruct-method\footnote{Meaning they should implement such a method.}, which is depicted by the UML-diagram in \cref{fig:umlreconstructor}.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{./figures/classes_reconstruction.eps}
+    \caption{The UML diagram of the reconstructors}
+    \label{fig:umlreconstructor}
+\end{figure}
+
 Both classes make use of shared functionality to calculate a pseudo-inverse. This is a wrapper around \lib{SciPy}'s \func{pinv}. Because this operation is quite time-consuming for larger systems, a caching mechanism was introduced to lower start-up times.
 
 \subsection{CrossCorrelation}
@@ -115,13 +122,6 @@ Similar to the other reconstructor implementation, a switch to disable the cachi
 The reconstruct method is implemented by calculating the cross correlations (again) of the non-uniformly sampled input and multiplying it with the pseudo-inverse.
 
 From an implementation perspective, the structure of the pseudo-inverse of the Wessel algorithm maps better on the data structures of \lib{NumPy}. \lib{NumPy}'s basic array data structures are in row-major order\footnote{This is the standard way of saving an array in C, two notable exceptions that save their arrays in column major order are \matlab{} and Fortran. Column major order is often called Fortran style.}. The final phase of both reconstruction steps is reshaping the cross-correlation matrix to a single column vector and multiplying it with the pseudo-inverse. This operation is more memory efficient in the Wessel reconstructor.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{./figures/classes_reconstruction.eps}
-    \caption{The UML diagram of the reconstructors}
-    \label{fig:umlreconstructor}
-\end{figure}
 
 \section{Detection}
 \label{sec:detection}

@@ -21,9 +21,9 @@ A block diagram of the complete system is depicted in \cref{fig:theoretical_over
 \draw  (-2,3) rectangle (0,2) node[pos=.5]{\scriptsize Circular sparse};
 \draw  (-2,1.5) rectangle (0,0.5) node[pos=.5]{\scriptsize Collaborative};
 \draw  (-2,0) rectangle (0,-1) node[pos=.5]{\scriptsize Coprime};
-\draw  (1.5,3) rectangle (3.5,2) node[text width=5cm, align=center,pos=.5]{\scriptsize $r_x$\\ reconstruction};
+\draw  (1.5,3) rectangle (3.5,2) node[text width=5cm, align=center,pos=.5]{\scriptsize $r_x[m]$\\ reconstruction};
 % \draw  [fill=lightgray] (1.5,0) rectangle (3.5,-1) node[text width=5cm, align=center,pos=.5]{\scriptsize $r_x$\\ reconstruction};
-\draw  [fill=lightgray](1.5,1.5) rectangle (3.5,0.5) node[text width=5cm, align=center,pos=.5]{\scriptsize $\ell_1$-based\\ reconstruction};
+\draw  [fill=lightgray](1.5,1.5) rectangle (3.5,0.5) node[text width=5cm, align=center,pos=.5]{\scriptsize $x[n]$\\ reconstruction};
 \draw  (3.8,3) rectangle (5.8,2) node[text width=5cm, align=center,pos=.5]{\scriptsize Modified\\\tiny energy detection};
 \draw  [fill=lightgray] (3.8,1.5) rectangle (5.8,0.5) node[text width=5cm, align=center,pos=.5]{\scriptsize Conventional\\\tiny energy detection};
 \draw  [fill=lightgray](3.8,0) rectangle (5.8,-1) node[pos=.5]{\scriptsize CAV};
@@ -52,7 +52,7 @@ To evaluate the performance of our system we will we use an artificial testing s
 Details on this signal generation can be found the following section.
 
 \subsection{Test signal}\label{ssec:test_signal}
-The test signal will consist of an ideal signal contaminated with noise. The signal power and noise power will be based on a specified signal-to-noise ratio. Given an signal-to-noise ratio, we can construct the testing signal doing as follows:
+The test signal will consist of an ideal signal contaminated with noise. The signal power and noise power will be based on a specified signal-to-noise ratio. Given a signal-to-noise ratio, we can construct the testing signal by doing as follows:
 
 \begin{enumerate}
 	\item Generate the ideal signal $s[n]$. The signal will consist of filtered circular symmetric complex gaussian noise such that it represents a bandpass signal with $-0.2 \leq f\leq 0.2$, where $f$ denotes the usual relative frequency. The average power of the signal at frequencies in the passband is chosen such that the required SNR will be met. 
@@ -118,7 +118,7 @@ Our tests will be targeted at
 		should allow.
 	\end{enumerate}
 
-	The sampling technique is fixed to circular sparse sampling. The reason for this is, as we will see shortly, that the dependence of detector's performance on the reconstructor's performance, is such that techniques with equivalent reconstruction performance yield approximately equivalent detection performance. Therefore, we can use the results of the reconstructor to extrapolate the results of the detector.
+	The sampling technique is fixed to circular sparse sampling. The reason for this is that the dependence of detector's performance on the reconstructor's performance, is such that techniques with equivalent reconstruction performance yield approximately equivalent detection performance. Therefore, we can use the results of the reconstructor to extrapolate the results of the detector.
 
 	By extensive simulation we can construct estimates of the \emph{receiver operating characteristic curves}, which plot the detection probability versus the false alarm probability of the detector. From these curves the minimum signal strength and the detectors performance on a random signal can be evaluated. Furthermore the detection performance of the system as a whole can be evaluated by comparing these curves.
 	\end{enumerate}
@@ -128,13 +128,15 @@ The performance of the reconstructor is depicted in \cref{fig:plot-nmse-cop,fig:
 
 First, we argued in the introduction the we want to avoid sampling at the Nyquist frequency. It turned out that multi-coset sampling offered a solution to this problem. To evaluate the different sampling techniques, we introduce a quantity called \textit{compression}. Compression is the percentage of samples the sampling technique requires with respect to the samples obtained when sampling at the Nyquist frequency. Therefore, high compression represents an effective sampling technique.
 
-Second, we introduce the normalised mean squared error (NMSE) to asses the performance of the reconstructed power spectral density.\footnote{If $\hat{\text{PSD}}$ represents the estimated power spectral density, then the NMSE is given by $\text{NMSE} = ||\text{PSD} - \hat{\text{PSD}}||/||\text{PSD}||$.} A lower NMSE represents a better reconstruction of the power spectral density.
+Second, we introduce the normalised mean squared error (NMSE) to assess the performance of the reconstructed power spectral density.\footnote{If $\hat{\text{PSD}}$ represents the estimated power spectral density, then the NMSE is given by $\text{NMSE} = ||\text{PSD} - \hat{\text{PSD}}||/||\text{PSD}||$.} A lower NMSE represents a better reconstruction of the power spectral density.
 
 \subsection{Reconstruction}
-The performance of the reconstruction will by measured by varying the sampling time, where we illustratively assume a Nyquist frequency of \SI{25}{Mhz}, and by varying the sampling technique. These sampling techniques can all achieve different compressions. \cref{fig:plot-nmse-cop} shows the NSME for coprime sampling. We see that the error increases as the compression increases, but decreases as the sampling time increases. A similar observation applies to \cref{fig:plot-nmse-circ}. We see that for a similar compression, circular sparse ruler provides less error than coprime sampling. The precise configuration is described in \cref{tab:sampling-nmse-cop,tab:sampling-nmse-circ}. We see that circular sparse ruler allows for more downsampling, but also requires more samplers. Note that the resolution of the reconstructed spectrums differ. This should be taken into account when comparing the two methods. \cref{fig:plot-nmse} shows three sampling techniques which have equivalent performance. We that their performance gain by increasing the sampling time is equivalent. \cref{tab:sampling-nmse} shows that in the case of equivalent performance, coprime sampling requires the least number of samplers. Also, in that case coprime sampling has the least downsampling, and circular sparse ruler sampling has the highest compression.
+The performance of the reconstruction will by measured by varying the sampling time, where we illustratively assume a Nyquist frequency of \SI{25}{Mhz}, and by varying the sampling technique. These sampling techniques can all achieve different compressions.
+
+\cref{fig:plot-nmse-cop} shows the NSME for coprime sampling. We see that the error increases as the compression increases, but decreases as the sampling time increases. A similar observation applies to \cref{fig:plot-nmse-circ}. Also, we see that for a similar compression, circular sparse ruler provides less error than coprime sampling. The precise configuration is described in \cref{tab:sampling-nmse-cop,tab:sampling-nmse-circ}. These tables show us that circular sparse ruler allows for more downsampling, but also requires more samplers. Note that the resolution of the reconstructed spectrums differ. This should be taken into account when comparing the two methods. \cref{fig:plot-nmse} shows three sampling techniques which have equivalent performance. We that their performance gain by increasing the sampling time is equivalent. \cref{tab:sampling-nmse} shows that in the case of equivalent performance, coprime sampling requires the least number of samplers. Also, in that case, coprime sampling has the least downsampling and circular sparse ruler sampling has the highest compression.
 
 \subsection{Detection}
-\cref{fig:plot-detector-noise69,fig:plot-detector69} show the performance of the detector in the case that circular sparse ruler sampling with $69\%$ compression is used. The performance is shown for signals with \SI{-5}{dB}, \SI{0}{dB} and \SI{5}{dB} SNR. The 802.22 IEEE standard shows that a detection probability of $0.9$ can be considered sufficient. We see that in case the noise power is known, signals with approximately \SI{0}{dB} SNR or higher can be detected sufficiently. However, in the case that the noise power has is somewhat uncertain, a detection probability of approximately $0.9$ requires a relatively high false-alarm probability. Finally, if we increase the compression of the used sampling technique, the detection performance deteriorates.
+\cref{fig:plot-detector-noise69,fig:plot-detector69} show the performance of the detector in the case that circular sparse ruler sampling with $69\%$ compression is used. The performance is shown for signals with \SI{-5}{dB}, \SI{0}{dB} and \SI{5}{dB} SNR. The 802.22 IEEE standard tells us that a detection probability of $0.9$ can be considered sufficient. We see that in case that the noise power is known, signals with approximately \SI{0}{dB} SNR or higher can be detected sufficiently. However, in the case that the noise power is not accurately known, a detection probability of approximately $0.9$ requires a relatively high false-alarm probability. Finally, if we increase the compression of the used sampling technique, the detection performance deteriorates.
 
 %%%%%% PLOT: ALL SAMPLING METHODS
 \begin{filecontents*}{plots/data-nyq.csv}

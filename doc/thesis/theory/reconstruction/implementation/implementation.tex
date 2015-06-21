@@ -8,20 +8,20 @@
 
 \section{Implementational details}
 \label{sec:reconstruction-implementation}
-This section will discuss some details of the algorithm which should be considered when implementing the algorithm.
+This section will discuss some details of the algorithm which should be considered when implementing the algorithm. We assume that multi-coset sampling is used.
 
-\subsection{Restrictions on the sampling signals}
+\subsection{Requirements of the sampling signals}
 \label{sub:reconstruction-ci}
-This subsection discusses sufficient restrictions on the sampling signal $c_i[n]$ which yield a correct estimation. Remember that the sampling signal determines the way a coset samples the input signal. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. The restrictions are as follows.
+This subsection discusses sufficient requirements on the sampling signal $c_i[n]$ which yield a correct estimation. Remember that the sampling signal determines the way a coset samples the input signal. The derivation of these restrictions can be found in \cref{sec:reconstruction-derivation}. The requirements are as follows:
 
 \begin{enumerate}
     \item Every $c_i[n]=0$ for $n < 0$ and $n > N-1$.
     \item All $c_i[n]=1$ for a single $n=n_i$ and otherwise zero.
-    \item The circular sparse ruler problem must be satisfied.
+    \item The circular sparse ruler problem, which is stated below, must be satisfied.
 \end{enumerate}
 
 \begin{description}
-    \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of cosets $i$ and $j$ must make up $0,\ldots,N-1$.
+    \item[Circular sparse ruler problem] Consider $n_i$ for every coset $i$ as discussed in the second requirement. The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of cosets $i$ and $j$ must make up $0,\ldots,N-1$.
 \end{description}
 
 The circular sparse ruler problem will be further discussed in \cref{cha:sampling_methods}.
@@ -47,7 +47,7 @@ where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. Not
 
 \subsection{Sparsity}
 \label{sub:reconstruction-sparsity}
-Operations on large matrices can be computationally expensive. If a matrix is sparse, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation during the derivation of the algorithm, we argued that every row of $\mat{R}$ has exactly one nonzero element. Remember that $\mat{R}$ describes the relationship between the autocorrelation of the input signal and the observed quantities. Since $\mat{R}$ has $2LN+1$ columns, the fraction of nonzero elements of $\mat{R}$ is given by
+Operations on large matrices can be computationally expensive. If a matrix is sparse, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation in \cref{sec:reconstruction-derivation}, we argued that every row of $\mat{R}$ has exactly one nonzero element. Remember that $\mat{R}$ describes the relationship between the autocorrelation of the input signal and the observed quantities. Since $\mat{R}$ has $2LN+1$ columns, the fraction of nonzero elements of $\mat{R}$ is given by
 \begin{align*}
     \rho_{\text{nz}}=\frac{1}{2LN+1}.
 \end{align*}
@@ -55,7 +55,7 @@ Since $LN$ determines the resolution of the estimated power spectral density of 
 
 \subsection{Efficient generation of the matrices}
 \label{sub:reconstruction-generation}
-It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. Given a vector, $\operatorname{toeplitz}$ generates a Toeplitz matrix from this vector. Given a matrix, $\operatorname{tril}$ keeps the lower triangular matrix of this matrix and sets the other elements to zero. The functions $\operatorname{toeplitz}$ and $\operatorname{tril}$ are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows.
+In Step 2 of the algorithm, $\mat{R}$ has to be constructed. It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. The functions $\operatorname{toeplitz}$ and $\operatorname{tril}$ are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows:
 
 \begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item2}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
     \item Let \begin{align*}
@@ -65,8 +65,7 @@ It turns out that $\mat{R}$ can be generated efficiently using commonly availabl
             \end{align*}
     \item Append $\vec{c}$ with $2(L-1)N+1$ zeros.
     \item Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$.
-    \item Omit the first $N-1$ rows and the last $N-1$ columns.
-    \item Keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$
+    \item Omit the first $N-1$ rows and the last $N-1$ columns, and keep rows $1,N,\ldots,2LN+1$. This yields $\mat{R}_{i,j}$.
     \item Construct \begin{align*}
         \mat{R} = \begin{bmatrix}
             \mat{R}_{1,1} \\ \vdots \\ \mat{R}_{M,M}
@@ -75,5 +74,5 @@ It turns out that $\mat{R}$ can be generated efficiently using commonly availabl
     \label{last-item2}
 \end{enumerate}
 
-An example of the algorithm which illustrates its correctness is given in \cref{sec:reconstruction-generation-algorithm}. This algorithm can take advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 and 5 can be vectorised. Therefore, the algorithm allows for fast reconstruction of $\mat{R}$.
+An example of the algorithm which illustrates its correctness is given in \cref{sec:reconstruction-generation-algorithm}. This algorithm can take advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 can be vectorised or optimised memory-wise. Therefore, the algorithm allows for fast reconstruction of $\mat{R}$.
 \end{document}

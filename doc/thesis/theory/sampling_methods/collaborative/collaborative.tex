@@ -9,7 +9,7 @@
 \subsection{Collaborative sampling}
 In collaborative sampling, the estimation of the lags is split across two physically separate devices. This situation is analysed and described more carefully in \cref{ap:circ-ruler}. The advantage of splitting the estimation of the lags across physically separate devices is that this reduces the workload of a single device. 
 
-To ensure that reconstruction is possible, we consider a treatment similar to \cref{sub:ci-circ}. However, the difference is that Step 6 of the reconstruction algorithm is invalid, since a single device does not satisfy the circular sparse ruler problem. However, since a single device does estimate certain lags, an analysis similar \cref{sec:reconstruction-derivation} shows that each device solves its own part of the equation of Step 6 in such a way that their results yield the complete solution. Therefore, after the reconstruction of each device, it remains to combine their results. A possible final implementation is pictured in \cref{tkz:sc_collaborative_combine}.
+To ensure that reconstruction is possible, we consider a treatment similar to \cref{sub:ci-circ}. However, the difference is that Step 6 of the reconstruction algorithm discussed in \cref{cha:reconstruction} is invalid, because a single device does not satisfy the circular sparse ruler problem. However, since a single device does estimate certain lags, an analysis similar \cref{sec:reconstruction-derivation} shows that each device solves its own part of the equation of Step 6 in such a way that their results yield the complete solution. Therefore, after the reconstruction of each device, it remains to combine their results. A possible final implementation is pictured in \cref{tkz:sc_collaborative_combine}.
 
 \begin{figure}
 \centering
@@ -41,9 +41,9 @@ To ensure that reconstruction is possible, we consider a treatment similar to \c
 \draw  (3,1.5) -- (4,1.5);
 \draw  (3,0) -- (4,0);
 
-\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_0$};
-\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_1$};
-\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_2$};
+\draw  (5,3.5) rectangle (4,2.5) node[pos=.5]{$y_1$};
+\draw  (5,2) rectangle (4,1) node[pos=.5]{$y_2$};
+\draw  (5,0.5) rectangle (4,-0.5) node[pos=.5]{$y_3$};
 
 \draw  (-2.5,-4) rectangle (-1.5,-5) node[pos=.5]{$x_2$};
 \draw  (-1.5,-4.5) -- (0.5,-4.5);
@@ -72,9 +72,9 @@ To ensure that reconstruction is possible, we consider a treatment similar to \c
 \draw  [>=latex,->] (5,-4.5) -- (6,-4.5);
 \draw  [>=latex,->] (5,-6) -- (6,-6);
 
-\draw  (5,-2.5) rectangle (4,-3.5) node[pos=.5]{$y_3$};
-\draw  (5,-4) rectangle (4,-5) node[pos=.5]{$y_4$};
-\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$y_5$};
+\draw  (5,-2.5) rectangle (4,-3.5) node[pos=.5]{$y_4$};
+\draw  (5,-4) rectangle (4,-5) node[pos=.5]{$y_5$};
+\draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$y_6$};
 
 \draw  (6,3.5) rectangle (8.5,-.5) node[pos=.5]{Reconstructor};
 \draw  (6,-2.5) rectangle (8.5,-6.5) node[pos=.5]{Reconstructor};
@@ -84,7 +84,7 @@ To ensure that reconstruction is possible, we consider a treatment similar to \c
 \draw [>=latex,->] (7.25,-.5) -- (7.25,-1);
 
 \end{tikzpicture}
-\caption{Schematic of collaborative sampling implementation with a combiner}\label{tkz:sc_collaborative_combine}
+\caption{Conceptual schematic of collaborative sampling implementation with a combiner. There may be an offset between the different decimations.}\label{tkz:sc_collaborative_combine}
 \end{figure}
 
 % \subsection{combine collaborative sampler with reconstructor}\label{sub:ci-collab}
