@@ -11,9 +11,12 @@
 \raggedbottom
 
 \begin{document}
-\appendix
 
-\part{Appendix}
+\chapter{Ethical paragraph}
+\label{ap:ethical}
+\subimport{ethical/}{ethical_paragraph}
+
+
 % Theory appendices
 \subimport{theory/reconstruction/}{reconstruction}
 \subimport{theory/sampling/}{sampling}
@@ -29,7 +32,4 @@
 \label{ap:jammer}
 \includepdf[pages=-, scale=0.8, landscape=true]{fig_schematics.pdf}
 
-\chapter{Ethical paragraph}
-\label{ap:ethical}
-\subimport{ethical/}{ethical_paragraph}
 \end{document}

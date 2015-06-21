@@ -4,9 +4,43 @@
 \input{../includes/preamble.tex}
 \addbibresource{../includes/bibliography.bib}
 
+
 \title{An Extensible Toolkit for Real-Time High-Performance Wideband Spectrum Sensing}
 
 \author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+
+\newlength\drop \newcommand*{\titleGM}{%
+  \thispagestyle{empty}
+  \begingroup% Gentle Madness
+  \drop = 0.1\textheight \vspace*{\baselineskip} \vfill \hbox{%
+    \rule{1pt}{\dimexpr\textheight-28pt\relax}%
+    \hspace*{0.05\textwidth}%
+    \parbox[b]{1.1\textwidth}{ \vbox{%
+        \vspace{\drop}
+        {\noindent \Huge
+\textsc{An extensible toolkit for real-time  \\[0.3\baselineskip]
+high-performance wideband spectrum  \\[0.3\baselineskip]
+sensing}
+} \\[2\baselineskip]
+        {\Large Bachelor Graduation Thesis}\\[1.5\baselineskip]
+        {\itshape Prof. G.J.T. Leus (Supervisor)}\\[.37\baselineskip]
+        {\itshape S.P. Chepuri (Daily Supervisor)}\\[.37\baselineskip]
+        {\itshape D.A. Dyonisius (Daily Supervisor)}\\[.37\baselineskip]
+        \\[.37\baselineskip]
+        {\Large W.P. Bruinsma}\\[0.5\baselineskip]
+        {\Large R.P. Hes}\\[0.5\baselineskip]
+        {\Large H.J.C. Kroep}\\[0.5\baselineskip]
+        {\Large T.C. Leliveld}\\[0.5\baselineskip]
+        {\Large W.M. Melching}\\[0.5\baselineskip]
+        {\Large T.A. aan de Wiel}\par
+        \vspace{0.3\textheight}
+        {\noindent \today}\\[\baselineskip]
+      }% end of vbox
+    }% end of parbox
+  }% end of hbox
+  \vfill \null
+  \endgroup}
 
 \raggedbottom
 
@@ -15,37 +49,41 @@
 
 \begin{titlingpage}
   \pagestyle{empty}
-  \maketitle
+  \titleGM
 \end{titlingpage}
-
-%\clearpage
 
 \tableofcontents
 
 \mainmatter
+\subimport{introduction/}{preface}
 \subimport{introduction/}{introduction}
-%\subimport{introduction/}{specifications}
 \subimport{problem_statement/}{problem_statement}
 \subimport{similar_research/}{similar_research}
+
+\partauthor{W.P. Bruinsma\\H.J.C. Kroep\\T.A. aan de Wiel\\}
 \part{Theory}
 \label{prt:theory}
 \subimport{theory/}{theory}
+
+\partauthor{R.P. Hes\\T.C. Leliveld\\W.M. Melching\\}
 \part{Implementation}
 \label{prt:implementation}
 \subimport{implementation/}{implementation}
 
 
+\partauthor{}
 \part{Observations and Conclusion}
 \subimport{conclusions/}{conclusions}
 
 \clearpage
-% \backmatter
-%\bookmarksetup{startatroot}
-
 \printbibliography
 
 \clearpage
 \pagenumbering{Roman}
+\appendix
+
+\partauthor{}
+\part{Appendix}
 \subimport{appendix/}{appendix}
 
 \end{document}

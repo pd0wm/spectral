@@ -236,3 +236,11 @@
 
 \newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.3ex}{ \textbf{+}}\nolinebreak\hspace{-.10em}\raisebox{.3ex}{\textbf{+}}}
 \def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\textbf{++}}}}
+
+
+\newcommand{\partauthor}[1]{\gdef\@partauthor{#1}}
+\renewcommand{\printparttitle}[1]{
+  \parttitlefont #1\\
+  \vspace{1.5cm}
+  \textnormal{\Large \@partauthor}
+}

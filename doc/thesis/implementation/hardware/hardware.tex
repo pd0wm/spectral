@@ -21,7 +21,7 @@ The hardware samplers used in our system was a USRP N210, a software defined rad
 
 The USRPs can also be used as a transmitter using the DAC and the same local oscillators. We used this during the testing of our design to generate test signals. However this is not used in our final design.
 
-These radios are connected to a PC by using gigabit Ethernet, thus limiting the effective sample rate to \SI{25}{\mega\sample\per\second} with a 16 bit resolution or \SI{50}{\mega\sample\per\second} with an 8 bit resolution. If you want to use the full potential of the internal ADC (2x \SI{100}{\mega\sample\per\second}) and DAC (2x \SI{400}{\mega\sample\per\second}) you have to write your own firmware for the internal FPGA\@.
+These radios are connected to a PC by using gigabit Ethernet, thus limiting the effective sample rate to \SI{25}{\mega\sample\per\second} with a 16 bit resolution or \SI{50}{\mega\sample\per\second} with an 8 bit resolution. If you want to use the full potential of the internal ADC (2x \SI{100}{\mega\sample\per\second}) and DAC (2x \SI{400}{\mega\sample\per\second}) you have to write your own firmware for the internal FPGA.
 
 \subsection{Drivers}
 \label{sec:drivers}
