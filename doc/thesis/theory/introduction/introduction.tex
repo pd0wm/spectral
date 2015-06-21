@@ -41,7 +41,22 @@ The approach \emph{should} enable spectrum sensing such that the application
     \item the spectrum sensing is done as efficient as possible.
 \end{enumerate}
 
-\subsection{Identification}
+\subsection{Reconstruction}
+The reconstruction algorithm \emph{must} be able to
+\begin{enumerate}
+    \item the resolution of these frequencies can be specified and
+    \item the correctness of operation can be specified.
+\end{enumerate}
+
+\subsection{Sampling techniques}
+The techniques used for sampling \emph{must} allow for
+\begin{enumerate}
+    \item correct operation of the detection;
+    \item usage of a single sampling device and
+    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
+\end{enumerate}
+
+\subsection{Detection}
 Identification of signals \emph{must} be such that
 \begin{enumerate}
     \item identification of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
@@ -53,14 +68,6 @@ Identification of signals \emph{should} be such that
     \item the resolution of detection can be as high as possible;
     \item its operation can be as correct as possible and
     \item its operation is as efficient as possible.
-\end{enumerate}
-
-\subsection{Sampling techniques}
-The techniques used for sampling \emph{must} allow for
-\begin{enumerate}
-    \item correct operation of the detection;
-    \item usage of a single sampling device and
-    \item usage of multiple sampling devices such that the workload can be distributed across the devices.
 \end{enumerate}
 
 The sampling techniques \emph{should} allow for
