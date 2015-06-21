@@ -22,8 +22,8 @@ the final system are grayed out.
 \draw  (-2,3) rectangle (0,2) node[pos=.5]{\scriptsize Circular sparse};
 \draw  (-2,1.5) rectangle (0,0.5) node[pos=.5]{\scriptsize Collaborative};
 \draw  (-2,0) rectangle (0,-1) node[pos=.5]{\scriptsize Coprime};
-\draw  (1.5,3) rectangle (3.5,2) node[text width=5cm, align=center,pos=.5]{\scriptsize modified $r_x$\\ reconstruction};
-\draw  [fill=lightgray] (1.5,0) rectangle (3.5,-1) node[text width=5cm, align=center,pos=.5]{\scriptsize $r_x$\\ reconstruction};
+\draw  (1.5,3) rectangle (3.5,2) node[text width=5cm, align=center,pos=.5]{\scriptsize $r_x$\\ reconstruction};
+% \draw  [fill=lightgray] (1.5,0) rectangle (3.5,-1) node[text width=5cm, align=center,pos=.5]{\scriptsize $r_x$\\ reconstruction};
 \draw  [fill=lightgray](1.5,1.5) rectangle (3.5,0.5) node[text width=5cm, align=center,pos=.5]{\scriptsize $\ell_1$-based\\ reconstruction};
 \draw  (3.8,3) rectangle (5.8,2) node[text width=5cm, align=center,pos=.5]{\scriptsize Modified\\\tiny energy detection};
 \draw  [fill=lightgray] (3.8,1.5) rectangle (5.8,0.5) node[text width=5cm, align=center,pos=.5]{\scriptsize Conventional\\\tiny energy detection};
@@ -44,7 +44,7 @@ the final system are grayed out.
 \draw (-3.2,4) -- (-3,3.8);
 \node at (3.5,3) {};
 \end{tikzpicture}
-\caption{Overview of complete system \& design choices}
+\caption{System overview with design choices}
 \label{fig:theoretical_overview_system}
 \end{figure}
 
@@ -137,53 +137,541 @@ Our tests will be targeted at
 
 \section{Results}
 
+
+%%%%%% PLOT: ALL SAMPLING METHODS
 \begin{filecontents*}{plots/data-circ1.csv}
 x, y
-25000.0000,-0.8528
-50000.0000,-0.9962
-75000.0000,-1.0684
-100000.0000,-1.1360
-125000.0000,-1.1877
-150000.0000,-1.2243
-175000.0000,-1.2668
-200000.0000,-1.2787
-225000.0000,-1.3157
-250000.0000,-1.3237
-275000.0000,-1.3524
-300000.0000,-1.3681
-325000.0000,-1.3725
-350000.0000,-1.3879
-375000.0000,-1.4151
-400000.0000,-1.4440
-425000.0000,-1.4555
-450000.0000,-1.4564
-475000.0000,-1.4693
-500000.0000,-1.4749
+1.0000,-0.8677
+2.0000,-0.9958
+3.0000,-1.0846
+4.0000,-1.1462
+5.0000,-1.1877
+6.0000,-1.2179
+7.0000,-1.2525
+8.0000,-1.2841
+9.0000,-1.3028
+10.0000,-1.3270
+11.0000,-1.3476
+12.0000,-1.3662
+13.0000,-1.3878
+14.0000,-1.4007
+15.0000,-1.4189
+16.0000,-1.4325
+17.0000,-1.4488
+18.0000,-1.4564
+19.0000,-1.4604
+20.0000,-1.4848
 \end{filecontents*}
+
+\begin{filecontents*}{plots/data-circ2.csv}
+x, y
+1.0000,-0.7942
+2.0000,-0.9330
+3.0000,-1.0226
+4.0000,-1.0731
+5.0000,-1.1180
+6.0000,-1.1673
+7.0000,-1.1904
+8.0000,-1.2188
+9.0000,-1.2412
+10.0000,-1.2720
+11.0000,-1.2944
+12.0000,-1.3132
+13.0000,-1.3161
+14.0000,-1.3448
+15.0000,-1.3515
+16.0000,-1.3678
+17.0000,-1.3865
+18.0000,-1.3903
+19.0000,-1.4067
+20.0000,-1.4126
+\end{filecontents*}
+
+\begin{filecontents*}{plots/data-copr.csv}
+x, y
+1.0000,-0.8841
+2.0000,-1.0174
+3.0000,-1.0917
+4.0000,-1.1523
+5.0000,-1.1834
+6.0000,-1.2243
+7.0000,-1.2628
+8.0000,-1.2902
+9.0000,-1.3204
+10.0000,-1.3418
+11.0000,-1.3621
+12.0000,-1.3806
+13.0000,-1.3940
+14.0000,-1.4147
+15.0000,-1.4292
+16.0000,-1.4482
+17.0000,-1.4541
+18.0000,-1.4630
+19.0000,-1.4802
+20.0000,-1.4862
+\end{filecontents*}
+
+\begin{filecontents*}{plots/data-collab.csv}
+x, y
+1.0000,-0.8541
+2.0000,-0.9976
+3.0000,-1.0853
+4.0000,-1.1385
+5.0000,-1.1811
+6.0000,-1.2290
+7.0000,-1.2528
+8.0000,-1.2877
+9.0000,-1.3010
+10.0000,-1.3312
+11.0000,-1.3490
+12.0000,-1.3800
+13.0000,-1.3855
+14.0000,-1.4063
+15.0000,-1.4289
+16.0000,-1.4288
+17.0000,-1.4461
+18.0000,-1.4579
+19.0000,-1.4730
+20.0000,-1.4745
+\end{filecontents*}
+
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
 				xlabel={Sampling time (ms)},
-				ylabel={Normalised mean squared error of PSD ($\log_{10}$)},
+				ylabel={$\log_{10}(\text{NMSE})$},
 				width=11cm,
 				height=8cm,
 				scale=1,
 				grid=both,
 				axis lines=left,
-				legend entries={Circular sparse sampling 1}
+				legend entries={Circular sparse sampling, Coprime sampling, Collorative sampling},
+				legend cell align=left
 			]
 		    \addplot [
 			    color=red,
 			    solid,
 			    mark=o
 		    ] table [x=x, y=y, col sep=comma]{plots/data-circ1.csv};
+		    % \addplot [
+			   %  color=green,
+			   %  solid,
+			   %  mark=o
+		    % ] table [x=x, y=y, col sep=comma]{plots/data-circ2.csv};
+		    \addplot [
+			    color=green,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-copr.csv};
+		    \addplot [
+			    color=blue,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-collab.csv};
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Normalised mean squared errors of the reconstructed power spectral densities by different sampling methods. The plot assumes a Nyquist frequency of \SI{25}{MHz}.}
+	\caption{Normalised mean squared errors of the reconstructed power spectral densities by different sampling methods. The plot assumes a Nyquist frequency of \SI{25}{MHz}. The sampling techniques are described in \cref{tab:sampling-nmse}.}
 	\label{fig:plot-nmse}
 \end{figure}
 
+\begin{table}
+	\centering
+	\begin{tabular}{llll}
+		\textbf{Sampling technique} & \textbf{Compression} & \textbf{Configuration} & \textbf{Downsampling} \\ \hline
+		Circular sparse ruler sampling & $31\%$ & $4$ samplers & $13 \times$ \\
+		Coprime sampling & $45\%$ & $2$ samplers, periods $4T$ and $5T$ & $4 \times$ \\
+		Collaborative & $46\%$ &$6$ samplers over $2$ devices & $13 \times$
+	\end{tabular}
+	\caption{Description of the sampling techniques depicted in \cref{fig:plot-nmse}}
+	\label{tab:sampling-nmse}
+\end{table}
+
+%%%%%%
+
+
+%%%%% PLOT: CIRCULAR
+\begin{filecontents*}{plots/data-circ-N7.csv}
+x, y
+1.0000,-1.1552
+2.0000,-1.3148
+3.0000,-1.3921
+4.0000,-1.4497
+5.0000,-1.4765
+6.0000,-1.5246
+7.0000,-1.5701
+8.0000,-1.6004
+9.0000,-1.6108
+10.0000,-1.6388
+11.0000,-1.6494
+12.0000,-1.6936
+13.0000,-1.7016
+14.0000,-1.7145
+15.0000,-1.7207
+16.0000,-1.7373
+17.0000,-1.7628
+18.0000,-1.7772
+19.0000,-1.7917
+20.0000,-1.7826
+\end{filecontents*}
+
+\begin{filecontents*}{plots/data-circ-N13.csv}
+x, y
+1.0000,-0.8544
+2.0000,-0.9964
+3.0000,-1.0845
+4.0000,-1.1374
+5.0000,-1.1829
+6.0000,-1.2151
+7.0000,-1.2324
+8.0000,-1.2825
+9.0000,-1.3114
+10.0000,-1.3244
+11.0000,-1.3541
+12.0000,-1.3699
+13.0000,-1.3847
+14.0000,-1.4144
+15.0000,-1.4383
+16.0000,-1.4353
+17.0000,-1.4413
+18.0000,-1.4667
+19.0000,-1.4701
+20.0000,-1.4775
+\end{filecontents*}
+
+\begin{filecontents*}{plots/data-circ-N21.csv}
+x, y
+1.0000,-0.6490
+2.0000,-0.7952
+3.0000,-0.8770
+4.0000,-0.9352
+5.0000,-0.9736
+6.0000,-1.0154
+7.0000,-1.0399
+8.0000,-1.0627
+9.0000,-1.0926
+10.0000,-1.1152
+11.0000,-1.1273
+12.0000,-1.1415
+13.0000,-1.1596
+14.0000,-1.1800
+15.0000,-1.1915
+16.0000,-1.2198
+17.0000,-1.2260
+18.0000,-1.2222
+19.0000,-1.2500
+20.0000,-1.2542
+\end{filecontents*}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel={Sampling time (ms)},
+				ylabel={$\log_{10}(\text{NMSE})$},
+				width=11cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left,
+				legend entries={$43\%$ compression, $31\%$ compression, $24\%$ compression},
+				legend cell align=left
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-circ-N7.csv};
+		    \addplot [
+			    color=green,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-circ-N13.csv};
+		    \addplot [
+			    color=blue,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-circ-N21.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Normalised mean squared errors of the reconstructed power spectral densities by circular sparse sampling. The plot assumes a Nyquist frequency of \SI{25}{MHz}. The sampling techniques are described in \cref{tab:sampling-nmse-circ}.}
+	\label{fig:plot-nmse-circ}
+\end{figure}
+
+\begin{table}
+	\centering
+	\begin{tabular}{llll}
+		\textbf{Sampling technique} & \textbf{Compression} & \textbf{Configuration} & \textbf{Downsampling} \\ \hline
+		Circular sparse ruler sampling & $43\%$ & $3$ samplers & $7 \times$ \\
+		Circular sparse ruler sampling & $31\%$ & $4$ samplers & $13 \times$ \\
+		Circular sparse ruler sampling & $24\%$ & $5$ samplers & $21 \times$ \\
+	\end{tabular}
+	\caption{Description of the sampling techniques depicted in \cref{fig:plot-nmse-circ}}
+	\label{tab:sampling-nmse-circ}
+\end{table}
+
+%%%%%%%
+
+%%%%%% PLOT: COPRIME
+
+\begin{filecontents*}{plots/data-cop-35.csv}
+x, y
+1.0000,-1.0051
+2.0000,-1.1439
+3.0000,-1.2190
+4.0000,-1.2912
+5.0000,-1.3452
+6.0000,-1.3798
+7.0000,-1.3969
+8.0000,-1.4345
+9.0000,-1.4665
+10.0000,-1.4877
+11.0000,-1.5047
+12.0000,-1.5283
+13.0000,-1.5366
+14.0000,-1.5412
+15.0000,-1.5725
+16.0000,-1.5946
+17.0000,-1.5928
+18.0000,-1.6110
+19.0000,-1.6198
+20.0000,-1.6315
+\end{filecontents*}
+
+\begin{filecontents*}{plots/data-cop-45.csv}
+x, y
+1.0000,-0.8841
+2.0000,-1.0174
+3.0000,-1.0917
+4.0000,-1.1523
+5.0000,-1.1834
+6.0000,-1.2243
+7.0000,-1.2628
+8.0000,-1.2902
+9.0000,-1.3204
+10.0000,-1.3418
+11.0000,-1.3621
+12.0000,-1.3806
+13.0000,-1.3940
+14.0000,-1.4147
+15.0000,-1.4292
+16.0000,-1.4482
+17.0000,-1.4541
+18.0000,-1.4630
+19.0000,-1.4802
+20.0000,-1.4862
+\end{filecontents*}
+
+\begin{filecontents*}{plots/data-cop-47.csv}
+x, y
+1.0000,-0.7382
+2.0000,-0.8825
+3.0000,-0.9470
+4.0000,-1.0087
+5.0000,-1.0480
+6.0000,-1.0811
+7.0000,-1.1191
+8.0000,-1.1417
+9.0000,-1.1664
+10.0000,-1.1841
+11.0000,-1.2057
+12.0000,-1.2297
+13.0000,-1.2383
+14.0000,-1.2547
+15.0000,-1.2738
+16.0000,-1.2817
+17.0000,-1.2904
+18.0000,-1.3061
+19.0000,-1.3219
+20.0000,-1.3359
+\end{filecontents*}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel={Sampling time (ms)},
+				ylabel={$\log_{10}(\text{NMSE})$},
+				width=11cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left,
+				legend entries={$53\%$ compression, $45\%$ compression, $39\%$ compression},
+				legend cell align=left
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-cop-35.csv};
+		    \addplot [
+			    color=green,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-cop-45.csv};
+		    \addplot [
+			    color=blue,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-cop-47.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Normalised mean squared errors of the reconstructed power spectral densities by coprime sampling. The plot assumes a Nyquist frequency of \SI{25}{MHz}. The sampling techniques are described in \cref{tab:sampling-nmse-cop}.}
+	\label{fig:plot-nmse-cop}
+\end{figure}
+
+\begin{table}
+	\centering
+	\begin{tabular}{llll}
+		\textbf{Sampling technique} & \textbf{Compression} & \textbf{Configuration} & \textbf{Downsampling} \\ \hline
+		Corpime sampling & $53\%$ & $2$ samplers, periods $3T$ and $5T$ & $3 \times$ \\
+		Corpime sampling & $45\%$ & $2$ samplers, periods $4T$ and $5T$ & $4 \times$ \\
+		Corpime sampling & $39\%$ & $2$ samplers, periods $4T$ and $7T$ & $4 \times$ \\
+	\end{tabular}
+	\caption{Description of the sampling techniques depicted in \cref{fig:plot-nmse-cop}}
+	\label{tab:sampling-nmse-cop}
+\end{table}
+
+
+%%%%%%%%
+
+
+%%%%%% PLOT: DETECTOR
+
+\begin{filecontents*}{plots/data-detector-snr-5-1.csv}
+x, y
+0.021752,0.238
+0.041678,0.32307
+0.062985,0.38559
+0.082069,0.43566
+0.1015,0.47798
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector-snr-5-2.csv}
+x, y
+0.00025373,0.022236
+0.00089851,0.04471
+0.0019284,0.068319
+0.0033224,0.090696
+0.0051313,0.11501
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector-snr0-1.csv}
+x, y
+0.022215,0.89002
+0.042224,0.92428
+0.062003,0.94177
+0.081218,0.95271
+0.1008,0.96058
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector-snr0-2.csv}
+x, y
+0.00027463,0.57327
+0.00083582,0.66899
+0.0019313,0.72643
+0.0032418,0.76901
+0.0051134,0.79744
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector-snr5-1.csv}
+x, y
+0.021576,0.99994
+0.041976,0.99996
+0.061913,0.99995
+0.081218,0.99999
+0.10079,0.99997
+\end{filecontents*}
+\begin{filecontents*}{plots/data-detector-snr5-2.csv}
+x, y
+0.00027463,0.99944
+0.00095224,0.99964
+0.0019254,0.99974
+0.0032,0.99979
+0.0050269,0.99984
+\end{filecontents*}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				scaled ticks=false, tick label style={/pgf/number format/fixed},
+				xlabel={$p\ss{fa}$},
+				ylabel={$p\ss{d}$},
+				width=11cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left,
+				legend entries={\SI{-5}{dB} SnR,\SI{0}{dB} SnR,\SI{5}{dB} SnR},
+				legend cell align=left,
+				% xmin=0.01,
+				% xmax=0.105,
+				ymin=0,
+				ymax=1.05,
+				legend style={at={(9.3cm,0.02)},anchor=south east}
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr-5-1.csv};
+		    \addplot [
+			    color=green,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr0-1.csv};
+		    \addplot [
+			    color=blue,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr5-1.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Detector performance in the case of no noise uncertainty}
+	\label{fig:plot-detector}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+				xlabel={$p\ss{fa}$},
+				ylabel={$p\ss{d}$},
+				width=11cm,
+				height=8cm,
+				scale=1,
+				grid=both,
+				axis lines=left,
+				legend entries={\SI{-5}{dB} SnR,\SI{0}{dB} SnR,\SI{5}{dB} SnR},
+				legend cell align=left,
+				% xmin=0,
+				% xmax=0.12,
+				y tick label style={/pgf/number format/fixed},
+				ymin=0,
+				ymax=1.05,
+				legend style={at={(9.3cm,1cm)},anchor=south east}
+			]
+		    \addplot [
+			    color=red,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr-5-2.csv};
+		    \addplot [
+			    color=green,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr0-2.csv};
+		    \addplot [
+			    color=blue,
+			    solid,
+			    mark=o
+		    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr5-2.csv};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Detector performance in the case of $0.1$ (WAT?) noise uncertainty}
+	\label{fig:plot-detector-noise}
+\end{figure}
+
+
+%%%%%%
 
 
 
