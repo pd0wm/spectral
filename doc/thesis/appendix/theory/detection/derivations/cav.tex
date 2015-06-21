@@ -58,39 +58,49 @@ $p\ss{fa}$ is derived in \cite{zheng2009spectrum} to be
 \gamma &= \frac{1+(L-1)\sqrt{2/N\pi}}{1-Q^{-1}(p\ss{fa})\sqrt{2/N}}.
 \end{align*} 
 
-\subsection{Adjusting the threshold}\label{eq:threshold_cav_deriv}
-In \cite{zheng2009spectrum} it is assumed that for large $N$ the distribution of $T_1$ and $T_2$ approach Gaussian distributions. Given a fixed false alarm probability, the threshold $\gamma$ is derived under the hypothesis $\mathcal{H}_0$. Now should
-\begin{align*}
-p_{fa} &\approx P(T_1/T_2 > \gamma  | \mathcal{H}_0) \\
-&= P(T_2 < T_1/\gamma  | \mathcal{H}_0).
-\end{align*}
+This threshold, however, does not apply to the estimated autocorrelation of our reconstruction method.  \cite{zheng2009spectrum} assumes that
+$N$ samples are used to estimate \emph{each} element of the autocorrelation in $\mat{C}_x$ as:
 
-Under $\mathcal{H}_0$, the distribution of $T_2 = r_x[0]$ is approximated by a Gaussian. We can therefore derive the
-threshold $\gamma$ by noting that
-\begin{align*}
-p\ss{fa} &= P\left[\frac{E\left(T_1\right)/\gamma - E\left(T_2\right) }{\sqrt{\text{Var}(T_2)}}\right]\\
-&= 1-Q\left[\frac{E\left(T_1\right)/\gamma - E\left(T_2\right) }{\sqrt{\text{Var}(T_2)}}\right].
-\end{align*}
+\begin{align}\label{eq:cav_rx_estimate}
+r_x[m] &= \frac{1}{N}\sum_{n=0}^{N-1}x[n]\conj{x}[n-m] & m=0,1,\ldots, L-1.
+\end{align}
 
-To solve for $\gamma$ we have to determine $E\left(T_1\right)$, $E\left(T_2\right)$ and $\Var(T_2)$. It is at this point that we cannot use the expressions from \cite{zheng2009spectrum}, since the estimation of $r_x[m]$ in \cref{sec:reconstruction-implementation} is a random variable itself, which interferes with calculating $p\ss{fa}$.
+Our reconstruction, first of all does not use \cref{eq:cav_rx_estimate} to estimate the autocorrelation. Second, as \cite{zheng2009spectrum} uses
+the variance of $r_x[m]$ when estimated by \cref{eq:cav_rx_estimate}, in its threshold derivation we know that this threshold is not applicable
+to our reconstructed estimate, as the variance of the estimated $r_x[m]$ is not necessarily constant (to see why consider \cref{eq:terror_cov_sx} without multiplication by $\mat{F}$) and the same as in \cref{eq:cav_rx_estimate}.  
+% \subsection{Adjusting the threshold}\label{eq:threshold_cav_deriv}
+% In \cite{zheng2009spectrum} it is assumed that for large $N$ the distribution of $T_1$ and $T_2$ approach Gaussian distributions. Given a fixed false alarm probability, the threshold $\gamma$ is derived under the hypothesis $\mathcal{H}_0$. Now should
+% \begin{align*}
+% p_{fa} &\approx P(T_1/T_2 > \gamma  | \mathcal{H}_0) \\
+% &= P(T_2 < T_1/\gamma  | \mathcal{H}_0).
+% \end{align*}
 
-To solve this problem, let
-\begin{align*}
-    \vec{\hat{r}_x} = \begin{bmatrix} \hat{r}_x[-LN]& \hat{r}_x[-LN+1] & \cdots & \hat{r}_x[LN]\end{bmatrix}
-\end{align*}
-denote the vector containing the by the reconstructor estimated elements of $r_x[m]$. Then 
-\begin{align*}
-E(\vec{\hat{r}}_x) &= \mat{R}^{\dagger}E(\vec{\hat{r}}_y)
-\end{align*}
+% Under $\mathcal{H}_0$, the distribution of $T_2 = r_x[0]$ is approximated by a Gaussian. We can therefore derive the
+% threshold $\gamma$ by noting that
+% \begin{align*}
+% p\ss{fa} &= P\left[\frac{E\left(T_1\right)/\gamma - E\left(T_2\right) }{\sqrt{\text{Var}(T_2)}}\right]\\
+% &= 1-Q\left[\frac{E\left(T_1\right)/\gamma - E\left(T_2\right) }{\sqrt{\text{Var}(T_2)}}\right].
+% \end{align*}
 
-contains $r_x[m]$ for $-LN \leq m \leq LN$. Notice that this vector contains $r_x[0] = E(T_2)$ and that it can be used to construct $E(\mat{C})$. Therefore it can also be used to calculate $E(T_1)$. To obtain $\Var(r_x[0])$, we notice that the $\Var(r_x[m])$ is contained on the diagonal of the covariance matrix of $\vec{\hat{r}_x}$, which is denoted by $\mat{C}_{\hat{r}_x}$. This covariance matrix is equal to
-\begin{align*}
-\mat{C}_{\hat{r}_x} &= E(\vec{\hat{r}}_x\vec{\hat{r}}_x^T) - E(\vec{\hat{r}}_x) E(\vec{\hat{r}}_x^T)\\
-&= R^{\dagger}\mat{C}_{\hat{r}_y}(R^{\dagger})^H.
-\end{align*}
-The elements of the covariance matrix $\mat{C}_{\hat{r}_y}$ are given by \cref{eq:elem_cov_ry}. Finally, the threshold $\gamma$ can be calculated by
-\begin{align*}
-\gamma &= \frac{E(T_1)}{Q^{-1}(1-p_{fa})\sqrt{\Var(T_2)}+E(T_2)}.
-\end{align*}
+% To solve for $\gamma$ we have to determine $E\left(T_1\right)$, $E\left(T_2\right)$ and $\Var(T_2)$. It is at this point that we cannot use the expressions from \cite{zheng2009spectrum}, since the estimation of $r_x[m]$ in \cref{sec:reconstruction-implementation} is a random variable itself, which interferes with calculating $p\ss{fa}$.
+
+% To solve this problem, let
+% \begin{align*}
+%     \vec{\hat{r}_x} = \begin{bmatrix} \hat{r}_x[-LN]& \hat{r}_x[-LN+1] & \cdots & \hat{r}_x[LN]\end{bmatrix}
+% \end{align*}
+% denote the vector containing the by the reconstructor estimated elements of $r_x[m]$. Then 
+% \begin{align*}
+% E(\vec{\hat{r}}_x) &= \mat{R}^{\dagger}E(\vec{\hat{r}}_y)
+% \end{align*}
+
+% contains $r_x[m]$ for $-LN \leq m \leq LN$. Notice that this vector contains $r_x[0] = E(T_2)$ and that it can be used to construct $E(\mat{C})$. Therefore it can also be used to calculate $E(T_1)$. To obtain $\Var(r_x[0])$, we notice that the $\Var(r_x[m])$ is contained on the diagonal of the covariance matrix of $\vec{\hat{r}_x}$, which is denoted by $\mat{C}_{\hat{r}_x}$. This covariance matrix is equal to
+% \begin{align*}
+% \mat{C}_{\hat{r}_x} &= E(\vec{\hat{r}}_x\vec{\hat{r}}_x^T) - E(\vec{\hat{r}}_x) E(\vec{\hat{r}}_x^T)\\
+% &= R^{\dagger}\mat{C}_{\hat{r}_y}(R^{\dagger})^H.
+% \end{align*}
+% The elements of the covariance matrix $\mat{C}_{\hat{r}_y}$ are given by \cref{eq:elem_cov_ry}. Finally, the threshold $\gamma$ can be calculated by
+% \begin{align*}
+% \gamma &= \frac{E(T_1)}{Q^{-1}(1-p_{fa})\sqrt{\Var(T_2)}+E(T_2)}.
+% \end{align*}
 
 \end{document}
