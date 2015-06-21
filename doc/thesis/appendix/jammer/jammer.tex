@@ -17,7 +17,7 @@
 \subsection{Introduction}
 For our business plan we considered building a smart jammer. When the signals that are present in the spectrum are identified a list of frequencies that need to be jammed can be generated. To do the actual jamming we decided to build a simple device to block one programmable frequency. The number of transmitters should scale with the number of expected signals in the frequency range that needs to be jammed.
 
-In this section we will discuss the working of this jammer. We will begin with a block diagram of the transmitter, and we will then present the complete schematics and the PCB\@. Unfortunately, because this was a small side project, we did not have enough time to actually finish the design and build it. We designed a schematic and pcb footprints, simulated the essential parts. The we did not have enough time to design a noise source and do the routing and simulation of the PCB\@.
+In this section we will discuss the working of this jammer. We will begin with a block diagram of the transmitter, and we will then present the complete schematics and the PCB. Unfortunately, because this was a small side project, we did not have enough time to actually finish the design and build it. We designed a schematic and pcb footprints, simulated the essential parts. The we did not have enough time to design a noise source and do the routing and simulation of the PCB.
 
 \subsection{Block diagram}
 \begin{figure}[H]
@@ -88,7 +88,7 @@ In this section we will discuss the working of this jammer. We will begin with a
 \label{fig:block_diagram_jammer}
 \end{figure}
 
-The block diagram of the jammer can be found in \cref{fig:block_diagram_jammer}. The jammer works by generation a square wave with a programmable clock generator IC\@. These ICs are much cheaper than a solution with a very broadband voltage controlled oscillator and a PLL\@. We chose a specific IC with a frequency range of \SIrange{3}{416}{\mega\hertz}. In this example we want to jam the band including the \SI{446}{\mega\hertz} frequency of licence free radios. Our oscillator only operates up to a frequency of \SI{416}{\mega\hertz}, therefore we need to select a high harmonic, in this case the third, and filter all of the other components of the square wave. In this case we use a bandpass filter that spans the \SIrange{405}{675}{\mega\hertz}. The bandwidth is determined by the frequency of the fifth harmonic. At \SI{405}{\mega\hertz} the base frequency is \SI{135}{\mega\hertz}, and the fifth harmonic \SI{675}{\mega\hertz}. We created a small script to generate a complete table of needed filters to span the whole range of \SI{3}{\mega\hertz} to \SI{3}{\giga\hertz}. These results can be found in \cref{tab:filter_freqs}.
+The block diagram of the jammer can be found in \cref{fig:block_diagram_jammer}. The jammer works by generation a square wave with a programmable clock generator IC. These ICs are much cheaper than a solution with a very broadband voltage controlled oscillator and a PLL. We chose a specific IC with a frequency range of \SIrange{3}{416}{\mega\hertz}. In this example we want to jam the band including the \SI{446}{\mega\hertz} frequency of licence free radios. Our oscillator only operates up to a frequency of \SI{416}{\mega\hertz}, therefore we need to select a high harmonic, in this case the third, and filter all of the other components of the square wave. In this case we use a bandpass filter that spans the \SIrange{405}{675}{\mega\hertz}. The bandwidth is determined by the frequency of the fifth harmonic. At \SI{405}{\mega\hertz} the base frequency is \SI{135}{\mega\hertz}, and the fifth harmonic \SI{675}{\mega\hertz}. We created a small script to generate a complete table of needed filters to span the whole range of \SI{3}{\mega\hertz} to \SI{3}{\giga\hertz}. These results can be found in \cref{tab:filter_freqs}.
 
 After the filtering the signal is mixed with a band-limited noise source, and then amplified and filtered again. This should produce a band limited signal with noise at the desired frequency.
 
@@ -144,9 +144,9 @@ For this implementation we chose a frequency range of \SIrange{405}{675}{\mega\h
 
 
 \subsubsection{Microcontroller}
-A microcontroller was needed to control the clock generator IC and communicate with the PC\@. We decided to use an Atmega 328P. This is the same microcontroller used as on the very widespread Arduino boards. Therefore a lot of code is already available. This would allow us to develop the firmware in the limited time we had left.
+A microcontroller was needed to control the clock generator IC and communicate with the PC. We decided to use an Atmega 328P. This is the same microcontroller used as on the very widespread Arduino boards. Therefore a lot of code is already available. This would allow us to develop the firmware in the limited time we had left.
 
-The microcontroller connects to the PC with a special USB to Serial cable produced by FTDI\@. With this setup we can easily send commands from our python program to the microcontroller.
+The microcontroller connects to the PC with a special USB to Serial cable produced by FTDI. With this setup we can easily send commands from our python program to the microcontroller.
 
 \subsection{Simulations}
 To verify the working of the system we built a SPICE simulation of a simplified version of the schematic, see \cref{fig:sim_schematic}. The resistor of $1~\text{M}\Omega$ was added to prevent a SPICE error about inductor loops. This includes the filter in \cref{fig:filter} and a matching network to match to $50~\Omega$ source to the $180~\Omega$ impedance of the mixer.

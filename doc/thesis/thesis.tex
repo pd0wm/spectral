@@ -23,29 +23,35 @@
 \tableofcontents
 
 \mainmatter
+\subimport{introduction/}{preface}
 \subimport{introduction/}{introduction}
-%\subimport{introduction/}{specifications}
 \subimport{problem_statement/}{problem_statement}
 \subimport{similar_research/}{similar_research}
+
+\partauthor{W.P. Bruinsma\\H.J.C. Kroep\\T.A. aan de Wiel\\}
 \part{Theory}
 \label{prt:theory}
 \subimport{theory/}{theory}
+
+\partauthor{R.P. Hes\\T.C. Leliveld\\W.M. Melching\\}
 \part{Implementation}
 \label{prt:implementation}
 \subimport{implementation/}{implementation}
 
 
+\partauthor{}
 \part{Observations and Conclusion}
 \subimport{conclusions/}{conclusions}
 
 \clearpage
-% \backmatter
-%\bookmarksetup{startatroot}
-
 \printbibliography
 
 \clearpage
 \pagenumbering{Roman}
+\appendix
+
+\partauthor{}
+\part{Appendix}
 \subimport{appendix/}{appendix}
 
 \end{document}
