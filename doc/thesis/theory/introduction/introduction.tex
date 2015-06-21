@@ -15,9 +15,9 @@
 \section{Introduction}
 In this part, we develop an approach to enable high-performance real-time wideband spectrum sensing. More specifically, we develop techniques which are implemented in various modules of the toolkit.
 
-Spectrum sensing consists of determining which frequencies of a signal are occupied with signals distinct from noise. Our approach, which we consider to be a system, enables to determine these frequencies. Therefore, the input to our system is an arbitrary signal and the output is which frequencies of this signal are occupied by signals distinct from noise. We will not only consider signals from a single source, but also consider the same signal observed by multiple sources. These sources all observe the same signal by sampling this signal. So, in summary, our system will be able to combine the information obtained by a single or multiple sources all sampling the sample signal, and will then be able to determine which frequencies of this signal are occupied by signals distinct from noise. 
+Spectrum sensing consists of determining which frequencies of a signal are occupied with signals distinct from noise. Our approach, which we consider to be a system, enables to determine these frequencies. Therefore, the input to our system consists of an arbitrary signal and the output is which frequencies of this signal are occupied by signals distinct from noise. We will not only consider signals from a single source, but also consider the same signal observed by multiple sources. These sources all observe the same signal by sampling this signal. So, in summary, our system will be able to combine the information obtained by a single or multiple sources all sampling the sample signal, and will then be able to determine which frequencies of this signal are occupied by signals distinct from noise. 
 
-The part is divided into several chapters. We started with a detailled description of the approach. Then, we give an overview of the system. In this overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
+The part is divided into several chapters. We start with a detailled description of the approach. Then, we give an overview of the system. In this overview, we look at the different system components, which will be described in separate chapters afterwards. Finally, we will evaluate the system as a whole.
 
 \section{Specifications}
 \label{sec:theory-specs}
@@ -56,7 +56,7 @@ Identification of signals \emph{should} be such that
 \subsection{Sampling techniques}
 The techniques used for sampling \emph{must} allow for
 \begin{enumerate}
-    \item correction operation of the detection;
+    \item correct operation of the detection;
     \item usage of a single sampling device and
     \item usage of multiple sampling devices such that the workload can be distributed across the devices.
 \end{enumerate}

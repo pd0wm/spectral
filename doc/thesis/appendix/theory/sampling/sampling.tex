@@ -365,15 +365,12 @@ The red arrows indicate the lags that are produced by device one, and the blue a
 Similarly, coprime sampling also requires that the circular sparse ruler problem is satisfied. A configuration for coprime sampling is depicted in \cref{tkz:coprime_ruler}.
 
 \begin{figure}
-\centering
+\centerline{
 \begin{tikzpicture}[scale=1.3]
-
 \foreach \i in {0,...,20} {
     \draw [dashed] (1+\i/2,0) -- (1+\i/2,3.5);
 }
-
 \draw (1,0) -- (11,0);
-
 \draw [red, very thick] (1,0) -- (1,0.3);
 % \draw (1.5,0) -- (1.5,0.1);
 % \draw (2,0) -- (2,0.1);
@@ -395,7 +392,6 @@ Similarly, coprime sampling also requires that the circular sparse ruler problem
 \draw [red, very thick] (10,0) -- (10,0.3);
 % \draw (10.5,0) -- (10.5,0.1);
 % \draw (11,0) -- (11,0.1);
-
 \node at (1,-0.35) {1};
 \node at (1.5,-0.35) {2};
 \node at (2,-0.35) {3};
@@ -417,9 +413,7 @@ Similarly, coprime sampling also requires that the circular sparse ruler problem
 \node at (10,-0.35) {19};
 \node at (10.5,-0.35) {20};
 \node at (11,-0.35) {21};
-
 \draw (1,3.5) -- (11,3.5);
-
 \draw [blue, very thick] (1,3.2) -- (1,3.5);
 % \draw (1.5,3.4) -- (1.5,3.5);
 % \draw (2,3.4) -- (2,3.5);
@@ -441,7 +435,6 @@ Similarly, coprime sampling also requires that the circular sparse ruler problem
 % \draw (10,3.4) -- (10,3.5);
 % \draw (10.5,3.4) -- (10.5,3.5);
 \draw [blue, very thick] (11,3.2) -- (11,3.5);
-
 \node at (1,3.85) {1};
 \node at (1.5,3.85) {2};
 \node at (2,3.85) {3};
@@ -463,7 +456,6 @@ Similarly, coprime sampling also requires that the circular sparse ruler problem
 \node at (10,3.85) {19};
 \node at (10.5,3.85) {20};
 \node at (11,3.85) {21};
-
 \draw [>=latex,<->] (1,0.6) -- (1.5,0.6);
 \draw [>=latex,<->](2.5,0.8) -- (3.5,0.8);
 \draw [>=latex,<->](1,1) -- (2.5,1);
@@ -477,8 +469,7 @@ Similarly, coprime sampling also requires that the circular sparse ruler problem
 \draw [>=latex,<->](5.5,2.6) -- (11,2.6);
 \draw [>=latex,<->](1,2.8) -- (7,2.8);
 \draw [>=latex,<->](3.5,3) -- (10,3);
-
-\end{tikzpicture}
+\end{tikzpicture}}
 \caption{Coprime sampling with $a=3$ and $b=5$}\label{tkz:coprime_ruler}
 \end{figure}
 

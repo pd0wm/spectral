@@ -44,11 +44,10 @@ Consider the input signal to be a random stochastic process. To relate the outpu
 \section{Construction of the output of a coset}
 In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yields one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
 \begin{figure}
-    \centering
+    \centerline{
     \begin{tikzpicture}
         \draw [black] (-5,0.5) -- (5,0.5);
         \draw [black] (-5,0) -- (5,0);
-
         \draw [black] (-4,-1) -- (0,-1);
         \draw [black] (-4,-0.5) -- (0,-0.5);
         \draw [black] (0,-1.5) -- (4,-1.5);
@@ -59,28 +58,24 @@ In the chapter on sampling we have seen that every coset samples the input signa
         \foreach \i in {-4,...,5} {
             \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
         }
-
         \foreach \i in {-4,...,0} {
             \draw [black] (\i, -0.5) -- (\i, -1);
         }
         \foreach \i in {0,...,3} {
             \draw ({(3-\i)-3.5},-0.75) node[black] {$c_i[\i]$};
         }
-
         \foreach \i in {0,...,4} {
             \draw [black] (\i, -1.5) -- (\i, -1);
         }
         \foreach \i in {0,...,3} {
             \draw ({(3-\i)+0.5},-1.25) node[black] {$c_i[\i]$};
         }
-
         \foreach \i in {-4,...,-1} {
             \draw (\i+0.5,-0.25) node {$\times$};
         }
         \foreach \i in {0,...,3} {
             \draw [black, >=latex, ->] (\i+0.5,-0.05)  -- node[pos=0.45,fill=white] {$\times$} (\i+0.5,-0.95);
         }
-
         \draw [black, >=latex, ->] (-4.05,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
         \draw [black, >=latex, ->] (-0.05,-1.25) -- node[pos=0.825,fill=white] {\tiny$\sum$} (-5.95,-1.25);
         \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
@@ -91,7 +86,7 @@ In the chapter on sampling we have seen that every coset samples the input signa
         \draw (5.5,0.25) node {$\cdots$};
         \draw (-6.5,-1.75) node {$\vdots$};
         \draw (-6.5,0) node {$\vdots$};
-    \end{tikzpicture}
+    \end{tikzpicture}}
     \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
     \label{fig:visualisation-yi}
 \end{figure}
@@ -104,11 +99,10 @@ Mathematically,
 Consider the case that $c_i[n]=1$ for a single $n$ and otherwise zero. Then $y_i[n]$ consists of the sample of every group of $N$ samples of $x[n]$.
 This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualisation-yi-example} illustrates this concept in the case that $N=4$ and $c_i[n]=1$ for $n=1$ and otherwise zero.
 \begin{figure}
-    \centering
+    \centerline{
     \begin{tikzpicture}
         \draw [black] (-5,0.5) -- (5,0.5);
         \draw [black] (-5,0) -- (5,0);
-
         \draw [black] (-4,-1) -- (0,-1);
         \draw [black] (-4,-0.5) -- (0,-0.5);
         \draw [black] (0,-1.5) -- (4,-1.5);
@@ -119,7 +113,6 @@ This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualis
         \foreach \i in {-4,...,5} {
             \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
         }
-
         \foreach \i in {-4,...,0} {
             \draw [black] (\i, -0.5) -- (\i, -1);
         }
@@ -127,7 +120,6 @@ This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualis
         \draw (-2.5, -0.75) node[black] {$0$};
         \draw (-1.5, -0.75) node[black] {$1$};
         \draw (-0.5, -0.75) node[black] {$0$};
-
         \foreach \i in {0,...,4} {
             \draw [black] (\i, -1.5) -- (\i, -1);
         }
@@ -135,15 +127,12 @@ This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualis
         \draw (1.5, -1.25) node[black] {$0$};
         \draw (2.5, -1.25) node[black] {$1$};
         \draw (3.5, -1.25) node[black] {$0$};
-
-
         \foreach \i in {-4,...,-1} {
             \draw (\i+0.5,-0.25) node {$\times$};
         }
         \foreach \i in {0,...,3} {
             \draw [black, >=latex, ->] (\i+0.5,-0.05)  -- node[pos=0.45,fill=white] {$\times$} (\i+0.5,-0.95);
         }
-
         \draw [black, >=latex, ->] (-4.05,-0.75) -- node[pos=0.45,fill=white] {\tiny$\sum$} (-5.95,-0.75);
         \draw [black, >=latex, ->] (-0.05,-1.25) -- node[pos=0.825,fill=white] {\tiny$\sum$} (-5.95,-1.25);
         \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
@@ -154,7 +143,7 @@ This means $y_i[n]$ is an $N$-decimation of the input signal. \cref{fig:visualis
         \draw (5.5,0.25) node {$\cdots$};
         \draw (-6.5,-1.75) node {$\vdots$};
         \draw (-6.5,0) node {$\vdots$};
-    \end{tikzpicture}
+    \end{tikzpicture}}
     \caption{Relationship between $y_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$ and $c_i[n]=1$ for $n=1$ and otherwise zero}
     \label{fig:visualisation-yi-example}
 \end{figure}
@@ -170,13 +159,12 @@ where $\ast$ denotes the convolution operator. The definition of the convolution
 \end{align}
 since $c_i[n-k]=0$ for $k < n-N+1$ and $k > n$. \cref{fig:visualisation-zi} shows how $z_i[n]$, $x[n]$ and $c_i[n]$ are related in the case that $N=4$.
 \begin{figure}
-    \centering
+    \centerline{
     \begin{tikzpicture}
         \foreach \n in {0,1,2} {
             \begin{scope}[shift={(0,-2.5*\n)}]
                 \draw [black] (-5,0.5) -- (5,0.5);
                 \draw [black] (-5,0) -- (5,0);
-
                 \draw [black] (-4+\n,-1) -- (0+\n,-1);
                 \draw [black] (-4+\n,-0.5) -- (0+\n,-0.5);
                 \foreach \i in {-5,...,5} {
@@ -185,18 +173,15 @@ since $c_i[n-k]=0$ for $k < n-N+1$ and $k > n$. \cref{fig:visualisation-zi} show
                 \foreach \i in {-4,...,5} {
                     \draw ({\i-0.5},0.25) node[black] {$x[\i]$};
                 }
-
                 \foreach \i in {-4,...,0} {
                     \draw [black] (\i+\n, -0.5) -- (\i+\n, -1);
                 }
                 \foreach \i in {0,...,3} {
                     \draw ({(3-\i)-3.5+\n},-0.75) node[black] {$c_i[\i]$};
                 }
-
                 \foreach \i in {-4,...,-1} {
                     \draw (\i+0.5+\n,-0.25) node {$\times$};
                 }
-
                 \draw [black, >=latex, ->] (-4.05+\n,-0.75) -- node[pos=(\n+1)/(2+\n),fill=white] {\tiny$\sum$} (-5.95,-0.75);
                 \draw [black] (-7,-0.5) -- (-7,-1) -- (-6,-1) -- (-6,-0.5) -- (-7,-0.5);
                 \draw (-6.5,-0.75) node[black] {$z_i[\n]$};
@@ -204,7 +189,7 @@ since $c_i[n-k]=0$ for $k < n-N+1$ and $k > n$. \cref{fig:visualisation-zi} show
                 \draw (5.5,0.25) node {$\cdots$};
             \end{scope}
         }
-    \end{tikzpicture}
+    \end{tikzpicture}}
     \caption{Relationship between $z_i[n]$, $x[n]$ and $c_i[n]$ in the case that $N=4$}
     \label{fig:visualisation-zi}
 \end{figure}
@@ -258,7 +243,7 @@ Consider \cref{eq:cij}. We know that $c_i[n]=0$ for $n < 0$ and $n > N-1$, which
 This is the desired equation which relates the cross-correlation of the outputs of cosets $i$ and $j$ to the autocorrelation of the input signal.
 We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r_x[m]$. \cref{fig:visualisation-ryiyj-rx} illustrates these dependencies.
 \begin{figure}
-    \centering
+    \centerline{
     \begin{tikzpicture}
         \draw [black] (-6.5,0) -- (6.5,0);
         \draw [black] (-3,-0.1) -- (-3,0.1);
@@ -273,7 +258,6 @@ We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r
         \draw (-6,-0.4) node {$r_{y_i,y_j}[L-2]$};
         \draw (3,-0.4) node {$r_{y_i,y_j}[L+1]$};
         \draw (6,-0.4) node {$r_{y_i,y_j}[L+2]$};        
-
         \begin{scope}[shift={(0,2)}]
             \draw [black] (-6.5,0) -- (6.5,0);
             \draw [black] (-3,-0.1) -- (-3,0.1);
@@ -305,11 +289,10 @@ We see that every element of $r_{y_i,y_j}[m]$ depends on specific elements of $r
             \draw (-4.5,0) node[fill=white] {$\cdots$};
             \draw (4.5,0) node[fill=white] {$\cdots$};
         \end{scope}
-
         \fill [fill=black, fill opacity=0.1] (0,0) -- (2.5,2) -- (-2.5,2) -- cycle;
         \fill [fill=black, fill opacity=0.1] (3,0) -- (5.5,2) -- (0.5,2) -- cycle;
         \fill [fill=black, fill opacity=0.1] (-3,0) -- (-5.5,2) -- (-0.5,2) -- cycle;
-    \end{tikzpicture}
+    \end{tikzpicture}}
     \caption{Dependencies between $r_{y_i,y_j}[m]$ and $r_x[m]$ defined by \cref{eq:ryiyj-rx}}
     \label{fig:visualisation-ryiyj-rx}
 \end{figure}
@@ -358,7 +341,7 @@ The complicated system of equations now reduces to
     r_{y_i,y_j}[-L] &= \vec{c}_{i,j}^{-} \vec{r}_x[-L] &&+ r_x[-LN] c_{i,j}[0],
 \end{align*}
 which can be conveniently written as the matrix equation
-\begin{align*}
+\begin{align*}\centerline{$
     \begin{bmatrix}
         r_{y_i,y_j}[L] \\
         r_{y_i,y_j}[L-1] \\
@@ -378,7 +361,7 @@ which can be conveniently written as the matrix equation
         \vdots \\
         r_x[-LN+1] \\
         r_x[-LN]
-    \end{bmatrix}.
+    \end{bmatrix}.$}
 \end{align*}
 Denote the previous equation by
 \begin{align} \label{eq:ryiyji-R-rx}

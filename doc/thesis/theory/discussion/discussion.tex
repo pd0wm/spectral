@@ -14,12 +14,23 @@
 
 \section{Discussion}
 
-A comparison between the different sampling techniques to decide which one suits best is in our product not relevant. We try to make our Toolkit as much general purpose as possible, and therefore is it in our interest to enable as much sampling techniques as possible. Also there is no "one size fits all", because all techniques are designed to optimise different situations.
+\subsection{Sampling}
+A comparison between the different sampling techniques to decide which one suits best is not relevant in our toolkit. We try to make our Toolkit as much general purpose as possible, and therefore is it in our interest to enable as much sampling techniques as possible. Also there is no "one size fits all", because all techniques are designed to optimise different situations.
 
 In the investigation of sampling techniques we have given each technique a similar approach. This enables us to not only see the differences between the different sampling techniques, but primarily their similarities. We saw that all three sampling methods are different solutions for the same problem, but have some different extra requirements. Note for example that the circular sparse sampling method, is also a collaborative sampling method for one device. From this observation rises the question if it would be possible to deduce a  general purpose configuration optimiser. The collaborative sampler has for example currently no good algorithm to find configurations for a random amount of devices with a random amount of samplers. This would be considered future work.  
 
 For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth, but collaborative sampling can also be used for other purposes, like increasing accuracy, or sensing in a larger radius. We did not look at these applications and this should be considered future work.
 
 For circular sparse ruler we constructed solutions with higher performance than proposed in \cite{ariananda2012compressive}. Our method for computing circular sparse ruler solutions is a novelty and contributes to higher efficiency in our product.
+
+\section{Reconstruction}
+For the reconstruction we looked extensively at possible incompletenesses and inconsistencies to find ways to improve the algorithm. Through this research we always came back to the original algorithm. We have to conclude that we could not find improvements for the algorithm, but we can confirm through this research the robustness of the algorithm as a general purpose autocorrelation estimator. We have concluded that the reconstruction algorithm does not introduce new errors or inaccuracies. We did however reformulate the algorithm in such a way that it is more convenient to implement.
+
+\section{Detection}
+For the detection on the output of the reconstruction we have looked at two blind detection methods: modified energy detection and CAV. Based on  a theoretical analysis we have decided to adopt the modified energy detector in our final system. This energy detector has been modified to work with our reformulated algorithm.
+Simulations of this detector with input of our reconstruction method has shown that per frequency detection
+can be performed if an accurate estimate of the noise power is known. The detection process is a computationally-wise a simple process and therefore adheres to the efficiency demand as stated in \cref{sec:theory-specs}.  As one might expect from \cref{cha:detection}, the performance of this detector detoriates with decreasing SNR and uncertainties in the noise power estimate. The results as presented in  support this expectation. It can be verified that the detection probability decreases with decreasing SNR; this detector is subject to the \emph{SNR} wall. Furthermore we notice that in presence of noise uncertainty the desired false alarm probability cannot be guaranteed. This also verifies that the detector does not posses the \emph{CFAR} property.
+
+From those observations a natural question is how to improve the performance of the detector. It may therefore be interesting to modify CAV detection as proposed in \cref{cha:detection} to work with wideband autocorrelation inputs. This however, remains future work. 
 
 \end{document}
