@@ -9,17 +9,17 @@
 \section{Sampling and reconstruction}
 In this previous section we discussed three multi-coset sampling methods. In \cref{sec:reconstruction-algorithm}, we saw that the sampling method determines the configuration, which is the way the samplers sample the input signal. The configuration then yields $c_i[n]$. Remember that the sampling signal $c_i[n]$ represents the way sampler $i$ samples the input signal. If these $c_i[n]$ satisfy the requirements stated in \cref{sec:reconstruction-implementation}, then the algorithm described in \cref{sec:reconstruction-algorithm} can be used to reconstruct the power spectral density of the sampled signal. We will reconsider these requirements one by one.
 
-Every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Since $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal, which was discussed in \cref{sec:reconstruction-algorithm}, this requirement is satisfied.
+First, every $c_i[n]=0$ for $n < 0$ and $n > N-1$. Since $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal, which was discussed in \cref{sec:reconstruction-algorithm}, this requirement is satisfied.
 
-Furthermore, all $c_i[n]=1$ for a single $n=n_i$ and otherwise zero. Every coset $i$ samples a single sample of every group of $N$ samples of the input signal. Therefore, this requirement is also satisfied.
+Second, all $c_i[n]=1$ for a single $n=n_i$ and otherwise zero. Every coset $i$ samples a single sample of every group of $N$ samples of the input signal. Therefore, this requirement is also satisfied. It is very important to notice this requirement in conjuction with the first requirement tells us that $n_i$ determine the offsets of the decimations of the different cosets.
 
-Finally, the following problem must be satisfied.
+Finally, the the circular sparse ruler problem, stated below, must be satisfied.
 
 \begin{description}
-    \item[Circular sparse ruler problem] The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of cosets $i$ and $j$ make up $0,\ldots,N-1$.
+    \item[Circular sparse ruler problem] Consider $n_i$ for every coset $i$ as described in the second requirement. The set consisting of $|n_i - n_j|$ and $N-|n_i-n_j|$ for all combinations of cosets $i$ and $j$ must make up $0,\ldots,N-1$.
 \end{description}
 
-Let $d=|n_i - n_j|$ or $d=N-|n_i-n_j|$. Equivalently, $d$ is the integer difference of the numbers of the samples taken by two samplers of every group of $N$ samples of the input signal. We now say that \textit{lag $d$ is estimated}. We will use this terminology throughout the chapter. The circular sparse ruler problem can be reformulated as follows.
+Let $d=|n_i - n_j|$ or $d=N-|n_i-n_j|$ for a combination of cosets $i$ and $j$. Equivalently, $d$ is the integer difference between the offsets of the decimations of cosets $i$ and $j$. We now say that \textit{lag $d$ is estimated}. We will use this terminology throughout the chapter. The circular sparse ruler problem can be reformulated as follows.
 
 \begin{description}
     \item[Circular sparse ruler problem (alternative formulation)] Lags $0,\ldots,N-1$ must be estimated.

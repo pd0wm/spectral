@@ -9,20 +9,64 @@
 
 \section{Reconstruction of the power spectral density}
 \label{sec:reconstruction-algorithm}
-This section will discuss an algorithm to estimate in real-time the power spectral density of a signal which is sampled at sub-Nyquist frequencies. We consider multi-coset sampling such as described in \cref{cha:sampling}. A step-by-step derivation of the algorithm can be found in \cref{sec:reconstruction-derivation}.
+This section will discuss an algorithm to estimate in real-time the power spectral density of a signal which is sampled at sub-Nyquist frequencies. We consider multi-coset sampling such as described in \cref{cha:sampling}. A step-by-step derivation of the algorithm in conjuction with more details on multi-coset sampling can be found in \cref{sec:reconstruction-derivation}.
 
-\subsection{Reconstruction and multi-coset sampling}
+\subsection{Mathematical formulation of multi-coset sampling}
 Let the input signal sampled at the Nyquist frequency be denoted by $x[n]$. Let the number of cosets be given by $M$. Let the output of coset $i$ be denoted by $y_i[n]$. Our reconstruction method estimates the power spectral density of $x[n]$ by making use of the outputs of all cosets. The Wiener-Khinchin theorem shows that estimating the power spectral density of $x[n]$ is equivalent to estimating the autocorrelation of $x[n]$.\footnote{More specifically, the Wiener-Khinchin theorem states that the Fourier transform of the autocorrelation equals the power spectral density, which yields the equivalence.} Therefore, our reconstruction method aims to estimate the autocorrelation of $x[n]$. Let the autocorrelation of the input signal be denoted by $r_x[m]$. Let the cross-correlation of the output of cosets $i$ and $j$ be denoted by $r_{y_i,y_j}[m]$. We will make use of $r_{y_i,y_j}[m]$ to estimate $r_x[m]$. This estimation is based on the relationship
 \begin{align*}
     \vec{r}_{y} = \mat{R} \vec{r}_x.
 \end{align*}
-Here $\vec{r}_y$ represents an aggregation of $r_{y_i,y_j}[m]$ and $\vec{r}_x$ represents an aggregation of $r_x$. We see that we can use $\mat{R}$ to relate $r_x[m]$ to $r_{y_i,y_j}[m]$. So $\mat{R}$ represents the relationship between the autocorrelation of the input signal and the cross-correlations of the outputs of the cosets.
+Here $\vec{r}_y$ represents an aggregation of $r_{y_i,y_j}[m]$ and $\vec{r}_x$ represents an aggregation of $r_x$. We see that we can use $\mat{R}$ to relate $r_x[m]$ to $r_{y_i,y_j}[m]$. This means that $\mat{R}$ represents the relationship between the autocorrelation of the input signal and the cross-correlations of the outputs of the cosets. A visual representation of the relationship of all variables is given in \cref{tkz:overview-vars}.
 
-Before we describe the algorithm, we have to study the output of a coset more closely. Every coset $i$ is associated to a sampling signal $c_i[n]$. \textbf{Also, every coset samples the input signal such that it consists of every $N$'th sample of $x[n]$. However, which $N$'th sample may differ between the cosets. This concept is illustrated in \cref{fig:illustration-yi}.} Therefore, if we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples.  The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be discussed in \cref{cha:sampling_methods}.
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\draw  (-2.5,2) rectangle (-1.5,1) node[pos=.5]{$x[n]$};
+\draw  (-1.5,1.5) -- (0.5,1.5);
+\draw  (-0.5,3) -- (0.5,3);
+\draw (-0.5,3) -- (-0.5,-0.5);
+
+\node at (2.5,-.91) {\vdots};
+\node at (0.75,-.91) {\vdots};
+\node at (-0.5,-.91) {\vdots};
+
+\draw (-0.5,-1.5) -- (-0.5,-2);
+\draw  (1,3) -- (2,3);
+\draw  (1,1.5) -- (2,1.5);
+\draw  (1,0) -- (2,0);
+\draw  (1,-2) -- (2,-2);
+\draw (-0.5,0) -- (0.5,0);
+\draw (-0.5,-2) -- (0.5,-2);
+\draw[ very thick](0.5,3)-- +(30:0.46);
+\draw[ very thick](0.5,1.5)-- +(30:0.46);
+\draw[ very thick](0.5,0)-- +(30:0.46);
+\draw[ very thick](0.5,-2)-- +(30:0.46);
+\draw  (3,2) rectangle (2,1) node[pos=.5]{$y_2[n]$};
+\draw  (3,0.5) rectangle (2,-0.5) node[pos=.5]{$y_3[n]$};
+\draw  (3,-1.5) rectangle (2,-2.5) node[pos=.5]{$y_M[n]$};
+\draw  (3,3.5) rectangle (2,2.5) node[pos=.5]{$y_1[n]$};
+\draw [decorate,decoration={brace,amplitude=10pt,mirror},xshift=-4pt,yshift=0pt]
+(3.5,-2.5) -- (3.5,3.5) node [black,midway,xshift=1.5cm,align=center] 
+{$r_{y_1,y_1}[m]$ \\ $\vdots$ \\ $r_{y_M,y_M}[m]$};
+\draw (-3.5,1.5) node {$r_x[m]~~\leftarrow$};
+\draw [>=latex,<->] (-3.8,2) -- (-3.8,4.5) -- (0,4.5);
+\draw [>=latex,<->] (4.6,1.5) -- (4.6,4.5) -- (1,4.5);
+\draw (0.5,4.5) node {$\mat{R}$};
+\end{tikzpicture}
+\caption{Visual representation of the relationship between the autocorrelation of the input signal and the cross-correlations of the output of the cosets}\label{tkz:overview-vars}
+\end{figure}
+
+\subsection{Sampling signals}
+Before we describe the algorithm, we have to study the output of a coset more closely. Note that the following paragraph will be a little more technical.
+
+Every coset $i$ is associated to a sampling signal $c_i[n]$. Also, every coset samples the input signal such that it is an $N$-decimation of the input signal. However, there may be an offset between the decimations of the different cosets. This concept is illustrated in \cref{fig:illustration-yi}. If we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples.  The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be discussed in \cref{cha:sampling_methods}. From now on, we will refer to $N$ as the downsampling factor.
 
 \subsection{Algorithm}
-It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal, however, is determined by the sampling technique. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \cref{cha:sampling} and will be further discussed in \cref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. Here $M$ and $N$ have already been discussed. The parameter $L$ limits $r_{y_i,y_j}[m]$ in support from $m=-L$ to $m=L$.\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} This influences the length of the estimated autocorrelation, which then determines the resolution of the estimated power spectral density of $x[n]$. The autocorrelation $r_x[m]$ will be estimated for $|m| \le LN$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}.
+It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal, however, is determined by the sampling technique. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \cref{cha:sampling} and will be further discussed in \cref{cha:sampling_methods}.
 
+The input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. Here $M$ and $N$ have already been discussed, where $M$ represents the number of cosets and $N$ the downsampling factor. The parameter $L$ limits $r_{y_i,y_j}[m]$ in support from $m=-L$ to $m=L$.\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} This influences the length of the estimated autocorrelation, which then determines the resolution of the estimated power spectral density of $x[n]$. The autocorrelation $r_x[m]$ will be estimated for $|m| \le LN$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset.
+
+The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}. The algorithm consists of following steps.
 
 \begin{figure}
 \centering
@@ -52,7 +96,7 @@ It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cos
 \draw [>=latex,<->] (-0.5,-3.5) -- node[yshift=0.3cm] {$N$} (6,-3.5);
 \draw [>=latex,->] (-0.25,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_1[0]$} (-0.25,-5);
 \draw [>=latex,->] (-0.25+6.5,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_1[1]$} (-0.25+6.5,-5);
-\draw (-1.5,-4.25) node {$\cdots$};
+\draw (-1.5,-4.25) node {$x[n]$};
 \draw (9.5,-4.25) node {$\cdots$};
 \draw [>=latex,->] (-0.25+0.5,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_2[0]$} (-0.25+0.5,-5.5);
 \draw [>=latex,->] (-0.25+6.5+0.5,-4.5) -- node[pos=1, yshift=-0.3cm] {$y_2[1]$} (-0.25+6.5+0.5,-5.5);
@@ -63,17 +107,15 @@ It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cos
 \label{fig:illustration-yi}
 \end{figure}
 
-The algorithm consists of following steps.
-
 \begin{table}
     \centering
     \begin{tabularx}{\textwidth}{llY}
         \textbf{Type} & \textbf{Parameter} & \textbf{Description} \\ \hline
         Input & $M$ & Number of cosets \\
-        Input & $N$ & Downsampling factor. Every coset samples the input signal once per $N$ samples. \\
+        Input & $N$ & Downsampling factor. Every coset is an $N$-decimation the input signal. However, there may be offsets between the decimations of different $y_i[n]$. \\
         Input & $y_i[n]$ & Output of coset $i$ \\
         Input & $L$ & Support of $r_{y_i,y_j}[m]$. This parameter influences the resolution of the estimated power spectral density of $x[n]$. \\
-        Input & $K$ & Oversampling factor. This parameter influences the accuracy of the estimated power spectral density of $x[n]$, but increases the measurement time. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. \\
+        Input & $K$ & Accuracy factor. This parameter influences the accuracy of the estimated power spectral density of $x[n]$, but increases the measurement time. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. \\
         Output & $r_x[m]$ & Autocorrelation of $x[n]$. The autocorrelation $r_x[m]$ is estimated for $|m| \le LN$.
     \end{tabularx}
     \caption{Input and outputs of the reconstruction algorithm}
@@ -99,7 +141,7 @@ The algorithm consists of following steps.
     \begin{align*}
         \vec{r}_y = \begin{bmatrix}
             \vec{r}_{y_1,y_1} \\ \vdots \\ \vec{r}_{y_M,y_M}
-        \end{bmatrix}^T.
+        \end{bmatrix}.
     \end{align*}
     \item Calculate $\vec{r}_x=\mat{R}^\dagger \vec{r}_y$, which yields an estimation of $r_x[m]$. \\
     Here
