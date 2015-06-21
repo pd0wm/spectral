@@ -191,6 +191,10 @@ The problem with the conventional energy detectors as described above is that th
 A modified energy detector as proposed in \cite{ariananda2012compressive} is depicted in \cref{tkz:ed_ari_overview}. The detector first estimates the power spectral density by applying the Fast Fourier Transform to an estimate of the autocorrelation function. This results in a discrete estimate of the power spectral density. Each element of this estimate is then compared an element-dependent threshold $\gamma_k$. As this detector detects per frequency whether there is a signal present or not, filtering of the signal is not necessary anymore.
 To calculate $\gamma_k$ information about the reconstruction method as described in \Cref{cha:reconstruction} is used. Details on this calculation can be found in \cref{sec:ari_ed_deriv}.
 
+\subsection{Noise estimation}
+As energy detectors rely on knowledge of the noise power it is necessary to have an estimate of this noise power. This can be done,
+for example by taking the mean power level in an empty frequency band as estimate. If such a band is not known the noise power can be estimated by using a sliding window over the estimated power spectral density. The lowest mean observed power in this window is then taken
+as an estimate of the noise power.
 % Let $\vec{s}_x \in \mathbb{R}^{2LN+1}$ denote the discrete power spectral density vector obtained by applying the $(2LN+1)$ point Discrete Fourier Transform to $\vec{r}_x$.
 
 % The vector $\vec{s}_x$ is then given by
