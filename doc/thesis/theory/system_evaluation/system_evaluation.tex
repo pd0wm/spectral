@@ -55,13 +55,13 @@ Details on this signal generation can be found the following section.
 The test signal will consist of an ideal signal contaminated with noise. The signal power and noise power will be based on a specified signal-to-noise ratio. Given a signal-to-noise ratio, we can construct the testing signal by doing as follows:
 
 \begin{enumerate}
-	\item Generate the ideal signal $s[n]$. The signal will consist of filtered circular symmetric complex gaussian noise such that it represents a bandpass signal with $-0.2 \leq f\leq 0.2$, where $f$ denotes the usual relative frequency. The average power of the signal at frequencies in the passband is chosen such that the required SNR will be met. 
-	\item Generate the noise signal $w[n]$, which will be additive circular symmetric complex gaussian noise.
+	\item Generate the ideal signal $s[n]$. The signal will consist of filtered circular symmetric complex Gaussian noise such that it represents a bandpass signal with $-0.2 \leq f\leq 0.2$, where $f$ denotes the usual relative frequency. The average power of the signal at frequencies in the passband is chosen such that the required SNR will be met. 
+	\item Generate the noise signal $w[n]$, which will be additive circular symmetric complex Gaussian noise.
 	\item Add $s[n]$ to $w[n]$ to produce the testing signal $x[n]$.
 \end{enumerate}
 
 \subsection{Tests}
-There are four parameters of the system, represented by circles in \cref{tkz:test_system}, that will be used in our tests to assess the performance of the system. The parameters are as follows:
+There are three parameters of the system, represented by circles in \cref{tkz:test_system}, that will be used in our tests to assess the performance of the system. The parameters are as follows:
 \begin{enumerate}
 	\item The SNR of the input signal.
 	\item The sampler type used to sample the input signal.
@@ -103,14 +103,14 @@ There are four parameters of the system, represented by circles in \cref{tkz:tes
 
 Our tests will be targeted at
 \begin{enumerate}
-	\item adressing the performance of the reconstruction by feeding it an artificial constructed signal while
+	\item addressing the performance of the reconstruction by feeding it an artificial constructed signal while
 	\begin{enumerate}
 		\item varying the sampling technique used to sample the signal, described in \cref{cha:sampling_methods} and
 		\item varying the compression rate and the sampling time, described in \cref{cha:reconstruction}.
 	\end{enumerate}
 	By comparing the reconstructed the power spectral density to the power spectral density recovered directly from the constructed test signal, we can evaluate the correctness of reconstruction when used with a specific sampling technique.
 	% Furthermore the dependence on the sampling time and the compression factor can be evaluated from those test results. 
-	\item adressing the performance of detection on the reconstructed signal. The energy detector as described in \cref{ssec:ari_ed} will be evaluated by tests that make use of the test signal as described in \cref{ssec:test_signal}. 
+	\item addressing the performance of detection on the reconstructed signal. The modified energy detector as described in \cref{ssec:ari_ed} will be evaluated by tests that make use of the test signal as described in \cref{ssec:test_signal}. 
 	Detection is applied to the output of the reconstructor while	
 	\begin{enumerate}
 		\item varying the signal-to-noise ratio of the test signal and

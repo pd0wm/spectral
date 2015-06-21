@@ -8,7 +8,7 @@
 
 \chapter{Derivation of the reconstruction algorithm}
 \label{sec:reconstruction-derivation}
-In this appendix we derive the algorithm discussed in \cref{sec:reconstruction-derivation}. The derivation aims to be an accessible, yet complete explanation which discusses all details necessary for implementation. \Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the derivation of the algorithmr.
+In this appendix we derive the algorithm discussed in \cref{cha:reconstruction}. The derivation aims to be an accessible, yet complete explanation which discusses all details necessary for implementation. \Cref{tab:reconstruction-overview-variables} presents an overview of the variables. Some variables are not discussed yet and the meaning of their names will become clear during the derivation of the algorithm.
 
 \begin{table}[H]
     \centering
@@ -42,7 +42,7 @@ In this appendix we derive the algorithm discussed in \cref{sec:reconstruction-d
 Consider the input signal to be a random stochastic process. To relate the output of a coset to the input signal, we need some mathematical constructs.
 
 \section{Construction of the output of a coset}
-In the chapter on sampling we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yields one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
+In \cref{sec:reconstruction-algorithm} we have seen that every coset samples the input signal every $N$ samples. However, different cosets sample at different moments. To keep the way a coset samples the input signal as general as possible, we associate every coset $i$ with a signal $c_i[n]$ which specifies the way coset $i$ samples the input signal. This signal $c_i[n]$ is constructed such that $c_i[n] = 0$ for $n < 0$ and $n > N-1$. To illustrate the way $y_i[n]$, $x[n]$ and $c_i[n]$ are related, suppose that $N=4$. In this case, \cref{fig:visualisation-yi} shows how $y_i[n]$ is related to $x[n]$ by $c_i[n]$. That is, every group of $N$ samples of the input signal yields one sample of the output of a coset. This is done by multiplying the samples in that group sample-wise by $c_i[N-1]$ to $c_i[0]$ and then summing them.
 \begin{figure}
     \centerline{
     \begin{tikzpicture}
@@ -206,11 +206,11 @@ The goal of the reconstruction method is to reconstruct the autocorrelation of t
 \end{align*}
 We assume that $x[n]$ is a wide sense stationary process. This means that $r_x[n,m]$ is independent of $n$. Therefore, we omit the $n$ in $r_x[n,m]$ and denote $r_x[n,m]=r_x[m]$. The cross-correlation of $z_i[n]$ and $z_j[n]$ is given by
 \begin{align*}
-    r_{z_i,z_j}[n,m]=E(z_i[n]\conj{z}_j[n+m]).
+    r_{z_i,z_j}[n,m]=E(\conj{z}_i[n]z_j[n+m]).
 \end{align*}
 Similarly, the cross-correlation of $y_i[n]$ and $y_j[n]$ is given by
 \begin{align*}
-    r_{y_i,y_j}[n,m]=E(y_i[n]\conj{y}_j[n+m]).
+    r_{y_i,y_j}[n,m]=E(\conj{y}_i[n]y_j[n+m]).
 \end{align*}
 Since the outputs of the cosets are assumed to be readily available, $r_{y_i,y_j}[n,m]$ can be determined. We plan to estimate $r_x[m]$ by making use of $r_{y_i,y_j}[n,m]$.
 
@@ -222,13 +222,13 @@ Since $x[n]$ is a wide sense stationary process, Theorem 11.5 of \cite{yates2005
 \end{align}
 where
 \begin{align} \label{eq:cij}
-    c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
+    c_{i,j}[m] = \sum_{k=-\infty}^{\infty}\conj{c}_i[k] c_j[k+m].
 \end{align}
 This shows that $r_{z_i,z_j}[n,m]$ is independent of $n$, we means that we omit the $n$ in $r_{z_i,z_j}[n,m]$  once more. Now the independence of $n$ implies that
 \begin{align*}
-    r_{z_i,z_j}[mN] &= E(z_i[n]\conj{z}_j[n+mN]) \\
-    &= E(z_i[nN]\conj{z}_j[nN+mN]) \\
-    &= E(y_i[n]\conj{y}_j[n+m]) \\
+    r_{z_i,z_j}[mN] &= E(\conj{z}_i[n]z_j[n+mN]) \\
+    &= E(\conj{z}_i[nN]z_j[nN+mN]) \\
+    &= E(\conj{y}_i[n]y_j[n+m]) \\
     &= r_{y_i,y_j}[m],
 \end{align*}
 since we defined that $z_i[n]=y_i[nN]$. Therefore
