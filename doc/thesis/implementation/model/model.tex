@@ -129,9 +129,9 @@ A single kind of detector is implemented. The strategy pattern is still used bec
 
 \subsection{Ariananda}
 \label{sub:ariananda}
-The Ariananda detector (named after the writer of \cite{ariananda2012compressive}) implements the theory described in \cref{cha:detection}. It takes $L$, $K$, $C$, $\mat{R}^\dagger$, $\mat{R}_c$, window length and $P_{\text{fa}}$ as its parameters.
+The Ariananda detector (named after the writer of \cite{ariananda2012compressive}) implements the theory described in \cref{cha:detection}. It takes $L$, $K$, $C$, $\mat{R}^\dagger$, $\mat{R}_c$, window length and $P_{\text{fa}}$ as its parameters. Its current implementation requires the reconstructor to be \func{Wessel}\footnote{It can also be implemented for \func{CrossCorrelation} but requires some adjustments. This has not been implemented.}.
 
-It implements the detect method by calculating a threshold (referred to as $\gamma$ in the theory) and comparing that with the PSD of the signal. It makes use of information of the reconstructor and the sampler in question to make a better estimate of a threshold for the signal.
+It implements the detect method by calculating a threshold (referred to as $\gamma_k$ in the theory) and comparing that with the PSD of the signal. It makes use of information of the wessel reconstructor and the sampler in question to make a better estimate of a threshold for the signal.
 
 
 \begin{figure}
