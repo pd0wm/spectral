@@ -35,7 +35,7 @@ Let
 \begin{align*}
     \vec{x} = \begin{bmatrix}x[0] & x[1] & \ldots & x[N-1]\end{bmatrix}^T
 \end{align*}
-denote a vector containing $N$ samples of the signal $x[n]$. Then the likelihood function of $\vec{x}$ denotes as $L(\vec{x})$ is given by
+denote a vector containing $N$ samples of the signal $x[n]$. Then the likelihood function of $\vec{x}$ denoted as $L(\vec{x})$ is given by
 
 \begin{align*}
     L(\vec{x}) &= \prod_{i=1}^N f_{(\vec{x})_i}\\
@@ -70,7 +70,8 @@ is proportional to $\Lambda'(x)$. Note that $\Lambda''$ is the same test statist
 \subsubsection{Threshold}
 In this section we will determine the threshold $\gamma$ for the energy detector test statistic $\Lambda''(\vec{x})$.
 Under $\mathcal{H}_0$ we have that $\Lambda''(\vec{x})$ is the sum of $2N$ independent zero mean Gaussian distributed variables
-with variance $\sigma_n^2/2$. So
+with variance $\sigma_n^2/2$. To see why, remember that $\vec{x}$ is circular symmetric complex gaussian and therefore for the element $x_i \in \vec{x}$ the following applies
+$|x_i|^2 = x_i \cdot \conj{x_i} = a^2 + b^2$ where $a = \Re(x_i)$ and $b=\Im(x_i)$.  So
 
 \begin{align}
     \frac{2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
@@ -86,7 +87,7 @@ Therefore, the false alarm probability $p\ss{fa}$ is given by \cite{rugini2013sm
 
 with $F_{2N}$ the cumulative distribution function of a chi square distribution with $2N$ degrees of freedom. 
 
-If $N$ is large enough, we can approximate the test statistics' distribution by a Gaussian distribution as it it is the sum of $2N$ independt identically distributed random variables. By the central limit theorem,
+If $N$ is large enough, we can approximate the test statistics' distribution by a Gaussian distribution as it it is the sum of $2N$ independent identically distributed random variables. By the central limit theorem,
 
 \begin{align*}
 F_{2N} \approx 1-Q\left(\frac{2\Lambda''(x)/\sigma^2_n-2N}{2\sqrt{N}}\right).
