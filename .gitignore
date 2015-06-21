@@ -157,4 +157,4 @@ Session.vim
 .ipynb_checkpoints/
 
 !fig_*.pdf
-data-detector2*.csv
+**/plots/data-*.csv
