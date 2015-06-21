@@ -131,100 +131,101 @@ Our tests will be targeted at
 
 
 %%%%%% PLOT: ALL SAMPLING METHODS
-\begin{filecontents*}{plots/data-circ1.csv}
-x, y
-1.0000,-0.8677
-2.0000,-0.9958
-3.0000,-1.0846
-4.0000,-1.1462
-5.0000,-1.1877
-6.0000,-1.2179
-7.0000,-1.2525
-8.0000,-1.2841
-9.0000,-1.3028
-10.0000,-1.3270
-11.0000,-1.3476
-12.0000,-1.3662
-13.0000,-1.3878
-14.0000,-1.4007
-15.0000,-1.4189
-16.0000,-1.4325
-17.0000,-1.4488
-18.0000,-1.4564
-19.0000,-1.4604
-20.0000,-1.4848
+\begin{filecontents*}{plots/data-nyq.csv}
+x,y
+1.0000,-1.1522
+2.0000,-1.3064
+3.0000,-1.3805
+4.0000,-1.4545
+5.0000,-1.4858
+6.0000,-1.5429
+7.0000,-1.5787
+8.0000,-1.6031
+9.0000,-1.6351
+10.0000,-1.6413
+11.0000,-1.6651
+12.0000,-1.6934
+13.0000,-1.7020
+14.0000,-1.7290
+15.0000,-1.7354
+16.0000,-1.7281
+17.0000,-1.7755
+18.0000,-1.7692
+19.0000,-1.7853
+20.0000,-1.7851
 \end{filecontents*}
 
-\begin{filecontents*}{plots/data-circ2.csv}
+\begin{filecontents*}{plots/data-circ1.csv}
 x, y
-1.0000,-0.7942
-2.0000,-0.9330
-3.0000,-1.0226
-4.0000,-1.0731
-5.0000,-1.1180
-6.0000,-1.1673
-7.0000,-1.1904
-8.0000,-1.2188
-9.0000,-1.2412
-10.0000,-1.2720
-11.0000,-1.2944
-12.0000,-1.3132
-13.0000,-1.3161
-14.0000,-1.3448
-15.0000,-1.3515
-16.0000,-1.3678
-17.0000,-1.3865
-18.0000,-1.3903
-19.0000,-1.4067
-20.0000,-1.4126
+1.0000,-0.8209
+2.0000,-0.9527
+3.0000,-1.0311
+4.0000,-1.0955
+5.0000,-1.1467
+6.0000,-1.1722
+7.0000,-1.2186
+8.0000,-1.2394
+9.0000,-1.2612
+10.0000,-1.2822
+11.0000,-1.3134
+12.0000,-1.3362
+13.0000,-1.3494
+14.0000,-1.3585
+15.0000,-1.3660
+16.0000,-1.3992
+17.0000,-1.3952
+18.0000,-1.4198
+19.0000,-1.4276
+20.0000,-1.4377
 \end{filecontents*}
+
 
 \begin{filecontents*}{plots/data-copr.csv}
 x, y
-1.0000,-0.8841
-2.0000,-1.0174
-3.0000,-1.0917
-4.0000,-1.1523
-5.0000,-1.1834
-6.0000,-1.2243
-7.0000,-1.2628
-8.0000,-1.2902
-9.0000,-1.3204
-10.0000,-1.3418
-11.0000,-1.3621
-12.0000,-1.3806
-13.0000,-1.3940
-14.0000,-1.4147
-15.0000,-1.4292
-16.0000,-1.4482
-17.0000,-1.4541
-18.0000,-1.4630
-19.0000,-1.4802
-20.0000,-1.4862
+1.0000,-0.8194
+2.0000,-0.9547
+3.0000,-1.0277
+4.0000,-1.0808
+5.0000,-1.1364
+6.0000,-1.1707
+7.0000,-1.1929
+8.0000,-1.2289
+9.0000,-1.2551
+10.0000,-1.2720
+11.0000,-1.2990
+12.0000,-1.3191
+13.0000,-1.3344
+14.0000,-1.3566
+15.0000,-1.3575
+16.0000,-1.3770
+17.0000,-1.3936
+18.0000,-1.4071
+19.0000,-1.4092
+20.0000,-1.4196
 \end{filecontents*}
 
 \begin{filecontents*}{plots/data-collab.csv}
 x, y
-1.0000,-0.8541
-2.0000,-0.9976
-3.0000,-1.0853
-4.0000,-1.1385
-5.0000,-1.1811
-6.0000,-1.2290
-7.0000,-1.2528
-8.0000,-1.2877
-9.0000,-1.3010
-10.0000,-1.3312
-11.0000,-1.3490
-12.0000,-1.3800
-13.0000,-1.3855
-14.0000,-1.4063
-15.0000,-1.4289
-16.0000,-1.4288
-17.0000,-1.4461
-18.0000,-1.4579
-19.0000,-1.4730
-20.0000,-1.4745
+1.0000,-0.8216
+2.0000,-0.9448
+3.0000,-1.0348
+4.0000,-1.1092
+5.0000,-1.1430
+6.0000,-1.1786
+7.0000,-1.2148
+8.0000,-1.2502
+9.0000,-1.2717
+10.0000,-1.3018
+11.0000,-1.3077
+12.0000,-1.3185
+13.0000,-1.3578
+14.0000,-1.3680
+15.0000,-1.3903
+16.0000,-1.3937
+17.0000,-1.4090
+18.0000,-1.4122
+19.0000,-1.4355
+20.0000,-1.4437
 \end{filecontents*}
 
 
@@ -232,9 +233,9 @@ x, y
 	\centerline{
 	\begin{tabular}{llll}
 		\textbf{Sampling technique} & \textbf{Compression} & \textbf{Configuration} & \textbf{Downsampling} \\ \hline
-		Circular sparse ruler sampling & $31\%$ & $4$ samplers & $13 \times$ \\
-		Coprime sampling & $45\%$ & $2$ samplers, periods $4T$ and $5T$ & $4 \times$ \\
-		Collaborative & $46\%$ &$6$ samplers over $2$ devices & $13 \times$
+		Circular sparse ruler sampling & $69\%$ & $4$ samplers & $13 \times$ \\
+		Coprime sampling & $55\%$ & $2$ samplers, periods $4T$ and $5T$ & $4 \times$ \\
+		Collaborative & $54\%$ &$6$ samplers over $2$ devices & $13 \times$
 	\end{tabular}}
 	\caption{Description of the sampling techniques depicted in \cref{fig:plot-nmse}}
 	\label{tab:sampling-nmse}
@@ -246,74 +247,74 @@ x, y
 %%%%% PLOT: CIRCULAR
 \begin{filecontents*}{plots/data-circ-N7.csv}
 x, y
-1.0000,-1.1552
-2.0000,-1.3148
-3.0000,-1.3921
-4.0000,-1.4497
-5.0000,-1.4765
-6.0000,-1.5246
-7.0000,-1.5701
-8.0000,-1.6004
-9.0000,-1.6108
-10.0000,-1.6388
-11.0000,-1.6494
-12.0000,-1.6936
-13.0000,-1.7016
-14.0000,-1.7145
-15.0000,-1.7207
-16.0000,-1.7373
-17.0000,-1.7628
-18.0000,-1.7772
-19.0000,-1.7917
-20.0000,-1.7826
+1.0000,-1.0770
+2.0000,-1.2115
+3.0000,-1.3001
+4.0000,-1.3641
+5.0000,-1.4234
+6.0000,-1.4626
+7.0000,-1.4847
+8.0000,-1.5209
+9.0000,-1.5396
+10.0000,-1.5523
+11.0000,-1.5902
+12.0000,-1.5941
+13.0000,-1.6163
+14.0000,-1.6500
+15.0000,-1.6521
+16.0000,-1.6613
+17.0000,-1.6849
+18.0000,-1.6858
+19.0000,-1.7015
+20.0000,-1.6896
 \end{filecontents*}
 
 \begin{filecontents*}{plots/data-circ-N13.csv}
 x, y
-1.0000,-0.8544
-2.0000,-0.9964
-3.0000,-1.0845
-4.0000,-1.1374
-5.0000,-1.1829
-6.0000,-1.2151
-7.0000,-1.2324
-8.0000,-1.2825
-9.0000,-1.3114
-10.0000,-1.3244
-11.0000,-1.3541
-12.0000,-1.3699
-13.0000,-1.3847
-14.0000,-1.4144
-15.0000,-1.4383
-16.0000,-1.4353
-17.0000,-1.4413
-18.0000,-1.4667
-19.0000,-1.4701
-20.0000,-1.4775
+1.0000,-0.8209
+2.0000,-0.9527
+3.0000,-1.0311
+4.0000,-1.0955
+5.0000,-1.1467
+6.0000,-1.1722
+7.0000,-1.2186
+8.0000,-1.2394
+9.0000,-1.2612
+10.0000,-1.2822
+11.0000,-1.3134
+12.0000,-1.3362
+13.0000,-1.3494
+14.0000,-1.3585
+15.0000,-1.3660
+16.0000,-1.3992
+17.0000,-1.3952
+18.0000,-1.4198
+19.0000,-1.4276
+20.0000,-1.4377
 \end{filecontents*}
 
 \begin{filecontents*}{plots/data-circ-N21.csv}
 x, y
-1.0000,-0.6490
-2.0000,-0.7952
-3.0000,-0.8770
-4.0000,-0.9352
-5.0000,-0.9736
-6.0000,-1.0154
-7.0000,-1.0399
-8.0000,-1.0627
-9.0000,-1.0926
-10.0000,-1.1152
-11.0000,-1.1273
-12.0000,-1.1415
-13.0000,-1.1596
-14.0000,-1.1800
-15.0000,-1.1915
-16.0000,-1.2198
-17.0000,-1.2260
-18.0000,-1.2222
-19.0000,-1.2500
-20.0000,-1.2542
+1.0000,-0.6166
+2.0000,-0.7633
+3.0000,-0.8441
+4.0000,-0.9097
+5.0000,-0.9474
+6.0000,-0.9802
+7.0000,-1.0162
+8.0000,-1.0426
+9.0000,-1.0565
+10.0000,-1.0919
+11.0000,-1.1013
+12.0000,-1.1186
+13.0000,-1.1354
+14.0000,-1.1497
+15.0000,-1.1679
+16.0000,-1.1779
+17.0000,-1.1974
+18.0000,-1.2134
+19.0000,-1.2264
+20.0000,-1.2294
 \end{filecontents*}
 
 
@@ -321,9 +322,9 @@ x, y
 	\centerline{
 	\begin{tabular}{llll}
 		\textbf{Sampling technique} & \textbf{Compression} & \textbf{Configuration} & \textbf{Downsampling} \\ \hline
-		Circular sparse ruler sampling & $43\%$ & $3$ samplers & $7 \times$ \\
-		Circular sparse ruler sampling & $31\%$ & $4$ samplers & $13 \times$ \\
-		Circular sparse ruler sampling & $24\%$ & $5$ samplers & $21 \times$ \\
+		Circular sparse ruler sampling & $57\%$ & $3$ samplers & $7 \times$ \\
+		Circular sparse ruler sampling & $69\%$ & $4$ samplers & $13 \times$ \\
+		Circular sparse ruler sampling & $76\%$ & $5$ samplers & $21 \times$ \\
 	\end{tabular}}
 	\caption{Description of the sampling techniques depicted in \cref{fig:plot-nmse-circ}}
 	\label{tab:sampling-nmse-circ}
@@ -335,83 +336,83 @@ x, y
 
 \begin{filecontents*}{plots/data-cop-35.csv}
 x, y
-1.0000,-1.0051
-2.0000,-1.1439
-3.0000,-1.2190
-4.0000,-1.2912
-5.0000,-1.3452
-6.0000,-1.3798
-7.0000,-1.3969
-8.0000,-1.4345
-9.0000,-1.4665
-10.0000,-1.4877
-11.0000,-1.5047
-12.0000,-1.5283
-13.0000,-1.5366
-14.0000,-1.5412
-15.0000,-1.5725
-16.0000,-1.5946
-17.0000,-1.5928
-18.0000,-1.6110
-19.0000,-1.6198
-20.0000,-1.6315
+1.0000,-0.9237
+2.0000,-1.0522
+3.0000,-1.1518
+4.0000,-1.2059
+5.0000,-1.2442
+6.0000,-1.2868
+7.0000,-1.3234
+8.0000,-1.3534
+9.0000,-1.3860
+10.0000,-1.4091
+11.0000,-1.4210
+12.0000,-1.4332
+13.0000,-1.4595
+14.0000,-1.4768
+15.0000,-1.4898
+16.0000,-1.4959
+17.0000,-1.5101
+18.0000,-1.5366
+19.0000,-1.5400
+20.0000,-1.5497
 \end{filecontents*}
 
 \begin{filecontents*}{plots/data-cop-45.csv}
 x, y
-1.0000,-0.8841
-2.0000,-1.0174
-3.0000,-1.0917
-4.0000,-1.1523
-5.0000,-1.1834
-6.0000,-1.2243
-7.0000,-1.2628
-8.0000,-1.2902
-9.0000,-1.3204
-10.0000,-1.3418
-11.0000,-1.3621
-12.0000,-1.3806
-13.0000,-1.3940
-14.0000,-1.4147
-15.0000,-1.4292
-16.0000,-1.4482
-17.0000,-1.4541
-18.0000,-1.4630
-19.0000,-1.4802
-20.0000,-1.4862
+1.0000,-0.8194
+2.0000,-0.9547
+3.0000,-1.0277
+4.0000,-1.0808
+5.0000,-1.1364
+6.0000,-1.1707
+7.0000,-1.1929
+8.0000,-1.2289
+9.0000,-1.2551
+10.0000,-1.2720
+11.0000,-1.2990
+12.0000,-1.3191
+13.0000,-1.3344
+14.0000,-1.3566
+15.0000,-1.3575
+16.0000,-1.3770
+17.0000,-1.3936
+18.0000,-1.4071
+19.0000,-1.4092
+20.0000,-1.4196
 \end{filecontents*}
 
 \begin{filecontents*}{plots/data-cop-47.csv}
 x, y
-1.0000,-0.7382
-2.0000,-0.8825
-3.0000,-0.9470
-4.0000,-1.0087
-5.0000,-1.0480
-6.0000,-1.0811
-7.0000,-1.1191
-8.0000,-1.1417
-9.0000,-1.1664
-10.0000,-1.1841
-11.0000,-1.2057
-12.0000,-1.2297
-13.0000,-1.2383
-14.0000,-1.2547
-15.0000,-1.2738
-16.0000,-1.2817
-17.0000,-1.2904
-18.0000,-1.3061
-19.0000,-1.3219
-20.0000,-1.3359
+1.0000,-0.6748
+2.0000,-0.8165
+3.0000,-0.9064
+4.0000,-0.9664
+5.0000,-1.0057
+6.0000,-1.0463
+7.0000,-1.0715
+8.0000,-1.0929
+9.0000,-1.1218
+10.0000,-1.1523
+11.0000,-1.1631
+12.0000,-1.1766
+13.0000,-1.2022
+14.0000,-1.2157
+15.0000,-1.2229
+16.0000,-1.2400
+17.0000,-1.2527
+18.0000,-1.2664
+19.0000,-1.2811
+20.0000,-1.2861
 \end{filecontents*}
 
 \begin{table}
 	\centerline{
 	\begin{tabular}{llll}
 		\textbf{Sampling technique} & \textbf{Compression} & \textbf{Configuration} & \textbf{Downsampling} \\ \hline
-		Corpime sampling & $53\%$ & $2$ samplers, periods $3T$ and $5T$ & $3 \times$ \\
-		Corpime sampling & $45\%$ & $2$ samplers, periods $4T$ and $5T$ & $4 \times$ \\
-		Corpime sampling & $39\%$ & $2$ samplers, periods $4T$ and $7T$ & $4 \times$ \\
+		Corpime sampling & $47\%$ & $2$ samplers, periods $3T$ and $5T$ & $3 \times$ \\
+		Corpime sampling & $55\%$ & $2$ samplers, periods $4T$ and $5T$ & $4 \times$ \\
+		Corpime sampling & $612\%$ & $2$ samplers, periods $4T$ and $7T$ & $4 \times$ \\
 	\end{tabular}}
 	\caption{Description of the sampling techniques depicted in \cref{fig:plot-nmse-cop}}
 	\label{tab:sampling-nmse-cop}
@@ -437,9 +438,14 @@ x, y
 					scale=1,
 					grid=both,
 					axis lines=left,
-					legend entries={$53\%$ compression, $45\%$ compression, $39\%$ compression},
+					legend entries={$0\%$ compression,$47\%$ compression, $55\%$ compression, $61\%$ compression},
 					legend cell align=left
 				]
+			    \addplot [
+				    color=black,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-nyq.csv};
 			    \addplot [
 				    color=red,
 				    solid,
@@ -471,9 +477,14 @@ x, y
 					scale=1,
 					grid=both,
 					axis lines=left,
-					legend entries={$43\%$ compression, $31\%$ compression, $24\%$ compression},
+					legend entries={$0\%$ compression,$57\%$ compression, $69\%$ compression, $76\%$ compression},
 					legend cell align=left
 				]
+			    \addplot [
+				    color=black,
+				    solid,
+				    mark=o
+			    ] table [x=x, y=y, col sep=comma]{plots/data-nyq.csv};
 			    \addplot [
 				    color=red,
 				    solid,
@@ -537,7 +548,7 @@ x, y
 		\label{fig:plot-nmse}
 	\end{subfigure}
 	}
-	\caption{Normalised mean squared errors of the reconstructed power spectral densities by different sampling methods. The plots assume a Nyquist frequency of \SI{25}{MHz}.}
+	\caption{Normalised mean squared errors of the reconstructed power spectral densities by different sampling methods. The plots assume a Nyquist frequency of \SI{25}{MHz}. The Nyquist sampled signal is limited in support such that $r_x[m]=0$ for $|m| > 60$. Note that the different techniques yield different resolutions.}
 \end{figure}
 
 
@@ -641,7 +652,7 @@ x, y
 			    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr5-1.csv};
 			\end{axis}
 		\end{tikzpicture}
-		\caption{In the case of no noise power uncertainty}
+		\caption{The case of no noise power uncertainty}
 		\label{fig:plot-detector}
 	\end{subfigure}
 	\begin{subfigure}[t]{.4\paperwidth}
@@ -681,11 +692,11 @@ x, y
 			    ] table [x=x, y=y, col sep=comma]{plots/data-detector-snr5-2.csv};
 			\end{axis}
 		\end{tikzpicture}
-		\caption{In the case of \SI{0.1}{dB} noise power uncertainty}
+		\caption{The case of \SI{0.1}{dB} noise power uncertainty}
 		\label{fig:plot-detector-noise}
 	\end{subfigure}
 	}
-	\caption{Receiver operating characteristic}
+	\caption{The detector's receiver operating characteristic}
 \end{figure}
 
 
