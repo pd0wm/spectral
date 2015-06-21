@@ -13,12 +13,21 @@
 \begin{document}
 \chapter{Software quality \& Testing}
 \section{Introduction}
-Introduction...
+In this chapter we will discuss the methods we used to write a large software product. Traditionally this is not part of a bachelor Electrical Engineering. However we feel the importance of proper code quality is one that every engineer should harness in the ever more software oriented industry. To achieve this we consulted some classic works on the subject. Examples of this are
+\begin{itemize}
+    \item Code Complete 2: A practical handbook of software construction\cite{mcconnell2004code};
+    \item Clean Code: A handbook of agile software craftmanship\cite{martin2008clean};
+    \item The Art of Unix Programming \cite{raymond2003art};
+    \item Learning Python %\cite{};
+    \item Dive into Python%\cite{};
+    \item Design Patterns: Elements of Reusable Object-oriented Software \cite{designpatterns}.
+\end{itemize}
+From this the importance of testing became immediately clear. The second is the importance of doing good upfront design. The choice of correct data structures and algorithms makes all the difference. This can be seen in the previous chapters when we refer to design patterns. A third theme is maintainability. This is something that lives through proper documentation and will be discussed below as well. Lastly we wanted to evaluate advice from Code Complete 2, a standard work on code quality, and how this applies to the current state of our software stack.
 
 \section{Testing}
 Unit testing is a way of doing verification on code by checking each function with set of known inputs and outputs.
 
-With unit testing you can verify the code on the function level. With the help of special tools you can specify the expectations about the working of a function, in our case the Python \lib{unittest} library. Your functions are then run with predefined inputs and the behaviour of the code is then analysed and checked against your specifications.
+With unit testing you can verify the code on the function level. With the help of special tools you can specify the expectations about the working of a function, in our case the Python \lib{unittest} and \lib{nose} library. Your functions are then run with predefined inputs and the behaviour of the code is then analysed and checked against your specifications.
 
 Unit testing is a great way to easily test if code follows its specifications, and does not break with certain edge cases. Because unit tests run fast, the code can be checked often and mistakes are found early.
 
@@ -35,6 +44,9 @@ Sometimes it is very easy to write specifications for the correct output of a fu
     \label{fig:coverage_branch}
 \end{figure}
 
+\section{Documentation}
+\label{sec:documentation}
+For the documentation we used Sphinx. Sphinx is a documentation generator that can build a API reference from the docstring\footnote{A docstring is a comment on the first line of a function indicated with the triple quote}. Sphinx makes use of Python's introspection property which allows it to get all the dosctrings and generate an automated API reference from this. This reference is included with this report.
 
 \section{Qualities of good code}
 We will discuss the quality of our code according to the definitions from Code Complete 2 about external and internal characteristics of quality code. External qualities are qualities the user of the software will notice. Internal qualities are only noticed by the developers of the software.\cite{mcconnell2004code}
