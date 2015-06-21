@@ -23,24 +23,21 @@ Our approach consists of several components, which all work together to achieve 
 
 The modules are depicted in \cref{fig:overview}. They will be discussed more detailled in the following subsections.
 \begin{figure}
-    \centering
+    \centerline{
     \begin{tikzpicture}[scale=1.2]
-
     \draw  (-0.6,1.5) rectangle (1.4,0.5) node[pos=.5]{Sampling};
     \draw  (2,1.5) rectangle (4,0.5) node[pos=.5]{Reconstruction};
     \draw  (4.3,1.5) rectangle (6.3,0.5) node[pos=.5]{Detection};
     \draw  (6.9,1.5) rectangle (8.9,0.5) node[pos=.5,text width=2cm, align=center]{\centering Spectrum sensing};
     \draw  [dashed] (1.7,2.5) rectangle (6.6,0.2);
     \node at (4.1,2) {Toolkit};
-
     \draw [>=latex,->] (1.4,1) -- (2,1);
     \draw [>=latex,->] (6.3,1) -- (6.9,1);
     \draw [>=latex,->] (-1.2,1) -- (-0.6,1);
-
     \draw (-2+0.8,1) -- (-2+0.8,2.5);
     \draw (-1.8+0.8,2.5) -- (-2+0.8,2.3);
     \draw (-2.2+0.8,2.5) -- (-2+0.8,2.3);
-    \end{tikzpicture}
+    \end{tikzpicture}}
     \caption{System overview. The system components are shown.}
     \label{fig:overview}
 \end{figure}
