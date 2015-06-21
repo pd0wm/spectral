@@ -200,8 +200,9 @@
 \definecolor{code-grey}{HTML}{DDDDDD}
 \newcommand{\lib}[1]{\textsf{#1}}
 \newcommand{\file}[1]{\textsf{#1}}
-\newcommand{\func}[1]{\colorbox{code-grey}{\texttt{#1}}}
-\newcommand{\class}[1]{\colorbox{code-grey}{\texttt{#1}}}
+\newcommand{\class}[1]{\setlength{\fboxsep}{2pt}\colorbox{code-grey}{\texttt{#1}}}
+\newcommand{\func}[1]{\setlength{\fboxsep}{2pt}\colorbox{code-grey}{\texttt{#1}}}
+
 
 % Setup actiepunten
 \newenvironment{important}[1][]{%

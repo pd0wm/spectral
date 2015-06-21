@@ -159,3 +159,4 @@ Session.vim
 !fig_*.pdf
 **/plots/data-*.csv
 **/plots/circ-*.csv
+**/plots/circ_*.data
