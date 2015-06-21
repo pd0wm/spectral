@@ -18,7 +18,7 @@ class CrossCorrelation(Reconstructor):
         if cache:
             self.R_pinv = self.calc_pseudoinverse(self.R)
         else:
-            self.R_pinv = sp.csr_matrix(sp.linalg.pinv(self.R))
+            self.R_pinv = sp.sparse.csr_matrix(sp.linalg.pinv(self.R))
 
     def reconstruct(self, signal):
         cross_corr_mat = self.cross_correlation_signals(signal)
@@ -42,7 +42,7 @@ class CrossCorrelation(Reconstructor):
 
     def block_toeplitz(self, Rc0, Rc1):
         Rc = np.zeros(((2 * self.L - 1) * self.M ** 2,
-                       (2 * self.L - 1) * self.N))
+                       (2 * self.L - 1) * self.N), np.complex128)
         for i in range((2 * self.L - 1)):
             for j in range((2 * self.L - 1)):
                 x = i * self.M ** 2  # Top left x coordinate
