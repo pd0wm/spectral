@@ -57,7 +57,7 @@ The file source reads the samples from a file. This was used to test with real w
 For the USRPs we have two sources. One for normal operation for simulating different sampling methods. The other is for doing hardware co-prime sampling. The USRP sources also have methods to change the centre frequency and the gain of the front-end of the radio.
 
 \subsubsection{Normal source}
-The normal source uses the \func{finite\_acquisition} function. This provides a very easy way to get a specified number of samples from one USRP\@. This method has a few drawbacks (see \cref{sec:drivers}). The problems with the dc compensation of the local oscillator are prevented by shifting the local oscillator out of the sampled spectrum. Unfortunately this halves our effective bandwidth.
+The normal source uses the \func{finite\_acquisition} function. This provides a very easy way to get a specified number of samples from one USRP. This method has a few drawbacks (see \cref{sec:drivers}). The problems with the dc compensation of the local oscillator are prevented by shifting the local oscillator out of the sampled spectrum. Unfortunately this halves our effective bandwidth.
 
 \subsubsection{Coprime source}
 The coprime source uses an external \CC~program to do the actual sampling. This program synchronises the two streams and can sample from two USRPs with different sample rates. The samples are then sent over a socket to the coprime source in Python for further processing.
