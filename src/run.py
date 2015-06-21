@@ -40,10 +40,10 @@ block_size = N * upscale_factor * L
 
 settings = ss.get_settings_object()
 settings.update({
-    'Pfa': 0.02,
+    'Pfa': 0.01,
     'center_freq': 2.4,  # GHz
     'num_bins': 150,
-    'window_length': 100,
+    'window_length': 200,
     'antenna_gain': 10
 })
 
