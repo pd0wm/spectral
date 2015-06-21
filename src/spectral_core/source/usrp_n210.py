@@ -49,7 +49,7 @@ class UsrpN210(Source):
         Method to tune the USRP to the desired frequency.
 
         Args:
-            freqeuncy: Desried center freqeuncy
+            frequency: Desired center freqeuncy
         """
         if self.center_freq != frequency:
             print "Tuning to", frequency / 1e9, "GHz"
@@ -89,7 +89,7 @@ class UsrpN210(Source):
 
     def parse_options(self, options):
         """
-        Method to parse options from the client. Calls the neccesary
+        Method to parse options from the client. Calls the necessary
         helper functions to change settings.
 
         Possible keys: 'antenna_gain' and 'center_freq'
