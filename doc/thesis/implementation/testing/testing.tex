@@ -19,7 +19,7 @@ Introduction...
 \subsection{Unit Tests}
 With unit testing you can verify the code on the function level. With the help of special tools you can specify the expectations about the working of a function, in our case the Python \lib{unittest} library. Your functions are then run with predefined inputs and the behaviour of the code is then analysed and checked against your specifications.
 
-Unit testing is a great way to easily test if your code follows your specifications, and does not break with certain edge cases. Because unit tests run fast, you can check your code often.
+Unit testing is a great way to easily test if code follows its specifications, and does not break with certain edge cases. Because unit tests run fast, the code can be checked often and mistakes are found early.
 
 For the verification we also used \lib{coverage}. This extension on our unit testing library also keeps track of which lines of code are run during your tests. If certain lines of code are never ran, you know your tests are incomplete. An example of this can be found in \cref{fig:coverage_branch}. In this output a certain branch of an if statement is never taken.
 
@@ -51,24 +51,24 @@ We will discuss the quality of our code according to the definitions from Code C
 
 ``\textit{Adaptability} is the extent to which a system can be used, without modification, in applications or environments other than those for which it was specifically designed.'' Because we have written our system in python our code is runnable on all hardware that is supported by python. This includes all personal computers and even embedded devices with a decent ARM or MIPS processor.
 
-``\textit{Accuracy} is the degree to which a system, as built, is free from error, especially with respect to quantitative outputs. Accuracy differs from correctness; it is a determination of how well a system does the job it's built for rather than whether it was built correctly.'' ** Programma van eisen ***
+``\textit{Accuracy} is the degree to which a system, as built, is free from error, especially with respect to quantitative outputs. Accuracy differs from correctness; it is a determination of how well a system does the job it's built for rather than whether it was built correctly.'' Before building our system we wrote a specifications for our system. Using testing we can verify that our system adheres to these specifications.
 
-``\textit{Robustness} is the degree to which a system continues to function in the presence of invalid inputs or stressful environmental conditions.''
+``\textit{Robustness} is the degree to which a system continues to function in the presence of invalid inputs or stressful environmental conditions.'' Our system is not really designed with robustness in mind. However there are multiple fail safes in the system. For example when the sampler does not return the requested number of samples, the frame is discarded and a new one is requested.
 
 \subsection{Internal qualities}
-``\textit{Maintainability} is the ease with which you modify a software system to change or add capabilities, improve performance, or correct defect.''
+``\textit{Maintainability} is the ease with which you modify a software system to change or add capabilities, improve performance, or correct defect.'' Our system is designed with modularity in mind. All components live in their own module and are not dependent on each other. This makes it very easy to change all small part of the system without interfering with the other parts. By making use of the strategy pattern, different solutions for one problem (eg. sampling) can be easily added.
 
-``\textit{Flexibility} is the extent to which you can modify a system for uses or environments other than those for which it was specifically designed.''
+``\textit{Flexibility} is the extent to which you can modify a system for uses or environments other than those for which it was specifically designed.'' The system we built is usable for all kinds of high performance signal processing. Instead of samplers, reconstructors and detectors other kind of signal processing modules can be implemented.
 
-``\textit{Portability} is the ease with which you can modify a system to operate in an environment different from that for which it was specifically designed.''
+``\textit{Portability} is the ease with which you can modify a system to operate in an environment different from that for which it was specifically designed.'' See \textit{Adaptability}.
 
-``\textit{Reusability} is the extent to which you and the ease with which you can use parts of a system in other systems.''
+``\textit{Reusability} is the extent to which you and the ease with which you can use parts of a system in other systems.'' For all our signal processing blocks we wrote documentation and an API manual. This makes it easy for others to use our modules in their own system.
 
-``\textit{Readability} is the ease with which you can read and understand the source code of a system, especially at the detailed-statement level.''
+``\textit{Readability} is the ease with which you can read and understand the source code of a system, especially at the detailed-statement level.'' Our code is written in Python, which is designed to produce very readable code. When our code is not immediately clear to the reader comments are added to improve legibility. Special documentation strings are added to each function to explain the working of each function and explain its arguments.
 
-``\textit{Testability} is the degree to which you can unit-test and system-test a system; the degree to which you can verify that the system meets its requirements.''
+``\textit{Testability} is the degree to which you can unit-test and system-test a system; the degree to which you can verify that the system meets its requirements.'' Our functional core is almost completely under test. Only the code that interfaces with physical hardware is not testable. The functionality of the reconstruction and the detector is checked with the output of the Matlab scripts written by theory group.
 
-``\textit{Understandability} is the ease with which you can comprehend a system at both the system-organisational and detailed-statement levels. Understandability has to do with the coherence of the system at a more general level than readability does.''
+``\textit{Understandability} is the ease with which you can comprehend a system at both the system-organisational and detailed-statement levels. Understandability has to do with the coherence of the system at a more general level than readability does.'' By using proven design patterns (Model-View-Presenter) to design our system architecture our system becomes more comprehensible. By separating parts of the system it becomes much easier to reason about a piece of code and its working.
 
 
 
