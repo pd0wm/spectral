@@ -18,7 +18,7 @@ Let the input signal sampled at the Nyquist frequency be denoted by $x[n]$. Let 
 \end{align*}
 Here $\vec{r}_y$ represents an aggregation of $r_{y_i,y_j}[m]$ and $\vec{r}_x$ represents an aggregation of $r_x$. We see that we can use $\mat{R}$ to relate $r_x[m]$ to $r_{y_i,y_j}[m]$. So $\mat{R}$ represents the relationship between the autocorrelation of the input signal and the cross-correlations of the outputs of the cosets.
 
-Before we describe the algorithm, we have to study the output of a coset more closely. Every coset $i$ is associated to a sampling signal $c_i[n]$. \textbf{Also, every coset samples the input signal such that it consists of every $N$'th sample of $x[n]$. However, which $N$'th sample may differ between the cosets.} Therefore, if we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples. This concept is illustrated in \cref{fig:illustration-yi}. The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be discussed in \cref{cha:sampling_methods}.
+Before we describe the algorithm, we have to study the output of a coset more closely. Every coset $i$ is associated to a sampling signal $c_i[n]$. \textbf{Also, every coset samples the input signal such that it consists of every $N$'th sample of $x[n]$. However, which $N$'th sample may differ between the cosets. This concept is illustrated in \cref{fig:illustration-yi}.} Therefore, if we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples.  The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be discussed in \cref{cha:sampling_methods}.
 
 \subsection{Algorithm}
 It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal, however, is determined by the sampling technique. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \cref{cha:sampling} and will be further discussed in \cref{cha:sampling_methods}. Furthermore, the input of the algorithm also consists of the parameters $M$, $N$, $L$ and $K$. Here $M$ and $N$ have already been discussed. The parameter $L$ limits $r_{y_i,y_j}[m]$ in support from $m=-L$ to $m=L$.\footnote{If $r_{y_i,y_j}[m]$ is limited in support from $m=-L$ to $m=L$, then this means that $r_{y_i,y_j}[m]=0$ for $|m|>L$.} This influences the length of the estimated autocorrelation, which then determines the resolution of the estimated power spectral density of $x[n]$. The autocorrelation $r_x[m]$ will be estimated for $|m| \le LN$. The parameter $K$ influences the measurement time, which determines the accuracy of the estimated power spectral density. The measurement time consists of the time required to obtain $KL$ samples of the output of every coset. The inputs and output of the algorithm are summarised in Table \ref{tab:reconstruction-algorithm-inputs-outputs}.
@@ -93,7 +93,7 @@ The algorithm consists of following steps.
     \begin{align*}
         \vec{r}_{y_i,y_j} = \begin{bmatrix}
             r_{y_i,y_j}[L] \; \cdots \; r_{y_i,y_j}[-L]
-        \end{bmatrix},
+        \end{bmatrix}^T,
     \end{align*}
     then
     \begin{align*}
@@ -106,7 +106,7 @@ The algorithm consists of following steps.
     \begin{align*}
          \vec{r}_x = \begin{bmatrix}
              r_x[LN] \; \cdots \; r_x[-LN]
-         \end{bmatrix}.
+         \end{bmatrix}^T.
     \end{align*} This means that the autocorrelation $r_x[m]$ is estimated for $|m| \le LN$, as stated earlier. The matrix $\mat{R}^\dagger$ denotes the Moore-Penrose pseudoinverse of $\mat{R}$.
     \label{last-item1}
 \end{enumerate}
