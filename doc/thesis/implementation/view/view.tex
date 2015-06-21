@@ -59,7 +59,7 @@ For rendering a web page, like the front-end, \lib{Flask} makes use of yet anoth
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{text.png}
+    \includegraphics[width=\textwidth]{figures/text.png}
     \caption{Text Element}
     \label{fig:text_element}
 \end{figure}
@@ -69,7 +69,7 @@ For rendering a web page, like the front-end, \lib{Flask} makes use of yet anoth
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.3\textwidth]{checkbox.png}
+    \includegraphics[width=0.3\textwidth]{figures/checkbox.png}
     \caption{Checkbox Element}
     \label{fig:checkbox_element}
 \end{figure}
@@ -79,7 +79,7 @@ For rendering a web page, like the front-end, \lib{Flask} makes use of yet anoth
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{slider.png}
+    \includegraphics[width=\textwidth]{figures/slider.png}
     \caption{Slider Element}
     \label{fig:slider_element}
 \end{figure}
@@ -92,21 +92,21 @@ For rendering a web page, like the front-end, \lib{Flask} makes use of yet anoth
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{fft.png}
+    \includegraphics[width=\textwidth]{figures/fft.png}
     \caption{FFT Visualisation Element}
     \label{fig:fft_element}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{spectrogram.png}
+    \includegraphics[width=\textwidth]{figures/spectrogram.png}
     \caption{Spectrogram Visualisation Element}
     \label{fig:spectrogram_element}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{detection.png}
+    \includegraphics[width=\textwidth]{figures/detection.png}
     \caption{Detection Visualisation Element}
     \label{fig:detection_element}
 \end{figure}
@@ -114,6 +114,15 @@ For rendering a web page, like the front-end, \lib{Flask} makes use of yet anoth
 \end{description}
 
 Each of the elements consists of server-side and client-side logic, which is written in Python and JavaScript, respectively. The server-side logic consists of a class that contains some of the element's properties, like a unique ID, title and a reference to a \lib{Jinja2} template as previously described, that is rendered whenever the element is used (when the client requests the web application). The client-side logic is a JavaScript object that defines the element's dynamical behaviour, such as handling user-input and/or server-sent updates.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/multidevice.png}
+    \caption{The graphical user interface on multiple devices}
+    \label{fig:multidevice}
+\end{figure}
+
+\cref{fig:multidevice} shows a sample configuration of the view using the described elements on multiple devices.
 
 \section{Front-end}
 \label{sec:clientside}
