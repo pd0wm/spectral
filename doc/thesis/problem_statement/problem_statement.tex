@@ -1,0 +1,30 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+
+\title{An Extensible Toolkit for Real-Time High-Performance Wideband Spectrum Sensing}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\chapter{Problem Statement} \label{cha:problem_statement}
+To alleviate the problem of spectrum scarcity and efficiency of spectrum usage the concept of a Cognitive Radio has been introduced.
+At the heart of such a cognitive radio is spectrum sensing: it is essential that cognitive radios are able to sense a wide band of the spectrum to detect the presence of primary users. To minimize the interference with licensed users it is essential that this sensing process is as fast as possible.
+
+This leads us to our problem statement 
+
+\emph{"How to develop a high performance wideband sensing toolkit?"}
+
+The development of such a toolkit requires knowledge of algorithms that can be used to perform compressive wideband sensing. Furthermore
+to implement and test those algorithms it is necessary that they can be implemented on a hardware platform. This motivates the division of this thesis in:
+
+\begin{enumerate}
+	\item theoretical research of algorithms to be used in the toolkit;
+	\item efficient implementation of those algorithms  in software.
+\end{enumerate}
+
+\end{document}
