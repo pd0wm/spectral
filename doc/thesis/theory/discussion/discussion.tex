@@ -12,6 +12,7 @@
 
 \begin{document}
 
+\section{Introduction}
 This chapter will discuss the results which were presented in \cref{cha:system_evaluation_theory}. We will carefully reconsider the specifications stated in \cref{cha:overview}.
 
 \section{Sampling}
@@ -26,7 +27,7 @@ In addition, the sampling techniques \emph{should} allow for
     \item sampling as efficient as possible.
 \end{enumerate}
 
-We have refined three sampling techniques to fit our system. We saw that together, these techniques met their requirements. First, all techniques where refined to enable correct operation of the detector. Second, coprime sampling and circular sparse sampling allow for the usage of one device, and collaborative sampling allows for the multiple devices. Finally, we have abstracted the correct operation of the reconstruction to the satisfaction of the circular sparse ruler problem. Since the solution of this problem influences efficiency of the sampling technique, we can optimise to find solutions such that sampling techniques are as efficient as possible. This optimisation was discussed in \cref{ap:derivation_ILP}.
+We have refined three sampling techniques to fit our system. We saw that together, these techniques met their requirements. First, all techniques where refined to enable correct operation of the detector. Second, coprime sampling and circular sparse sampling allow for the usage of one device, and collaborative sampling allows for the multiple devices. Finally, we have abstracted the correct operation of the reconstruction to the satisfaction of the circular sparse ruler problem. Since the solution of this problem influences the efficiency of the sampling technique, we can optimise to find solutions such that sampling techniques are as efficient as possible. This optimisation was discussed in \cref{ap:derivation_ILP}.
 
 A comparison between the different sampling techniques has shown that each sampling technique has its own advantages. For example, circular sparse ruler sampling allows for the biggest compression, coprime sampling for the least amount of samplers and collaborative sampling for the usage of multiple devices. We can therefore conclude that the sampling technique must be chosen according to the situation, and there is no `one size which fits them all'. 
 
