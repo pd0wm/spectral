@@ -13,11 +13,11 @@
 \begin{document}
 
 \section{General description}
-Our system is an approach which enables real-time high-performance wideband spectrum sensing. The goal of our system is to determine which frequencies of a signal contain signals distinct from noise. To achieve this goal, we will divide our system into several modules which all work together. Each module will be specified and designed separately.
+Our system is an approach which enables real-time high-performance wideband spectrum sensing. The goal of our system is to determine which frequencies of a signal contain signals distinct from noise. To achieve this goal, we will divide our system into several modules which all work together. In the following chapters each module will be designed separately.
 
-Determining whether a signal is distinct from noise forms a decision problem. To evaluate this problem, one could reconstruct the spectrum of the signal, and determine whether it resembles one of noise. However, it can be shown that the decision problem is solved optimally by evaluating the signal power \cite{axell2012spectrum}. Therefore, we could look per frequency at the signal power to decide whether a signal present or not. The signal power per frequency is also called the power spectral density. But it turns out that the power spectral density is derived from the spectrum of a signal, and requires less information than reconstruction of the spectrum would. Therefore, we focus on an approach which is centered around the reconstruction of the power spectral density.
+Determining whether a signal is distinct from noise forms a decision problem. To evaluate this problem, one could reconstruct the spectrum of the signal, and determine whether it resembles one of noise. However, it can be shown that the decision problem is solved optimally by evaluating the signal power \cite{axell2012spectrum}\footnote{This is only the case if no prior information is available.}. Therefore, we could look per frequency at the signal power to decide whether a signal present or not. The signal power per frequency is also called the power spectral density. But it turns out that the power spectral density is derived from the spectrum of a signal, and requires less information than reconstruction of the spectrum would. Therefore, we focus on an approach which is centered around the reconstruction of the power spectral density.
 
-The first step in high-performance real-time wideband spectrum sensing is sampling the signal of interset. Conventionally, this is done by sampling uniformly at the Nyquist frequency\footnote{The Nyquist frequency is the minimum frequency at which a signal can be sampled without distorting the signal. The Nyquist frequency is twice the highest frequency present in the signal.}. This ensures that the signal can be reconstructed after sampling. However, the Nyquist frequency becomes high when one wants to sense a large bandwidth. As a consequence, expensive hardware must be used. Clearly, we must look for alternatives. To do this, we investigate sampling techniques which differ from uniform sampling.
+The first step in high-performance real-time wideband spectrum sensing is sampling the signal of interest. Conventionally, this is done by sampling uniformly at the Nyquist frequency\footnote{The Nyquist frequency is the minimum frequency at which a signal can be sampled without distorting the signal. The Nyquist frequency is twice the highest frequency present in the signal.}. This ensures that the signal can be reconstructed after sampling. However, the Nyquist frequency becomes high when one wants to sense a large bandwidth. As a consequence, expensive hardware must be used. Clearly, we must look for alternatives. To do this, we investigate sampling techniques which differ from uniform sampling.
 
 So far, we have not specified what the system actually consists of. Concretely, we will design a mathematical framework. This framework will be made of many existing methods and theories, and will form the theoretical basis of the toolkit we are about to design. Since we design a mathematical framework, our specifications will be mostly functional, and less quantative. 
 
@@ -30,9 +30,9 @@ So far, we have not specified what the system actually consists of. Concretely, 
 
 \section{System specification}
 \label{sec:theory-specs}
-Now that we have identified our goal, we will proceed to describe our system in a detailled manner. This description consists of specifications according to which our system will be designed. The specifications are divided into several categories. The categories are then analysed by MoSCoW prioritisation.
+Now that we have identified our goal, we will proceed to describe our system in a detailled manner. This description consists of specifications according to which our system will be designed. The specifications are divided into several categories. The categories are then analysed by MoSCoW prioritisation. We will be deliberately vague in quantizing our specifications, since most quantities are dependent on the application of the toolkit.
 
-As stated in the introduction, the goal of our system is to determine which frequencies are occupied. However, some signals resemble noise very closely. We therefore do not require that we recognise such signals. In addition, we do not require that we can sense an infinitely large bandwidth. In summary, our system \emph{must} enable spectrum sensing such that the application
+As stated in the introduction, the goal of our system is to determine which frequencies are occupied. However, some signals resemble noise very closely.\footnote{These signals will be further discussed in \cref{cha:detection}.} We therefore do not require that we recognise such signals. In addition, we do not require that we can sense an infinitely large bandwidth. In summary, our system \emph{must} enable spectrum sensing such that the application
 \begin{enumerate}
     \item is able to identify at which frequencies signals are present, where signals
     \begin{enumerate}
@@ -76,12 +76,12 @@ In addition, the sampling techniques \emph{should} allow for
 \end{enumerate}
 
 \subsection{Reconstruction}
-After the signal is sampled, the obtained information must be processed such that detection is possible. We already argued that is done most efficiently by the reconstructing the power spectral density, which must be done real-time. Also, this reconstruction must be as accurate as possible. In summary, the \textit{reconstruction} must allow for
+After the signal is sampled, the obtained information must be processed such that detection is possible. We already argued that for unknown signals, this is done most efficiently by the reconstructing the power spectral density, which must be done real-time. Also, this reconstruction must be as accurate as possible. In summary, the reconstruction \textit{must} be able to
 \begin{enumerate}
-    \item corrected operation in conjunction with the sampling techniques and
-    \item real-time operation.
+    \item operate in conjunction with the sampling techniques and
+    \item operate in real-time.
 \end{enumerate}
-In addition, the \textit{reconstruction} should be
+In addition, the reconstruction \textit{should} should
 \begin{enumerate}
     \item as efficient as possible and
     \item as fast as possible.
@@ -145,7 +145,7 @@ The modules are depicted in \cref{fig:overview}.
     \label{fig:overview}
 \end{figure}
 
-In summary, the signal whose spectrum had to be sensed is first sampled. Then its power spectral density is reconstructed by means of algorithms designed for the sampling techniques. Detection then analyses this power spectral density, and decides per frequency whether a signal is present or not. This decision process is not based upon which kind of information is encoded in those frequencies, but only determines if \textit{any} kind of information is present. After it is determined at which frequencies signals are present, the spectrum sensing process is complete.
+In summary, the signal whose spectrum has to be sensed is first sampled. Then its power spectral density is reconstructed by means of algorithms designed for the sampling techniques. Detection then analyses this power spectral density, and decides per frequency whether a signal is present or not. This decision process is not based upon which kind of information is encoded in those frequencies, but only determines if \textit{any} kind of information is present. After it is determined at which frequencies signals are present, the spectrum sensing process is complete.
 
 \cref{cha:sampling} will give an introduction to non-uniform sampling. Then \cref{cha:reconstruction} will describe a way to reconstruct a power spectral density. Afterwards, different sampling techniques will be considered in \cref{cha:sampling_methods}. \cref{cha:detection} will discuss how this power spectral density is used for detection. Finally, we will evaluate our system in \cref{cha:system_evaluation_theory} and discuss the obtained results in \cref{cha:discussion_theory}.
 

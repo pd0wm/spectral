@@ -47,7 +47,7 @@ where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. Not
 
 \subsection{Sparsity}
 \label{sub:reconstruction-sparsity}
-Operations on large matrices can be computationally expensive. If a matrix is sparse, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation in \cref{sec:reconstruction-derivation}, we argued that every row of $\mat{R}$ has exactly one nonzero element. Remember that $\mat{R}$ describes the relationship between the autocorrelation of the input signal and the observed quantities. Since $\mat{R}$ has $2LN+1$ columns, the fraction of nonzero elements of $\mat{R}$ is given by
+Operations on large matrices can be computationally expensive. If a matrix is sparse\footnote{The sparsity of a matrix is measured by the number of elements which are zero. Therefore, a sparse matrix has many zero elements.}, then functions designed for sparse matrices can be used. These functions can provide significant speedups. In the discussion on the unicity of the estimation in \cref{sec:reconstruction-derivation}, we argued that every row of $\mat{R}$ has exactly one nonzero element. Remember that $\mat{R}$ describes the relationship between the autocorrelation of the input signal and the observed quantities. Since $\mat{R}$ has $2LN+1$ columns, the fraction of nonzero elements of $\mat{R}$ is given by
 \begin{align*}
     \rho_{\text{nz}}=\frac{1}{2LN+1}.
 \end{align*}
@@ -55,7 +55,7 @@ Since $LN$ determines the resolution of the estimated power spectral density of 
 
 \subsection{Efficient generation of the matrices}
 \label{sub:reconstruction-generation}
-In Step 2 of the algorithm, $\mat{R}$ has to be constructed. It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions $\operatorname{toeplitz}$ and $\operatorname{tril}$. The functions $\operatorname{toeplitz}$ and $\operatorname{tril}$ are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows:
+In Step 2 of the algorithm, $\mat{R}$ has to be constructed. It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions \texttt{toeplitz} and \texttt{tril}. The functions \texttt{toeplitz} and \texttt{tril} are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows:
 
 \begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item2}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
     \item Let \begin{align*}
@@ -74,5 +74,5 @@ In Step 2 of the algorithm, $\mat{R}$ has to be constructed. It turns out that $
     \label{last-item2}
 \end{enumerate}
 
-An example of the algorithm which illustrates its correctness is given in \cref{sec:reconstruction-generation-algorithm}. This algorithm can take advantage of highly optimised implementations of $\operatorname{toeplitz}$ and $\operatorname{tril}$. Furthermore, Step 4 can be vectorised or optimised memory-wise. Therefore, the algorithm allows for fast reconstruction of $\mat{R}$.
+An example of the algorithm which illustrates its correctness is given in \cref{sec:reconstruction-generation-algorithm}. This algorithm can take advantage of highly optimised implementations of \texttt{toeplitz} and \texttt{tril}. Furthermore, Step 4 can be vectorised or optimised memory-wise. Therefore, the algorithm allows for fast reconstruction of $\mat{R}$.
 \end{document}
