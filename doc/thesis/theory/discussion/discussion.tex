@@ -2,7 +2,7 @@
 
 \documentclass[a4paper, openany, oneside]{memoir}
 \input{../../../includes/preamble.tex}
-\addbibresource{../../includes/bibliography.bib}
+\addbibresource{../../../includes/bibliography.bib}
 
 \title{Introduction}
 
@@ -12,52 +12,55 @@
 
 \begin{document}
 
-This chapter will discuss the results which were presented in \cref{cha:system_evaluation_theory}. We will also look at (..).
+This chapter will discuss the results which were presented in \cref{cha:system_evaluation_theory}. We will carefully reconsider the specifications stated in \cref{cha:overview}.
 
 \section{Sampling}
-Recall that the sampling techniques \emph{must} allow for
+Recall that the techniques used for sampling \emph{must} allow for
 \begin{enumerate}
     \item correct operation of the detection;
     \item usage of a single sampling device and
     \item usage of multiple sampling devices such that the workload can be distributed across the devices.
 \end{enumerate}
-and in addition \emph{should} allow for
+In addition, the sampling techniques \emph{should} allow for
 \begin{enumerate}
     \item sampling as efficient as possible.
 \end{enumerate}
 
-We have refined three sampling techniques to fit our system. We saw that together, these techniques met their requirements: all techniques where refined to enable correct operation of the detector. Furthermore did both coprime and circular sparse sampling use one device, and collaborative multiple devices. On top of that did we apply recent developments on each sampling technology to optimalise efficiency.  
+We have refined three sampling techniques to fit our system. We saw that together, these techniques met their requirements. First, all techniques where refined to enable correct operation of the detector. Second, coprime sampling and circular sparse sampling allow for the usage of one device, and collaborative sampling allows for the multiple devices. Finally, we have abstracted the correct operation of the reconstruction to the satisfaction of the circular sparse ruler problem. Since the solution of this problem influences efficiency of the sampling technique, we can optimise to find solutions such that sampling techniques are as efficient as possible. This optimisation was discussed in \cref{ap:derivation_ILP}.
 
-For circular sparse ruler we constructed solutions with higher performance than proposed in \cite{ariananda2012compressive}. Our method for computing circular sparse ruler solutions is a novelty and contributes to higher efficiency in our product.
+A comparison between the different sampling techniques has shown that each sampling technique has its own advantages. For example, circular sparse ruler sampling allows for the biggest compression, coprime sampling for the least amount of samplers and collaborative sampling for the usage of multiple devices. We can therefore conclude that the sampling technique must be chosen according to the situation, and there is no `one size which fits them all'. 
 
-A comparison between the different sampling techniques has shown that each sampling technique has its own advantage. For example, circular sparse ruler sampling allows for the biggest compression, coprime sampling for the least amount of samplers and collaborative sampling for the usage of multiple devices. We can therefore conclude that the sampling technique must be chosen according to the situation, and there is no `one size which fits them all'. 
+In addition to meeting the requirements, we did some research on the circular sparse ruler problem to further optimise finding solutions. This was discussed in \cref{ap:circ-ruler}. The circular sparse ruler problem allowed us to construct solutions for multi-coset sampling with comparably higher compression than the solutions proposed in \cite{ariananda2012compressive}.
 
-We can also look at the similarities of the different techniques. Note for example that the circular sparse sampling method, is at the same time a collaborative sampling method for one device. From this observation rises the question if it would be possible to deduce a  general purpose configuration optimiser. The collaborative sampler has for example currently no good algorithm to find configurations for a random amount of devices with a random amount of samplers. This would be considered future work.  
 
-For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth, but collaborative sampling can also be used for other purposes, like increasing accuracy, or sensing in a larger radius. We did not look at these applications and this should be considered future work.
+We can also assess the similarities of the different sampling techniques. For example, circular sparse sampling can be considered a form of collaborative sampling with one device. This observation rises the question if is possible to generalise all sampling techniques to a universal technique. This universal technique could then be optimised. This is considered future work.  
+
+% For collaborative sampling we looked at a method where the different devices are used to sense more bandwidth, but collaborative sampling can also be used for other purposes, like increasing accuracy, or sensing in a larger radius. We did not look at these applications and this should be considered future work.
 
 \section{Reconstruction}
-Recall that reconstruction \emph{must} allow for
+Recall that the reconstruction \textit{must} be able to
 \begin{enumerate}
-    \item corrected operation in conjunction with the sampling techniques and
-    \item real-time operation.
+    \item operate in conjunction with the sampling techniques and
+    \item operate in real-time.
 \end{enumerate}
-and in addition \emph{should} be
+In addition, the reconstruction \textit{should} should
 \begin{enumerate}
     \item as efficient as possible and
     \item as fast as possible.
 \end{enumerate}
 
+TODO: REVISE \\
+We designed a reconstruction algorithm in
 We captivated and refined the reconstruction in such a way that it is able to work in conjunction with various techniques in real-time. To optimise the reconstruction algorithm we looked extensively at possible incompletenesses and inconsistencies to find ways to improve the algorithm. More specifically we did a lot of research in the context of the biasing of the algorithm. However because this work is incomplete it is not enclosed.  Through this we did not find room for improvements for the algorithm. Therefore we can support the robustness of the algorithm as a general purpose autocorrelation estimator. We did however reformulate the algorithm in such a way that it is more convenient to implement in software.
 
 \section{Detection}
-Recall that the detection \emph{must} be such that
+Recall that the detection of signals \emph{must} be such that
 \begin{enumerate}
     \item detection of signals consists of determination of the set of frequencies which are occupied by signals other than noise;
     \item the resolution of these frequencies can be specified and
     \item the correctness of operation can be specified.
 \end{enumerate}
-and in addition, \emph{should} be such that
+In addition, detection of signals \emph{should} be such that
 \begin{enumerate}
     \item the resolution of detection can be as high as possible;
     \item its operation can be as correct as possible and
@@ -65,7 +68,7 @@ and in addition, \emph{should} be such that
 \end{enumerate}
 
 For the detection on the output of the reconstruction we have looked at two blind detection methods: modified energy detection and CAV. Based on  a theoretical analysis we have decided to adopt the modified energy detector in our final system. This energy detector has been modified to work with our reformulated algorithm. This detector fulfills the must-haves: it is designed to detect per element of the reconstructed power spectral
-density whether noise or another signal is present. This also implies that it fulfills the \emph{should-have} of the maximum possible resolution.  From this set of comparisons, the set of frequencies occupied by some signal can be derived. Furthermore it is possible to adjust the false-alarm probability of this detector and therefore the correctness of operation can be specified. 
+density whether noise or another signal is present. This also implies that it fulfills the should-have of the maximum possible resolution.  From this set of comparisons, the set of frequencies occupied by some signal can be derived. Furthermore, it is possible to adjust the false-alarm probability of this detector and thus the correctness of operation can be specified. 
 
-From the results as presented in \cref{sec:results_theory} we conclude that the detector does not fulfill the should have that its detection should be as correct possible. The results indicate that relative small noise uncertainty considerably degrades the  performance: the false alarm and the detection probability are affected by this problem. Furthermore we have seen that this detector is not able to provide a reasonable\footnote{90\% as given in the 802.22 standard} detection probability at negative SNRs. Whether its operation is as efficient as possible is subject  to some discussion. From a computational view the detector is very efficient due to the fact that computation of its test statistic is relatively simple. From an operational point of view, however, there is room for improvement and other detectors may provide more performance (in the sense of detection probability and false alarm probability). This point of view has also motivated the analysis of the CAV detector in \cref{cha:detection}. Due to time constraints the current CAV implementation is limited in its detection abilities (it cannot distinguish between frequency bands) and therefore has not been included in our final system. Initial tests, however, indicate that the CAV detector outperforms the modified energy detector on the testing signal as described in \cref{ssec:test_signal}. These test motivate further research in the detection algorithm to be used in detection module. 
+From the results as presented in \cref{sec:results_theory}, we conclude that the detector does not fulfill the should-have that its detection should be as correct possible. The results indicate that relative small noise uncertainty considerably degrades the  performance. Namely, the false alarm and the detection probability are affected by this problem. Furthermore, we have seen that this detector is not able to provide a reasonable\footnote{A detection probability of $0.9$ is given in the 802.22 EEE standard.} detection probability at low SNR's. Whether its operation is as efficient as possible is subject  to some discussion. From a computational point of view, the detector is very efficient due to the fact that computation of its test statistic is relatively simple. From an operational point of view, however, there is room for improvement and other detectors may provide better performance in the sense of detection probability and false alarm probability. This point of view has also motivated the analysis of the CAV detector in \cref{cha:detection}. Due to time constraints the current CAV implementation is limited in its detection abilities. That is, it cannot distinguish between frequency bands. Therefore CAV has not been included in our final system. Initial tests, however, indicate that the CAV detector outperforms the modified energy detector on the testing signal as described in \cref{ssec:test_signal}. These test motivate further research in the detection algorithm to be used in detection module. 
 \end{document}

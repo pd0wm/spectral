@@ -11,7 +11,7 @@
 In this section we will analyse the different sampling techniques described in the introduction and connect them to our system. Before we move on, the reader must understand the difference between a sampler and a device. A device refers to a physical device, which may employ multiple samplers. A sampler is part of a device, and performs actual sampling of the signal. Remember that the term coset and sampler are used interchangeably. Also keep in mind that everything will be explained conceptually.
 
 \subsection{Circular sparse sampling}
-Circular sparse sampling uses samplers with each the same sampling period $NT$, where $T$ is the period of $x[n]$ and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
+Circular sparse sampling is a form of multi-coset sampling in which samplers all have the same sampling period $NT$, where $T$ is the sampling period of the input signal $x[n]$ sampled at the Nyquist frequency and $N$ the downsampling factor. Here $N$ refers to the downsampling factor discussed in \cref{sec:reconstruction-algorithm}. An example of circular sparse sampling where $N=7$ is illustrated in \cref{tkz:circsparseruler}.
 
 \begin{figure}
 \centering
@@ -125,7 +125,7 @@ Circular sparse sampling uses samplers with each the same sampling period $NT$, 
 \end{tikzpicture}
 \caption{An example of circular sparse ruler sampling with three samplers and $N=7$}\label{tkz:circsparseruler}
 \end{figure}
-The grey blocks represent the samples recovered by all samplers of the device. The coloured blocks represent the samples that are recovered by the different samplers. A possible implementation of this sampling method is illustrated in \cref{tkz:sc_circsparseruler}. 
+The grey blocks represent the samples recovered by all samplers of the device. The coloured blocks represent the samples that are recovered by the different samplers. A possible conceptual implementation of this sampling method is illustrated in \cref{tkz:sc_circsparseruler}. 
 \begin{figure}
 \centering
 \begin{tikzpicture}[scale=.9]
@@ -175,7 +175,7 @@ The grey blocks represent the samples recovered by all samplers of the device. T
 \end{tikzpicture}
 \caption{Conceptual schematic of a circular sparse ruler implementation. There may be an offset between the different decimations.}\label{tkz:sc_circsparseruler}
 \end{figure}
-Here switches represent a sample operation of the input signal $x$. These switches sample simultaneously at the Nyquist frequency. The N$\,\downarrow$ represents an $N$-decimation. As explained in \cref{sec:reconstruction-algorithm}, there may be an offset between the decimations of the different cosets. This yields that the output of every coset is an $N$-decimation of the input signal which may have an offset in time, similar to the situation depicted in \cref{tkz:circsparseruler} and the description in \cref{sec:reconstruction-algorithm}.
+Here switches represent a sample operation of the input signal $x$. These switches sample simultaneously at the Nyquist frequency. The N$\,\downarrow$ represent an $N$-decimation. As explained in \cref{sec:reconstruction-algorithm}, there may be an offset between the decimations of the different cosets. Therefore, the output of every coset is an $N$-decimation of the input signal, but there may be an offset in time between the different outputs. This is depicted in \cref{tkz:circsparseruler}. Note that this is similar to the description of multi-coset sampling in \cref{sec:reconstruction-algorithm}.
 
 \subsection{Collaborative sampling}
 
@@ -369,6 +369,9 @@ Collaborative sampling is similar to circular sparse sampling, except for the fa
 \draw (-1.5,-1.75-6) node {$y_2[n]$};
 \draw (-1.5,-0.75-6) node {$y_1[n]$};
 \draw (-1.5,-4.25-1) node {$x[n]$};
+\draw [dashed] (-0.5,-9) -- (-0.5,0);
+\draw [dashed] (-0.5+13/2,-9) -- (-0.5+13/2,0);
+\draw [>=latex,<->] (-0.5,0) -- node[yshift=0.3cm] {$N$} (-0.5+13/2,0);
 \end{tikzpicture}}
 \caption{Collaborative sampling with two devices with each three samplers}\label{tkz:collaborative}
 \end{figure}
@@ -539,6 +542,13 @@ Coprime sampling is different from circular sparse sampling and collaborative sa
 \draw (-1.5,0.25) node {$x[n]$};
 \draw (-1.5,0.25-1.5) node {$y_1[n]$};
 \draw (-1.5,0.25-1.5-1) node {$y_2[n]$};
+
+\draw [dashed] (-1,-3) -- (-1, -0.5);
+\draw [dashed] (-1+3/2,-2.5) -- (-1+3/2, -0.5);
+\draw [dashed] (-1+5/2,-3) -- (-1+5/2, -1.5);
+\draw [>=latex,<->] (-1, -0.5) -- node[yshift=0.15cm] {$a$} (-1+3/2, -0.5);
+
+\draw [>=latex,<->] (-1,-3) -- node[yshift=-0.15cm] {$b$} (-1+5/2,-3) ;
 
 \end{tikzpicture}
 \caption{Coprime sampling with $a=3$ and $b=5$}\label{tkz:coprime}

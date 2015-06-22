@@ -59,7 +59,7 @@ Here $\vec{r}_y$ represents an aggregation of $r_{y_i,y_j}[m]$ and $\vec{r}_x$ r
 \subsection{Sampling signals}
 Before we describe the algorithm, we have to study the output of a coset more closely. Note that the following paragraph will be a little more technical.
 
-Every coset $i$ is associated to a sampling signal $c_i[n]$. Also, every coset samples the input signal such that it is an $N$-decimation of the input signal. However, there may be an offset between the decimations of the different cosets. This concept is illustrated in \cref{fig:illustration-yi}. If we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples.  The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be discussed in \cref{cha:sampling_methods}. From now on, we will refer to $N$ as the downsampling factor.
+Every coset $i$ is associated to a sampling signal $c_i[n]$. Also, every coset samples the input signal such that it is an $N$-decimation of the input signal. However, there may be an offset in time between the decimations of the different cosets. This concept is illustrated in \cref{fig:illustration-yi}. If we divide the input signal in groups of $N$ samples, then the output of a coset consists of the same sample of every group of $N$ samples.  The sampling signal of coset $i$ is such that $c_i[n]=1$ if coset $i$ samples the $N-n$'th sample of every group of $N$ samples of the input signal. This concept is discussed carefully in \cref{sec:reconstruction-derivation}. Also, this concept will be discussed in \cref{cha:sampling_methods}. From now on, we will refer to $N$ as the downsampling factor.
 
 \subsection{Algorithm}
 It is clear that $y_i[n]$ is part of the input of the algorithm. The way all cosets sample the input signal, however, is determined by the sampling technique. The configuration refers to the way all cosets sample the input signal. Possible configurations are discussed in \cref{cha:sampling} and will be further discussed in \cref{cha:sampling_methods}.
@@ -124,7 +124,7 @@ The inputs and output of the algorithm are summarised in Table \ref{tab:reconstr
 
 \begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item1}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
     \item Determine $c_i[n]$ for every coset $i$. \\
-    The configuration determines $c_i[n]$ for every coset $i$. How $c_i[n]$ can be obtained from the configuration is explained in \cref{cha:sampling_methods}. The restrictions on $c_i[n]$ are discussed in \cref{sub:reconstruction-ci}.
+    The configuration determines $c_i[n]$ for every coset $i$. How $c_i[n]$ can be obtained from the configuration is explained in \cref{cha:sampling_methods}. Sufficient requirements on $c_i[n]$ are discussed in \cref{sub:reconstruction-ci}.
     \item Construct $\mat{R}$. \\
     \cref{sub:reconstruction-generation} explains how to construct $\mat{R}$.
     \item Measure $y_i[n]$ for $KL$ samples for every coset $i$.
