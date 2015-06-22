@@ -76,14 +76,14 @@ with variance $\sigma_n^2/2$. To see why, remember that $\vec{x}$ is circular sy
 $|x_i|^2 = x_i \cdot \conj{x_i} = a^2 + b^2$ where $a = \Re(x_i)$ and $b=\Im(x_i)$.  So
 
 \begin{align}
-    \frac{2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
+    \frac{-2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
 \end{align}
 
 % Sensing Throughput Tradeoff in Cognitive Radio, Y. C. Liang
 Therefore, the false alarm probability $p\ss{fa}$ is given by \cite{rugini2013small}
 
 \begin{align*}
-    p_{fa} &= P(\Lambda''(\vec{x}) > \gamma) \\
+    p_{fa} &= P(-\Lambda''(\vec{x}) > \gamma) \\
         &= 1-F_{2N} (2\gamma/\sigma_n^2)
 \end{align*}
 
