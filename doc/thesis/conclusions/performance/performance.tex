@@ -35,13 +35,24 @@ After the initial profiling reports it became clear that the dot product with th
 
 \subsection{Vectorisation}
 \label{sec:vectorisation}
-Another way we were able to achieve a higher speed is to vectorize a number of correlations. Namely the signal cross-correlations are considerably faster when written out as a matrix multiplication or as an FFT-convolution.
+Another bottleneck that was observed were the signal cross correlations. There are a number of ways to calculate it namely:
+\begin{itemize}
+    \item Cross correlations written out as a number of matrix multiplications,
+    \item \lib{Numpy's} \func{correlate} function, and
+    \item \lib{SciPy's} \func{fftconvolve} function.
+\end{itemize}
+As can be seen in \cref{fig:sparse} each technique has its own area of best performance. The matrix multiplication is best until a vector length of about 50. \lib{Numpy's} \func{Correlate} is the best from 50 until 400 and for everything above that \func{fftconvolve} is the fastest.
+
+\begin{figure}[]
+    \centering
+    \input{figures/correlations}
+    \caption{Time to do 100 cross-correlations plot against the size of the vector. Solid is NumPy's correlate, dashed is SciPy's fftconvolve and dotted is the matrix implementation.}
+    \label{fig:sparse}
+\end{figure}
 
 \section{Multiprocessing}
 \label{sec:multiprocessing}
 
-\subsection{Multi-core}
-\label{sec:multi-core}
 Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU.
 
 \section{Results \& Improvements}
