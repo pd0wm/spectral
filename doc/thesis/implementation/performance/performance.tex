@@ -41,22 +41,38 @@ Another bottleneck that was observed were the signal cross correlations. There a
     \item \lib{Numpy's} \func{correlate} function, and
     \item \lib{SciPy's} \func{fftconvolve} function.
 \end{itemize}
-As can be seen in \cref{fig:sparse} each technique has its own area of best performance. The matrix multiplication is best until a vector length of about 50. \lib{Numpy's} \func{Correlate} is the best from 50 until 400 and for everything above that \func{fftconvolve} is the fastest.
+As can be seen in \cref{fig:correlation} each technique has its own area of best performance. The matrix multiplication is best until a vector length of about 50. \lib{Numpy's} \func{Correlate} is the best from 50 until 400 and for everything above that \func{fftconvolve} is the fastest.
 
 \begin{figure}[]
     \centering
     \input{figures/correlations}
     \caption{Time to do 100 cross-correlations plot against the size of the vector. Solid is NumPy's correlate, dashed is SciPy's fftconvolve and dotted is the matrix implementation.}
-    \label{fig:sparse}
+    \label{fig:correlation}
 \end{figure}
 
 \section{Multiprocessing}
 \label{sec:multiprocessing}
 
-Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU. Ultimately it depends on the configuration of the parameters whether multiprocessing is advantageous, because the IPC (which has to do memory transfers through L3) can be the bottleneck on less demanding parameter sets.
+Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each the source \& sampler, the reconstructor and the detector. The information is send using inter-process communication (IPC). This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU. Ultimately it depends on the configuration of the parameters whether multiprocessing is advantageous, because the IPC (which has to do memory transfers through L3) can be the bottleneck on less demanding parameter sets. Results of a standard run can be seen in \cref{tab:mp}. In this case a speed up of \SI{48}{\percent}\footnote{This is largely going to be dependant on the platform it was run on. In this case a mid 2015 Macbook Pro with an i7-4870HQ was used to generate this data.} has been achieved.
+
+A downside of multiprocessing is that the current implementations of Apple's \lib{accelerate} is not compatible with multiprocessing. This is due to a bug\footnote{As noted on the \lib{NumPy's} issue tracker this is an issue Apple is not addressing. A workaround is to use a Python 3 feature which allows process spawning rather than forking which solved this issue. Unfortunately due to dependancies on \lib{GnuRadio} on earlier stages of this project Python 2 was used. For more information see \url{https://github.com/numpy/numpy/issues/5752}.} on Apple's end. Instead \lib{OpenBLAS} was used instead at a very small performance loss.
+
+\begin{table}
+    \centering
+    \caption{Reconstruction times for $N = 51$, $L=3$, $K=2000$, with an OFDM file source, a minimal sparse ruler sampler and the Wessel reconstructor}
+    \label{tab:mp}
+    \begin{tabular}{lr}
+        \toprule
+        Method          & Single reconstruction time\\
+        \midrule
+        Serial          & \SI{3.60}{\milli\second}\\
+        Multiprocessing & \SI{2.43}{\milli\second}\\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 %TODO Nog eens goed multiprocessing vs andere zwets bekijken
-\section{Results \& Improvements}
+\section{Results and Further Improvements}
 \label{sec:results}
-%TODO refresh rate constructor
+All in all a system has been achieved which allows real-time compressive spectrum sensing. Future work can be done in further techniques for parallel processing, Cuda and OpenCL are good candidates (especially because of the sparse structures involved). Furthermore a good study to the memory structures throughout our calculations could prove to be beneficial for further speedups.
 \end{document}
