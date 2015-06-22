@@ -49,14 +49,14 @@ A block diagram of the complete system is depicted in \cref{fig:theoretical_over
 
 \section{Testing}
 To evaluate the performance of our system we will we use an artificial testing signal to test both the reconstructor and the detector.
-Details on this signal generation can be found the subsequent section.
+Details on the generation of this signal can be found the subsequent section.
 
 \subsection{Test signal}\label{ssec:test_signal}
-The test signal will consist of an ideal signal contaminated with noise. The signal power and noise power will be based on a specified signal-to-noise ratio. Given a signal-to-noise ratio, we can construct the testing signal by doing as follows:
+The test signal will consist of an ideal signal polluted with noise. The signal power and noise power will be based on a specified signal-to-noise ratio. Given a signal-to-noise ratio, we can construct the testing signal by doing as follows:
 
 \begin{enumerate}
-	\item Generate the ideal signal $s[n]$. The signal will consist of filtered circular symmetric complex Gaussian noise such that it represents a bandpass signal with $-0.2 \leq f\leq 0.2$, where $f$ denotes the usual relative frequency. The average power of the signal at frequencies in the passband is chosen such that the required SNR will be met. 
-	\item Generate the noise signal $w[n]$, which will be additive circular symmetric complex Gaussian noise.
+	\item Generate the ideal signal $s[n]$. The signal will consist of filtered circular symmetric complex Gaussian noise such that it represents a bandpass signal with $-0.2 \leq f\leq 0.2$, where $f$ denotes the usual relative frequency.
+	\item Generate the noise signal $w[n]$, which will be additive circular symmetric complex Gaussian noise. The average power of the signal and the noise are chosen such that the required SNR is met. 
 	\item Add $s[n]$ to $w[n]$ to produce the testing signal $x[n]$.
 \end{enumerate}
 
@@ -114,8 +114,7 @@ Our tests will be targeted at
 	Detection is applied to the output of the reconstructor while	
 	\begin{enumerate}
 		\item varying the signal-to-noise ratio of the test signal and
-		\item varying the false alarm probability the detector 
-		should allow.
+		\item varying the false-alarm probability.
 	\end{enumerate}
 
 	The sampling technique is fixed to circular sparse sampling. The reason for this is that the dependence of the detector's performance on the reconstructor's performance, is such that techniques with equivalent reconstruction performance yield approximately equivalent detection performance. Therefore, we can use the results of the reconstructor to extrapolate the results of the detector.
@@ -126,9 +125,9 @@ Our tests will be targeted at
 \section{Results}\label{sec:results_theory}
 The performance of the reconstructor is depicted in \cref{fig:plot-nmse-cop,fig:plot-nmse-circ,fig:plot-nmse}, which are accompanied by \cref{tab:sampling-nmse,tab:sampling-nmse-cop,tab:sampling-nmse-circ}. The performance of the detector is depicted in \cref{fig:plot-detector-noise76,fig:plot-detector76,fig:plot-detector-noise69,fig:plot-detector69}. Their results will be evaluated separately. Before we continue, the reader must be aware of the following two concepts.
 
-First, we argued in the introduction the we want to avoid sampling at the Nyquist frequency. It turned out that multi-coset sampling offered a solution to this problem. To evaluate the different sampling techniques, we introduce a quantity called \textit{compression}. Compression is the percentage of samples the sampling technique requires with respect to the samples obtained when sampling at the Nyquist frequency. Therefore, high compression represents an effective sampling technique.
+First, we argued in the introduction the we want to avoid sampling at the Nyquist frequency. It turned out that multi-coset sampling offered a solution to this problem. To evaluate the different sampling techniques, we introduce a quantity called \textit{compression}. Compression is the percentage of the number of samples the sampling technique requires with respect to the samples obtained when sampling at the Nyquist frequency. Therefore, high compression represents an effective sampling technique.
 
-Second, we introduce the normalised mean squared error (NMSE) to assess the performance of the reconstructed power spectral density.\footnote{If $\hat{\text{PSD}}$ represents the estimated power spectral density, then the NMSE is given by $\text{NMSE} = ||\text{PSD} - \hat{\text{PSD}}||/||\text{PSD}||$.} A lower NMSE represents a better reconstruction of the power spectral density.
+Second, we introduce the normalised mean squared error (NMSE) to assess the performance of the reconstructed power spectral density.\footnote{If $\hat{\text{PSD}}$ represents the estimated power spectral density, then the NMSE is given by $||\text{PSD} - \hat{\text{PSD}}||/||\text{PSD}||$.} A lower NMSE represents a better reconstruction of the power spectral density.
 
 \subsection{Reconstruction}
 The performance of the reconstruction will by measured by varying the sampling time, where we illustratively assume a Nyquist frequency of \SI{25}{Mhz}, and by varying the sampling technique. These sampling techniques can all achieve different compressions.

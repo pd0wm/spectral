@@ -7,7 +7,7 @@
 \begin{document}
 
 \section{Introduction}
-In the previous chapters we have discussed how an estimate of the autocorrelation of the input signal can be constructed. This estimate will serve
+In the previous chapters we have discussed how an estimate of the autocorrelation, or equivalently the power spectral density, of the input signal can be constructed. This estimate will serve
 as input for the detector.
 
 This chapter introduces several methods to perform the detection process as described in \cref{sec:theory-system-overview}. It is worthwhile to note that unlike conventional detectors, our detector has no access to the original received signal $x[n]$. Furthermore note that the estimate of the autocorrelation, $r_x[m]$, is the autocorrelation of a \emph{wide-band} signal. It therefore possibly conveys information of multiple frequeny bands. As the detector has to distinguish between noise and signal on a frequency basis (\cref{sec:theory-specs}), this affects the detection methods that can be used in our system.  

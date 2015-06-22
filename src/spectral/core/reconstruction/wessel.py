@@ -1,6 +1,7 @@
 from .reconstructor import Reconstructor
 import spectral as spec
 import numpy as np
+import scipy.sparse
 import scipy as sp
 
 
@@ -23,7 +24,7 @@ class Wessel(Reconstructor):
         if cache:
             self.R_pinv = self.calc_pseudoinverse(self.R)
         else:
-            self.R_pinv = sp.linalg.pinv(self.R)
+            self.R_pinv = sp.sparse.csr_matrix(sp.linalg.pinv(self.R))
 
     # Given M decimated channels, try to estimate the PSD
     def reconstruct(self, signal):

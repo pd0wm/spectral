@@ -29,7 +29,7 @@
 \caption{Conventional energy detector}\label{tkz:conv_ed}
 \end{figure}
 A standard digital energy detector\cite{atapattu2014energy} is a detector that consists of a low-pass filter $H(f)$ that filters the analog input signal $x(t)$ such
-that only the frequency band of interest remains\footnote{By using a mixer a lowpass filter can always be used to for this purpose}. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). Then the detector takes the square of the absolute value of each sample. The detector then estimates the energy $\Lambda$ of the signal during a period of $N$ samples by summing $N$ of those samples as
+that only the frequency band of interest remains\footnote{By using a mixer, a lowpass filter can always be used to for this purpose.}. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). Then the detector takes the square of the absolute value of each sample. The detector then estimates the energy $\Lambda$ of the signal during a period of $N$ samples by summing $N$ of those samples as
 \begin{align}\label{eq:test_ed}
 	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
 \end{align}
@@ -321,8 +321,8 @@ as an estimate of the noise power.
 \end{tikzpicture}
 \caption{CAV detector}\label{tkz:cav}
 \end{figure}
-The CAV detector was first introduced in \cite{zheng2009spectrum}. A block diagram of a CAV detector is depicted  in \cref{tkz:cav}, from which it can be seen that it performs 5 steps:
-\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item3}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
+The Covariance Absolute Value (CAV) detector was first introduced in \cite{zheng2009spectrum}. A block diagram of a CAV detector is depicted  in \cref{tkz:cav}, from which it can be seen that it performs 5 steps:
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item3}},label=\textbf{Step \arabic*:},itemindent=1em,leftmargin=!]
 	\item Calculate the $L\times L$ symmetric toeplitz matrix $\mat{C}$ using the first $L$ samples of $r_x[n]$ as the first column. The matrix $\mat{C}$ is given by
 	\begin{align}
 		\mat{C} &= \begin{bmatrix}
@@ -340,7 +340,7 @@ The CAV detector was first introduced in \cite{zheng2009spectrum}. A block diagr
 \end{enumerate}
 
 A more technical explanation of CAV can be found in \cref{sec:cav_derivation}. From this technical analysis it becomes clear that the threshold
-as given in \cite{zheng2009spectrum} cannot be used directly with our reconstruction method and will therefore need a re-derivation.\footnote{The elements of the autocorrelation as estimated by our reconstructor exhibit a variance that is different from the elements of the estimate as assumed in the derivation in \cite{zheng2009spectrum}
+as given in \cite{zheng2009spectrum} cannot be used directly with our reconstruction method and will therefore need a re-derivation.\footnote{The elements of the autocorrelation as estimated by our reconstructor exhibit a variance that is different from the elements of the estimate as assumed in the derivation in \cite{zheng2009spectrum}.
 }
 
 \subsection{Filtering}

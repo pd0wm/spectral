@@ -37,7 +37,7 @@ An overview can be seen in \cref{fig:MVP}. The most important advantage of MVP i
 \label{sub:model}
 The goal was to implement enough primitives in these libraries that a large number of configurations can quickly be constructed together. This is to account for the variety of configurations in which this product can be used. It also allows us to test different kind of sampling techniques with reconstruction methods.
 
-A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this, the Strategy design pattern is used for all the models. The strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}. This is further discussed in \cref{cha:model}.
+A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this, the Strategy design pattern is used for all the models. The Strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}. This is further discussed in \cref{cha:model}.
 
 \subsection{View}
 \label{sub:view}
