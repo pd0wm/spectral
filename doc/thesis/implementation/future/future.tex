@@ -29,6 +29,100 @@ A hardware implementation of two samplers in coprime setup discussed in \cref{se
 
 The software coprime truncater uses two input sample vectors, with a different number of samples from two samplers with different sample rates. The sampling matrix is constructed as with the normal coprime sampler. The two input vectors are then transformed into one output vector that matches the sampling matrix.
 
+\subsection{Synchronisation of USRPs to implement coprime sampling}
+For our implementation of co-prime sampling we needed to synchronise the sampling of two USRPs. This can be accomplished by connection them with a special MIMO cable. This allows them to internally synchronise their sampling clock. It even allows them to schedule commands at exactly the same time, so they can start sampling at exactly the same moment.
+
+To verify that our synchronisation is correct, we dumped two frames from the same moment in time to a file. If we plot them on the same time scale, as in \cref{fig:plot_samplers}, we can see that they align almost perfectly. If we zoom in on the second burst in the signal, see \cref{fig:plot_samplers_zoom}, we can see the offset due to the local oscillator offset.
+
+The only offset we have is from the phase offset between the two local oscillators of the USRPs. After each tune command the two USRPs have a random phase offset of \SIrange[retain-explicit-plus]{-180}{+180}{\degree}.  We don't know yet if that influences our results. If that is the case we can calculate this lag by looking at the cross-correlation between the two USRPs or by transmitting a reference pulse after each tune command and calculating the delay.
+
+At this moment the synchronised sampling works, but something is going wrong in the processing or visualisation of the data. We did not have the time to find these problems and solve them. This is something for future work.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	xlabel={Samples},
+	ylabel={Amplitude},
+  ymin=-1e-2,
+  ymax=1e-2,
+  xmin=0,
+  xmax=1e5,
+	width=\textwidth, height=0.8\textwidth,
+	xmajorgrids, xminorgrids, ymajorgrids,
+  name=sampler_a
+	]
+
+%% Set the plot options, and load a csv formatted file %%
+\addplot [
+	color=black,
+	solid,
+	mark=.,
+	]
+	table [col sep=comma]{plots/coprime_orig_a.csv};
+\end{axis}
+
+\begin{axis}[
+	xlabel={Samples},
+	ylabel={Amplitude},
+  ymin=-1e-2,
+  ymax=1e-2,
+  xmin=0,
+  xmax=4e4,
+	width=\textwidth, height=0.8\textwidth,
+	xmajorgrids, xminorgrids, ymajorgrids,
+  at=(sampler_a.below south), anchor=above north
+	]
+
+%% Set the plot options, and load a csv formatted file %%
+\addplot [
+	color=black,
+	solid,
+	mark=.,
+	]
+	table [col sep=comma]{plots/coprime_orig_b.csv};
+\end{axis}
+\end{tikzpicture}
+\caption{Output of the two samplers}
+\label{fig:plot_samplers}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	xlabel={Samples},
+	ylabel={Amplitude},
+  ymin=-1e-2,
+  ymax=1e-2,
+  xmin=0,
+  xmax=100,
+	width=\textwidth, height=0.8\textwidth,
+	xmajorgrids, xminorgrids, ymajorgrids,
+	]
+
+%% Set the plot options, and load a csv formatted file %%
+\addplot [
+	color=blue,
+	solid,
+	mark=.,
+	]
+	table [col sep=comma]{plots/coprime_resamp_a.csv};
+
+%% Set the plot options, and load a csv formatted file %%
+\addplot [
+	color=red,
+	solid,
+	mark=.,
+	]
+	table [col sep=comma]{plots/coprime_resamp_b.csv};
+\end{axis}
+\end{tikzpicture}
+\caption{Zoomed in version of the start of the second burst}
+\label{fig:plot_samplers_zoom}
+\end{figure}
+
+
 \section{Product Implementations}
 \label{sec:product_implementations}
 After our visit to the Ministry of Defence to present our technology, we learned about a number of possible implementations. Besides this the discussions we had with Koen Bertels during the business plan part of the bachelor graduation project were very constructive in finding possible applications.
