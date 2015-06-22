@@ -58,7 +58,7 @@ elif source_type == "sinusoidal":
 # sampler = sc.sampling.Coprime(a, b)
 sampler = sc.sampling.MinimalSparseRuler(N)
 
-reconstructor = sc.reconstruction.Wessel(L, sampler.get_C())
+reconstructor = sc.reconstruction.Wessel(L, sampler.get_C(), False)
 # reconstructor = sc.reconstruction.CrossCorrelation(L, C=sampler.get_C())
 
 detector = sc.detection.Ariananda(L, upscale_factor, sampler.get_C(), reconstructor.get_Rpinv(), reconstructor.filter_cross_correlation(), 20)
