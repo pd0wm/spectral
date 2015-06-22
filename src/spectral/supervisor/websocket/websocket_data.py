@@ -1,5 +1,5 @@
 import json
-import spectral_supervisor as ss
+import spectral as spec
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 
@@ -16,7 +16,7 @@ class ServerProtocolData(WebSocketServerProtocol):
     center_freq = 2.4e9
 
     def __init__(self):
-        self.settings = ss.get_settings_object()
+        self.settings = spec.supervisor.get_settings_object()
 
         WebSocketServerProtocol.__init__(self)
 

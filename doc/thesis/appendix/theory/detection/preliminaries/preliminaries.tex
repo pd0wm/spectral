@@ -26,16 +26,16 @@ Given a complex gaussian random variable $Z = X + jY$, then $Z$ is circular symm
 
 Since
 \begin{align*}
-    E(Z) = E(e^{j\theta}Z)  = e^{j\theta}E(Z) 
+    E(Z) = E(e^{j\theta}Z)  = e^{j\theta}E(Z)
 \end{align*}
 it follows that $Z$ has an expectation value of zero. To see why let$E(Z) = a + bj$ and notice that $e^{j\theta} \neq 0$.
 Then if $e^{j\theta} E(Z) = E(z)$ holds, then so does $(a+bj) = e^{j\theta}(a+bj)$. Now it folllows cannot be anything else than zero.
 Furthermore, since
 \begin{align*}
-    E(ZZ) = E(e^{j\theta}Z e^j\theta{Z})  = e^{2j\theta}E(Z^2) 
+    E(ZZ) = E(e^{j\theta}Z e^j\theta{Z})  = e^{2j\theta}E(Z^2)
 \end{align*}
-% ($E(Z) = 0$) and that %$E(Z^2)= E(X^2 - Y^2 + 2jXY] = 0$.  
-it follows that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$ (by an analog argument as for the expectation value). That is, $X$ and $Y$ are independent gaussian distributed with zero mean and equal variance.  It now follows that $\sigma^2= E(Z\overline{Z}) = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$. 
+% ($E(Z) = 0$) and that %$E(Z^2)= E(X^2 - Y^2 + 2jXY] = 0$.
+it follows that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$ (by an analog argument as for the expectation value). That is, $X$ and $Y$ are independent gaussian distributed with zero mean and equal variance.  It now follows that $\sigma^2= E(Z\overline{Z}) = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$.
 
 \begin{blockDefinition}[Circular Complex Gaussian Random Vector]
 Given the random vector $\vec{Z} \in \mathbb{C}^N$, then $\vec{Z} = \vec{X} + j\vec{Y}$ is a circular complex random vector if $\vec{X}$ and $\vec{Y}$ are jointly gaussian distributed and $\vec{Z}$ has the same distribution as $e^{j\theta}\vec{Z}$ with $\theta$ real.
@@ -82,6 +82,7 @@ when
 where $\gamma$, the decision threshold, is chosen such that $P[\Lambda(\vec{x} < \gamma) | \mathcal{H}_1]$ is minimized subject to $P[(]\Lambda(\vec{x}) > \gamma) | \mathcal{H}_0] = P\ss{fa}$, where $P\ss{fa}$ denotes the false alarm probability. % insert ref naar boek
 \end{blockDefinition}
 
+\clearpage
 \begin{blockDefinition}[Covariance Matrix]
 Given a vector $\vec{x}$, its covariance matrix is defined as $C_{x} = E(\vec{x}\vec{x}^H)-E(\vec{x})E(\vec{x}^H)$
 \end{blockDefinition}

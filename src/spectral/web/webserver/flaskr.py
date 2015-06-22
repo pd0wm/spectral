@@ -1,5 +1,5 @@
 import logging
-import spectral_supervisor as ss
+import spectral.supervisor as ss
 from flask import Flask, render_template
 from flask.ext.bower import Bower
 from elements import SliderElement, SweepElement, VisualisationElement, TextElement, CheckboxElement

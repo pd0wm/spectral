@@ -1,4 +1,4 @@
-import spectral_core as sc
+import spectral.core as sc
 import cProfile
 
 L = 3

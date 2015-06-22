@@ -1,7 +1,7 @@
 import unittest
 import scipy.io
 import scipy as sp
-import spectral_core as sc
+import spectral.core as sc
 import numpy as np
 
 

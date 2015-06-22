@@ -11,7 +11,7 @@
 % We introduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$, then vector $\mathbf{S}$ represents the locations on the ruler that are occupied by samplers. A circular sparse ruler contains a distance $d$ if there exist an $S_i$ and $S_j$ such that $|S_i-S_j| = d$ or  $N-|S_i-S_j| = d$. A solution to a circular ruler is correct if it contains lags $ 1, \ldots, N - 1$. \Cref{fig:circular-ruler} shows a circular sparse ruler for $N=7$. The circle depicts the ruler and contains $N$ ticks. Then $(\vec{r})_i = 1$ if the tick at position $i$ is red. The definition of a circular ruler then states that the ruler is circular if and only if the distances between the marks are the distances $1,\ldots,N-1$.
 
 % In circular sparse ruler we have different samplers with the same sampling frequency $N$. Therefore the sampling structure is periodic with  period $N$.
-% If we can make lag $L$ we can also make lag $L+kN$ with $k$ an integer. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags. This problem is called circular sparse ruler. 
+% If we can make lag $L$ we can also make lag $L+kN$ with $k$ an integer. Therefore if we can make lags $\{0,1,\dots,N-1\}$, we can make all lags. This problem is called circular sparse ruler.
 The circular sparse ruler problem was introduced in \cref{cha:reconstruction} and reformulated in \cref{cha:sampling_methods}. Consider a circle with $N$ marks on it. Every mark is occupied by a sampler. Time on this circle passes as the hand of a clock. By continuity of the circle, the lag $d$ is estimated if the two marks are $d$ apart. The circle is illustrated in \cref{fig:circular-ruler}. Here $N=7$ and the positions $1$, $2$ and $3$ are marked. The circle is a solution to the circular sparse ruler problem, since the distances between the marks make up $0,\ldots,N-1$.
 
 \begin{figure}
@@ -40,7 +40,7 @@ The circular sparse ruler problem was introduced in \cref{cha:reconstruction} an
 
 Finding solutions to the circular sparse ruler problem where the amount of marks is minimised is relevant to us, since a minimal amount of marks is equivalent to using a minimal amount of samplers for a given $N$. We call these solutions minimal circular sparse ruler solutions.
 
-\cite{ariananda2012compressive} proposes a method that uses the so called linear sparse ruler problem to generate solution for the circular sparse ruler problem. The linear sparse ruler problem is similar to the circular sparse ruler problem. If one disconnects the end of the circle in \cref{fig:circular-ruler}, but still requires that the marks make up the distances $0,\ldots,N-1$, one obtains the linear sparse ruler problem. This is illustrated in \cref{tkz:linear_sparse_ruler}.  
+\cite{ariananda2012compressive} proposes a method that uses the so called linear sparse ruler problem to generate solution for the circular sparse ruler problem. The linear sparse ruler problem is similar to the circular sparse ruler problem. If one disconnects the end of the circle in \cref{fig:circular-ruler}, but still requires that the marks make up the distances $0,\ldots,N-1$, one obtains the linear sparse ruler problem. This is illustrated in \cref{tkz:linear_sparse_ruler}.
 
 \begin{figure}[H]
 \centering
@@ -81,7 +81,7 @@ Finding solutions to the circular sparse ruler problem where the amount of marks
 \caption{Linear sparse ruler for $N=7$ and $M=4$}\label{tkz:linear_sparse_ruler}
 \end{figure}
 
-The proposed method in \cite{ariananda2012compressive} uses the fact that a linear sparse solution for a certain $N$ can be turned into circular sparse ruler solutions for $2N-2$ when $N$ is even and $2N-1$ when $N$ is odd. To see this, simply note that every distance $d$ between marks on a circle also yields a distance $N-d$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} is therefore also a circular sparse ruler solution for $N=13$. This is illustrated in \cref{tkz:circ_linear_sparse}. 
+The proposed method in \cite{ariananda2012compressive} uses the fact that a linear sparse solution for a certain $N$ can be turned into circular sparse ruler solutions for $2N-2$ when $N$ is even and $2N-1$ when $N$ is odd. To see this, simply note that every distance $d$ between marks on a circle also yields a distance $N-d$. The linear sparse solution in \cref{tkz:linear_sparse_ruler} is therefore also a circular sparse ruler solution for $N=13$. This is illustrated in \cref{tkz:circ_linear_sparse}.
 
 \begin{figure}[H]
 \centering
@@ -154,8 +154,9 @@ The proposed method in \cite{ariananda2012compressive} uses the fact that a line
 The generation approach is advantageous, since solutions of linear sparse ruler problem can be turned into circular sparse ruler solutions. Therefore better linear sparse ruler solutions will also result in better circular sparse ruler solutions. Because linear sparse ruler is a well-known problem, good solutions are already calculated. However, solutions genererated for the circular sparse ruler problem are not necessarily minimal. Finding minimal solutions is by no means trivial and requires clever algorithms. It is also interesting to look at the structure of the problem to decrease the solution space.
 
 \section{Structure of the circular sparse ruler problem}
-Optimal circular sparse rulers form interesting solutions to the circular sparse ruler problem. They are circular sparse ruler solutions to configurations with $M$ samplers such that $N$ is as high as possible. Optimal solutions ensure the highest performance possible for a given amount of samplers. In similar fashion, one can define optimal solutions to the linear sparse ruler problem. 
+Optimal circular sparse rulers form interesting solutions to the circular sparse ruler problem. They are circular sparse ruler solutions to configurations with $M$ samplers such that $N$ is as high as possible. Optimal solutions ensure the highest performance possible for a given amount of samplers. In similar fashion, one can define optimal solutions to the linear sparse ruler problem.
 
+\clearpage
 \begin{blockTheorem}[Upper bound on circular sparse ruler solutions]\label{th:upperbound}
 Consider a configuration with $M$ samplers. Then $N \le M(M-1)+1$.
 \end{blockTheorem}
@@ -238,13 +239,13 @@ x, y
                 solid,
                 mark=.,
             ] table [col sep=comma]{plots/circ_upper.data};
-                
+
             \addplot [
                 color=blue,
                 solid,
                 mark=.,
             ] table [col sep=comma]{plots/circ_ilp.data};
-                
+
             \addplot [
                 color=red,
                 solid,
@@ -490,7 +491,7 @@ Let $D_d$ be the set consisting of the vectors $\vec{d} \in \{0,1\}^N$ such that
 \end{blockTheorem}
 
 \begin{blockProofTheorem}{\ref{th:ruler-distance}}
-    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, either $|i-j|=d$ or $|i-j| = N-d$. In both cases, $\vec{r}$ contains the distance $d$. 
+    Assume that $\vec{d}^T\vec{r} = 2$. Then there exist $i$ and $j$ such that $(\vec{d})_i (\vec{r})_i + (\vec{d})_j (\vec{r})_j = 2$. This implies that $(\vec{r})_i = 1$ and $(\vec{r})_j = 1$. Since $\vec{d} \in D_d$, either $|i-j|=d$ or $|i-j| = N-d$. In both cases, $\vec{r}$ contains the distance $d$.
 \end{blockProofTheorem}
 
 Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in $D_d$ as rows.
@@ -500,7 +501,7 @@ Let $\mat{D}_d$ denote the $|D_d| \times N$ matrix which contains all vectors in
 \end{blockTheorem}
 
 \begin{blockProofTheorem}{\ref{th:ruler-distance-matrix}}
-    Assume that $\mat{D}_d \vec{r} \ge 2 \vec{y}$ such that $||\vec{y}||_1 = 1$. Then there is one and only one $i$ such that $(\vec{y})_i=1$. Therefore there exists a $\vec{d} \in D_d$ such that $\vec{d}^T \vec{r} \ge 2 (\vec{y})_i = 2$. Since $||\vec{d}||_1=2$, the equality holds and thus $\vec{r}$ contains the distance $d$. Now consider $\vec{d}' \in D_d$ such that $\vec{d}' \neq \vec{d}$. Then $\vec{d}^T \vec{r} \ge 0$, which holds for any $\vec{r}$.  
+    Assume that $\mat{D}_d \vec{r} \ge 2 \vec{y}$ such that $||\vec{y}||_1 = 1$. Then there is one and only one $i$ such that $(\vec{y})_i=1$. Therefore there exists a $\vec{d} \in D_d$ such that $\vec{d}^T \vec{r} \ge 2 (\vec{y})_i = 2$. Since $||\vec{d}||_1=2$, the equality holds and thus $\vec{r}$ contains the distance $d$. Now consider $\vec{d}' \in D_d$ such that $\vec{d}' \neq \vec{d}$. Then $\vec{d}^T \vec{r} \ge 0$, which holds for any $\vec{r}$.
 \end{blockProofTheorem}
 
 Consider the binary integer linear program

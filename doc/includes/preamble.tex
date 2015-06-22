@@ -126,17 +126,37 @@
 
 % Block environment
 \newenvironment{block}[3]{%
-\makebox{\hspace{-\spinemargin}%
+\strictpagechecktrue
+\checkoddpage
+\ifoddpage{\makebox{%\hspace{-\spinemargin}% Recto
 \begin{tikzpicture}[overlay]
-    \draw [thick,color=gray75] (\BlockLeftMargin, 0) -- (\paperwidth - \spinemargin, 0);
+    \draw [thick,color=gray75] ( 0, 0) -- (\textwidth + \spinemargin - \BlockLeftMargin, 0);
+    \node at (\textwidth + \spinemargin - \BlockLeftMargin, -0.9) [align=left, text width=\spinemargin - \BlockLeftMarginText - \BlockLeftMarginTextSpacing, anchor=east, text depth=1cm] {\textbf{\textsc{#1}}\newline\textit{#3}};
+\end{tikzpicture}}%
+\nopagebreak\\[0.25em]\ifthenelse{\equal{#2}{}}{}{(\textit{#2}.) }\nopagebreak\nolinebreak}
+\else{\makebox{\hspace{-\spinemargin}% Verso
+\begin{tikzpicture}[overlay]
+    \draw [thick,color=gray75] (\BlockLeftMargin, 0) -- (\spinemargin + \textwidth, 0) ;
     \node at (\BlockLeftMarginText, -0.9) [align=left, text width=\spinemargin - \BlockLeftMarginText - \BlockLeftMarginTextSpacing, anchor=west, text depth=1cm] {\textbf{\textsc{#1}}\newline\textit{#3}};
 \end{tikzpicture}}%
 \nopagebreak\\[0.25em]\ifthenelse{\equal{#2}{}}{}{(\textit{#2}.) }\nopagebreak\nolinebreak}
-{\nopagebreak\\[-0.25em]%
+\fi
+}
+{
+\strictpagechecktrue
+\checkoddpage
+\ifoddpage{\nopagebreak\\[-0.25em]% Recto
 \makebox{\hspace{-\spinemargin}%
 \begin{tikzpicture}[overlay, remember picture]
-    \draw [thick,color=gray75] (\spinemargin,0) -- (\paperwidth - \spinemargin,0);
+    \draw [thick,color=gray75] (\spinemargin, 0) -- (\textwidth + \spinemargin,0);
 \end{tikzpicture}} \vspace{0.5em}}
+\else{\nopagebreak\\[-0.25em]% Verso
+\makebox{\hspace{-\spinemargin}%
+\begin{tikzpicture}[overlay, remember picture]
+    \draw [thick,color=gray75] (\spinemargin,0) -- (\textwidth + \spinemargin,0);
+\end{tikzpicture}} \vspace{0.5em}}
+\fi
+}
 
 % Theorem
 \newcounter{blockTheoremCounter}

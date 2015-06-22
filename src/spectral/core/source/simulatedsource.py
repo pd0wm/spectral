@@ -1,6 +1,6 @@
 from .source import Source
 import numpy as np
-import spectral_core as sc
+import spectral as spec
 
 
 class SimulatedSource(Source):
@@ -56,7 +56,7 @@ class SimulatedSource(Source):
         """
 
         noise = np.random.normal(0, 1, len(signal))
-        scaled_signal = signal / np.std(signal) * np.sqrt(sc.invert_db(SNR))
+        scaled_signal = signal / np.std(signal) * np.sqrt(spec.core.invert_db(SNR))
         return scaled_signal + noise
 
     def cmplx_white_gaussian_noise(self, SNR, signal):
@@ -77,5 +77,5 @@ class SimulatedSource(Source):
         noise_i = 1j * np.random.normal(0, 0.5, len(signal))
 
         noise = np.random.rayleigh(size=(len(signal), 1))
-        scaled_signal = signal * np.std(np.abs(noise)) / np.std(signal) * np.sqrt(sc.invert_db(SNR))
+        scaled_signal = signal * np.std(np.abs(noise)) / np.std(signal) * np.sqrt(spec.core.invert_db(SNR))
         return scaled_signal + noise_r + noise_i

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import Pyro4
-import spectral_supervisor as ss
+import spectral.supervisor as ss
 from multiprocessing import Process
 
 
