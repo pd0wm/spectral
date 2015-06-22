@@ -1,0 +1,17 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
+
+\title{Compressive Sensing - An Overview}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\section*{Abstract}
+This document describes the design process of a software toolkit to perform high performance wideband spectrum sensing. A prominent application of this is Cognitive Radio, a technique that aims to make more efficient use of the available radio spectrum. An extensive theoretical analysis will be performed. Various sampling techniques will be discussed to allow for sub-Nyquist spectrum sampling, such as coprime and circular sparse sampling. An algorithm to obtain PSD-reconstructions of these spectra and a detection algorithm to detect any present signal will be proposed. This analysis will be utilized to implement an extensible software toolkit written in Python. The software architecture and various design patterns utilized to structure the toolkit in a clear and efficient way will be described and its quality and performance analysed. The hardware used for data-acquisition, a USRP N210 will be introduced. The work will be concluded with a conclusion and its discussion.
+
+\end{document}
