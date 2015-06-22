@@ -123,7 +123,7 @@ Our tests will be targeted at
 	By extensive simulation we can construct estimates of the \emph{receiver operating characteristic curves}, which plot the detection probability versus the false alarm probability of the detector. From these curves the minimum signal strength and the detectors performance on a random signal can be evaluated. Furthermore the detection performance of the system as a whole can be evaluated by comparing these curves.
 	\end{enumerate}
 
-\section{Results}
+\section{Results}\label{sec:results_theory}
 The performance of the reconstructor is depicted in \cref{fig:plot-nmse-cop,fig:plot-nmse-circ,fig:plot-nmse}, which are accompanied by \cref{tab:sampling-nmse,tab:sampling-nmse-cop,tab:sampling-nmse-circ}. The performance of the detector is depicted in \cref{fig:plot-detector-noise76,fig:plot-detector76,fig:plot-detector-noise69,fig:plot-detector69}. Their results will be evaluated separately. Before we continue, the reader must be aware of the following two concepts.
 
 First, we argued in the introduction the we want to avoid sampling at the Nyquist frequency. It turned out that multi-coset sampling offered a solution to this problem. To evaluate the different sampling techniques, we introduce a quantity called \textit{compression}. Compression is the percentage of samples the sampling technique requires with respect to the samples obtained when sampling at the Nyquist frequency. Therefore, high compression represents an effective sampling technique.
