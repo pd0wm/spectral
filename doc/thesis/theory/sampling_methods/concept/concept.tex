@@ -459,7 +459,7 @@ In \cref{tkz:collaborative}, the top half represents the first device, and the b
 
 
 \subsection{Coprime sampling}\label{sub:coprime}
-Coprime sampling is different from circular sparse sampling and collaborative sampling in the sense that the samplers sample with differents periods. Also, the amount of samplers is restricted to two. The first sampler samples with period $aT$, and the second sampler samples with period $bT$. Coprime sampling is illustrated in \cref{tkz:coprime}. In this example, $a=3$ and $b=5$.
+Coprime sampling is different from circular sparse sampling and collaborative sampling in the sense that the samplers sample with differents periods. Also, the amount of samplers is restricted to two. The first sampler samples with period $aT$, and the second sampler samples with period $bT$. Coprime sampling requires that $a$ and $b$ are coprime \cite{pal2011coprime}. The technique is illustrated in \cref{tkz:coprime}. In this example, $a=3$ and $b=5$.
 \begin{figure}
 \centering
 \begin{tikzpicture}
@@ -622,7 +622,7 @@ In \cref{sec:reconstruction-algorithm}, it is assumed that every sampler samples
 \draw  (5,-5.5) rectangle (4,-6.5) node[pos=.5]{$v_b$};
 
 \end{tikzpicture}
-\caption{Conceptual schematic of an equivalent hardware implementation of coprime sampling. There may be an offset between the different decimations.}\label{tkz:sc_coprime}
+\caption{Conceptual schematic of an equivalent implementation of coprime sampling. Although coprime sampling is technically not regarded as a form of multi-coset sampling, the equivalence of a multi-coset implementation allows us to do so. There may be an offset between the different decimations.}\label{tkz:sc_coprime}
 \end{figure}
 \end{document}
 

@@ -57,7 +57,7 @@ Since $LN$ determines the resolution of the estimated power spectral density of 
 \label{sub:reconstruction-generation}
 In Step 2 of the algorithm, $\mat{R}$ has to be constructed. It turns out that $\mat{R}$ can be generated efficiently using commonly available functions. To generate $\mat{R}$, we make use of the functions \texttt{toeplitz} and \texttt{tril}. The functions \texttt{toeplitz} and \texttt{tril} are often found in software used for digital signal processing. The operation of these functions is illustrated in \cref{sec:reconstruction-generation-algorithm}. The algorithm to construct $\mat{R}$ is as follows:
 
-\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item2}},label=Step \arabic*:,itemindent=1em,leftmargin=!]
+\begin{enumerate}[labelindent=0pt,labelwidth=\widthof{\ref{last-item2}},label=\textbf{Step \arabic*:},itemindent=1em,leftmargin=!]
     \item Let \begin{align*}
                 \vec{c} = \begin{bmatrix} c_{i,j}[N-1] \; \cdots \; c_{i,j}[-N+1] \end{bmatrix}
 \end{align*} where \begin{align*}
