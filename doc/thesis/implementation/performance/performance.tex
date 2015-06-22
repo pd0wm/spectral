@@ -13,49 +13,49 @@
 \begin{document}
 \chapter{Performance}
 \label{cha:performance}
-In this chapter the performance of the implementation will be discussed. First we will introduce the measurements done to evaluate said performance and then we will discuss some practical implementations of these optimalisations.
+In this chapter the performance of the implementation will be discussed. First we will introduce the measurements performed to evaluate said performance after which we will discuss some practical implementations of these optimisations.
 
 \section{Profiling}
 \label{sec:performance-profiling}
-A good measurement technique for performance are profiling reports. Profiling reports describe the time spent inside functions. These allow us to identify bottlenecks in the system which slow down calculations. More then often these have allowed us to make crucial speed ups in the system.
+A good metric for performance are profiling reports. Profiling reports describe the time spent inside functions (execution time). They allow us to identify bottlenecks in the system which slow down calculations. More often than not these have allowed us to make crucial speed ups in the system.
 
 \section{Algorithms and Data structures}
-Our initial step was to improve the algorithms and data structures involved. This is usually seen as the first best way of improving performance. We used profiling reports as a guideline to identify bottlenecks and improve the algorithms or data structures only there were necessary as to keep the complexity of our code low\footnote{As Donald Knuth once said: ``The root of all evil is premature optimization''. The essence of this quote is that one should only start optimizing code once it has been proven to be necessary as this usually increases the complexity of the code and thus the maintainability. Maintainability is often only an afterthought but imminent for code that has to last.}.
+Our initial step was to improve the algorithms and data structures involved. This is usually seen as the first best way of improving performance. We used profiling reports as an indicator to identify bottlenecks and improve the algorithms or data structures only there were necessary as to keep the complexity of our code low\footnote{As Donald Knuth, considered as the father of informatics, once said: ``We should forget about small efficiencies, say about 97\% of the time: premature optimization is the root of all evil. Yet we should not pass up our opportunities in that critical 3\%. A good programmer will not be lulled into complacency by such reasoning, he will be wise to look carefully at the critical code; but only after that code has been identified.''\cite{knuth1974structured}. The essence of this quote is that one should only start optimizing code once it has been proven to be necessary as this usually increases the complexity of the code and thus the maintainability. Maintainability is often only an afterthought but imminent for code that has to last.}.
 
 \subsection{Sparse matrices}
 \label{sec:sparse-matrices}
-After the initial profiling reports it became clear that the dot product with the pseudo-inverse in the reconstructor formed a bottleneck. After doing some inspection it appeared that his matrix was sparse. The sparsity fitted good into \lib{SciPy's} sparse data structure. We chose for the rather standard \func{csr\_matrix}. As noted by \cite{numpyscipy} the advantages of this data structure are amongst other fast matrix vector products and better memory efficiency. The speed difference for the reconstruct method is shown in \cref{fig:sparse}.
+After the initial profiling reports it became clear that the dot product with the pseudo-inverse in the reconstructor (see \cref{sec:reconstructor}) formed a bottleneck. After doing some inspection it appeared that his matrix was sparse. This sparsity allowed us to use \lib{SciPy}'s optimised sparse data structure. We chose the rather standard \func{csr\_matrix} data type. As noted by \cite{numpyscipy}, the advantages of this data structure are, amongst other, fast matrix vector products and better memory efficiency. The speed difference for the reconstruct method is shown in \cref{fig:sparse}.
 
-\begin{figure}[]
+\begin{figure}[h]
     \centering
     \input{figures/sparse}
-    \caption{Time of reconstruct (normalized over 1000 runs) versus number of elements in matrix of sparse (dashed) and standard matrix (solid) data structure}
+    \caption{Reconstruction time (normalized over 1000 runs) versus number of elements in matrix of sparse (dashed) and standard matrix (solid) data structure}
     \label{fig:sparse}
 \end{figure}
 
 \subsection{Vectorisation}
 \label{sec:vectorisation}
-Another bottleneck that was observed were the signal cross correlations. There are a number of ways to calculate it namely:
+Another bottleneck was formed by the calculation of signal cross-correlations. There are a number of ways to perform this calculation:
 \begin{itemize}
-    \item Cross correlations written out as a number of matrix multiplications,
-    \item \lib{Numpy's} \func{correlate} function, and
+    \item Expressed as a number of matrix multiplications.
+    \item \lib{Numpy's} \func{correlate} function.
     \item \lib{SciPy's} \func{fftconvolve} function.
 \end{itemize}
-As can be seen in \cref{fig:correlation} each technique has its own area of best performance. The matrix multiplication is best until a vector length of about 50. \lib{Numpy's} \func{Correlate} is the best from 50 until 400 and for everything above that \func{fftconvolve} is the fastest.
+\cref{fig:correlation} shows that each technique has its own area of best performance. The matrix multiplication works best for vector lengths of about 50 elements. \lib{Numpy's} \func{correlate} performs best from 50 until 400 elements and for everything above that \func{fftconvolve} is the fastest.
 
-\begin{figure}[]
+\begin{figure}[h]
     \centering
     \input{figures/correlations}
-    \caption{Time to do 100 cross-correlations plot against the size of the vector. Solid is NumPy's correlate, dashed is SciPy's fftconvolve and dotted is the matrix implementation.}
+    \caption{Computation time for 100 cross-correlations versus vector length. Solid is NumPy's \func{correlate}, dashed is SciPy's \func{fftconvolve} and dotted is the matrix implementation.}
     \label{fig:correlation}
 \end{figure}
 
 \section{Multiprocessing}
 \label{sec:multiprocessing}
 
-Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each the source \& sampler, the reconstructor and the detector. The information is send using inter-process communication (IPC). This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU. Ultimately it depends on the configuration of the parameters whether multiprocessing is advantageous, because the IPC (which has to do memory transfers through L3) can be the bottleneck on less demanding parameter sets. Results of a standard run can be seen in \cref{tab:mp}. In this case a speed up of \SI{48}{\percent}\footnote{This is largely going to be dependant on the platform it was run on. In this case a mid 2015 Macbook Pro with an i7-4870HQ was used to generate this data.} has been achieved.
+Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each the source \& sampler, the reconstructor and the detector. This information is sent using inter-process communication (IPC). This introduces some overhead and delay, but has the major advantage of allowing us to make use of multiple CPU cores. Ultimately, it depends on the configuration of the parameters whether multiprocessing is advantageous, because IPC (which has to do memory transfers through L3-cache) can be the bottleneck on less demanding parameter sets. Results of a standard program run can be seen in \cref{tab:mp}. In this case a speed up of \SI{48}{\percent}\footnote{This is largely going to be dependent on the platform it was run on. In this case a mid 2015 Macbook Pro with an i7-4870HQ was used to generate this data.} is achieved by the use of multiprocessing over serial execution.
 
-A downside of multiprocessing is that the current implementations of Apple's \lib{accelerate} is not compatible with multiprocessing. This is due to a bug\footnote{As noted on the \lib{NumPy's} issue tracker this is an issue Apple is not addressing. A workaround is to use a Python 3 feature which allows process spawning rather than forking which solved this issue. Unfortunately due to dependancies on \lib{GnuRadio} on earlier stages of this project Python 2 was used. For more information see \url{https://github.com/numpy/numpy/issues/5752}.} on Apple's end. Instead \lib{OpenBLAS} was used instead at a very small performance loss.
+An issue that arose is that the current implementation of Apple's \lib{accelerate}, is not compatible with multiprocessing. This is due to a bug\footnote{As noted on the \lib{NumPy's} issue tracker this is an issue Apple is not addressing. A workaround is to use a Python 3 feature which allows process spawning rather than forking which solved this issue. Unfortunately due to dependencies on \lib{GnuRadio} on earlier stages of this project Python 2 was used. For more information see \url{https://github.com/numpy/numpy/issues/5752}.} on Apple's end. Instead, \lib{OpenBLAS} was used instead at a very small performance loss.
 
 \begin{table}
     \centering
@@ -71,8 +71,7 @@ A downside of multiprocessing is that the current implementations of Apple's \li
     \end{tabular}
 \end{table}
 
-%TODO Nog eens goed multiprocessing vs andere zwets bekijken
 \section{Results and Further Improvements}
 \label{sec:results}
-All in all a system has been achieved which allows real-time compressive spectrum sensing. Future work can be done in further techniques for parallel processing, Cuda and OpenCL are good candidates (especially because of the sparse structures involved). Furthermore a good study to the memory structures throughout our calculations could prove to be beneficial for further speedups.
+All in all, a system has been implemented that allows for real-time compressive spectrum sensing. Future work can be sought in the implementation of additional techniques for parallel processing. CUDA and OpenCL are good candidates for this (especially because of the sparse structures involved). Furthermore, a good study of the memory structures throughout our calculations could prove to be beneficial for further speed-ups.
 \end{document}
