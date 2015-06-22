@@ -1,0 +1,57 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+
+\title{Compressive Sensing - An Overview}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\chapter{Reflection}
+In this chapter we will reflect on the specifications given in \cref{sec:implementation-specs}.
+
+\subsection{General}
+Recall that the general requirements were:
+\begin{itemize}
+    \item The implementation needs to be fast. Existing products are all targeting high performance. The advantage of compressive sensing is that less hardware can be used at the cost of more demanding computations.
+    \item The implementation needs to be modular in the sense that different kinds of approaches to the problem (both in hardware and algorithms) can be implemented and require a minimal adjustment in the software.
+    \item The implementation needs to flexible enough that it could be run on different computational platforms (distributed networks, embedded devices, etc.) with minimal adjustment in the software.
+\end{itemize}
+
+
+\section{Software}
+Recall that the software \emph{must} be developed such that
+\begin{enumerate}
+    \item it implements the generation and/or sampling of a theoretical spectrum;
+    \item it implements the emulation of non-uniform sampling techniques on Nyquist-sampled spectra;
+    \item it implements the reconstruction of the sampled spectrum, using techniques from \cref{cha:reconstruction};
+    \item it implements the detection of any signal present in the reconstructed spectrum, using techniques from \cref{cha:detection} and
+    \item it is able to clearly present the results of generation, reconstruction and detection to the user.
+\end{enumerate}
+
+And recall that the software \emph{should} be developed such that
+\begin{enumerate}
+    \item the highest possible performance may be achieved;
+    \item it is designed in a structured and maintainable way and
+    \item it is be usable on multiple platforms.
+\end{enumerate}
+
+\section{Hardware}
+
+Recall that with respect to the hardware the software \emph{must} allow for
+\begin{enumerate}
+    \item the use of a Ettus Research USRP UHD N210 transceiver to obtain data;
+    \item the use of such a device to implement compressive sensing and
+    \item the use of two (or more) of these devices to implement collaborative sensing.
+\end{enumerate}
+
+And recall that the software \emph{should} allow for
+\begin{enumerate}
+    \item fully utilising the USRP's capabilities.
+\end{enumerate}
+
+\end{document}
