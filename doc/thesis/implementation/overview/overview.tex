@@ -12,15 +12,15 @@
 
 \begin{document}
 \chapter{System Overview}
-In this chapter we will give an overview of the chosen system architecture. In the following chapters we will describe each part of the system in more detail.
+In this chapter we will give an overview of the chosen system architecture. In the following chapters we will describe each part of the system in more detail. From the start we implemented a library (also called packages in the Python community) in which we build up our primitives. This was our first step in tackling the problem in a structured manner.
 
 \section{Model-View-Presenter}
 \label{sec:model-view-presenter}
-The design of our system can best be described by a model-view-presenter architectural pattern (with passive view, referred to as MVP from now on). It is a variation on the well known model-view-controller pattern \cite{syromiatnikov2014journey}. It consists of the following components:
+For the design of our library we chose a model-view-presenter architectural pattern (with passive view, referred to as MVP from now on). It is a variation on the well known model-view-controller pattern \cite{syromiatnikov2014journey}. It consists of the following components:
 \begin{description}
-    \item[Model] This encompasses the library \lib{spectral\_core}, that handles all the domain logic\footnote{The domain logic encompasses all the functional parts of our code. It is the ``world'' our code lives in.}.
-    \item[Presenter] This encompasses part of the library \lib{spectral\_supervisor}, that handles all the application logic\footnote{The application logic is the logic that drives the application. This is amongst other things handling the input data from the user and reflecting it in the model}.
-    \item[View] This encompasses part of the library \lib{spectral\_web}, that contains the GUI elements.
+    \item[Model] This encompasses the sub-package \lib{spectral.core}, that handles all the domain logic\footnote{The domain logic comprises the modelling of our problem.}.
+    \item[Presenter] This encompasses the sub-package \lib{spectral.supervisor}, that handles all the application logic\footnote{The application logic is the logic that drives the application. This is amongst other things handling the input data from the user and reflecting it in the model}.
+    \item[View] This encompasses the sub-package \lib{spectral.web}, that contains the GUI elements.
 \end{description}
 An overview can be seen in \cref{fig:MVP}. The most important advantage of MVP is that the domain logic and application logic are completely separate. The model concerns itself with the domain logic, the view with the representation of the data and the presenter manages the data and user input synchronisation. This allows us to do orthogonal design.
 
@@ -37,7 +37,7 @@ An overview can be seen in \cref{fig:MVP}. The most important advantage of MVP i
 \label{sub:model}
 The goal was to implement enough primitives in these libraries that a large number of configurations can quickly be constructed together. This is to account for the variety of configurations in which this product can be used. It also allows us to test different kind of sampling techniques with reconstruction methods.
 
-A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this, the Strategy design pattern\footnote{The strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}. } is used for all the models. This is further discussed in \cref{cha:model}.
+A side effect of writing code this way is that it makes our code modular. This means most ``blocks'' can be tested individually. To accommodate this, the Strategy design pattern is used for all the models. The Strategy pattern implements a family of algorithms behind an interface. It was first introduced in \cite{designpatterns}. This is further discussed in \cref{cha:model}.
 
 \subsection{View}
 \label{sub:view}

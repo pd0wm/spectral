@@ -26,6 +26,8 @@ A hardware implementation of samplers combined in a setup discussed in \cref{sub
 \label{sub:coprime_hardwa}
 A hardware implementation of two samplers in coprime setup discussed in \cref{sec:coprime}. It would involve two samplers syncing on a combined period whilst the individual sample frequencies of the samplers would have a coprime ratio. The use case would involve optimal performance for least cost. Coprime uses non optimal ``ruler'' but is implementable with two samplers.
 
+The software coprime truncater uses two input sample vectors, with a different number of samples from two samplers with different sample rates. The sampling matrix is constructed as with the normal coprime sampler. The two input vectors are then transformed into one output vector that matches the sampling matrix.
+
 \section{Product Implementations}
 \label{sec:product_implementations}
 After our visit to the Ministry of Defence to present our technology, we learned about a number of possible implementations. Besides this the discussions we had with Koen Bertels during the business plan part of the bachelor graduation project were very constructive in finding possible applications.

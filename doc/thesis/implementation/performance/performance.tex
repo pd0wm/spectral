@@ -24,7 +24,7 @@ Our initial step was to improve the algorithms and data structures involved. Thi
 
 \subsection{Sparse matrices}
 \label{sec:sparse-matrices}
-After the initial profiling reports it became clear that the dot product with the pseudo-inverse in the reconstructor (see \cref{sec:reconstructor}) formed a bottleneck. After doing some inspection it appeared that his matrix was sparse. This sparsity allowed us to use \lib{SciPy}'s optimised sparse data structure. We chose the rather standard \func{csr\_matrix} data type. As noted by \cite{numpyscipy}, the advantages of this data structure are, amongst other, fast matrix vector products and better memory efficiency. The speed difference for the reconstruct method is shown in \cref{fig:sparse}.
+After the initial profiling reports it became clear that the dot product with the pseudo-inverse in the reconstructor (see \cref{sec:reconstruction}) formed a bottleneck. After doing some inspection it appeared that his matrix was sparse. This sparsity allowed us to use \lib{SciPy}'s optimised sparse data structure. We chose the rather standard \func{csr\_matrix} data type. As noted by \cite{numpyscipy}, the advantages of this data structure are, amongst other, fast matrix vector products and better memory efficiency. The speed difference for the reconstruct method is shown in \cref{fig:sparse}.
 
 \begin{figure}[h]
     \centering
