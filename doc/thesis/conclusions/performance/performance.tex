@@ -53,10 +53,10 @@ As can be seen in \cref{fig:sparse} each technique has its own area of best perf
 \section{Multiprocessing}
 \label{sec:multiprocessing}
 
-Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU.
+Each major part of the model (source, sampling, reconstruction and detection) can be run simultaneously by means of implementing a pipeline. This is done by the means of multiprocessing. We spawn a separate process for each part and pass the information around using inter-process communication. This introduces some overhead and delay because of the IPC but has the major advantage of allowing us to make use of more cores on the CPU. Ultimately it depends on the configuration of the parameters whether multiprocessing is advantageous, because the IPC (which has to do memory transfers through L3) can be the bottleneck on less demanding parameter sets.
 
+%TODO Nog eens goed multiprocessing vs andere zwets bekijken
 \section{Results \& Improvements}
 \label{sec:results}
-
-
+%TODO refresh rate constructor
 \end{document}
