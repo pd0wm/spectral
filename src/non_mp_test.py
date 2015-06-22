@@ -5,8 +5,6 @@ import time
 
 dump_file_path = 'dumps/ofdm.dmp'
 L = 3
-a = 3
-b = 4
 N = 51
 upscale_factor = 2000  # Warning: greatly diminishes performance
 sample_freq = 10e6
