@@ -13,7 +13,7 @@
 \begin{document}
 \chapter{Model - The Core}
 \label{cha:model}
-In this chapter we will discuss the model part of our system. This consists of the various implementation of source, sampling, reconstruction and detection. All functionality discussed in this chapter is contained in the \lib{spectral.core} sub-package. \Cref{fig:model-diagram} shows the model and its interfaces. Every interface sets up a contract for one or more methods, which mean any class that implements this interface must also implement the method.
+In this chapter we will discuss the model part of our system. This consists of the various implementations of source, sampling, reconstruction and detection components. All functionality discussed in this chapter is contained in the \lib{spectral.core} sub-package. \Cref{fig:model-diagram} shows the model and its interfaces. Every interface sets up a contract for one or more methods, which mean any class that implements this interface must also implement the method.
 
 \begin{figure}
     \centering
@@ -24,10 +24,9 @@ In this chapter we will discuss the model part of our system. This consists of t
     \label{fig:model-diagram}
 \end{figure}
 
-
 \section{Source}
 \label{sec:source}
-All sources implement the interface \func{Source}, which has a contract for a generate method. This generate function should return the requested number of samples from a specific source. The rest of our source can be divided in three categories, the simulated sources used for testing our algorithms, the file sources which generate data from saved files and real-world sources that connect to the USRPs to retrieve samples.
+All sources implement the interface \func{Source}, which has a contract for a generate method. This generate function should return the requested number of samples from a specific source. The sources can be divided in three categories, the simulated sources used for testing our algorithms, the file sources which generate data from saved files and real-world sources that connect to the USRPs to retrieve samples.
 
 \begin{figure}
     \centering
@@ -68,9 +67,9 @@ After the uniform samples are generated, different sampling methods have to be a
 
 \subsection{Multi-coset sampler}
 \label{sub:multi_coset_sampler}
-Multi-coset sampling (as introduced in \cref{cha:sampling}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). The list of offsets is one of the constructor arguments used to generate the $C$-matrix which has dimensions defined by $M$ and $N$, which are the other arguments of this implementation.
+Multi-coset sampling (as introduced in \cref{cha:sampling,cha:sampling_methods}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). The list of offsets is one of the constructor arguments used to generate the $C$-matrix which has dimensions defined by $M$ and $N$, which are the other arguments of this implementation.
 
-The implementation of the sample method takes a signal, uniformly sampled, as argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension $N$ and the other determined by the length of the input signal.
+The implementation of the sample method takes a signal, uniformly sampled, as its argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension $N$ and the other determined by the length of the input signal.
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
@@ -103,7 +102,7 @@ The reconstruct method is implemented by calculating the cross correlations of t
 
 \subsection{Wessel}
 \label{sub:wessel}
-The Wessel reconstructor is a variation on the reconstruction technique implemented by \class{CrossCorrelation}. The theory is thoroughly described in \cref{prt:theory} of this thesis. The algorithm takes the same parameters\footnoteref{fn:reconparam}, namely the maximum lag estimated of cross-correlation of the cosets and the sampling matrix used by one the non-uniform sampler. This is required for the reconstruction algorithm.
+The reconstructor, as reformulated by Wessel Bruinsma, is a variation on the reconstruction technique implemented by \class{CrossCorrelation}. The theory is thoroughly described in \cref{prt:theory} of this thesis. The algorithm takes the same parameters\footnoteref{fn:reconparam}, namely the maximum lag estimated of the cross-correlation of the cosets and the sampling matrix used by the non-uniform sampler. This is required for the reconstruction algorithm.
 
 Similar to the other reconstructor implementation, a switch to disable the caching mechanism has been implemented. This was also implemented for debugging and testing purposes. Like the other reconstructor, this reconstructor generates an $R$-matrix and computes its pseudo-inverse. Details on this algorithm may be found in \cref{cha:reconstruction}.
 
@@ -117,10 +116,9 @@ A single kind of detector is implemented. The Strategy pattern is still used bec
 
 \subsection{Ariananda}
 \label{sub:ariananda}
-The Ariananda detector (named after the writer of \cite{ariananda2012compressive}) implements the theory described in \cref{cha:detection}. It takes $L$, $K$, $C$, $\mat{R}^\dagger$, $\mat{R}_c$, window length and $P_{\text{fa}}$ as its parameters. Its current implementation requires the reconstructor to be \func{Wessel}\footnote{It can also be implemented for \func{CrossCorrelation} but requires some adjustments. This has not been implemented.}.
+The Ariananda detector (named after the writer of \cite{ariananda2012compressive}) implements the theory described in \cref{cha:detection}. It takes $L$, $K$, $C$, $\mat{R}^\dagger$, $\mat{R}_c$, window length and $P_{\text{fa}}$ as its parameters. Its current implementation requires its input data to be originating from the\func{Wessel} reconstructor class\footnote{It can also be implemented for \func{CrossCorrelation} but requires some adjustments. This has not been implemented.}.
 
 It implements the detect method by calculating a threshold (referred to as $\gamma_k$ in the theory) and comparing that with the PSD of the signal. It makes use of information of the wessel reconstructor and the sampler in question to make a better estimate of a threshold for the signal.
-
 
 \begin{figure}
     \centering
