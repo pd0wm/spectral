@@ -8,7 +8,7 @@ class ServerProtocolControl(WebSocketServerProtocol):
     """
     WebSocket protocol for processing configuration data. The protocol describes
     how various connection events should be handled so that each connected
-    is able to modify system settings and gets notified of changes that other
+    client is able to modify system settings and gets notified of changes that other
     clients make.
     """
 
@@ -36,6 +36,9 @@ class ServerProtocolControl(WebSocketServerProtocol):
         """
         Handles the WebSocket onConnect event. Fired when the client starts to
         connect.
+
+        Args:
+            request: The request object.
         """
         print "Client connecting: {}".format(request.peer)
 
@@ -44,6 +47,10 @@ class ServerProtocolControl(WebSocketServerProtocol):
         Handles the connection onMessage event. Fired when the server receives
         a message. The server will decode the message, update the new settings
         and relay it to all other clients.
+
+        Args:
+            payload: The message content.
+        isBinary: Whether the payload is binary encoded.
         """
         data = json.loads(payload)
         self.settings.update({data['key']: data['value']})
@@ -53,6 +60,11 @@ class ServerProtocolControl(WebSocketServerProtocol):
         """
         Handles the connection onClose event. Fired when the connection is
         closed.
+
+        Args:
+            wasClean: Whether the connection closed cleanly.
+            code: The closing code.
+            reason: The reason for closing the connection.
         """
         print "WebSocket connection closed: {}".format(reason)
         self.factory.unregister(self)
@@ -61,10 +73,10 @@ class ServerProtocolControl(WebSocketServerProtocol):
 class ServerProtocolControlFactory(WebSocketServerFactory):
 
     """
-    Factory for creating ServerProtocolControl instances.
+    Factory for creating :class:ServerProtocolControl instances.
 
     Args:
-    url: The url to start the WebSocket server on.
+        url: The url to start the WebSocket server on.
     """
 
     def __init__(self, url):
@@ -76,7 +88,7 @@ class ServerProtocolControlFactory(WebSocketServerFactory):
         Registers the given client, so that it will receive updated settings.
 
         Args:
-        client: The protocol instance of the client that connected.
+            client: The :class:ServerProtocolControl instance of the client that connected.
         """
         if client not in self.clients:
             print "Registered client {}".format(client.peer)
@@ -88,8 +100,8 @@ class ServerProtocolControlFactory(WebSocketServerFactory):
         settings.
 
         Args:
-        client: The :class:ServerProtocolControl instance of the client that
-        connected.
+            client: The :class:ServerProtocolControl instance of the client that
+            connected.
         """
         if client in self.clients:
             print "Unregistered client {}".format(client.peer)
@@ -100,8 +112,8 @@ class ServerProtocolControlFactory(WebSocketServerFactory):
         Relays the given message to all registered clients.
 
         Args:
-        client: The client that originally received the message to relay.
-        msg: The message to relay.
+            client: The client that originally received the message to relay.
+            msg: The message to relay.
         """
         for c in self.clients:
             if c is not client:
@@ -112,7 +124,7 @@ class ServerProtocolControlFactory(WebSocketServerFactory):
         Builds a :class:ServerProtocolControl instance.
 
         Args:
-        addr: (unused) The address of the client for this protocol.
+            addr: (unused) The address of the client for this protocol.
         """
         protocol = self.protocol()
         protocol.factory = self
