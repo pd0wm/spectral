@@ -1,5 +1,5 @@
 import unittest
-import spectral_core as sc
+import spectral.core as sc
 import numpy as np
 
 

@@ -1,6 +1,6 @@
-import spectral_core as sc
-import spectral_supervisor as ss
-import spectral_web as sw
+import spectral.core as sc
+import spectral.supervisor as ss
+import spectral.web as sw
 
 
 def run_generator(signal_queue, websocket_src_queue, source, sampler, sample_freq, block_size, upscale_factor):

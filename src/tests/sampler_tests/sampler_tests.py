@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-import spectral_core as sc
+import spectral.core as sc
 
 
 class SamplerTests(unittest.TestCase):

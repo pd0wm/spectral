@@ -2,7 +2,7 @@ import unittest
 import scipy as sp
 import scipy.io
 import scipy.linalg
-import spectral_core as sc
+import spectral.core as sc
 import numpy as np
 
 

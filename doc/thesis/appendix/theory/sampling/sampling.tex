@@ -479,7 +479,7 @@ We see that the sampling periods $a$ and $b$ should be chosen carefully such tha
 
 
 
-\chapter{Generation solutions tot the circular sparse ruler problem}\label{ap:derivation_ILP}
+\chapter{Generating solutions to the circular sparse ruler problem}\label{ap:derivation_ILP}
 We reintroduce the concept of a ruler. Consider a ruler $\vec{r}$ of length $N$. Then $\vec{r} \in \{0,1\}^N$. Also, $(\vec{r})_i = 1$ if the element at position $i$ is marked, and $(\vec{r})_i = 0$ if the elements at position is not marked. If an element at position $i$ is marked, then a coset samples the $i$'th sample of every group of $N$ samples of the input signal. We will formulate the minimal circular ruler problem as an binary integer linear program.
 
 A ruler $\vec{r}$ contains a distance $d$ if there exist $i$ and $j$ such that $(\vec{r})_i = 1$, $(\vec{r})_j = 1$ and $|i-j| = d$ or  $N-|i-j| = d$. The ruler $\vec{r}$ is a circular ruler if it contains distances $ 1, \ldots, N - 1$. A circular ruler $\vec{r}$ is minimal if and only if $||\vec{r}||_1$ is minimal.

@@ -2,7 +2,7 @@ import unittest
 import scipy as sp
 import scipy.io
 import numpy as np
-import spectral_core as sc
+import spectral.core as sc
 
 
 class TestCrossCorr(unittest.TestCase):
