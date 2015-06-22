@@ -25,7 +25,7 @@ These radios are connected to a PC by using gigabit Ethernet, thus limiting the 
 
 \subsection{Drivers}
 \label{sec:drivers}
-The communication between the USRPs and our software is handled by the UHD driver\footnote{The code for this driver can be found online at: \url{https://github.com/EttusResearch/uhd}} written by \textit{Ettus Research}.
+The communication between the USRPs and our software is handled by the UHD driver\footnote{The code for this driver can be found online at: \url{https://github.com/EttusResearch/uhd}.} written by \textit{Ettus Research}.
 
 In the first version of our software we built everything using \lib{GNU Radio}. We used the \lib{gnuradio-uhd} blocks to get samples from our USRPs. Soon we switched to a pure Python version, but we still used the \lib{gnuradio-uhd} library to retrieve our samples. We used a specific helper function \func{gnuradio.uhd.finite\_acquisition} from the GNU Radio libraries. This helper function started a low level stream, waits for n samples, closes the stream and returns the samples to the caller.
 
