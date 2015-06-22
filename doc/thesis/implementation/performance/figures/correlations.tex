@@ -2,11 +2,11 @@
     \begin{axis}[%
         width=\linewidth,
         height=0.5\linewidth,
-        xlabel={Number of elements in vector},
-        ylabel={Time to reconstruct cross correlations in \si{s}},
+        xlabel={Vector length},
+        ylabel={Computation time [\si{s}]},
         ]
         \addplot [
-        color=blue,
+        color=green,
         solid,
         ]
         table[col sep=comma]{
@@ -218,7 +218,7 @@
             5.000000000000000000e+02,5.251190662384033203e-01
 };
 \addplot [
-    color=green,
+    color=blue,
     dotted,
         ]
         table[col sep=comma]{
