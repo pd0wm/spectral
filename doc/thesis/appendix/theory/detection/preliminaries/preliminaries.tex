@@ -7,7 +7,7 @@
 \begin{document}
 
 \section{Preliminaries}
-The definitions given in this section are used in the derivations later on and are based  on \cite{yates2005probability}.
+The definitions given in this section are used in the derivations later on and are based  on \cite{yates2005probability,gallager2008circularly}.
 
 \begin{blockDefinition}[Complex Gaussian Random Variable]
 Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed. We denote $Z \sim \mathcal{CN}(\mu, \Gamma, C)$.
@@ -79,7 +79,7 @@ when
 \begin{align*}
     \Lambda (\mathbf{x}) &= \frac{L_{\vec{X} | \mathcal{H}_0} (\mathbf{x})}{L_{\vec{X} | \mathcal{H}_1}(\mathbf{x})} \leq \gamma.
 \end{align*}
-where $\gamma$, the decision threshold, is chosen such that $P[\Lambda(\vec{x} < \gamma) | \mathcal{H}_1]$ is minimized subject to $P[(]\Lambda(\vec{x}) > \gamma) | \mathcal{H}_0] = P\ss{fa}$, where $P\ss{fa}$ denotes the false alarm probability. % insert ref naar boek
+where $\gamma$, the decision threshold, is chosen such that $P[\Lambda(\vec{x} < \gamma) | \mathcal{H}_1]$ is maximized subject to $P[(]\Lambda(\vec{x}) \leq \gamma) | \mathcal{H}_0] = P\ss{fa}$, where $P\ss{fa}$ denotes the false alarm probability. % insert ref naar boek
 \end{blockDefinition}
 
 \clearpage
