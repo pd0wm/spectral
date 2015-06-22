@@ -33,21 +33,21 @@ x[n] \sim
 
 Let
 \begin{align*}
-    \vec{x} = \left[x[0], x[1], \ldots, x[N-1]\right]^T
+    \vec{x} = \begin{bmatrix}x[0] & x[1]& \ldots& x[N-1]\end{bmatrix}^T
 \end{align*}
 denote a vector containing $N$ samples of the signal $x[n]$. Then the likelihood function of $\vec{x}$ denoted as $L(\vec{x})$ is given by
 
 \begin{align*}
     L(\vec{x}) &= \prod_{i=1}^N f_{(\vec{x})_i}\\
     &= \begin{cases}
-        \sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x}) & \text{if $\mathcal{H}_0$}, \\
-        \sigma_n^2/\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}] & \text{if $\mathcal{H}_1$}
+        1/\sigma_n^2 \pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x}) & \text{if $\mathcal{H}_0$}, \\
+        1/(\sigma_n^2 + \sigma_s^2) \pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}] & \text{if $\mathcal{H}_1$}
     \end{cases}
 \end{align*}
 
 where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ in $\vec{x}$.  The test statistic $\Lambda(\vec{x})$ as used in the Neyman Pearson test is then given by:
 \begin{align*}
-\Lambda(\vec{x}) &=\frac{\sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}]}.
+\Lambda(\vec{x}) &=\frac{1/\sigma_n^2\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x})}{1/(\sigma_n^2 + \sigma_s^2)\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}]}.
 \end{align*}
 
 
@@ -55,8 +55,8 @@ By taking the logarithm of $\Lambda(x)$ we obtain a log-likelihood Ratio test st
 
 \begin{align}
 \Lambda(\vec{x})' &= \log \left\{
-\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x})}{[\sigma_n^2 + \sigma_s^2]\exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}]}\right\} \\
-&= \log(\sigma_n^2) - \log(\sigma_n^2 + \sigma_s^2) +  (\frac{1}{\sigma_n^2} - \frac{1}{\sigma_n^2 + \sigma_s^2 })\sum_{i=0}^{N-1} |x[i]|^2.  \nonumber
+\frac{1/\sigma_n^2\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x})}{1/(\sigma_n^2 + \sigma_s^2)\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}]}\right\} \\
+&= -\log(\sigma_n^2) + \log(\sigma_n^2 + \sigma_s^2) -\left(\frac{1}{\sigma_n^2} - \frac{1}{\sigma_n^2 + \sigma_s^2 }\right)\sum_{i=0}^{N-1} |x[i]|^2.  \nonumber
 \end{align}
 
 Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic\footnote{observe that $\frac{1}{\sigma_n^2} \geq \frac{1}{\sigma_n^2+\sigma_s^2}$}
@@ -65,8 +65,8 @@ Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of
 \Lambda''(\vec{x}) &= -\sum_{n=0}^{N-1} |x[n]|^2
 \end{align*} 
 
-is proportional to $\Lambda'(x)$. If we negate $\Lambda'$ we get same test statistic as denoted by $\Lambda$ in \Cref{sec:conv_ed}. Do note that
-this negation is effectively a division in the original neyman pearson test (logarithm) and therefore if
+is proportional to $\Lambda'(x)$. If we negate $\Lambda''$ we get same test statistic as denoted by $\Lambda$ in \Cref{sec:conv_ed}. Do note that
+this negation is effectively a division in the original Neyman-Pearson test and therefore if
 $-\Lambda'' > \gamma$, the detector decides that $\mathcal{H}_1$ is the true hypothesis. 
 
 \subsubsection{Threshold}
@@ -76,14 +76,14 @@ with variance $\sigma_n^2/2$. To see why, remember that $\vec{x}$ is circular sy
 $|x_i|^2 = x_i \cdot \conj{x_i} = a^2 + b^2$ where $a = \Re(x_i)$ and $b=\Im(x_i)$.  So
 
 \begin{align}
-    \frac{2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
+    \frac{-2\Lambda''(\vec{x})}{\sigma_n^2} \sim \chi^2_{2N}.
 \end{align}
 
 % Sensing Throughput Tradeoff in Cognitive Radio, Y. C. Liang
 Therefore, the false alarm probability $p\ss{fa}$ is given by \cite{rugini2013small}
 
 \begin{align*}
-    p_{fa} &= P(\Lambda''(\vec{x}) > \gamma) \\
+    p_{fa} &= P(-\Lambda''(\vec{x}) > \gamma) \\
         &= 1-F_{2N} (2\gamma/\sigma_n^2)
 \end{align*}
 

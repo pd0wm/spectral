@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# spectral.core documentation build configuration file, created by
-# sphinx-quickstart on Sat Jun 20 15:23:29 2015.
+# spectral documentation build configuration file, created by
+# sphinx-quickstart on Mon Jun 22 15:25:03 2015.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -19,8 +19,8 @@ import shlex
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('../'))
-
+#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -33,7 +33,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -51,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'spectral.core'
+project = u'spectral'
 copyright = u'2015, Author'
 author = u'Author'
 
@@ -205,7 +205,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'spectral.coredoc'
+htmlhelp_basename = 'spectraldoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -227,7 +227,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'spectral.core.tex', u'spectral\\_core Documentation',
+  (master_doc, 'spectral.tex', u'spectral Documentation',
    u'Author', 'manual'),
 ]
 
@@ -257,7 +257,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'spectral.core', u'spectral.core Documentation',
+    (master_doc, 'spectral', u'spectral Documentation',
      [author], 1)
 ]
 
@@ -271,8 +271,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'spectral.core', u'spectral.core Documentation',
-   author, 'spectral.core', 'One line description of project.',
+  (master_doc, 'spectral', u'spectral Documentation',
+   author, 'spectral', 'One line description of project.',
    'Miscellaneous'),
 ]
 

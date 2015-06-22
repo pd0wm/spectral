@@ -1,0 +1,65 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../../includes/preamble.tex}
+\addbibresource{../../../includes/bibliography.bib}
+
+\title{Compressive Sensing - An Overview}
+
+\author{W.P. Bruinsma \and R.P. Hes \and H.J.C. Kroep \and T.C. Leliveld \and W.M. Melching \and T.A. aan de Wiel}
+
+\raggedbottom
+
+\begin{document}
+\chapter{Discussion}
+In this chapter we will reflect on the specifications given in \cref{sec:implementation-specs}.
+
+\subsection{General}
+Recall that the general requirements were:
+\begin{itemize}
+    \item The implementation needs to be fast.
+    \item The implementation needs to be modular.
+    \item The implementation needs to flexible.
+\end{itemize}
+
+By using multiprocessing and profiling, we achieved a fast and efficient implementation of our algorithms. By using proven design patterns we obtained a modular and maintainable code base. Due to the use of Python, our solution is portable and flexible.
+
+\section{Software}
+Recall that the software \emph{must} be developed such that
+\begin{enumerate}
+    \item it implements the generation and/or sampling of a theoretical spectrum;
+    \item it implements the emulation of non-uniform sampling techniques on Nyquist-sampled spectra;
+    \item it implements the reconstruction of the sampled spectrum, using techniques from \cref{cha:reconstruction};
+    \item it implements the detection of any signal present in the reconstructed spectrum, using techniques from \cref{cha:detection} and
+    \item it is able to clearly present the results of generation, reconstruction and detection to the user.
+\end{enumerate}
+
+All of the above \textit{musts} have been implemented. Therefore the requirements have been met.
+
+Also recall that the software \emph{should} be developed such that
+\begin{enumerate}
+    \item the highest possible performance may be achieved;
+    \item it is designed in a structured and maintainable way and
+    \item it is be usable on multiple platforms.
+\end{enumerate}
+
+Equivalent to the general requirements, these \textit{shoulds} have been taken into account when designing and writing the software and their accompanying requirements have been met.
+
+\section{Hardware}
+
+Recall that with respect to the hardware the software \emph{must} allow for
+\begin{enumerate}
+    \item the use of a Ettus Research USRP UHD N210 transceiver to obtain data;
+    \item the use of such a device to implement compressive sensing and
+    \item the use of two (or more) of these devices to implement collaborative sensing.
+\end{enumerate}
+
+Almost all of the above \textit{shoulds} have been met. Only collaborative sensing has only partly been implemented. We have achieved the synchronisation of two USRPs, but were not able to implemented the reconstruction step in time (see \cref{sec:hardware_implementations}).
+
+And recall that the software \emph{should} allow for
+\begin{enumerate}
+    \item fully utilising the USRPs capabilities.
+\end{enumerate}
+
+Our PCs are not able to compute the various steps in the algorithms fast enough to handle the \SI{25}{\mega\sample\per\second} coming from the USRP. The computations could be sped up by finding more efficient algorithms or by using more powerful and/or distributed hardware for the computations.
+\end{document}

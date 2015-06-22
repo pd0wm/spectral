@@ -11,7 +11,30 @@
 \raggedbottom
 
 \begin{document}
+
 \chapter{Discussion}
 
+\section{\cref{prt:theory}}
+In this section we will discuss \cref{prt:theory} in a general sense. We therefore repeat the specifications as listed
+in \cref{sec:theory-specs}, that is, our system \emph{must} enable spectrum sensing such that the application
+\begin{enumerate}
+    \item is able to identify at which frequencies signals are present, where signals
+    \begin{enumerate}
+        \item can be any signal distinct from noise and
+        \item can have any reasonable signal strength;
+    \end{enumerate}
+    \item is able to sense any reasonably sized bandwidth and
+    \item the spectrum sensing is done in real-time.
+\end{enumerate}
+In addition, our system \emph{should} enable spectrum sensing such that the application
+\begin{enumerate}
+    \item is able to sense very large bandwidths and
+    \item the spectrum sensing is done as efficient as possible.
+\end{enumerate}
+
+Based on the results \cref{sec:results_theory} we have seen that the system fulfills all the \emph{must-haves} as listed 
+in the specification.\footnote{Note that we did exempt signals based on spread-spectrum techniques to fulfill detection of any signal distinct
+from noise.} We have observed that a reasonable signal strength four our detector is given by signals with a SNR of (more than) 0dB. Furthermore we have argued that by adjusting the amount of samples used to estimate the power spectral density, we can sense a reasonable sized bandwidth real-time. To achieve efficient spectrum sensing we have researched several sampling techniques, such that our reconstruction algorithm can
+be adjusted to the amount of devices and samplers are available, providing us with efficient spectrum sensing. Whether the theoretical system is able to sense very large bandwidths depends on the available processing power to run the algorithm and on the devices and samplers available. We did, however, optimize our sensing method by noticing that we are not interested in signal contents only in their presence in the spectrum. This allowed us to use an algorithm that is less complex than those required to reconstruct the signal content at sub-Nyquist rates.
 
 \end{document}
