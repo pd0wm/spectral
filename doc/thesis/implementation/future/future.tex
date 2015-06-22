@@ -36,7 +36,7 @@ To verify that our synchronisation is correct, we dumped two frames from the sam
 
 The only offset we have is from the phase offset between the two local oscillators of the USRPs. After each tune command the two USRPs have a random phase offset of \SIrange[retain-explicit-plus]{-180}{+180}{\degree}.  We don't know yet if that influences our results. If that is the case we can calculate this lag by looking at the cross-correlation between the two USRPs or by transmitting a reference pulse after each tune command and calculating the delay.
 
-
+At this moment the synchronised sampling works, but something is going wrong in the processing or visualisation of the data. We did not have the time to find these problems and solve them. This is something for future work.
 
 \begin{figure}[H]
 \centering
