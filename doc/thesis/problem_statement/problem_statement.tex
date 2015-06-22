@@ -1,8 +1,8 @@
 %!TEX program = xelatex
 
 \documentclass[a4paper, openany, oneside]{memoir}
-\input{../includes/preamble.tex}
-\addbibresource{../includes/bibliography.bib}
+\input{../../includes/preamble.tex}
+\addbibresource{../../includes/bibliography.bib}
 
 \title{An Extensible Toolkit for Real-Time High-Performance Wideband Spectrum Sensing}
 
@@ -15,23 +15,20 @@
 \section{Problem statement}
 %TODO: REVISE
 
-To alleviate the problem of spectrum scarcity the concept of a Cognitive Radio has been introduced.
-At the heart of the cognitive radio is spectrum sensing: it is essential that Cognitive Radio's are able to sense a wide band of the spectrum to detect the presence of primary users. To minimize the interference with licensed users it is essential that this sensing process is as fast as possible. As Cognitive Radio networks are still in a conceptual stage, the need for a set of tools that can be used to sense a wide band with high efficiency arises.
+We have seen that Cognitive Radio has been introduced to alleviate the problem of spectrum scarcity.
+At the heart of the Cognitive Radio lies spectrum sensing. Namely, it is essential that Cognitive Radio's are able to sense a wide band of the spectrum to detect the presence of primary users. To minimise the interference with licensed users, it is essential that this sensing process is as fast and as efficient as possible. Since Cognitive Radio networks are still in a conceptual stage, the need for a set of tools that can be used to sense a wide band with high efficiency arises.
 
 This leads us to our problem statement:
 \begin{center}
-\emph{"How to develop a high performance wideband sensing toolkit?"}
+\emph{``Can we develop a toolkit which enables real-time high-performance wideband sensing?''}
 \end{center}
 
-The development of such a toolkit requires knowledge of algorithms that can be used to perform wideband sensing. Such algorithms do not only include compressive sensing but also include detection algorithms that are to be used to actually detect users. Furthermore to implement and test those algorithms it is necessary that they can be implemented on a hardware platform. This motivates the division of this thesis in:
-
-\begin{enumerate}
-	\item theoretical research of algorithms to be used in the toolkit;
-	\item efficient implementation of those algorithms in software.
-\end{enumerate}
-
 \section{Proposed solution}
+The development of such a toolkit requires knowledge of algorithms that can be used to perform wideband spectrum sensing. Such algorithms do not only include compressive sensing, but also include detection algorithms that are used to detect the presence of users. Furthermore, to implement and effectively test those algorithms, it is necessary that they are implemented in a modular software environment. Furthermore, we require that our toolkit can be tested on a hardware platform. Based on the complexity of our solution, we decide to divide the design of our toolkit in two parts.
 
-TODO: beschrijf product, leg goed uit deol van part I en part I
+Part I of the thesis will provide a mathematical framework which solves the design problem at a theoretical level. The toolkit will be based upon this framework, whose implementation will be developed separately.
+
+Part II of the thesis will discuss the design of a modular software architecture which implements the theoretical framework discussed in Part I. This software architecture will enable to test the solutions proposed by the theoretical framework on a hardware platform.
+
 
 \end{document}
