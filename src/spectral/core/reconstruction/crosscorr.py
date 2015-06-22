@@ -5,7 +5,12 @@ import scipy as sp
 
 class CrossCorrelation(Reconstructor):
 
-    """Implementation of ariananda2012 algorithm"""
+    """Implementation of ariananda2012 algorithm
+
+    Args:
+        L: Max lags estimated.
+        C: Sampling matrix used by the sampler.
+    """
 
     def __init__(self, L, C, cache=True):
         Reconstructor.__init__(self)
@@ -20,12 +25,26 @@ class CrossCorrelation(Reconstructor):
             self.R_pinv = sp.sparse.csr_matrix(sp.linalg.pinv(self.R))
 
     def reconstruct(self, signal):
+        """
+        Reconstruction function that implements the reconstruction part of the algorithm.
+
+        Args:
+            signal: Non uniformly sampled signal to be reconstructed.
+        Returns:
+            Reconstructed autocorrelation.
+        """
         cross_corr_mat = self.cross_correlation_signals(signal)
         y_stacked = cross_corr_mat.ravel(order='F')
         rx = self.R_pinv.dot(y_stacked)  # Ravel reforms to 1 column
         return rx
 
     def cross_correlation_filters(self):
+        """
+        Calculates the filter cross correlations as specified in ariananda 2012 paper
+
+        Returns:
+            R matrix
+        """
         Rc0 = np.zeros((self.M ** 2, self.N), np.complex128)
         Rc1 = np.zeros((self.M ** 2, self.N), np.complex128)
         for i in range(self.M):
@@ -40,6 +59,16 @@ class CrossCorrelation(Reconstructor):
         return Rc
 
     def block_toeplitz(self, Rc0, Rc1):
+        """
+        Variant on the toeplitz function only for block matrices.
+        Implements the methodology described in ariananda 2012.
+        Args:
+            Rc0: First block matrix
+            Rc1: Second block matrix
+
+        returns:
+            Block toeplitz of aforementioned matrices.
+        """
         Rc = np.zeros(((2 * self.L - 1) * self.M ** 2,
                        (2 * self.L - 1) * self.N), np.complex128)
         for i in range((2 * self.L - 1)):
