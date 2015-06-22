@@ -177,6 +177,8 @@ The grey blocks represent the samples recovered by all samplers of the device. T
 \end{figure}
 Here switches represent a sample operation of the input signal $x$. These switches sample simultaneously at the Nyquist frequency. The N$\,\downarrow$ represent an $N$-decimation. As explained in \cref{sec:reconstruction-algorithm}, there may be an offset between the decimations of the different cosets. Therefore, the output of every coset is an $N$-decimation of the input signal, but there may be an offset in time between the different outputs. This is depicted in \cref{tkz:circsparseruler}. Note that this is similar to the description of multi-coset sampling in \cref{sec:reconstruction-algorithm}.
 
+\Cref{tkz:sc_circsparseruler} shows that the input signal is sampled at the Nyquist frequency and then decimated. It is important to notice that this operation is equivalent to sampling at a frequency $N$ times lower than the Nyquist frequency. Therefore, the outputs of the consets can be obtained by sampling the input signal at sub-Nyquist frequencies, which is what we aim to do. In practice it is implemented this way. For conceptual purposes however, we decide to stick to the representation shown in \cref{tkz:sc_circsparseruler}.
+
 \subsection{Collaborative sampling}
 
 Collaborative sampling is similar to circular sparse sampling, except for the fact that circular sparse sampling is restricted to only one device, while collaborative sampling allows for multiple devices. Collaborative sampling is illustrated in \cref{tkz:collaborative}. In this example, we use two devices with three samplers each and a downsampling factor of $N=13$.
