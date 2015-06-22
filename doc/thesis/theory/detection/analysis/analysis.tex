@@ -29,7 +29,7 @@
 \caption{Conventional energy detector}\label{tkz:conv_ed}
 \end{figure}
 A standard digital energy detector is a detector that consists of a low-pass filter $H(f)$ that filters the analog input signal $x(t)$ such
-that only the frequency band of interest remains\footnote{By using a mixer a lowpass filter can always be used to for this purpose}. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). Then the detector takes the absolute value squared of each sample. The detector then estimates the energy $\Lambda$ of the signal during a period of $N$ samples by summing $N$ of those samples as
+that only the frequency band of interest remains\footnote{By using a mixer a lowpass filter can always be used to for this purpose}. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). Then the detector takes the square of the absolute value of each sample. The detector then estimates the energy $\Lambda$ of the signal during a period of $N$ samples by summing $N$ of those samples as
 \begin{align}\label{eq:test_ed}
 	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
 \end{align}
@@ -42,7 +42,7 @@ This estimate is then compared to a threshold $\gamma$ to decide whether a signa
 \end{align*}
 The details behind determining the threshold $\gamma$ and a derivation of this energy detector can be found in \Cref{ssec:conv_ed_derivation}.
 
-Some energy detectors use $\Lambda/N$ as test statistic \cite{chang2008sensing}, which is an estimate of the average power instead of the energy. Using this test statistic a detector that uses the autocorrelation $r_x[m]$ can be constructed. Such a detector is depicted in \cref{tkz:ed_psd}.
+Some energy detectors use $\Lambda/N$ as test statistic \cite{chang2008sensing}, which is an estimate of the average power instead of the energy. Using this test statistic, a detector that uses the autocorrelation $r_x[m]$ can be constructed. Such a detector is depicted in \cref{tkz:ed_psd}.
 %  depends on the noise power $\sigma_n^2$  and the desired false alarm probability $p_{fa}$: the probability that the detector decides that hypothesis 2 is true, while hypothesis 1 is the true hypothesis. The derivation of $\gamma$ (see Appendix ...) gives the following result
 % \begin{align*}
 % \gamma = \left[Q^{-1}(p_{fa})\sqrt{N} + N\right]2\sigma_n^2
@@ -62,10 +62,10 @@ Some energy detectors use $\Lambda/N$ as test statistic \cite{chang2008sensing},
 \draw (2,3.5) rectangle (3,2.5) node[pos=.5]{$_<^ > \gamma'$};
 \draw [>=latex, ->] (3,3) -- (3.5,3);
 \end{tikzpicture}
-\caption{Energy detector using the power spectral density}
+\caption{Energy detector using the power spectral density. Here $r_x[m]$ is the autocorrelation of a filtered signal to the band of interest.}
 \label{tkz:ed_psd}
 \end{figure}
-This detector calculates a discrete estimate of power spectral density by applying the Fast Fourier Transform to $r_x[m]$. By summation over the obtained power spectral density an estimate of the average power of $x[n]$ is obtained. Finally, the result is compared to a threshold $\gamma'$  to decide between $\mathcal{H}_0$ and $\mathcal{H}_1$. 
+This detector calculates a discrete estimate of power spectral density by applying the Fast Fourier Transform to $r_x[m]$. By summation over the obtained power spectral density an estimate of the average power of $x[n]$ is obtained. Finally, the result is compared to a threshold $\gamma'$  to decide between $\mathcal{H}_0$ and $\mathcal{H}_1$. Here $\gamma'=\gamma/N$.
 
 % As can be seen from \cref{eq:test_ed} the test statistic $\Lambda$ depends on the signal itself, not on the autocorrelation or the power spectral density which serves as input of our detector. We will now establish this relation by modifying the test statistic $\Lambda$.
 % Let
@@ -184,7 +184,7 @@ This detector calculates a discrete estimate of power spectral density by applyi
 \node at (0.3,2.5) {$\mathcal{H}_0 \text{ or } \mathcal{H}_1$};
 
 \end{tikzpicture}
-\caption{Energy detection with knowledge of the reconstructor}\label{tkz:ed_ari_overview}
+\caption{Energy detection with knowledge of the reconstructor. Here $r_x[m]$ is the autocorrelation of a wideband signal.}\label{tkz:ed_ari_overview}
 \end{figure}
 The problem with the conventional energy detectors as described above is that they assume that the signal is filtered to only contain the frequency band of interest. Filtering the input signal, however, affects the reconstruction process of $r_x[m]$: by prefiltering the input signal before reconstruction, the reconstructed autocorrelation will correspond to a small band signal (the band of interest) instead of a wideband signal. We can therefore not prefilter the signal.
 
@@ -193,7 +193,7 @@ To calculate $\gamma_k$ information about the reconstruction method as described
 
 \subsection{Noise estimation}
 As energy detectors rely on knowledge of the noise power it is necessary to have an estimate of this noise power. This can be done,
-for example by taking the mean power level in an empty frequency band as estimate. If such a band is not known the noise power can be estimated by using a sliding window over the estimated power spectral density. The lowest mean observed power in this window is then taken
+for example, by taking the mean power level in an empty frequency band as estimate. If such a band is not known the noise power can be estimated by using a sliding window over the estimated power spectral density. The lowest mean observed power in this window is then taken
 as an estimate of the noise power.
 % Let $\vec{s}_x \in \mathbb{R}^{2LN+1}$ denote the discrete power spectral density vector obtained by applying the $(2LN+1)$ point Discrete Fourier Transform to $\vec{r}_x$.
 
