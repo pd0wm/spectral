@@ -25,7 +25,14 @@ Initially, two platforms were considered for development: \matlab{} and Python. 
     \item Python provides many libraries that allow for distributed networking/computing \cite{pythonmp}.
     \item Python is a full-blown programming language, meaning it has libraries for non-numerical applications such as web-frameworks, that allow for more advanced visualisation options.
 \end{itemize}
-The python version used is 2.7.10. The original reference and used reference are respectively \cite{Rossum:1995:PRM:869369}\cite{python2}.
+The python version used is 2.7.10. We are forced to use Python 2 because \lib{GNU Radio} does not support Python 3. The original reference and used reference are respectively \cite{Rossum:1995:PRM:869369}\cite{python2}.
+
+\subsection{GNU Radio}
+\label{sec:gnu-radio}
+\lib{GNU Radio} is a comprehensive library of signal processing tools. It offers a framework and a vast collection of digital signal processing functions. The initial version of our system was written in this framework. By building custom signal processing blocks we could extend the functionality of \lib{GNU Radio} with our own compressive sensing functions.
+
+ However, soon this became too slow and complex for our needs. In the final version of our system we only used the USRP block from the  \lib{GNU Radio} library in one of our samplers to receive samples from the USRP.
+
 
 \subsection{Numpy}
 \label{sec:numpy}
