@@ -40,35 +40,37 @@ denote a vector containing $N$ samples of the signal $x[n]$. Then the likelihood
 \begin{align*}
     L(\vec{x}) &= \prod_{i=1}^N f_{(\vec{x})_i}\\
     &= \begin{cases}
-        \sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x}) & \text{if $\mathcal{H}_0$}, \\
-        \sigma_n^2/\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}] & \text{if $\mathcal{H}_1$}
+        \sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x}) & \text{if $\mathcal{H}_0$}, \\
+        \sigma_n^2/\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}] & \text{if $\mathcal{H}_1$}
     \end{cases}
 \end{align*}
 
 where $f_{(\vec{x})_i}$ denotes the probability density function of element $i$ in $\vec{x}$.  The test statistic $\Lambda(\vec{x})$ as used in the Neyman Pearson test is then given by:
 \begin{align*}
-\Lambda(\vec{x}) &=\frac{\sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)/\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}]}.
+\Lambda(\vec{x}) &=\frac{\sigma_n^2/\pi^N \cdot \exp(-\bar{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x})}{(\sigma_n^2 + \sigma_s^2)\pi^N \cdot \exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}]}.
 \end{align*}
 
 
 By taking the logarithm of $\Lambda(x)$ we obtain a log-likelihood Ratio test statistic $\Lambda'(x)$, given by
 
-\begin{align*}
+\begin{align}
 \Lambda(\vec{x})' &= \log \left\{
-\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^2\mathbf{I}\vec{x})}{[\sigma_n^2 + \sigma_s^2]\exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)\mathbf{I}\vec{x}]}\right\} \\
-&= \log(\sigma_n^2) - \log(\sigma_n^2 + \sigma_s^2) +  \sigma_s^2 \sum_{i=0}^{N-1} |x[i]|^2. 
-\end{align*}
+\frac{\sigma_n^2\exp(-\overline{\vec{x}}'\sigma_n^{-2}\mathbf{I}\vec{x})}{[\sigma_n^2 + \sigma_s^2]\exp[-\bar{\vec{x}}'(\sigma_n^2+\sigma_s^2)^{-1}\mathbf{I}\vec{x}]}\right\} \\
+&= \log(\sigma_n^2) - \log(\sigma_n^2 + \sigma_s^2) +  (\frac{1}{\sigma_n^2} - \frac{1}{\sigma_n^2 + \sigma_s^2 })\sum_{i=0}^{N-1} |x[i]|^2.  \nonumber
+\end{align}
 
-Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic 
+Observing that the constants $\sigma_n$ and $\sigma_s$ do not depend on value of the samples, the test statistic\footnote{observe that $\frac{1}{\sigma_n^2} \geq \frac{1}{\sigma_n^2+\sigma_s^2}$}
 
 \begin{align*}
-\Lambda''(\vec{x}) &= \sum_{n=0}^{N-1} |x[n]|^2
+\Lambda''(\vec{x}) &= -\sum_{n=0}^{N-1} |x[n]|^2
 \end{align*} 
 
-is proportional to $\Lambda'(x)$. Note that $\Lambda''$ is the same test statistic as $\Lambda$ in \Cref{sec:conv_ed}.
+is proportional to $\Lambda'(x)$. If we negate $\Lambda'$ we get same test statistic as denoted by $\Lambda$ in \Cref{sec:conv_ed}. Do note that
+this negation is effectively a division in the original neyman pearson test (logarithm) and therefore if
+$-\Lambda'' > \gamma$, the detector decides that $\mathcal{H}_1$ is the true hypothesis. 
 
 \subsubsection{Threshold}
-In this section we will determine the threshold $\gamma$ for the energy detector test statistic $\Lambda''(\vec{x})$.
+In this section we will determine the threshold $\gamma$ for the energy detector test statistic $-\Lambda''(\vec{x})$.
 Under $\mathcal{H}_0$ we have that $\Lambda''(\vec{x})$ is the sum of $2N$ independent zero mean Gaussian distributed variables
 with variance $\sigma_n^2/2$. To see why, remember that $\vec{x}$ is circular symmetric complex gaussian and therefore for the element $x_i \in \vec{x}$ the following applies
 $|x_i|^2 = x_i \cdot \conj{x_i} = a^2 + b^2$ where $a = \Re(x_i)$ and $b=\Im(x_i)$.  So

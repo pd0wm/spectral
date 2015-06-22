@@ -28,7 +28,7 @@
 \end{tikzpicture}
 \caption{Conventional energy detector}\label{tkz:conv_ed}
 \end{figure}
-A standard digital energy detector is a detector that consists of a low-pass filter $H(f)$ that filters the analog input signal $x(t)$ such
+A standard digital energy detector\cite{atapattu2014energy} is a detector that consists of a low-pass filter $H(f)$ that filters the analog input signal $x(t)$ such
 that only the frequency band of interest remains\footnote{By using a mixer a lowpass filter can always be used to for this purpose}. This filtered signal is then converted to a digital signal $x[n]$ by an analog-to-digital converter (ADC). Then the detector takes the square of the absolute value of each sample. The detector then estimates the energy $\Lambda$ of the signal during a period of $N$ samples by summing $N$ of those samples as
 \begin{align}\label{eq:test_ed}
 	\Lambda &= \sum_{n=0}^{N-1} |x[n]|^2.
