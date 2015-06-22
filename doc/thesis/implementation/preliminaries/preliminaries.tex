@@ -31,7 +31,7 @@ The python version used is 2.7.10. We are forced to use Python 2 because \lib{GN
 \label{sec:gnu-radio}
 \lib{GNU Radio} is a comprehensive library of signal processing tools. It offers a framework and a vast collection of digital signal processing functions. The initial version of our system was written in this framework. By building custom signal processing blocks we could extend the functionality of \lib{GNU Radio} with our own compressive sensing functions.
 
- However, soon this became too slow and complex for our needs. In the final version of our system we only used the USRP block from the  \lib{GNU Radio} library in one of our samplers to receive samples from the USRP.
+However, soon this became too slow and complex for our needs. In the final version of our system we only used the USRP block from the \lib{GNU Radio} library in one of our sources to receive samples from the USRP.
 
 
 \subsection{Numpy}
@@ -40,11 +40,11 @@ The python version used is 2.7.10. We are forced to use Python 2 because \lib{GN
 
 \subsection{Scipy}
 \label{sec:scipy}
-\lib{SciPy} is Python's replacement for a lot of default functions that are included in \matlab{}. Relying on \lib{NumPy} data structures, it gives a variety of libraries (such as \lib{signal}, their DSP-library) providing another means of quickly implementing advanced calculations. \lib{SciPy} is licensed under the new-BSD\footnote{\label{fn:bsd}The BSD 3-Clause license is free for commercial and non-commercial for more info and the template see \cite{bsdlic}.} license. The reference manual is available at \cite{numpyscipy}.
+\lib{SciPy} is Python's replacement for a lot of default functions that are included in \matlab{}. Relying on \lib{NumPy} data structures, it gives a variety of subpackages (such as \lib{signal}, their DSP-library) providing another means of quickly implementing advanced calculations. \lib{SciPy} is licensed under the new-BSD\footnote{\label{fn:bsd}The BSD 3-Clause license is free for commercial and non-commercial use for more info and the template see \cite{bsdlic}.} license. The reference manual is available at \cite{numpyscipy}.
 
 \subsection{Flask}
 \label{sec:flask}
-\lib{Flask} is a micro web framework. The choice for a web interface will further be discussed in the visualisation part of this thesis. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license. The reference manual is available at \cite{flask}.
+\lib{Flask} is a micro web framework. The choice for a web interface will further be discussed in \cref{cha:view}. The advantage of \lib{Flask} over other web frameworks (such as \lib{Django}) is that it is a more bare-bones minimalistic (i.e. simple) approach that suits our needs. \lib{Flask} is licensed under the new-BSD\footnoteref{fn:bsd} license. The reference manual is available at \cite{flask}.
 
 \subsection{Twisted}
 \label{sub:twisted}
@@ -60,7 +60,7 @@ The python version used is 2.7.10. We are forced to use Python 2 because \lib{GN
 
 \subsection{Bootstrap}
 \label{sec:bootstrap}
-\lib{Bootstrap} is a front-end CSS (Cascading Style Sheets, a language for styling web pages) framework developed by Twitter. It implements a number of primitives, much like a GUI framework does on X11 (the display server used in many Linux distributions), allowing us to quickly implement a portable GUI. It suits our demands to be able to render both on mobile and desktop views, without much effort. \lib{Bootstrap} is licensed under the MIT\footnoteref{fn:mit} license. The reference manual is available at \cite{bootstrap}..
+\lib{Bootstrap} is a front-end CSS (Cascading Style Sheets, a language for styling web pages) framework developed by Twitter. It implements a number of primitives, much like a GUI framework does on X11 (the display server used in many Linux distributions), allowing us to quickly implement a portable GUI. It suits our demands to be able to render both on mobile and desktop views, without much effort. \lib{Bootstrap} is licensed under the MIT\footnoteref{fn:mit} license. The reference manual is available at \cite{bootstrap}.
 
 \subsection{Highcharts}
 \label{sec:highcharts}
@@ -72,15 +72,7 @@ Our workflow consisted of a rather standard software development environment.
 
 \subsection{Version Control}
 \label{sec:version-control}
-For version control git was used. Git as a rather standard distributed version control system enabling non-linear development in the form of branching. This allows us to maintain a stable master branch, which is used to maintain a stable version of our product, a development branch in which features can be combined and minor bugs can be fixed and several feature branches for larger feature implementations. This specific workflow with git is called Git Flow\cite{driessen2010successful} and is pictured in \cref{fig:gitflow}.
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{Git-branching-model.pdf}
-    \caption{Git Flow}
-    \label{fig:gitflow}
-\end{figure}
+For version control git was used. Git is a distributed version control system enabling non-linear development in the form of branching. This allows us to maintain a stable master branch, which is used to maintain a stable version of our product, a development branch in which features can be combined and minor bugs can be fixed and several feature branches for larger feature implementations. This specific workflow with git is called Git Flow \cite{driessen2010successful}.
 
 \subsection{Testing}
 \label{sec:testing}
@@ -98,9 +90,8 @@ Integration tests are tests that encompass a large part of the system. In our ca
 \label{ssub:Nose}
 In addition to the standard Python testing library \lib{Unittest}, the library \lib{nose} was used. This library provides some additional test commands and asserts which allow us to set up a more extensive test framework.
 
-
 \subsection{Profiling}
 \label{sec:profiling}
-For profiling the standard \lib{cProfile} library was used. This is included in the standard Python distribution and is the standard method. For the call graph diagrams included later in this report the library \lib{pycallgraph} was used. This is a simple wrapper around a number of tools including the archaic \lib{GraphViz}.
+For profiling the standard \lib{cProfile} library was used. This is included in the standard Python distribution and is the de facto standard for profiling in Python.
 
 \end{document}
