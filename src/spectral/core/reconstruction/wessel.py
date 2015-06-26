@@ -29,7 +29,7 @@ class Wessel(Reconstructor):
     # Given M decimated channels, try to estimate the PSD
     def reconstruct(self, signal):
         """ Reconstruct method reconstructing the autocorrelation function
-        from a a periodically sampled signal
+        from non-uniform sampled signal
 
         Args:
             signal: Asymptotically sampled signal.
@@ -43,7 +43,8 @@ class Wessel(Reconstructor):
         return rx
 
     def build_D(self):
-        """ Builds the D matrix.
+        """ Builds the D matrix. Helperfunctions for constructing R.
+        Performs the decimation of the reconstruction algorithm.
 
         Returns:
             D matrix
@@ -69,6 +70,12 @@ class Wessel(Reconstructor):
         return Rcc
 
     def filter_cross_correlation(self):
+        """
+        Calculates the filter correlations
+
+        Returns:
+            Correlation matrix of cosets
+        """
         cross_correlations = np.zeros((self.M ** 2, 2 * self.N - 1),
                                       dtype=np.complex128)
         for i in range(0, self.M):
@@ -79,6 +86,12 @@ class Wessel(Reconstructor):
         return cross_correlations
 
     def constructR(self):
+        """
+        Constructs the R matrix as described in the reconstruction algorithm.
+
+        Returns:
+            Returns the R matrix.
+        """
         D = sp.sparse.csr_matrix(self.build_D())
 
         cross_correlations = self.filter_cross_correlation()
