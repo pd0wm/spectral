@@ -1,0 +1,37 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../includes/preamble.tex}
+\addbibresource{../includes/bibliography.bib}
+\pagenumbering{gobble}
+\usepackage{fullpage}
+\usepackage{ragged2e}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
+
+\begin{document}
+% Title
+\makebox[\textwidth]{
+    \centering
+    \fontsize{1cm}{1em}
+    \textsc{corrigendum}
+} \\
+
+This document is a correction of the Bachelor graduation thesis ``An extensible toolkit for real-time high-performance wideband spectrum sensing'' by Bruinsma, Hes, Kroep, Leliveld, Melching and Wiel. \\
+
+\centerline{
+\begin{tabularx}{\linewidth}{L{3cm}L{6cm}L{6cm}}
+    \textbf{Where} & \textbf{Original text} & \textbf{Corrected text} \\ \hline
+    Section 6.3 & The actual sampling is not part of the system, but forms an interface between the the signal and our system. & The actual sampling is not part of the system, but forms an interface between the signal and our system. \\
+    Section 8.2 & In constrast, methods of the second group are not based on the assumption the the signal is either sparse or contains few frequencies. & In contrast, methods of the second group are not based on the assumption that the signal is either sparse or contains few frequencies. \\
+    Section 9.3 & Finally, the the circular sparse ruler problem, stated below, must be satisfied. & Finally, the circular sparse ruler problem, stated below, must be satisfied. \\
+    Section 9.3, ``Coprime sampling'' & Finally, the bottom block shows how the the orange and greens blocks are split across many artificial signals. & Finally, the bottom block shows how the orange and greens blocks are split across many artificial signals. \\
+    Section 18.3 & Upon receiving this data, Visualisation will pass it through to the the element that first triggered the request, which will then re-render the plot. & Upon receiving this data, Visualisation will pass it through to the element that first triggered the request, which will then re-render the plot. \\
+    Table 11.3, third row, second column & $612\%$ & $61\%$ \\
+    Section 8.4, ``Estimation of the cross-correlations'' & $\hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|} \sum_{k=1}^{u}y_i[k]\conj{y}_j[k+m]$ & $\hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|} \sum_{k=1}^{u}\conj{y} _i[k]y_j[k+m]$ \\
+    Section 8.4, ``Efficient generation of the matrices'' & $c_{i,j}[m]=\sum_{k=-\infty}^{\infty}c_i[k]\conj{c}_j[k+m]$ & $c_{i,j}[m]=\sum_{k=-\infty}^{\infty}\conj{c}_i[k]c_j[k+m]$ \\
+    Section B.2 & $r_x[n,m]=E(x[n]\conj{x}[n+m])$ & $r_x[n,m]=E(\conj{x}[n]x[n+m])$
+\end{tabularx}
+}
+
+\end{document}
