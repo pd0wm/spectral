@@ -30,7 +30,11 @@ This document is a correction of the Bachelor graduation thesis ``An extensible 
     Table 11.3, third row, second column & $612\%$ & $61\%$ \\
     Section 8.4, ``Estimation of the cross-correlations'' & $\hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|} \sum_{k=1}^{u}y_i[k]\conj{y}_j[k+m]$ & $\hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|} \sum_{k=1}^{u}\conj{y} _i[k]y_j[k+m]$ \\
     Section 8.4, ``Efficient generation of the matrices'' & $c_{i,j}[m]=\sum_{k=-\infty}^{\infty}c_i[k]\conj{c}_j[k+m]$ & $c_{i,j}[m]=\sum_{k=-\infty}^{\infty}\conj{c}_i[k]c_j[k+m]$ \\
-    Section B.2 & $r_x[n,m]=E(x[n]\conj{x}[n+m])$ & $r_x[n,m]=E(\conj{x}[n]x[n+m])$
+    Section B.2 & $r_x[n,m]=E(x[n]\conj{x}[n+m])$ & $r_x[n,m]=E(\conj{x}[n]x[n+m])$ \\
+    Section F.1 & Circular Complex Gaussian & Circular symmetric complex gaussian \\
+    Section F.2, &$\vec{x} = \begin{bmatrix}x[n]& x[n+1]& \cdots& x[n+L-1]\end{bmatrix}^T.$ & $
+    \vec{x} = \begin{bmatrix}x[n]& x[n-1]& \cdots& x[n-L+1]\end{bmatrix}^T.$ \\
+    Section F.2 & expansion of $\mat{C}_x = E(\vec{x}\vec{x}^H)$ & use corrected definition of $\vec{x}$ 
 \end{tabularx}
 }
 
