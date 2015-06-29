@@ -1,0 +1,38 @@
+%!TEX program = xelatex
+
+\documentclass[a4paper, openany, oneside]{memoir}
+\input{../../includes/preamble.tex}
+
+\pagenumbering{gobble}
+% \usetikzlibrary{external}
+% \tikzexternalize
+% \tikzset{external/system call={xelatex \tikzexternalcheckshellescape
+%     -halt-on-error -interaction=batchmode --shell-esape
+%     -jobname "\image" "\texsource"}}
+
+\begin{document}
+
+\centerline{
+\begin{tikzpicture}
+  \draw [line width=1pt] (0,0) circle[radius=1.2cm] node[text width=4cm, align=center] {Wessel \\ Bruinsma};
+  \draw [line width=1pt] (-2,-2) circle[radius=1.2cm] node[text width=4cm, align=center] {Tom \\ aan de Wiel};
+  \draw [line width=1pt] (2,-2) circle[radius=1.2cm] node[text width=4cm, align=center] {Kees \\ Kroep};
+  \draw [dashed, line width=1pt] (-3.5,1.5) -- (-3.5,-3.5) -- (3.5,-3.5) -- (3.5,1.5) -- cycle;
+  \draw (-3.5,1.5) node[anchor=south west] {Team Theory};
+  \begin{scope}[shift={(12,0)}]
+      \draw [line width=1pt] (0,0) circle[radius=1.2cm] node[text width=4cm, align=center] {Willem \\ Melching};
+      \draw [line width=1pt] (-2,-2) circle[radius=1.2cm] node[text width=4cm, align=center] {Dorus \\ Leliveld};
+      \draw [line width=1pt] (2,-2) circle[radius=1.2cm] node[text width=4cm, align=center] {Robin \\ Hes};
+      \draw [dashed, line width=1pt] (-3.5,1.5) -- (-3.5,-3.5) -- (3.5,-3.5) -- (3.5,1.5) -- cycle;
+      \draw (-3.5,1.5) node[anchor=south west] {Team Implementation};
+  \end{scope}
+  \begin{scope}[shift={(6,7)}]
+      \draw [line width=1pt] (0,0) circle[radius=1.2cm] node[text width=4cm, align=center] {Geert \\ Leus};
+      \draw [line width=1pt] (-2,-2) circle[radius=1.2cm] node[text width=4cm, align=center] {Dyonisius \\ Ariananda};
+      \draw [line width=1pt] (2,-2) circle[radius=1.2cm] node[text width=4cm, align=center] {Sundweep \\ Chepuri};
+      \draw [dashed, line width=1pt] (-3.5,1.5) -- (-3.5,-3.5) -- (3.5,-3.5) -- (3.5,1.5) -- cycle;
+  \end{scope}
+\end{tikzpicture}
+}
+
+\end{document}
