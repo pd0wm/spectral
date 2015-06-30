@@ -130,7 +130,7 @@ class Ariananda(Detector):
         Args:
             sigma: noise sigma
         Returns:
-            gamma_k: Threshold for the noise
+            gamma_k, the threshold for the noise
         """
         offset = self.psd_exp * sigma ** 2
         threshold = self.qinv * np.sqrt(sigma ** 4 * self.triangle) + offset

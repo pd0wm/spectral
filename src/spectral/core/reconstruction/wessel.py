@@ -58,6 +58,7 @@ class Wessel(Reconstructor):
         """ Builds the Rcc matrix based on the cross_correlation provided.
         Makes use of the nature of the toeplitz generation by entering a modified
         row and column vector and then 'cutting' these to get the matrix required.
+
         Args:
             cross_correlation: The matrix containing the cross_correlations of the input signal
         Returns:
