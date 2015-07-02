@@ -2,6 +2,10 @@ auto/
 *.tmp
 *.tmp.npz
 
+# tikz externalisation
+*.md5
+*.auxlock
+
 # tern autocompletion
 .tern*
 *.dmp
