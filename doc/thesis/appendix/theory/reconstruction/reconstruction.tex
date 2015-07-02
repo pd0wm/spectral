@@ -202,7 +202,7 @@ By inspection of \cref{eq:yi} and \cref{eq:zi}, we obtain that
 \section{Autocorrelation and cross-correlation}
 The goal of the reconstruction method is to reconstruct the autocorrelation of the input signal given the output of all cosets. The autocorrelation of the input signal is given by
 \begin{align*}
-    r_x[n,m] = E(x[n]\conj{x}[n+m]).
+    r_x[n,m] = E(\conj{x}[n]x[n+m]).
 \end{align*}
 We assume that $x[n]$ is a wide sense stationary process. This means that $r_x[n,m]$ is independent of $n$. Therefore, we omit the $n$ in $r_x[n,m]$ and denote $r_x[n,m]=r_x[m]$. The cross-correlation of $z_i[n]$ and $z_j[n]$ is given by
 \begin{align*}

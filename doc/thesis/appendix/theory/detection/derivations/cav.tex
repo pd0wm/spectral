@@ -11,7 +11,7 @@
 \subsection{Explanation}
 Let $L$ samples of the signal $x[n]$ be collected in the vector
 \begin{align*}
-    \vec{x} = \begin{bmatrix}x[n]& x[n+1]& \cdots& x[n+L-1]\end{bmatrix}^T.
+    \vec{x} = \begin{bmatrix}x[n]& x[n-1]& \cdots& x[n-L+1]\end{bmatrix}^T.
 \end{align*}
 
 Furthermore let
@@ -22,10 +22,10 @@ denote the covariance of $\vec{x}$ with $\mu = E(\vec{x})$. In the case that $E\
 \begin{align*}
 \mat{C}_x &= E(\vec{x}\vec{x}^H) \\
 &= \begin{bmatrix} 
-E\left(x[n]\conj{x}[n]\right) & E\left(x[n]\conj{x}[n+1]\right) & \ldots & E\left(x[n]\conj{x}[n+L-1]\right) \\
-E\left(x[n+1]\conj{x}[n]\right) & E\left(x[n+1]\conj{x}[n+1]\right) & \ldots & E\left(x[n+1]\conj{x}[n+L-1]\right) \\
+E\left(x[n]\conj{x}[n]\right) & E\left(x[n]\conj{x}[n-1]\right) & \ldots & E\left(x[n]\conj{x}[n-L+1]\right) \\
+E\left(x[n-1]\conj{x}[n]\right) & E\left(x[n-1]\conj{x}[n-1]\right) & \ldots & E\left(x[n-1]\conj{x}[n-L+1]\right) \\
 \vdots & \vdots & \ddots & \vdots \\
-E\left(x[n+L-1]\conj{x}[n]\right) & E\left(x[n+L-1]\conj{x}[n+1]\right) & \ldots & E\left(x[n+L-1]\conj{x}[n+L-1]\right) \\
+E\left(x[n-L+1]\conj{x}[n]\right) & E\left(x[n-L+1]\conj{x}[n-1]\right) & \ldots & E\left(x[n-L+1]\conj{x}[n-L+1]\right) \\
 \end{bmatrix}.
 \end{align*}
 Under the assumption that $x[n]$ is a wide-sense stationary signal, we can simplify $\mat{C}$ even further. 

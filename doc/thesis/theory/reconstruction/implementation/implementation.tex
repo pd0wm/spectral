@@ -30,7 +30,7 @@ The circular sparse ruler problem will be further discussed in \cref{cha:samplin
 \label{sub:reconstruction-estimation}
 In Step 4 of the algorithm we have to estimate $r_{y_i,y_j}[m]$. Suppose that $y_i[n]$ is known for $n = 0,\ldots,KL-1$. We assumed that $r_{y_i,y_j}[m]=0$ for $|m|>L$. It then remains to estimate $r_{y_i,y_j}[m]$ for $|m| \le L$. An estimator of $r_{y_i,y_j}[m]$ is given by
 \begin{align} \label{eq:ryij-est}
-    \hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|}\sum_{k=l}^{u}y_i[k]\conj{y}_j[k+m]
+    \hat{r}_{y_i,y_j}[m] = \frac{1}{KL-|m|}\sum_{k=l}^{u}\conj{y}_i[k]y_j[k+m]
 \end{align}
 where $l=-\max\{0,m\}$ and $u=KL-1-\min\{0,m\}$ \cite{hayes1996statistical}. Notice that $E(\hat{r}_{y_i,y_j}[m])=r_{y_i,y_j}[m]$, which means that $\hat{r}_{y_i,y_j}[m]$ is an unbiased estimator of $r_{y_i,y_j}[m]$.
 % Similarly, we define
@@ -61,7 +61,7 @@ In Step 2 of the algorithm, $\mat{R}$ has to be constructed. It turns out that $
     \item Let \begin{align*}
                 \vec{c} = \begin{bmatrix} c_{i,j}[N-1] \; \cdots \; c_{i,j}[-N+1] \end{bmatrix}
 \end{align*} where \begin{align*}
-                c_{i,j}[m] = \sum_{k=-\infty}^{\infty}c_i[k] \conj{c}_j[k+m].
+                c_{i,j}[m] = \sum_{k=-\infty}^{\infty}\conj{c}_i[k] c_j[k+m].
             \end{align*}
     \item Append $\vec{c}$ with $2(L-1)N+1$ zeros.
     \item Calculate $\operatorname{tril}[\operatorname{toeplitz}(\vec{c})]$.

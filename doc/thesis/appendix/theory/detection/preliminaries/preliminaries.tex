@@ -37,12 +37,12 @@ Furthermore, since
 % ($E(Z) = 0$) and that %$E(Z^2)= E(X^2 - Y^2 + 2jXY] = 0$.
 it follows that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$ (by an analog argument as for the expectation value). That is, $X$ and $Y$ are independent gaussian distributed with zero mean and equal variance.  It now follows that $\sigma^2= E(Z\overline{Z}) = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$.
 
-\begin{blockDefinition}[Circular Complex Gaussian Random Vector]
-Given the random vector $\vec{Z} \in \mathbb{C}^N$, then $\vec{Z} = \vec{X} + j\vec{Y}$ is a circular complex random vector if $\vec{X}$ and $\vec{Y}$ are jointly gaussian distributed and $\vec{Z}$ has the same distribution as $e^{j\theta}\vec{Z}$ with $\theta$ real.
+\begin{blockDefinition}[Circular Symmetric Complex Gaussian Random Vector]
+Given the random vector $\vec{Z} \in \mathbb{C}^N$, then $\vec{Z} = \vec{X} + j\vec{Y}$ is a circular symmetric complex random vector if $\vec{X}$ and $\vec{Y}$ are jointly gaussian distributed and $\vec{Z}$ has the same distribution as $e^{j\theta}\vec{Z}$ with $\theta$ real.
 \end{blockDefinition}
 
-Similar to a circular complex gaussian variable, $E(\vec{Z}) = \mat{0}$
-and $E(\vec{Z}\vec{Z}^T) = \mat{0}$\cite{gallager2008circularly}. A circular complex gaussian random vector $\vec{Z}$ is referred to as $\vec{Z} \sim \mathcal{CN}(\mat{0},\mat{\Gamma},\mat{0})$ with $\mat{\Gamma} = E(\vec{Z}\conj{\vec{Z}} )$. For the standard circular complex gaussian random vector, $\mathbf{\Gamma} = \mat{I}$. The probability density function of a circular complex gaussian vector $\vec{Z}\in \mathbb{C}^N$ is given by
+Similar to a circular symmetri complex gaussian variable, $E(\vec{Z}) = \mat{0}$
+and $E(\vec{Z}\vec{Z}^T) = \mat{0}$\cite{gallager2008circularly}. A circular symmetric complex gaussian random vector $\vec{Z}$ is referred to as $\vec{Z} \sim \mathcal{CN}(\mat{0},\mat{\Gamma},\mat{0})$ with $\mat{\Gamma} = E(\vec{Z}\conj{\vec{Z}} )$. For the standard circular symmetric complex gaussian random vector, $\mathbf{\Gamma} = \mat{I}$. The probability density function of a circular symmetric complex gaussian vector $\vec{Z}\in \mathbb{C}^N$ is given by
 
 \begin{align*}
     \frac{1}{\pi^N \text{det}(\mat{\Gamma})} \exp \left(-\conj{(\vec{z}^T)} \mat{\Gamma}^{-1}\vec{z}\right).
