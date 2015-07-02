@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # spectral documentation build configuration file, created by
-# sphinx-quickstart on Mon Jun 22 15:25:03 2015.
+# sphinx-quickstart on Mon Jun 22 16:13:26 2015.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -19,8 +19,8 @@ import shlex
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -52,8 +52,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'spectral'
-copyright = u'2015, Author'
-author = u'Author'
+copyright = u""""""
+author = u"W.P. Bruinsma, R.P. Hes, H.J.C. Kroep, T.C. Leliveld, W.M. Melching, T.A. aan de Wiel"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
