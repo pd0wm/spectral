@@ -40,7 +40,7 @@ if __name__ == "__main__":
         init_sources.append(gen_profiling_report(obj, args, runs, obj, constructor=True))
 
     init_samplers = []
-    samplers = [sc.sampling.Coprime, sc.sampling.MultiCoset]
+    samplers = [sc.sampling.Coprime, sc.sampling.MinimalSparseRuler]
     sampler_init_args = [(a, b), (N,)]
 
     for obj, args in zip(samplers, sampler_init_args):
