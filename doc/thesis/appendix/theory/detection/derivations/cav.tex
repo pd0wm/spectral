@@ -41,7 +41,7 @@ r_x[L-1] & r_x[L-2] & \ldots & r_x[0] \\
 Note how $\mat{C}_x$ is symmetric and has a Toeplitz structure. This corresponds to the first block in \cref{tkz:cav}. As  the autocorrelation function of white noise is a delta function, it means that  if $x[n]$ is white noise with variance $\sigma_n^2$, then $\mat{C}_x = \sigma_n^2\mat{I}$.
 If the signal $x[n]$ is not equal to noise, then its autocorrelation function is not equal to a delta function which results in $\mat{C}_x$ having nonzero off diagonal elements.
 
-Covariance Absolute Value method detection uses a measure of this `diagonality of $\mat{C}_x$ as test statistic $\Lambda$.
+Covariance Absolute Value method detection uses a measure of this `diagonality' of $\mat{C}_x$ as test statistic $\Lambda$.
 This measure $\Lambda$ is defined as
 \begin{align}\label{eq:cav_statistic}
 \Lambda &= \frac{T_1}{T_2} \nonumber \\

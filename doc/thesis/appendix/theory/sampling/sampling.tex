@@ -151,7 +151,7 @@ The proposed method in \cite{ariananda2012compressive} uses the fact that a line
 \caption{Circular sparse solution for $N=13$ generated from the linear sparse ruler solution for $N=7$. The numbers on the axis repeat since this is a circular sparse ruler problem.}\label{tkz:circ_linear_sparse}
 \end{figure}
 
-The generation approach is advantageous, since solutions of linear sparse ruler problem can be turned into circular sparse ruler solutions. Therefore better linear sparse ruler solutions will also result in better circular sparse ruler solutions. Because linear sparse ruler is a well-known problem, good solutions are already calculated. However, solutions genererated for the circular sparse ruler problem are not necessarily minimal. Finding minimal solutions is by no means trivial and requires clever algorithms. It is also interesting to look at the structure of the problem to decrease the solution space.
+The generation approach is advantageous, since solutions of linear sparse ruler problem can be turned into circular sparse ruler solutions. Therefore better linear sparse ruler solutions will also result in better circular sparse ruler solutions. Because linear sparse ruler is a well-known problem, good solutions are already calculated. However, solutions generated for the circular sparse ruler problem are not necessarily minimal. Finding minimal solutions is by no means trivial and requires clever algorithms. It is also interesting to look at the structure of the problem to decrease the solution space.
 
 \section{Structure of the circular sparse ruler problem}
 Optimal circular sparse rulers form interesting solutions to the circular sparse ruler problem. They are circular sparse ruler solutions to configurations with $M$ samplers such that $N$ is as high as possible. Optimal solutions ensure the highest performance possible for a given amount of samplers. In similar fashion, one can define optimal solutions to the linear sparse ruler problem.
@@ -162,7 +162,7 @@ Consider a configuration with $M$ samplers. Then $N \le M(M-1)+1$.
 \end{blockTheorem}
 
 \begin{blockProofTheorem}{\ref{th:upperbound}}
-    There are $M^2$ combinations of samplers. However, $M$ of them result in a combination with themself, which yields an estimation of lag $0$. Therefore, only $M^2-M+1=M(M-1)+1$ different lags can be estimated. The estimated lags must make up $0,\ldots,N-1$, which are $N$ different lags. Therefore $N \le M(M-1)+1$.
+    There are $M^2$ combinations of samplers. However, $M$ of them result in a combination with themselves, which yields an estimation of lag $0$. Therefore, only $M^2-M+1=M(M-1)+1$ different lags can be estimated. The estimated lags must make up $0,\ldots,N-1$, which are $N$ different lags. Therefore $N \le M(M-1)+1$.
 \end{blockProofTheorem}
 
 \section{Results}
@@ -180,7 +180,7 @@ We have used integer linear programming to calculate circular sparse ruler solut
         $8$ & $51$ & $1,2,8,10,13,32,36, 46$ \\
         $9$ & $65$ & $1,2,5,7,15, 33, 43, 51, 54$ \\
     \end{tabular}
-    \caption{Several solutions to the circular sparse ruler proble}
+    \caption{Several solutions to the circular sparse ruler problem}
     \label{tab:circ-sols}
 \end{table}
 

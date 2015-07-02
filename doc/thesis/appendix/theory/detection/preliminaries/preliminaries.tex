@@ -10,10 +10,10 @@
 The definitions given in this section are used in the derivations later on and are based  on \cite{yates2005probability,gallager2008circularly}.
 
 \begin{blockDefinition}[Complex Gaussian Random Variable]
-Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be complex gaussian distributed if $X$ and $Y$ are jointly-gaussian distributed. We denote $Z \sim \mathcal{CN}(\mu, \Gamma, C)$.
+Given the complex Gaussian random variable $Z = X + jY$, then $Z$ is said to be complex Gaussian distributed if $X$ and $Y$ are jointly-Gaussian distributed. We denote $Z \sim \mathcal{CN}(\mu, \Gamma, C)$.
 \end{blockDefinition}
 
- A complex gaussian random variable is characterised by three parameters:
+ A complex Gaussian random variable is characterised by three parameters:
 \begin{enumerate}
     \item $\mu = E(Z)$,
     \item $\Gamma = E[(Z-\mu)(\conj{Z}-\conj{\mu})^T]$ and
@@ -21,7 +21,7 @@ Given the complex gaussian random variable $Z = X + jY$, then $Z$ is said to be 
 \end{enumerate}
 
 \begin{blockDefinition}[Circular Symmetric Complex Gaussian Random Variable]
-Given a complex gaussian random variable $Z = X + jY$, then $Z$ is circular symmetric complex gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta$ real. A circular complex gaussian random variable $Z$ is referred to as $Z \sim \mathcal{CN}(0,\sigma^2)$.
+Given a complex Gaussian random variable $Z = X + jY$, then $Z$ is circular symmetric complex Gaussian distributed if $Z$ has the same distribution as $Ze^{j\theta}$ with $\theta$ real. A circular complex Gaussian random variable $Z$ is referred to as $Z \sim \mathcal{CN}(0,\sigma^2)$.
 \end{blockDefinition}
 
 Since
@@ -29,20 +29,20 @@ Since
     E(Z) = E(e^{j\theta}Z)  = e^{j\theta}E(Z)
 \end{align*}
 it follows that $Z$ has an expectation value of zero. To see why let$E(Z) = a + bj$ and notice that $e^{j\theta} \neq 0$.
-Then if $e^{j\theta} E(Z) = E(z)$ holds, then so does $(a+bj) = e^{j\theta}(a+bj)$. Now it folllows cannot be anything else than zero.
+Then if $e^{j\theta} E(Z) = E(z)$ holds, then so does $(a+bj) = e^{j\theta}(a+bj)$. Now it follows that $E(Z)$ cannot be anything else than zero.
 Furthermore, since
 \begin{align*}
     E(ZZ) = E(e^{j\theta}Z e^j\theta{Z})  = e^{2j\theta}E(Z^2)
 \end{align*}
 % ($E(Z) = 0$) and that %$E(Z^2)= E(X^2 - Y^2 + 2jXY] = 0$.
-it follows that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$ (by an analog argument as for the expectation value). That is, $X$ and $Y$ are independent gaussian distributed with zero mean and equal variance.  It now follows that $\sigma^2= E(Z\overline{Z}) = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$.
+it follows that $\text{Var}\left(X\right) = \text{Var}\left(Y\right)$ (by an analog argument as for the expectation value). That is, $X$ and $Y$ are independent Gaussian distributed with zero mean and equal variance.  It now follows that $\sigma^2= E(Z\overline{Z}) = \text{Var}\left(X\right) + \text{Var}\left(Y\right)$.
 
 \begin{blockDefinition}[Circular Symmetric Complex Gaussian Random Vector]
-Given the random vector $\vec{Z} \in \mathbb{C}^N$, then $\vec{Z} = \vec{X} + j\vec{Y}$ is a circular symmetric complex random vector if $\vec{X}$ and $\vec{Y}$ are jointly gaussian distributed and $\vec{Z}$ has the same distribution as $e^{j\theta}\vec{Z}$ with $\theta$ real.
+Given the random vector $\vec{Z} \in \mathbb{C}^N$, then $\vec{Z} = \vec{X} + j\vec{Y}$ is a circular symmetric complex random vector if $\vec{X}$ and $\vec{Y}$ are jointly Gaussian distributed and $\vec{Z}$ has the same distribution as $e^{j\theta}\vec{Z}$ with $\theta$ real.
 \end{blockDefinition}
 
-Similar to a circular symmetri complex gaussian variable, $E(\vec{Z}) = \mat{0}$
-and $E(\vec{Z}\vec{Z}^T) = \mat{0}$\cite{gallager2008circularly}. A circular symmetric complex gaussian random vector $\vec{Z}$ is referred to as $\vec{Z} \sim \mathcal{CN}(\mat{0},\mat{\Gamma},\mat{0})$ with $\mat{\Gamma} = E(\vec{Z}\conj{\vec{Z}} )$. For the standard circular symmetric complex gaussian random vector, $\mathbf{\Gamma} = \mat{I}$. The probability density function of a circular symmetric complex gaussian vector $\vec{Z}\in \mathbb{C}^N$ is given by
+Similar to a circular symmetric complex Gaussian variable, $E(\vec{Z}) = \mat{0}$
+and $E(\vec{Z}\vec{Z}^T) = \mat{0}$\cite{gallager2008circularly}. A circular symmetric complex Gaussian random vector $\vec{Z}$ is referred to as $\vec{Z} \sim \mathcal{CN}(\mat{0},\mat{\Gamma},\mat{0})$ with $\mat{\Gamma} = E(\vec{Z}\conj{\vec{Z}} )$. For the standard circular symmetric complex Gaussian random vector, $\mathbf{\Gamma} = \mat{I}$. The probability density function of a circular symmetric complex Gaussian vector $\vec{Z}\in \mathbb{C}^N$ is given by
 
 \begin{align*}
     \frac{1}{\pi^N \text{det}(\mat{\Gamma})} \exp \left(-\conj{(\vec{z}^T)} \mat{\Gamma}^{-1}\vec{z}\right).
@@ -74,7 +74,7 @@ Given a hypothesis $\mathcal{H}$ and a realisation $\mathbf{x}$ of a random vari
 \end{blockDefinition}
 
 \begin{blockDefinition}[Neyman-Pearson Test]
-Given a continous random vector $\vec{X}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that the realization $\vec{x}$ of $\vec{X}$, has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$
+Given a continuous random vector $\vec{X}$, and two hypotheses $\mathcal{H}_0$ and $\mathcal{H}_1$, the Neyman-Pearson test rejects that the realization $\vec{x}$ of $\vec{X}$, has been produced under $\mathcal{H}_0$ in favor of $\mathcal{H}_1$
 when
 \begin{align*}
     \Lambda (\mathbf{x}) &= \frac{L_{\vec{X} | \mathcal{H}_0} (\mathbf{x})}{L_{\vec{X} | \mathcal{H}_1}(\mathbf{x})} \leq \gamma.

@@ -52,7 +52,7 @@ However, soon this became too slow and complex for our needs. In the final versi
 
 \subsection{Autobahn}
 \label{sub:autobahn}
-\lib{Autobahn} is a real-time framework for websockets. It was used as a means of sending data to the GUI. It is written on top of \lib{Twisted} and \lib{asyncio} and is licensed under the MIT\footnoteref{fn:mit} license. The referency is available at \cite{autobahn}.
+\lib{Autobahn} is a real-time framework for websockets. It was used as a means of sending data to the GUI. It is written on top of \lib{Twisted} and \lib{asyncio} and is licensed under the MIT\footnoteref{fn:mit} license. The reference is available at \cite{autobahn}.
 
 \subsection{Pyro}
 \label{sec:pyro}
@@ -80,7 +80,7 @@ To verify the correctness of our code we used two kinds of testing: unit tests a
 \subsubsection{Unit tests}
 Unit tests are small tests that test on a function level. They test if each function returns the right values for given input signals and tests for edge cases. These unit tests should be fast and be ran often while writing code. This way, the correctness of one's code may be verified at all times. When the tests pass, the code is guaranteed to work according to the specifications. This becomes particularity important when working on a large project with multiple people. Any change in code can be verified quickly. Writing unit tests also forces the developer to think more about their code and stimulates modular design.
 
-It is also possible to write the tests before the implementation of a function. This is called test driven development (TDD). In our design we decided not to use this, because the specificationse were not entirely clear at the start of the project. In case of an abundance of additional time, TDD would definitely be a preferred approach.
+It is also possible to write the tests before the implementation of a function. This is called test driven development (TDD). In our design we decided not to use this, because the specifications were not entirely clear at the start of the project. In case of an abundance of additional time, TDD would definitely be a preferred approach.
 
 \subsubsection{Integration tests}
 Integration tests are tests that encompass a large part of the system. In our case we wrote tests where a couple of functions were tested at the same time. The output data was then compared by the output of a \matlab{} script that we knew was correct.

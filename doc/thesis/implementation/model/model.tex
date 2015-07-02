@@ -52,7 +52,7 @@ The rectangular source generates a signal with multiple rectangles in the spectr
 The file source reads the samples from a file. This was used to test with real world data, but still get reproducible results. The files are compatible with \lib{GNU Radio's} file sink. The file source loops over the entire data.
 
 \subsection{USRP N210 source}
-The USRP source uses the \func{finite\_acquisition} function from the \lib{GnuRadio} package. This provides a very easy way to get a specified number of samples from one USRP. This method has a few drawbacks (see \cref{sec:drivers}). The problems with the DC compensation of the local oscillator are prevented by shifting the local oscillator out of the sampled spectrum. Unfortunately this halves our effective bandwidth. A function is also implemented which allows us to change the centre frequency and the gain.
+The USRP source uses the \func{finite\_acquisition} function from the \lib{GnuRadio} package. This provides a very easy way to get a specified number of samples from one USRP. This method has a few drawbacks (see \cref{sec:drivers}). The problems with the DC compensation of the local oscillator are prevented by shifting the local oscillator out of the sampled spectrum. Unfortunately this halves our effective bandwidth. A function is also implemented which allows us to change the center frequency and the gain.
 
 \section{Sampling}
 \label{sec:sampling}
