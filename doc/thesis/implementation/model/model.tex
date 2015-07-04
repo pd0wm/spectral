@@ -69,7 +69,7 @@ After the uniform samples are generated, different sampling methods have to be a
 \label{sub:multi_coset_sampler}
 Multi-coset sampling (as introduced in \cref{cha:sampling,cha:sampling_methods}) is based on a multiple device sampler. The crucial component here is the offset of the common sampling period (sometimes referred to as the `ruler' of a multi-coset system in context of the minimal sparse ruler problem). The list of offsets is one of the constructor arguments used to generate the $C$-matrix which has dimensions defined by $M$ and $N$, which are the other arguments of this implementation.
 
-The implementation of the sample method takes a signal, uniformly sampled, as its argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorized by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension $N$ and the other determined by the length of the input signal.
+The implementation of the sample method takes a signal, uniformly sampled, as its argument and returns a multi-coset sampled signal. Our initial implementation used a loop and a matrix multiplication. To speed up this function the for loop was vectorised by a single matrix multiplication. This is achieved by reshaping the input signal to a matrix with one dimension $N$ and the other determined by the length of the input signal.
 
 \subsection{Minimal sparse ruler sampler}
 \label{sec:multi-coset-sampler}
@@ -98,7 +98,7 @@ This class implements an algorithm based on the one described in \cite{ariananda
 
 Optionally a switch can be passed to disable the caching mechanism described in the base class. During the initialisation of the class it builds the $R$-matrix as discussed in \cite{ariananda2012compressive} and computes its pseudo-inverse. This was implemented for debugging and testing purposes.
 
-The reconstruct method is implemented by calculating the cross correlations of the non-uniformly sampled input signal. A helper function is defined in the \\\func{Reconstructor} interface that calculates the cross correlations of the input. To speed up this function the multiple correlations are vectorized into a number of matrix multiplications. The pseudo-inverse is then multiplied by these cross-correlations to reconstruct the signal.
+The reconstruct method is implemented by calculating the cross correlations of the non-uniformly sampled input signal. A helper function is defined in the \\\func{Reconstructor} interface that calculates the cross correlations of the input. To speed up this function the multiple correlations are vectorised into a number of matrix multiplications. The pseudo-inverse is then multiplied by these cross-correlations to reconstruct the signal.
 
 \subsection{Wessel}
 \label{sub:wessel}
